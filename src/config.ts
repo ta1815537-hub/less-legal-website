@@ -173,7 +173,7 @@ export const SITE_CONFIG = {
       category: "PDF & Files",
       description: "Utility suite to merge multiple PDFs, split documents, compress file sizes, and convert formats directly on your device.",
       iconName: "FileText",
-      highlights: ["Merge & Split PDFs", "Compress File Size", "Convert Formats", "Offline Processing"]
+      highlights: ["Merge & Split PDFs", "Compress File Size", "Convert Formats", "On-Device Processing"]
     },
     {
       id: "f3-document-hub",
@@ -197,7 +197,7 @@ export const SITE_CONFIG = {
       category: "Legal Utilities",
       description: "A personal digital organizer to record hearing schedules, track next court dates, and maintain client reference records.",
       iconName: "Calendar",
-      highlights: ["Hearing Tracker", "Client Notes", "Stage of Proceedings", "Offline Storage"]
+      highlights: ["Hearing Tracker", "Client Notes", "Stage of Proceedings", "Local Storage"]
     },
     {
       id: "f6-info-vault",
@@ -331,9 +331,9 @@ export const SITE_CONFIG = {
       id: "f22-bare-acts",
       title: "Bare Acts",
       category: "Learning & Reference",
-      description: "Quick-access reference library of essential Indian statutory Bare Acts, organized chapter-wise for fast offline reading.",
+      description: "Quick-access reference library of essential Indian statutory Bare Acts, organized chapter-wise for fast and easy reading.",
       iconName: "Scale",
-      highlights: ["Section-wise", "Key Statutes", "Offline Access", "Bookmarks"]
+      highlights: ["Section-wise", "Key Statutes", "Quick Access", "Bookmarks"]
     },
     {
       id: "f23-know-your-rights",

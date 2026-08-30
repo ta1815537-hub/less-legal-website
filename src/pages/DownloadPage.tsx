@@ -10,12 +10,14 @@ import {
   ScrollReveal, HeroAmbientGlow
 } from '../components/MotionWrappers';
 import { motion } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface DownloadPageProps {
   onNavigate: (route: PageRoute) => void;
 }
 
 export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
+  const { t, language } = useLanguage();
   const isPlayStoreConfigured = Boolean(
     SITE_CONFIG.playStoreUrl && 
     SITE_CONFIG.playStoreUrl.trim() !== "" && 
@@ -34,7 +36,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 mb-2 transition-colors cursor-pointer whitespace-nowrap"
         >
           <ArrowLeft className="w-4 h-4 shrink-0" />
-          <span className="whitespace-nowrap">Back to Home</span>
+          <span className="whitespace-nowrap">{t.common.backToHome}</span>
         </motion.button>
 
         <div>
@@ -43,15 +45,15 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
           >
             <Smartphone className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] animate-pulse shrink-0" />
-            <span className="whitespace-nowrap">Android Application Download</span>
+            <span className="whitespace-nowrap">{t.downloadPage.badge}</span>
           </motion.div>
         </div>
 
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-          Download Less Legal
+          {t.downloadPage.title}
         </h1>
         <p className="text-base sm:text-lg text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-          Get the all-in-one legal knowledge and digital utilities suite for your Android smartphone or tablet.
+          {t.downloadPage.subtitle}
         </p>
       </ScrollReveal>
 
@@ -101,7 +103,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 >
                   <div className="absolute -inset-1 bg-gradient-to-r from-[#C21F2F] via-[#D8BD82] to-[#8B0000] rounded-3xl blur-lg opacity-40 group-hover:opacity-100 transition duration-500"></div>
                   
-                  <div className="relative flex items-center justify-center gap-4 px-10 py-4 rounded-2xl bg-[#0D0D0F] text-white shadow-2xl border border-white/15">
+                  <div className="relative flex items-center justify-center gap-4 px-10 py-4 rounded-2xl bg-[#0D0D0F] text-white shadow-2xl border border-white/15 shine-sweep-overlay">
                     
                     <motion.svg 
                       whileHover={{ rotate: [-2, 2, -2, 0] }}
@@ -240,7 +242,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               </div>
               <div className="space-y-1">
                 <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Bluetooth className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 7. Bluetooth & Nearby Devices</div>
-                <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Required exclusively for the "File Transfer (LessShare)" feature to securely connect and share files offline with nearby devices.</p>
+                <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Required exclusively for the "File Transfer (LessShare)" feature to securely connect and share files directly with nearby devices.</p>
               </div>
             </div>
           </div>

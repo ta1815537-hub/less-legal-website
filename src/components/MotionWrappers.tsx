@@ -3,8 +3,9 @@ import { motion, Variants } from 'motion/react';
 
 // Common Easing Curve for Apple / Modern Glass Feel
 export const EASING_SPRING = [0.22, 1, 0.36, 1] as const;
+export const EASING_SMOOTH = [0.16, 1, 0.3, 1] as const;
 
-// 1. GLOBAL PAGE TRANSITION WRAPPER
+// 1. GLOBAL PAGE TRANSITION WRAPPER (Ultra Snappy & Smooth Page Switching)
 interface PageTransitionProps {
   children: ReactNode;
   routeKey: string;
@@ -14,19 +15,35 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeK
   return (
     <motion.div
       key={routeKey}
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.35, ease: EASING_SPRING }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       className="w-full flex-1"
-      style={{ willChange: "transform, opacity" }}
+      style={{ willChange: "opacity, transform" }}
     >
       {children}
     </motion.div>
   );
 };
 
-// 2. SCROLL REVEAL SECTION
+// 2. GLOBAL ANIMATED SMOKE BACKGROUND COMPONENT
+export const SmokeBackground: React.FC = () => {
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none">
+      {/* Smoke Cloud 1 - Crimson / Ruby Ambient Vapor */}
+      <div className="smoke-cloud-1 absolute -top-40 -left-40 w-[45rem] h-[45rem] bg-gradient-to-br from-[#8B0000]/20 via-[#C21F2F]/15 to-transparent rounded-full blur-[130px] opacity-70 dark:opacity-60" />
+
+      {/* Smoke Cloud 2 - Champagne Gold Ambient Vapor */}
+      <div className="smoke-cloud-2 absolute top-1/4 -right-40 w-[40rem] h-[40rem] bg-gradient-to-bl from-[#D8BD82]/20 via-[#B8860B]/12 to-transparent rounded-full blur-[120px] opacity-70 dark:opacity-60" />
+
+      {/* Smoke Cloud 3 - Midnight Charcoal / Deep Amber Floating Center Vapor */}
+      <div className="smoke-cloud-1 absolute bottom-10 left-1/3 w-[38rem] h-[38rem] bg-gradient-to-tr from-[#C21F2F]/10 via-[#D8BD82]/15 to-transparent rounded-full blur-[140px] opacity-50 dark:opacity-40" />
+    </div>
+  );
+};
+
+// 3. SCROLL REVEAL SECTION
 interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
@@ -57,7 +74,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
       initial={{ opacity: 0, scale: 0.98, ...getInitialPosition() }}
       whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, delay, ease: EASING_SPRING }}
+      transition={{ duration: 0.6, delay, ease: EASING_SMOOTH }}
       className={className}
     >
       {children}
@@ -65,7 +82,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   );
 };
 
-// 3. STAGGERED GRID CONTAINER & ITEMS
+// 4. STAGGERED GRID CONTAINER & ITEMS
 interface StaggerContainerProps {
   children: ReactNode;
   className?: string;
@@ -111,7 +128,7 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string }> 
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.45, ease: EASING_SPRING },
+      transition: { duration: 0.5, ease: EASING_SMOOTH },
     },
   };
 
@@ -122,7 +139,7 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string }> 
   );
 };
 
-// 4. HERO AMBIENT BACKGROUND GLOW (Crimson & Champagne Gold Orbs)
+// 5. HERO AMBIENT BACKGROUND GLOW (Crimson & Champagne Gold Orbs)
 export const HeroAmbientGlow: React.FC = () => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10 select-none">
@@ -174,7 +191,7 @@ export const HeroAmbientGlow: React.FC = () => {
   );
 };
 
-// 5. INTERACTIVE BUTTON WRAPPER WITH GLOW & SHIMMER
+// 6. INTERACTIVE BUTTON WRAPPER WITH CONTINUOUS SHINE & GLOW
 interface GlowingButtonProps {
   children: ReactNode;
   onClick?: () => void;
@@ -197,13 +214,13 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
-        return 'btn-crimson';
+        return 'btn-crimson shine-sweep-overlay';
       case 'secondary':
-        return 'btn-glass';
+        return 'btn-glass shine-sweep-overlay';
       case 'gold':
-        return 'btn-gold';
+        return 'btn-gold shine-sweep-overlay';
       case 'outline':
-        return 'bg-transparent border border-white/20 hover:border-white/40 text-[#F5F2EE] hover:bg-white/5 backdrop-blur-md';
+        return 'bg-transparent border border-white/20 hover:border-white/40 text-[#F5F2EE] hover:bg-white/5 backdrop-blur-md shine-sweep-overlay';
     }
   };
 
@@ -213,16 +230,14 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      whileHover={{ y: -2, scale: 1.015 }}
-      whileTap={{ scale: 0.975 }}
-      transition={{ duration: 0.2, ease: EASING_SPRING }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.15, ease: EASING_SPRING }}
       className={`relative group overflow-hidden transition-all rounded-xl font-semibold px-5 py-3 text-sm flex items-center justify-center gap-2 ${getVariantStyles()} ${className}`}
     >
-      {/* Shimmer sweep effect */}
-      <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
       <span className="relative z-10 flex items-center justify-center gap-2">
         {children}
       </span>
     </motion.button>
   );
 };
+

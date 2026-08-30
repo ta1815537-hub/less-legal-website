@@ -10,12 +10,18 @@ import {
   HeroAmbientGlow, GlowingButton
 } from '../components/MotionWrappers';
 import { motion } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface PremiumPageProps {
   onNavigate: (route: PageRoute) => void;
 }
 
 export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
+  const { t, language } = useLanguage();
+
+  const features90Days = t.premiumPage.features90Days || SITE_CONFIG.premiumPlans[0].features;
+  const features1Year = t.premiumPage.features1Year || SITE_CONFIG.premiumPlans[1].features;
+
   return (
     <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
@@ -27,13 +33,13 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] animate-pulse shrink-0" />
-          <span className="whitespace-nowrap">Less Legal Premium Passes</span>
+          <span className="whitespace-nowrap">{t.premiumPage.badge}</span>
         </motion.div>
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-          Ad-Free Productivity Passes
+          {t.premiumPage.title}
         </h1>
         <p className="text-base sm:text-lg text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-          Upgrade your Less Legal Android experience with a clean, uninterrupted ad-free interface. Simple one-time fixed validity passes with zero recurring debits.
+          {t.premiumPage.subtitle}
         </p>
       </ScrollReveal>
 
@@ -42,20 +48,20 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
         <div className="glass-panel rounded-3xl p-6 border border-slate-200 dark:border-white/10 shadow-xl space-y-3">
           <div className="flex items-center gap-2.5 text-slate-900 dark:text-[#F5F2EE] font-bold text-sm">
             <ShieldCheck className="w-5 h-5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
-            <span>Transparent Billing Notice & Consumer Terms</span>
+            <span>{t.premiumPage.transparentNoticeTitle}</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600 dark:text-[#B8B3AF]">
             <div className="p-4 bg-slate-100/80 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 space-y-1">
-              <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-1">Fixed Validity Period</strong>
-              Premium passes grant ad-free access strictly for the duration purchased (90 days for ₹59 or 365 days for ₹179).
+              <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-1">{t.premiumPage.notice1Title}</strong>
+              {t.premiumPage.notice1Text}
             </div>
             <div className="p-4 bg-slate-100/80 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 space-y-1">
-              <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-1">No Auto-Renewals</strong>
-              We do NOT store payment cards or initiate auto-debit subscriptions. When your pass expires, it simply reverts to standard ad-supported access.
+              <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-1">{t.premiumPage.notice2Title}</strong>
+              {t.premiumPage.notice2Text}
             </div>
             <div className="p-4 bg-slate-100/80 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 space-y-1">
-              <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-1">In-App Activation</strong>
-              Purchases are initiated directly inside the Less Legal Android app via certified payment gateways (PayU / Play Store).
+              <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-1">{t.premiumPage.notice3Title}</strong>
+              {t.premiumPage.notice3Text}
             </div>
           </div>
         </div>
@@ -66,34 +72,34 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
         
         {/* Plan 1: ₹59 / 3 Months */}
         <ScrollReveal direction="up" delay={0.1} className="h-full">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/12 shadow-xl flex flex-col justify-between h-full">
+          <div className="glass-panel shine-sweep-overlay p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/12 shadow-xl flex flex-col justify-between h-full">
             <div>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F]">
-                  Quarterly Pass
+                  {language === 'hi' ? 'तिमाही पास' : 'Quarterly Pass'}
                 </span>
                 <span className="text-xs font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-1 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30 whitespace-nowrap">
-                  90 Days Validity
+                  {t.premiumPage.plan90DaysValidity}
                 </span>
               </div>
 
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-[#F5F2EE] mb-2">3 Months Plan</h2>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-[#F5F2EE] mb-2">{t.premiumPage.plan90DaysTitle}</h2>
               
               <div className="flex items-baseline gap-1.5 my-4">
-                <span className="text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">₹59</span>
-                <span className="text-xs font-semibold text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap">/ one-time payment</span>
+                <span className="text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">{t.premiumPage.plan90DaysPrice}</span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap">{t.premiumPage.oneTimePaymentLabel}</span>
               </div>
 
               <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed mb-6">
-                Provides an ad-free experience for the purchased 90-day validity period across all tools and utilities.
+                {t.premiumPage.plan90DaysTagline}
               </p>
 
               <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-white/10">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F]">
-                  Included Benefits
+                  {language === 'hi' ? 'शामिल लाभ' : 'Included Benefits'}
                 </span>
                 <ul className="space-y-2.5 text-xs text-slate-700 dark:text-[#B8B3AF]">
-                  {SITE_CONFIG.premiumPlans[0].features.map((feature, idx) => (
+                  {features90Days.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
                       <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
                       <span>{feature}</span>
@@ -105,7 +111,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
             <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 space-y-3">
               <div className="text-center text-[11px] text-slate-500 dark:text-[#77736F] font-medium">
-                Purchase directly inside the Less Legal Android App
+                {language === 'hi' ? 'खरीदारी सीधे Less Legal एंड्रॉइड ऐप के भीतर करें' : 'Purchase directly inside the Less Legal Android App'}
               </div>
               <a
                 href={SITE_CONFIG.playStoreUrl || '#'}
@@ -119,9 +125,9 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 }}
                 className="w-full block"
               >
-                <button className="w-full py-3 rounded-xl btn-glass font-bold text-xs whitespace-nowrap cursor-pointer">
-                  <span>Open Less Legal App to Purchase</span>
-                </button>
+                <GlowingButton variant="secondary" className="w-full py-3 text-xs font-bold whitespace-nowrap">
+                  <span>{language === 'hi' ? 'खरीदने के लिए Less Legal ऐप खोलें' : 'Open Less Legal App to Purchase'}</span>
+                </GlowingButton>
               </a>
             </div>
           </div>
@@ -129,43 +135,43 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
         {/* Plan 2: ₹179 / 1 Year (Best Value) */}
         <ScrollReveal direction="up" delay={0.16} className="h-full">
-          <div className="glass-panel-crimson glow-crimson-gold p-6 sm:p-8 rounded-3xl border-2 relative flex flex-col justify-between h-full">
+          <div className="glass-panel-crimson glow-crimson-gold shine-sweep-overlay p-6 sm:p-8 rounded-3xl border-2 relative flex flex-col justify-between h-full">
             <motion.div 
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               transition={{ repeat: Infinity, repeatType: 'reverse', duration: 2.5 }}
               className="absolute -top-3.5 right-8 bg-gradient-to-r from-amber-600 to-amber-700 dark:from-[#D8BD82] dark:to-[#C7A96B] text-white dark:text-[#080808] text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-lg whitespace-nowrap"
             >
-              Best Value (365 Days)
+              {t.premiumPage.bestValueBadge}
             </motion.div>
 
             <div>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-[#D8BD82]">
-                  Annual Pass
+                  {language === 'hi' ? 'वार्षिक पास' : 'Annual Pass'}
                 </span>
                 <span className="text-xs font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/20 dark:bg-[#D8BD82]/20 px-2.5 py-1 rounded-full border border-amber-600/40 dark:border-[#D8BD82]/40 whitespace-nowrap">
-                  365 Days Validity
+                  {t.premiumPage.plan1YearValidity}
                 </span>
               </div>
 
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-[#F5F2EE] mb-2">1 Year Plan</h2>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-[#F5F2EE] mb-2">{t.premiumPage.plan1YearTitle}</h2>
               
               <div className="flex items-baseline gap-1.5 my-4">
-                <span className="text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">₹179</span>
-                <span className="text-xs font-semibold text-slate-600 dark:text-[#B8B3AF] whitespace-nowrap">/ one-time payment</span>
+                <span className="text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">{t.premiumPage.plan1YearPrice}</span>
+                <span className="text-xs font-semibold text-slate-600 dark:text-[#B8B3AF] whitespace-nowrap">{t.premiumPage.oneTimePaymentLabel}</span>
               </div>
 
               <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed mb-6">
-                Provides an ad-free experience for the purchased 365-day validity period across all tools and utilities.
+                {t.premiumPage.plan1YearTagline}
               </p>
 
               <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-white/10">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F]">
-                  Included Benefits
+                  {language === 'hi' ? 'शामिल लाभ' : 'Included Benefits'}
                 </span>
                 <ul className="space-y-2.5 text-xs text-slate-800 dark:text-[#F5F2EE]">
-                  {SITE_CONFIG.premiumPlans[1].features.map((feature, idx) => (
+                  {features1Year.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
                       <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0 mt-0.5" />
                       <span>{feature}</span>
@@ -177,7 +183,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
             <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 space-y-3">
               <div className="text-center text-[11px] text-amber-900 dark:text-[#D8BD82] font-semibold">
-                Best savings for long-term daily legal utility usage
+                {language === 'hi' ? 'दैनिक कानूनी उपयोगिता के लिए सर्वोत्तम बचत' : 'Best savings for long-term daily legal utility usage'}
               </div>
               <a
                 href={SITE_CONFIG.playStoreUrl || '#'}
@@ -195,7 +201,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                   variant="primary"
                   className="w-full py-3 text-xs font-bold whitespace-nowrap"
                 >
-                  <span className="whitespace-nowrap">Open Less Legal App to Purchase</span>
+                  <span className="whitespace-nowrap">{language === 'hi' ? 'खरीदने के लिए Less Legal ऐप खोलें' : 'Open Less Legal App to Purchase'}</span>
                 </GlowingButton>
               </a>
             </div>

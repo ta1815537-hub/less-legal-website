@@ -11,12 +11,14 @@ import {
   HeroAmbientGlow, GlowingButton, EASING_SPRING 
 } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ContactPageProps {
   onNavigate: (route: PageRoute) => void;
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,23 +53,23 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 overflow-hidden bg-[#080808]">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
       
       {/* Header */}
       <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
         <motion.div 
           whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-[#D8BD82]/30 text-[#D8BD82] text-xs font-bold shadow-xs cursor-default"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
         >
-          <MessageSquare className="w-3.5 h-3.5 text-[#E03A3E] animate-pulse" />
-          <span>Support & Grievance Redressal</span>
+          <MessageSquare className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] animate-pulse shrink-0" />
+          <span className="whitespace-nowrap">{t.contactPage.badge}</span>
         </motion.div>
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#F5F2EE] tracking-tight">
-          Contact Official Support
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          {t.contactPage.title}
         </h1>
-        <p className="text-base sm:text-lg text-[#B8B3AF] leading-relaxed">
-          Need assistance with Less Legal Android application, feature guidance, or transaction verification? Our support team is here to help.
+        <p className="text-base sm:text-lg text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+          {t.contactPage.subtitle}
         </p>
       </ScrollReveal>
 
@@ -178,13 +180,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
         {/* Right Column: Support Inquiry Form */}
         <ScrollReveal direction="up" delay={0.14} className="lg:col-span-7">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-xl">
+          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl">
             
-            <h2 className="text-lg font-bold text-[#F5F2EE] mb-1">
-              Submit a Support Request
+            <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] mb-1">
+              {language === 'hi' ? 'सहायता अनुरोध भेजें' : 'Submit a Support Request'}
             </h2>
-            <p className="text-xs text-[#B8B3AF] mb-6">
-              Fill in your details and describe your inquiry. We will assist you promptly.
+            <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-6">
+              {language === 'hi' ? 'विवरण भरें और अपना प्रश्न दर्ज करें। हम शीघ्र सहायता करेंगे।' : 'Fill in your details and describe your inquiry. We will assist you promptly.'}
             </p>
 
             <AnimatePresence mode="wait">
@@ -205,20 +207,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   >
                     <CheckCircle2 className="w-6 h-6" />
                   </motion.div>
-                  <h3 className="text-base font-bold text-[#F5F2EE]">
-                    Inquiry Received
+                  <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
+                    {language === 'hi' ? 'अनुरोध प्राप्त हुआ' : 'Inquiry Received'}
                   </h3>
-                  <p className="text-xs text-[#B8B3AF] max-w-md mx-auto leading-relaxed">
-                    Thank you for reaching out to Less Legal Support. Your message has been prepared for our support team.
+                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] max-w-md mx-auto leading-relaxed">
+                    {language === 'hi' ? 'Less Legal सहायता टीम से संपर्क करने के लिए धन्यवाद। आपका संदेश तैयार कर लिया गया है।' : 'Thank you for reaching out to Less Legal Support. Your message has been prepared for our support team.'}
                   </p>
                   <button
                     onClick={() => {
                       setSubmitted(false);
                       setFormData({ name: '', email: '', subject: 'General Inquiry', transactionId: '', message: '' });
                     }}
-                    className="mt-2 text-xs font-bold text-[#D8BD82] underline hover:text-white"
+                    className="mt-2 text-xs font-bold text-amber-800 dark:text-[#D8BD82] underline cursor-pointer"
                   >
-                    Send another inquiry
+                    {language === 'hi' ? 'दूसरा प्रश्न भेजें' : 'Send another inquiry'}
                   </button>
                 </motion.div>
               ) : (
@@ -233,8 +235,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-name" className="font-bold text-[#F5F2EE]">
-                        Full Name <span className="text-[#E03A3E]">*</span>
+                      <label htmlFor="contact-name" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                        {t.contactPage.nameLabel} <span className="text-[#E03A3E]">*</span>
                       </label>
                       <input
                         id="contact-name"
@@ -242,14 +244,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Your full name"
-                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-[#F5F2EE]"
+                        placeholder={language === 'hi' ? 'आपका पूरा नाम' : 'Your full name'}
+                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-email" className="font-bold text-[#F5F2EE]">
-                        Email Address <span className="text-[#E03A3E]">*</span>
+                      <label htmlFor="contact-email" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                        {t.contactPage.emailLabel} <span className="text-[#E03A3E]">*</span>
                       </label>
                       <input
                         id="contact-email"
@@ -258,35 +260,35 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="name@example.com"
-                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-[#F5F2EE]"
+                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-subject" className="font-bold text-[#F5F2EE]">
-                        Category
+                      <label htmlFor="contact-subject" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                        {t.contactPage.subjectLabel}
                       </label>
                       <select
                         id="contact-subject"
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-slate-900 border border-white/15 rounded-xl text-xs text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F]"
+                        className="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-white/15 rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F]"
                       >
-                        <option value="General Inquiry" className="bg-[#0A0A0C] text-[#F5F2EE]">General Inquiry</option>
-                        <option value="Technical Support" className="bg-[#0A0A0C] text-[#F5F2EE]">Technical Support</option>
-                        <option value="Payment Issue" className="bg-[#0A0A0C] text-[#F5F2EE]">Payment Issue</option>
-                        <option value="Premium Access" className="bg-[#0A0A0C] text-[#F5F2EE]">Premium Access</option>
-                        <option value="Refund Request" className="bg-[#0A0A0C] text-[#F5F2EE]">Refund Request</option>
-                        <option value="Privacy Request" className="bg-[#0A0A0C] text-[#F5F2EE]">Privacy Request</option>
-                        <option value="Other" className="bg-[#0A0A0C] text-[#F5F2EE]">Other</option>
+                        <option value="General Inquiry">{language === 'hi' ? 'सामान्य प्रश्न' : 'General Inquiry'}</option>
+                        <option value="Technical Support">{language === 'hi' ? 'तकनीकी सहायता' : 'Technical Support'}</option>
+                        <option value="Payment Issue">{language === 'hi' ? 'भुगतान संबंधी समस्या' : 'Payment Issue'}</option>
+                        <option value="Premium Access">{language === 'hi' ? 'प्रीमियम एक्सेस' : 'Premium Access'}</option>
+                        <option value="Refund Request">{language === 'hi' ? 'रिफंड अनुरोध' : 'Refund Request'}</option>
+                        <option value="Privacy Request">{language === 'hi' ? 'गोपनीयता अनुरोध' : 'Privacy Request'}</option>
+                        <option value="Other">{language === 'hi' ? 'अन्य' : 'Other'}</option>
                       </select>
                     </div>
 
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-txnid" className="font-bold text-[#F5F2EE]">
-                        Transaction ID <span className="text-[#77736F] font-normal">(Optional)</span>
+                      <label htmlFor="contact-txnid" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                        {language === 'hi' ? 'ट्रांजेक्शन आई डी' : 'Transaction ID'} <span className="text-slate-400 dark:text-[#77736F] font-normal">({language === 'hi' ? 'वैकल्पिक' : 'Optional'})</span>
                       </label>
                       <input
                         id="contact-txnid"
@@ -294,14 +296,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         value={formData.transactionId}
                         onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
                         placeholder="e.g. PayU / Google Play Order ID"
-                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-[#F5F2EE]"
+                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="contact-message" className="font-bold text-[#F5F2EE]">
-                      Message / Issue Description <span className="text-[#E03A3E]">*</span>
+                    <label htmlFor="contact-message" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                      {t.contactPage.messageLabel} <span className="text-[#E03A3E]">*</span>
                     </label>
                     <textarea
                       id="contact-message"
@@ -309,8 +311,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Please provide details regarding your query..."
-                      className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-[#F5F2EE] resize-y"
+                      placeholder={language === 'hi' ? 'कृपया अपने प्रश्न के बारे में विवरण प्रदान करें...' : 'Please provide details regarding your query...'}
+                      className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE] resize-y"
                     />
                   </div>
 
@@ -318,14 +320,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     type="submit"
                     variant="primary"
                     disabled={isSubmitting}
-                    className="w-full py-3.5 text-xs font-bold"
+                    className="w-full py-3.5 text-xs font-bold whitespace-nowrap"
                   >
-                    <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    <span>{isSubmitting ? 'Processing...' : 'Submit Support Request'}</span>
+                    <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                    <span className="whitespace-nowrap">{isSubmitting ? (language === 'hi' ? 'प्रसंस्करण...' : 'Processing...') : t.contactPage.sendButton}</span>
                   </GlowingButton>
 
-                  <p className="text-[11px] text-[#77736F] text-center pt-1">
-                    Inquiries are handled in accordance with our Privacy Policy.
+                  <p className="text-[11px] text-slate-500 dark:text-[#77736F] text-center pt-1">
+                    {language === 'hi' ? 'पूछताछ हमारी गोपनीयता नीति के अनुसार संभाली जाती है।' : 'Inquiries are handled in accordance with our Privacy Policy.'}
                   </p>
 
                 </motion.form>

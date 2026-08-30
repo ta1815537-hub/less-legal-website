@@ -272,59 +272,201 @@
   box-shadow: 0 14px 34px -3px rgba(216, 189, 130, 0.5);
 }
 
-/* Text Gradients */
+/* Animated Shimmering Flowing Text Gradients */
+@keyframes text-gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .text-gradient-crimson-gold {
-  background: linear-gradient(135deg, #0F172A 20%, #C21F2F 60%, #B8860B 100%);
+  background: linear-gradient(
+    270deg,
+    #0F172A 0%,
+    #C21F2F 25%,
+    #E03A3E 50%,
+    #B8860B 75%,
+    #C21F2F 100%
+  );
+  background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: text-gradient-flow 4.5s ease-in-out infinite;
 }
 
 .dark .text-gradient-crimson-gold {
-  background: linear-gradient(135deg, #F5F2EE 20%, #E03A3E 60%, #D8BD82 100%);
+  background: linear-gradient(
+    270deg,
+    #F5F2EE 0%,
+    #E03A3E 25%,
+    #D8BD82 50%,
+    #FFF8E7 75%,
+    #E03A3E 100%
+  );
+  background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: text-gradient-flow 4.5s ease-in-out infinite;
 }
 
 .text-gradient-gold {
-  background: linear-gradient(135deg, #0F172A 0%, #B8860B 60%, #9E7D3B 100%);
+  background: linear-gradient(
+    270deg,
+    #0F172A 0%,
+    #B8860B 35%,
+    #D8BD82 70%,
+    #B8860B 100%
+  );
+  background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: text-gradient-flow 5.5s ease-in-out infinite;
 }
 
 .dark .text-gradient-gold {
-  background: linear-gradient(135deg, #F5F2EE 0%, #D8BD82 50%, #C7A96B 100%);
+  background: linear-gradient(
+    270deg,
+    #F5F2EE 0%,
+    #D8BD82 35%,
+    #FFF8E7 70%,
+    #D8BD82 100%
+  );
+  background-size: 250% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: text-gradient-flow 5.5s ease-in-out infinite;
 }
 
-/* Ambient Pulsing Glowing Borders */
-@keyframes crimson-border-glow {
+/* Continuous Shining Beam Effect over Buttons & Cards - Smooth Left-to-Right Wipe */
+@keyframes continuous-shine-sweep {
+  0% {
+    transform: translate3d(-180%, 0, 0) skewX(-20deg);
+  }
+  100% {
+    transform: translate3d(280%, 0, 0) skewX(-20deg);
+  }
+}
+
+.shine-sweep-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-sweep-overlay::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.1) 80%,
+    transparent 100%
+  );
+  transform: translate3d(-180%, 0, 0) skewX(-20deg);
+  animation: continuous-shine-sweep 2.8s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+  will-change: transform;
+}
+
+/* Static, Clean Button Glows without repaint thrashing */
+.btn-crimson {
+  box-shadow: 0 6px 20px -2px rgba(194, 31, 47, 0.35);
+}
+
+.btn-gold {
+  box-shadow: 0 6px 20px -2px rgba(184, 134, 11, 0.3);
+}
+
+/* Lightweight Smoke Background Pulses - GPU Accelerated (Opacity Only, No Border Radius Morph) */
+@keyframes smoke-pulse-a {
   0%, 100% {
-    box-shadow: 0 0 25px -3px rgba(194, 31, 47, 0.3), 0 10px 30px -5px rgba(139, 0, 0, 0.15);
-    border-color: rgba(194, 31, 47, 0.5);
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    box-shadow: 0 0 38px 2px rgba(184, 134, 11, 0.35), 0 12px 36px -4px rgba(194, 31, 47, 0.25);
-    border-color: rgba(184, 134, 11, 0.6);
+    opacity: 0.75;
+    transform: translate3d(20px, -20px, 0) scale(1.08);
   }
 }
 
-.glow-crimson-gold {
-  animation: crimson-border-glow 6s infinite ease-in-out;
-}
-
-/* Floating Animations */
-@keyframes float-ambient {
+@keyframes smoke-pulse-b {
   0%, 100% {
-    transform: translateY(0px) rotate(0deg);
+    opacity: 0.5;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translateY(-12px) rotate(1deg);
+    opacity: 0.7;
+    transform: translate3d(-20px, 15px, 0) scale(1.06);
   }
 }
 
-.animate-float-ambient {
-  animation: float-ambient 8s ease-in-out infinite;
+.smoke-cloud-1 {
+  animation: smoke-pulse-a 14s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.smoke-cloud-2 {
+  animation: smoke-pulse-b 18s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+/* Continuous Rotating Animated Gradient Border for Founder Frame */
+@keyframes rotating-border-glow {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 20px rgba(194, 31, 47, 0.5), 0 0 40px rgba(194, 31, 47, 0.25);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 0 30px rgba(216, 189, 130, 0.75), 0 0 50px rgba(216, 189, 130, 0.35);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 0 20px rgba(194, 31, 47, 0.5), 0 0 40px rgba(194, 31, 47, 0.25);
+  }
+}
+
+.animated-founder-border {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 3.5px;
+  background: linear-gradient(
+    270deg,
+    #C21F2F 0%,
+    #E03A3E 25%,
+    #D8BD82 50%,
+    #FFD700 75%,
+    #C21F2F 100%
+  );
+  background-size: 300% 300%;
+  animation: rotating-border-glow 4s ease-in-out infinite;
+}
+
+/* Active Click & Hold Micro Interaction Feedback */
+.active-click-scale {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+}
+.active-click-scale:active {
+  transform: scale(0.94) translateY(1px) !important;
+  filter: brightness(1.15);
+}
+
+/* Single line text safety for badges & pills */
+.badge-one-line {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
 }
 
 /* Reduced Motion Override */
@@ -335,7 +477,7 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .glow-crimson-gold, .animate-float-ambient {
+  .glow-crimson-gold, .animate-float-ambient, .text-gradient-crimson-gold, .text-gradient-gold, .btn-crimson, .btn-gold, .smoke-cloud-1, .smoke-cloud-2, .shine-sweep-overlay::before {
     animation: none !important;
   }
 }

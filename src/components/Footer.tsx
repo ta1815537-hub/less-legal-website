@@ -5,12 +5,14 @@ import { ShieldCheck, Mail, Phone, MapPin, ArrowUpRight, Lock, Code } from 'luci
 import { LTLogo } from './LTLogo';
 import { ScrollReveal } from './MotionWrappers';
 import { motion } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FooterProps {
   onNavigate: (route: PageRoute) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
   const hasEmail = Boolean(SITE_CONFIG.supportEmail && SITE_CONFIG.supportEmail.trim() !== "");
   const hasPhone = Boolean(SITE_CONFIG.supportPhone && SITE_CONFIG.supportPhone.trim() !== "");
   const hasAddress = Boolean(SITE_CONFIG.businessAddress && SITE_CONFIG.businessAddress.trim() !== "");
@@ -38,7 +40,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   {SITE_CONFIG.companyName || SITE_CONFIG.appName}
                 </span>
                 <span className="ml-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 dark:bg-[#D8BD82]/15 text-amber-800 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/30">
-                  Product Studio
+                  {t.footer.productStudio}
                 </span>
               </div>
             </motion.div>
@@ -53,11 +55,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="pt-2 flex flex-wrap gap-2 text-xs">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 shadow-2xs">
                 <Code className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
-                <span>Independent Digital Products</span>
+                <span>{t.footer.independentProducts}</span>
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 shadow-2xs">
                 <Lock className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82]" />
-                <span>Privacy Conscious</span>
+                <span>{t.footer.privacyConscious}</span>
               </span>
             </div>
           </div>
@@ -65,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 2: Navigation */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-[#F5F2EE]">
-              Navigation
+              {t.footer.navHeader}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -74,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('home')}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
-                  <span>Home</span>
+                  <span>{t.nav.home}</span>
                 </button>
               </li>
               <li>
@@ -83,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('about')}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
-                  <span>About Less Legal</span>
+                  <span>{t.footer.aboutLessLegal}</span>
                 </button>
               </li>
               <li>
@@ -92,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('founder')}
                   className="text-amber-800 dark:text-[#D8BD82] hover:text-[#C21F2F] dark:hover:text-[#F5F2EE] font-semibold transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
-                  <span>Founder (Anurag Gurauli)</span>
+                  <span>{t.footer.founderLabel}</span>
                 </button>
               </li>
               <li>
@@ -101,7 +103,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('features')}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
-                  <span>App Features</span>
+                  <span>{t.footer.appFeatures}</span>
                 </button>
               </li>
               <li>
@@ -110,7 +112,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('premium')}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-amber-700 dark:hover:text-[#D8BD82] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
-                  <span>Premium Plans</span>
+                  <span>{t.footer.premiumPlans}</span>
                 </button>
               </li>
               <li>
@@ -119,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('download')}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
-                  <span>Download App</span>
+                  <span>{t.footer.downloadApp}</span>
                 </button>
               </li>
               <li>
@@ -128,7 +130,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('contact')}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
-                  <span>Contact</span>
+                  <span>{t.footer.contactSupport}</span>
                 </button>
               </li>
             </ul>
@@ -137,7 +139,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 3: Legal & Merchant Policies */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82]">
-              Legal & Policies
+              {t.footer.legalHeader}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -146,7 +148,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('privacy')}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline">Privacy Policy</span>
+                  <span className="group-hover:underline">{t.footer.privacyPolicy}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -156,7 +158,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('terms')}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline">Terms & Conditions</span>
+                  <span className="group-hover:underline">{t.footer.termsConditions}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -166,7 +168,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('refund')}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline">Refund & Cancellation</span>
+                  <span className="group-hover:underline">{t.footer.refundCancellation}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -176,7 +178,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('disclaimer')}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline">Legal Disclaimer</span>
+                  <span className="group-hover:underline">{t.footer.legalDisclaimer}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -186,11 +188,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 4: Support & Contact */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-[#F5F2EE]">
-              Support & Contact
+              {t.footer.supportHeader}
             </h3>
             <div className="space-y-2.5 text-xs text-slate-600 dark:text-[#B8B3AF]">
               <p>
-                Official support is available for all {SITE_CONFIG.companyName} products.
+                {t.footer.supportAvailable}
               </p>
               
               {hasEmail && (
@@ -225,7 +227,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-white/5 hover:bg-slate-200/60 dark:hover:bg-white/10 text-amber-800 dark:text-[#D8BD82] text-xs font-medium border border-amber-600/30 dark:border-[#D8BD82]/30 transition-colors cursor-pointer shadow-2xs"
                 >
                   <Mail className="w-3.5 h-3.5" />
-                  <span>Contact Support Page</span>
+                  <span>{t.footer.contactSupport}</span>
                 </button>
               </div>
             </div>
@@ -239,27 +241,32 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="flex items-start gap-2.5">
               <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-slate-900 dark:text-[#F5F2EE]">Independent Application Disclaimer:</strong> Less Legal is an independent software application and is not affiliated with, authorized, maintained, sponsored or endorsed by the Government of India, courts, or any state judicial department.
+                <strong className="text-slate-900 dark:text-[#F5F2EE]">{t.footer.disclaimerTitle}</strong> {t.footer.disclaimerText}
               </div>
             </div>
             <button
               onClick={() => onNavigate('disclaimer')}
               className="text-[#C21F2F] dark:text-[#E03A3E] hover:text-slate-900 dark:hover:text-[#F5F2EE] whitespace-nowrap font-medium underline shrink-0 cursor-pointer"
             >
-              Read Full Disclaimer
+              {t.footer.readFullDisclaimer}
             </button>
           </div>
         </ScrollReveal>
 
         {/* Bottom copyright & details */}
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-[#77736F]">
-          <p>
-            © {new Date().getFullYear()} {SITE_CONFIG.companyName || SITE_CONFIG.appName}. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>Platform: Web & Android</span>
+          <div className="space-y-1 text-center md:text-left">
+            <p className="whitespace-nowrap badge-one-line">
+              © {new Date().getFullYear()} {SITE_CONFIG.companyName || SITE_CONFIG.appName}. {t.footer.rightsReserved}
+            </p>
+            <p className="text-[10px] sm:text-xs font-bold text-amber-800 dark:text-[#D8BD82] tracking-wide whitespace-nowrap badge-one-line">
+              अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
+            </p>
+          </div>
+          <div className="flex items-center gap-4 text-[11px] whitespace-nowrap badge-one-line">
+            <span>{t.footer.platformInfo}</span>
             <span>•</span>
-            <span>Continuously improving</span>
+            <span>{t.footer.improvingInfo}</span>
           </div>
         </div>
 

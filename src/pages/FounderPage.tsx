@@ -48,53 +48,55 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
             
-            {/* LEFT: Founder Photograph Container */}
+            {/* LEFT: Founder Photograph Container with Animated Border */}
             <div className="lg:col-span-5 flex justify-center">
               <motion.div 
                 whileHover={{ scale: 1.02, y: -4 }}
+                whileTap={{ scale: 0.96 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="relative group w-full max-w-sm"
               >
-                {/* Outer Glow & Gradient Frame */}
-                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-[#C21F2F] via-[#D8BD82] to-[#C21F2F] opacity-40 group-hover:opacity-80 blur-md transition duration-500" />
-                
-                <div className="relative rounded-2xl overflow-hidden bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-2xl">
+                {/* Outer Flowing Animated Rotating Gradient Border */}
+                <div className="animated-founder-border shadow-2xl">
                   
-                  {!imgError ? (
-                    <div className="relative overflow-hidden bg-[#0F172A] p-2 flex justify-center items-center">
-                      <img 
-                        src="/images/founder.jpg" 
-                        alt="Anurag Gurauli — Founder of Less Technologies" 
-                        onError={() => setImgError(true)}
-                        loading="eager"
-                        className="w-full h-auto max-h-[540px] object-contain rounded-xl transform group-hover:scale-[1.01] transition-transform duration-500 ease-out shadow-lg"
-                      />
-                      {/* Subtle Light Sweep overlay on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl" />
-                    </div>
-                  ) : (
-                    /* High-end Styled SVG Placeholder Fallback if photograph file isn't found */
-                    <div className="aspect-[4/5] bg-gradient-to-b from-[#0F172A] via-[#080808] to-[#1A0A0D] flex flex-col items-center justify-center p-6 text-center space-y-4">
-                      <div className="w-20 h-20 rounded-full bg-[#C21F2F]/20 border-2 border-[#D8BD82] flex items-center justify-center shadow-lg">
-                        <Scale className="w-10 h-10 text-[#D8BD82]" />
+                  <div className="relative rounded-2xl overflow-hidden bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40">
+                    
+                    {!imgError ? (
+                      <div className="relative overflow-hidden bg-[#0F172A] p-2 flex justify-center items-center">
+                        <img 
+                          src="/images/founder.jpg" 
+                          alt="Anurag Gurauli — Founder of Less Technologies" 
+                          onError={() => setImgError(true)}
+                          loading="eager"
+                          className="w-full h-auto max-h-[540px] object-contain rounded-xl transform group-hover:scale-[1.01] transition-transform duration-500 ease-out shadow-lg"
+                        />
+                        {/* Light Sweep overlay on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl" />
                       </div>
-                      <div>
-                        <div className="text-xl font-extrabold text-[#F5F2EE] tracking-wide">{t.founder.name}</div>
-                        <div className="text-xs font-semibold text-[#D8BD82] uppercase tracking-wider mt-1">{t.founder.role}</div>
-                        <div className="text-[11px] text-[#B8B3AF] mt-1">Allahabad High Court</div>
+                    ) : (
+                      /* Styled Fallback */
+                      <div className="aspect-[4/5] bg-gradient-to-b from-[#0F172A] via-[#080808] to-[#1A0A0D] flex flex-col items-center justify-center p-6 text-center space-y-4">
+                        <div className="w-20 h-20 rounded-full bg-[#C21F2F]/20 border-2 border-[#D8BD82] flex items-center justify-center shadow-lg">
+                          <Scale className="w-10 h-10 text-[#D8BD82]" />
+                        </div>
+                        <div>
+                          <div className="text-xl font-extrabold text-[#F5F2EE] tracking-wide whitespace-nowrap badge-one-line">{t.founder.name}</div>
+                          <div className="text-xs font-semibold text-[#D8BD82] uppercase tracking-wider mt-1 whitespace-nowrap badge-one-line">{t.founder.role}</div>
+                          <div className="text-[11px] text-[#B8B3AF] mt-1 whitespace-nowrap badge-one-line">Allahabad High Court</div>
+                        </div>
+                        <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#B8BD82] whitespace-nowrap badge-one-line">
+                          Less Technologies
+                        </div>
                       </div>
-                      <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#B8BD82]">
-                        Less Technologies
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Caption Bar */}
-                  <div className="p-3.5 bg-slate-900/90 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-700 dark:border-white/10 flex items-center justify-between text-xs">
-                    <span className="font-bold text-slate-100 dark:text-[#F5F2EE]">{t.founder.name}</span>
-                    <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-[#D8BD82] font-semibold text-[11px]">{t.founder.role}</span>
+                    {/* Caption Bar */}
+                    <div className="p-3.5 bg-slate-900/90 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-700 dark:border-white/10 flex items-center justify-between text-xs">
+                      <span className="font-bold text-slate-100 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.founder.name}</span>
+                      <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-[#D8BD82] font-semibold text-[11px] whitespace-nowrap badge-one-line">{t.founder.role}</span>
+                    </div>
+
                   </div>
-
                 </div>
               </motion.div>
             </div>

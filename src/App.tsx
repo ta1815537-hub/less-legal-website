@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from './types';
 import { AnimatePresence } from 'motion/react';
-import { PageTransition } from './components/MotionWrappers';
+import { PageTransition, SmokeBackground } from './components/MotionWrappers';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
@@ -16,6 +16,7 @@ import { RefundPolicyPage } from './pages/RefundPolicyPage';
 import { DisclaimerPage } from './pages/DisclaimerPage';
 import { DownloadPage } from './pages/DownloadPage';
 import { LanguageProvider } from './context/LanguageContext';
+import { FloatingLanguageButton } from './components/FloatingLanguageButton';
 
 // Helper to determine route from current window path or hash
 function getRouteFromLocation(): PageRoute {
@@ -81,12 +82,15 @@ export default function App() {
       }
     }
     
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
   return (
     <LanguageProvider>
-      <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#080808] text-slate-900 dark:text-[#F5F2EE] font-sans selection:bg-[#C21F2F] selection:text-white transition-colors duration-300">
+      <div className="min-h-screen flex flex-col relative bg-slate-50 dark:bg-[#080808] text-slate-900 dark:text-[#F5F2EE] font-sans selection:bg-[#C21F2F] selection:text-white transition-colors duration-300 overflow-x-hidden">
+        
+        {/* Animated Smoke Background */}
+        <SmokeBackground />
         
         {/* Navigation Header */}
         <Navbar currentRoute={currentRoute} onNavigate={navigateTo} />
@@ -112,6 +116,9 @@ export default function App() {
 
         {/* Footer with Mandatory Direct Policy Links */}
         <Footer onNavigate={navigateTo} />
+
+        {/* Floating Language Switcher Button (Bottom Right) */}
+        <FloatingLanguageButton />
 
       </div>
     </LanguageProvider>

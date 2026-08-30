@@ -30,6 +30,35 @@ export interface TranslationSchema {
     termsOfService: string;
     refundPolicy: string;
     disclaimer: string;
+    verifiedNotice: string;
+    close: string;
+  };
+
+  // Footer
+  footer: {
+    productStudio: string;
+    independentProducts: string;
+    privacyConscious: string;
+    navHeader: string;
+    legalHeader: string;
+    supportHeader: string;
+    aboutLessLegal: string;
+    founderLabel: string;
+    appFeatures: string;
+    premiumPlans: string;
+    downloadApp: string;
+    contactSupport: string;
+    privacyPolicy: string;
+    termsConditions: string;
+    refundCancellation: string;
+    legalDisclaimer: string;
+    supportAvailable: string;
+    disclaimerTitle: string;
+    disclaimerText: string;
+    readFullDisclaimer: string;
+    rightsReserved: string;
+    platformInfo: string;
+    improvingInfo: string;
   };
 
   // Founder Section
@@ -99,12 +128,70 @@ export interface TranslationSchema {
     heroTitle: string;
     heroSubtitle: string;
     ctaDownload: string;
+    ctaDemo: string;
     ctaFeatures: string;
+    trustFastEngine: string;
+    trustPrivacy: string;
+    trustToolsCount: string;
+    trustAndroidReady: string;
+    
+    // Preview Simulator
+    simBadge: string;
+    simTitle: string;
+    simSub: string;
+    simDiary: string;
+    simConverter: string;
+    simPdf: string;
+    simWhatsapp: string;
+    simInterfaceLabel: string;
+    simOnDeviceBadge: string;
+    simSandboxSub: string;
+    simEncryptedLabel: string;
+    simScheduleTitle: string;
+    simActiveCases: string;
+    simArgumentsStage: string;
+    simEvidenceStage: string;
+    simPendingTasks: string;
+    simAutoSavedNotes: string;
+    simOnDeviceDb: string;
+    
+    // Converter Sim
+    simTypeQuantity: string;
+    simBaseSqFt: string;
+    simPdfProcessingTitle: string;
+    simPdfMergeTitle: string;
+    simPdfMergeDesc: string;
+    simPdfEncryptTitle: string;
+    simPdfEncryptDesc: string;
+    simPdfTransferTitle: string;
+    simPdfTransferDesc: string;
+    simWhatsappTitle: string;
+    simWhatsappSub: string;
+    simWhatsappBtn: string;
+
+    // Features Section
+    featureSectionBadge: string;
+    featureSectionTitle: string;
+    featureSectionSub: string;
+
+    // Ecosystem
+    ecosystemBadge: string;
     ecosystemTitle: string;
     ecosystemSub: string;
+
+    // Founder Preview
     founderPreviewBadge: string;
     founderPreviewTitle: string;
     founderPreviewText: string;
+
+    // FAQ
+    faqBadge: string;
+    faqTitle: string;
+    faqSub: string;
+    faqs: {
+      q: string;
+      a: string;
+    }[];
   };
 
   // About Page
@@ -140,6 +227,14 @@ export interface TranslationSchema {
     subtitle: string;
     searchPlaceholder: string;
     allCategories: string;
+    categories: {
+      all: string;
+      pdfFiles: string;
+      legalUtilities: string;
+      calculatorsConverters: string;
+      learningReference: string;
+    };
+    noResults: string;
   };
 
   // Premium Page
@@ -147,10 +242,25 @@ export interface TranslationSchema {
     badge: string;
     title: string;
     subtitle: string;
-    plan90Days: string;
-    plan1Year: string;
-    oneTimePayment: string;
-    bestValue: string;
+    transparentNoticeTitle: string;
+    notice1Title: string;
+    notice1Text: string;
+    notice2Title: string;
+    notice2Text: string;
+    notice3Title: string;
+    notice3Text: string;
+    plan90DaysTitle: string;
+    plan90DaysPrice: string;
+    plan90DaysValidity: string;
+    plan90DaysTagline: string;
+    plan1YearTitle: string;
+    plan1YearPrice: string;
+    plan1YearValidity: string;
+    plan1YearTagline: string;
+    bestValueBadge: string;
+    oneTimePaymentLabel: string;
+    features90Days: string[];
+    features1Year: string[];
   };
 
   // Download Page
@@ -160,6 +270,13 @@ export interface TranslationSchema {
     subtitle: string;
     directApk: string;
     playStore: string;
+    versionInfo: string;
+    reqTitle: string;
+    reqAndroidVer: string;
+    reqDeviceType: string;
+    reqStorage: string;
+    permissionTitle: string;
+    permissions: string[];
   };
 
   // Contact Page
@@ -172,6 +289,9 @@ export interface TranslationSchema {
     subjectLabel: string;
     messageLabel: string;
     sendButton: string;
+    successMessage: string;
+    supportInfoTitle: string;
+    supportInfoSub: string;
   };
 }
 
@@ -202,7 +322,34 @@ export const translations: Record<Language, TranslationSchema> = {
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
       refundPolicy: "Refund Policy",
-      disclaimer: "Disclaimer"
+      disclaimer: "Disclaimer",
+      verifiedNotice: "Verified Application Feature",
+      close: "Close"
+    },
+    footer: {
+      productStudio: "Product Studio",
+      independentProducts: "Independent Digital Products",
+      privacyConscious: "Privacy Conscious",
+      navHeader: "Navigation",
+      legalHeader: "Legal & Policies",
+      supportHeader: "Support & Contact",
+      aboutLessLegal: "About Less Legal",
+      founderLabel: "Founder (Anurag Gurauli)",
+      appFeatures: "App Features",
+      premiumPlans: "Premium Plans",
+      downloadApp: "Download App",
+      contactSupport: "Contact",
+      privacyPolicy: "Privacy Policy",
+      termsConditions: "Terms & Conditions",
+      refundCancellation: "Refund & Cancellation",
+      legalDisclaimer: "Legal Disclaimer",
+      supportAvailable: "Official support is available for all Less Technologies products.",
+      disclaimerTitle: "Independent Application Disclaimer:",
+      disclaimerText: "Less Legal is an independent software application and is not affiliated with, authorized, maintained, sponsored or endorsed by the Government of India, courts, or any state judicial department.",
+      readFullDisclaimer: "Read Full Disclaimer",
+      rightsReserved: "All rights reserved.",
+      platformInfo: "Platform: Web & Android",
+      improvingInfo: "Continuously improving"
     },
     founder: {
       badge: "FOUNDER & CREATOR",
@@ -230,7 +377,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "More accessibility."
       ],
       whyP3: "Less Legal is designed with advocates, law students and citizens in mind.",
-      whyP4: "It brings legal knowledge and practical digital utilities together in one place, with a strong focus on simplicity, accessibility and offline usefulness.",
+      whyP4: "It brings legal knowledge and practical digital utilities together in one place, with a strong focus on simplicity, accessibility and practical usefulness.",
       disclaimerNote: "Less Legal is an informational and utility application. It does not replace a lawyer, court, legal advice, or professional legal representation.",
 
       visionTitle: "My Vision",
@@ -270,13 +417,83 @@ export const translations: Record<Language, TranslationSchema> = {
       heroBadge: "Flagship Product Studio",
       heroTitle: "Legal Knowledge & Digital Utilities",
       heroSubtitle: "Bringing essential statutory reference, PDF workspace, calculators, and daily tools into one unified Android application.",
-      ctaDownload: "Download Android App",
+      ctaDownload: "Get App for Android",
+      ctaDemo: "Try Live Interactive Demo",
       ctaFeatures: "Explore All Tools",
-      ecosystemTitle: "Digital Product Ecosystem",
-      ecosystemSub: "Built by Less Technologies for advocates, law students, and citizens.",
+      trustFastEngine: "Fast On-Device Engine",
+      trustPrivacy: "On-Device Privacy",
+      trustToolsCount: "46+ Integrated Tools",
+      trustAndroidReady: "Android 7.0 to 15 Ready",
+      
+      simBadge: "Interactive App Preview",
+      simTitle: "Experience the Less Legal Workspace",
+      simSub: "Interact with actual live utilities integrated into our Android application.",
+      simDiary: "Case Diary & Planner",
+      simConverter: "Live Area Converter",
+      simPdf: "PDF Engine & Share",
+      simWhatsapp: "Direct WhatsApp",
+      simInterfaceLabel: "Less Legal Interface",
+      simOnDeviceBadge: "On-Device",
+      simSandboxSub: "Android Application Sandbox",
+      simEncryptedLabel: "On-Device Encrypted",
+      simScheduleTitle: "Today's Hearing Schedule",
+      simActiveCases: "3 Active Cases",
+      simArgumentsStage: "Arguments",
+      simEvidenceStage: "Evidence Stage",
+      simPendingTasks: "Pending Tasks",
+      simAutoSavedNotes: "Auto-Saved Notes",
+      simOnDeviceDb: "On-Device Database",
+
+      simTypeQuantity: "Type Quantity & Source Unit:",
+      simBaseSqFt: "Calculated Area Base",
+      simPdfProcessingTitle: "PDF Document Processing & Local Transfer",
+      simPdfMergeTitle: "Merge & Split PDFs",
+      simPdfMergeDesc: "Combine multiple court filings into a single indexed PDF.",
+      simPdfEncryptTitle: "Encrypt & Password",
+      simPdfEncryptDesc: "Add 256-bit passwords to secure client documents.",
+      simPdfTransferTitle: "LessShare Transfer",
+      simPdfTransferDesc: "Send files peer-to-peer via direct local Wi-Fi.",
+      simWhatsappTitle: "Direct WhatsApp Utility",
+      simWhatsappSub: "Quickly send WhatsApp legal memos or notice drafts to clients without saving contacts.",
+      simWhatsappBtn: "Chat Now",
+
+      featureSectionBadge: "COMPLETE UTILITY SUITE",
+      featureSectionTitle: "Explore 46+ Integrated Utilities",
+      featureSectionSub: "From instant PDF merging to regional land converters, examine all tools available inside the app.",
+
+      ecosystemBadge: "DIGITAL ECOSYSTEM",
+      ecosystemTitle: "Products by Less Technologies",
+      ecosystemSub: "Built with a core focus on simplicity, utility, and user privacy.",
+
       founderPreviewBadge: "MEET THE FOUNDER",
       founderPreviewTitle: "Created by an Advocate for Real-World Utility",
-      founderPreviewText: "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Technologies to simplify legal access and everyday digital tasks."
+      founderPreviewText: "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Technologies to simplify legal access and everyday digital tasks.",
+
+      faqBadge: "FREQUENTLY ASKED QUESTIONS",
+      faqTitle: "Got Questions? We Have Factual Answers",
+      faqSub: "Transparent information regarding our software, privacy model, and passes.",
+      faqs: [
+        {
+          q: "Is Less Legal affiliated with the Government of India or any Court?",
+          a: "No. Less Legal is an entirely independent, private software utility application developed by Less Technologies. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
+        },
+        {
+          q: "Does the app require internet to access Bare Acts and Calculators?",
+          a: "No! All core 46+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
+        },
+        {
+          q: "How does the 'File Transfer (LessShare)' feature work?",
+          a: "LessShare establishes a direct device-to-device local Wi-Fi / Hotspot connection to send heavy PDFs and legal documents without uploading anything to cloud servers. It provides instant, confidential local transfers."
+        },
+        {
+          q: "Are the Premium Passes auto-renewing subscriptions?",
+          a: "Never. All Premium Passes (3 Months for ₹59 or 1 Year for ₹179) are strict one-time purchases with fixed validity days. We never auto-debit your bank account or store your credit card details."
+        },
+        {
+          q: "What devices are supported by Less Legal?",
+          a: "Less Legal is fully optimized for Android smartphones and tablets running Android 7.0 (Nougat) and higher, supporting all modern screen resolutions and dark mode aesthetics."
+        }
+      ]
     },
     about: {
       badge: "About Less Legal",
@@ -288,7 +505,7 @@ export const translations: Record<Language, TranslationSchema> = {
       whatIsTitle: "What is Less Legal?",
       whatIsDesc: "Less Legal bridges the gap between complex legal workflows and everyday digital convenience, uniting statutory lookup, PDF tools, notes, and court fee calculators into a unified Android app.",
       whatIsItem1: "Native Android performance and layout",
-      whatIsItem2: "Optimized for low-bandwidth and offline usability",
+      whatIsItem2: "Optimized for speed and smooth usability",
       privacyTitle: "Privacy & Local Processing",
       privacyDesc: "Legal documents are sensitive. Less Legal is engineered with an on-device architecture so PDF merging, splitting, and notes are processed directly on your Android hardware.",
       privacyItem1: "No unauthorized cloud uploading of private PDFs",
@@ -307,35 +524,93 @@ export const translations: Record<Language, TranslationSchema> = {
       title: "Tools & Utilities Built for Practice",
       subtitle: "Explore the verified features available inside the Less Legal Android application.",
       searchPlaceholder: "Search features, calculators, PDF tools...",
-      allCategories: "All Categories"
+      allCategories: "All Categories",
+      categories: {
+        all: "All",
+        pdfFiles: "PDF & Files",
+        legalUtilities: "Legal Utilities",
+        calculatorsConverters: "Calculators & Converters",
+        learningReference: "Learning & Reference"
+      },
+      noResults: "No features found matching your search. Try adjusting your query."
     },
     premiumPage: {
       badge: "AD-FREE PASSES",
       title: "Simple & Transparent Pricing",
       subtitle: "Enjoy an uninterrupted, completely ad-free experience across all tools and calculators.",
-      plan90Days: "90 Days Pass",
-      plan1Year: "1 Year Pass",
-      oneTimePayment: "/ one-time payment",
-      bestValue: "Best Value (365 Days)"
+      transparentNoticeTitle: "Transparent Billing Notice & Consumer Terms",
+      notice1Title: "Fixed Validity Period",
+      notice1Text: "Premium passes grant ad-free access strictly for the duration purchased (90 days for ₹59 or 365 days for ₹179).",
+      notice2Title: "No Auto-Renewals",
+      notice2Text: "We do NOT store payment cards or initiate auto-debit subscriptions. When your pass expires, it reverts to standard ad-supported access.",
+      notice3Title: "In-App Activation",
+      notice3Text: "Purchases are initiated directly inside the Less Legal Android app via certified payment gateways.",
+      plan90DaysTitle: "3 Months Plan",
+      plan90DaysPrice: "₹59",
+      plan90DaysValidity: "90 Days Validity",
+      plan90DaysTagline: "Ad-free experience for 90 days across all utility tools",
+      plan1YearTitle: "1 Year Plan",
+      plan1YearPrice: "₹179",
+      plan1YearValidity: "365 Days Validity",
+      plan1YearTagline: "Best value ad-free experience for 365 full days",
+      bestValueBadge: "BEST VALUE (365 DAYS)",
+      oneTimePaymentLabel: "/ one-time payment",
+      features90Days: [
+        "Ad-free interface for 90 continuous days",
+        "PDF Tools (Merge, Split, Convert, Lock)",
+        "Local PDF Reader with document bookmarking",
+        "Case Diary & hearing date tracker",
+        "Calculator Hub & Land Unit Converter",
+        "Court Fee Calculator & Legal Glossary",
+        "Quick Notes & Less Share local file transfer",
+        "Bare Acts reference library & Legal Quiz",
+        "No automatic renewal — one-time purchase completed in app"
+      ],
+      features1Year: [
+        "Ad-free interface for 365 continuous days",
+        "PDF Tools (Merge, Split, Convert, Lock)",
+        "Local PDF Reader with document bookmarking",
+        "Case Diary & hearing date tracker",
+        "Calculator Hub & Land Unit Converter",
+        "Court Fee Calculator & Legal Glossary",
+        "Quick Notes & Less Share local file transfer",
+        "Bare Acts reference library & Legal Quiz",
+        "No automatic renewal — one-time purchase completed in app"
+      ]
     },
     downloadPage: {
       badge: "OFFICIAL ANDROID APP",
       title: "Get Less Legal for Android",
       subtitle: "Download directly from Google Play Store or get the verified APK file for manual installation.",
       directApk: "Direct APK Download",
-      playStore: "Get it on Google Play"
+      playStore: "Get it on Google Play",
+      versionInfo: "Version 8.7.5 • Android 7.0+ Supported • Safe & Verified",
+      reqTitle: "System Requirements",
+      reqAndroidVer: "Android 7.0 (Nougat) or higher",
+      reqDeviceType: "Smartphones & Tablets supported",
+      reqStorage: "Requires ~25 MB storage space",
+      permissionTitle: "App Permissions & Privacy Transparency",
+      permissions: [
+        "Storage Access (only to read & edit selected PDFs locally)",
+        "Wi-Fi & Hotspot (for direct offline LessShare file transfers)",
+        "Notification (optional reminders for hearing dates in Case Diary)"
+      ]
     },
     contactPage: {
       badge: "REACH OUT TO US",
       title: "Contact & Support",
       subtitle: "Have a question, feedback, or need assistance with an ad-free pass purchase?",
-      nameLabel: "Your Name",
+      nameLabel: "Your Full Name",
       emailLabel: "Email Address",
       subjectLabel: "Subject / Inquiry Type",
       messageLabel: "Message",
-      sendButton: "Send Inquiry"
+      sendButton: "Send Support Inquiry",
+      successMessage: "Thank you! Your message has been prepared. If your mail client opened, please press Send to complete delivery.",
+      supportInfoTitle: "Official Support Contact",
+      supportInfoSub: "We are committed to providing fast and helpful assistance."
     }
   },
+
   hi: {
     nav: {
       home: "मुख्य पृष्ठ",
@@ -362,7 +637,34 @@ export const translations: Record<Language, TranslationSchema> = {
       privacyPolicy: "गोपनीयता नीति",
       termsOfService: "सेवा की शर्तें",
       refundPolicy: "रिफंड नीति",
-      disclaimer: "अस्वीकरण"
+      disclaimer: "अस्वीकरण",
+      verifiedNotice: "सत्यापित एप्लिकेशन सुविधा",
+      close: "बंद करें"
+    },
+    footer: {
+      productStudio: "प्रोडक्ट स्टूडियो",
+      independentProducts: "स्वतंत्र डिजिटल उत्पाद",
+      privacyConscious: "गोपनीयता के प्रति जागरूक",
+      navHeader: "नेविगेशन",
+      legalHeader: "कानूनी एवं नीतियाँ",
+      supportHeader: "सहायता एवं संपर्क",
+      aboutLessLegal: "Less Legal के बारे में",
+      founderLabel: "संस्थापक (अनुराग गुरौली)",
+      appFeatures: "ऐप सुविधाएँ",
+      premiumPlans: "प्रीमियम प्लान्स",
+      downloadApp: "ऐप डाउनलोड करें",
+      contactSupport: "संपर्क करें",
+      privacyPolicy: "गोपनीयता नीति",
+      termsConditions: "नियम एवं शर्तें",
+      refundCancellation: "रिफंड एवं रद्दीकरण",
+      legalDisclaimer: "कानूनी अस्वीकरण",
+      supportAvailable: "Less Technologies के सभी उत्पादों के लिए आधिकारिक सहायता उपलब्ध है।",
+      disclaimerTitle: "स्वतंत्र एप्लिकेशन घोषणा:",
+      disclaimerText: "Less Legal एक स्वतंत्र सॉफ्टवेयर एप्लिकेशन है और यह भारत सरकार, अदालतों, या किसी राज्य न्यायिक विभाग से संबद्ध, अधिकृत या अनुमोदित नहीं है।",
+      readFullDisclaimer: "पूरा अस्वीकरण पढ़ें",
+      rightsReserved: "सर्वाधिकार सुरक्षित।",
+      platformInfo: "प्लेटफ़ॉर्म: वेब और एंड्रॉइड",
+      improvingInfo: "निरंतर सुधार जारी"
     },
     founder: {
       badge: "संस्थापक एवं निर्माता",
@@ -390,7 +692,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "अधिक सुलभ तकनीक।"
       ],
       whyP3: "Less Legal को अधिवक्ताओं, विधि छात्रों और आम नागरिकों को ध्यान में रखकर विकसित किया जा रहा है।",
-      whyP4: "यह कानूनी ज्ञान और व्यावहारिक डिजिटल सुविधाओं को एक ही स्थान पर लाता है, जिसमें सादगी, सुलभता और ऑफ़लाइन उपयोगिता पर विशेष ध्यान दिया गया है।",
+      whyP4: "यह कानूनी ज्ञान और व्यावहारिक डिजिटल सुविधाओं को एक ही स्थान पर लाता है, जिसमें सादगी, सुलभता और व्यावहारिक उपयोगिता पर विशेष ध्यान दिया गया है।",
       disclaimerNote: "Less Legal एक सूचनात्मक और उपयोगिता एप्लिकेशन है। यह किसी वकील, अदालत, कानूनी सलाह या पेशेवर कानूनी प्रतिनिधित्व का विकल्प नहीं है।",
 
       visionTitle: "मेरा विज़न",
@@ -431,12 +733,82 @@ export const translations: Record<Language, TranslationSchema> = {
       heroTitle: "कानूनी ज्ञान एवं डिजिटल सुविधाएँ",
       heroSubtitle: "कानूनी संदर्भ, पीडीएफ वर्कस्पेस, कैलकुलेटर और दैनिक टूल्स को एक सहज एंड्रॉइड ऐप में उपलब्ध कराना।",
       ctaDownload: "एंड्रॉइड ऐप डाउनलोड करें",
-      ctaFeatures: "सभी सुविधाएँ देखें",
-      ecosystemTitle: "डिजिटल उत्पाद पारिस्थितिकी",
-      ecosystemSub: "Less Technologies द्वारा अधिवक्ताओं, विधि छात्रों और नागरिकों के लिए निर्मित।",
+      ctaDemo: "लाइव डेमो देखें",
+      ctaFeatures: "सभी टूल्स देखें",
+      trustFastEngine: "तेज़ ऑन-डिवाइस इंजन",
+      trustPrivacy: "पूर्ण ऑन-डिवाइस गोपनीयता",
+      trustToolsCount: "46+ एकीकृत टूल्स",
+      trustAndroidReady: "एंड्रॉइड 7.0 से 15 तैयार",
+
+      simBadge: "इंटरैक्टिव ऐप पूर्वावलोकन",
+      simTitle: "Less Legal वर्कस्पेस का अनुभव करें",
+      simSub: "हमारे एंड्रॉइड एप्लिकेशन में एकीकृत वास्तविक लाइव टूल्स का उपयोग करके देखें।",
+      simDiary: "केस डायरी एवं प्लानर",
+      simConverter: "लाइव क्षेत्रफल कनवर्टर",
+      simPdf: "पीडीएफ इंजन एवं शेयर",
+      simWhatsapp: "डायरेक्ट व्हाट्सएप",
+      simInterfaceLabel: "Less Legal इंटरफ़ेस",
+      simOnDeviceBadge: "ऑन-डिवाइस",
+      simSandboxSub: "एंड्रॉइड एप्लिकेशन सैंडबॉक्स",
+      simEncryptedLabel: "ऑन-डिवाइस एन्क्रिप्टेड",
+      simScheduleTitle: "आज का सुनवाई शेड्यूल",
+      simActiveCases: "3 सक्रिय मामले",
+      simArgumentsStage: "बहस चरण",
+      simEvidenceStage: "साक्ष्य चरण",
+      simPendingTasks: "लंबित कार्य",
+      simAutoSavedNotes: "स्वचालित सहेजे गए नोट्स",
+      simOnDeviceDb: "ऑन-डिवाइस डेटाबेस",
+
+      simTypeQuantity: "मात्रा और इकाई चुनें:",
+      simBaseSqFt: "गणना किया गया वर्ग फ़ुट",
+      simPdfProcessingTitle: "पीडीएफ दस्तावेज़ प्रोसेसिंग एवं स्थानीय ट्रांसफर",
+      simPdfMergeTitle: "पीडीएफ मर्ज और स्प्लिट",
+      simPdfMergeDesc: "कई कानूनी फ़ाइलों को एक अनुक्रमित पीडीएफ में जोड़ें।",
+      simPdfEncryptTitle: "एन्क्रिप्शन और पासवर्ड",
+      simPdfEncryptDesc: "क्लाइंट दस्तावेज़ों को सुरक्षित करने के लिए 256-बिट पासवर्ड जोड़ें।",
+      simPdfTransferTitle: "LessShare फ़ाइल ट्रांसफर",
+      simPdfTransferDesc: "डायरेक्ट वाई-फ़ाई के माध्यम से पीयर-टू-पीयर फ़ाइलें भेजें।",
+      simWhatsappTitle: "डायरेक्ट व्हाट्सएप उपयोगिता",
+      simWhatsappSub: "बिना नंबर सेव किए तुरंत व्हाट्सएप कानूनी नोटिस या संदेश भेजें।",
+      simWhatsappBtn: "चैट शुरू करें",
+
+      featureSectionBadge: "संपूर्ण उपयोगिता सूट",
+      featureSectionTitle: "46+ एकीकृत सुविधाओं का अन्वेषण करें",
+      featureSectionSub: "पीडीएफ मर्जर से लेकर क्षेत्रीय भूमि कनवर्टर तक, ऐप में उपलब्ध सभी टूल्स देखें।",
+
+      ecosystemBadge: "डिजिटल पारिस्थितिकी तंत्र",
+      ecosystemTitle: "Less Technologies के उत्पाद",
+      ecosystemSub: "सादगी, उपयोगिता और उपयोगकर्ता गोपनीयता पर विशेष ध्यान देकर निर्मित।",
+
       founderPreviewBadge: "संस्थापक से मिलें",
       founderPreviewTitle: "व्यावहारिक उपयोगिता के लिए एक अधिवक्ता द्वारा निर्मित",
-      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए Less Technologies की स्थापना की।"
+      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए Less Technologies की स्थापना की।",
+
+      faqBadge: "अक्सर पूछे जाने वाले प्रश्न",
+      faqTitle: "क्या आपके पास प्रश्न हैं? हमारे पास सटीक उत्तर हैं",
+      faqSub: "हमारे सॉफ्टवेयर, गोपनीयता मॉडल और पास से संबंधित पारदर्शी जानकारी।",
+      faqs: [
+        {
+          q: "क्या Less Legal भारत सरकार या किसी अदालत से संबद्ध है?",
+          a: "नहीं। Less Legal, Less Technologies द्वारा विकसित एक पूरी तरह से स्वतंत्र, निजी सॉफ्टवेयर उपयोगिता एप्लिकेशन है। यह किसी भी सरकारी संस्था या अदालत से संबद्ध या संचालित नहीं है। प्रदान की गई सभी संदर्भ सामग्री केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है।"
+        },
+        {
+          q: "क्या बेयर एक्ट्स और कैलकुलेटर एक्सेस करने के लिए इंटरनेट की आवश्यकता है?",
+          a: "बिल्कुल नहीं! बेयर एक्ट्स संदर्भ लाइब्रेरी, भूमि क्षेत्रफल कनवर्टर, पीडीएफ मर्जर, केस डायरी और आयु कैलकुलेटर सहित सभी 46+ मुख्य टूल्स सीधे आपके फोन पर बिना इंटरनेट के चलते हैं।"
+        },
+        {
+          q: "LessShare फ़ाइल ट्रांसफर सुविधा कैसे काम करती है?",
+          a: "LessShare सर्वर पर कुछ भी अपलोड किए बिना भारी पीडीएफ और कानूनी दस्तावेज़ भेजने के लिए डिवाइस-टू-डिवाइस स्थानीय वाई-फाई हॉटस्पॉट कनेक्शन स्थापित करता है। यह त्वरित, गोपनीय स्थानीय ट्रांसफर प्रदान करता है।"
+        },
+        {
+          q: "क्या प्रीमियम पास स्वचालित रूप से नवीनीकृत होने वाले सब्सक्रिप्शन हैं?",
+          a: "कभी नहीं। सभी प्रीमियम पास (₹59 में 3 महीने या ₹179 में 1 वर्ष) निश्चित वैधता दिनों के साथ एक बार की जाने वाली खरीदारी हैं। हम आपके बैंक खाते से कभी भी ऑटो-डेबिट नहीं करते हैं।"
+        },
+        {
+          q: "Less Legal किन उपकरणों द्वारा समर्थित है?",
+          a: "Less Legal एंड्रॉइड 7.0 (नौगट) और उच्चतर संस्करणों पर चलने वाले सभी एंड्रॉइड स्मार्टफोन और टैबलेट के लिए पूरी तरह से अनुकूलित है।"
+        }
+      ]
     },
     about: {
       badge: "Less Legal के बारे में",
@@ -448,7 +820,7 @@ export const translations: Record<Language, TranslationSchema> = {
       whatIsTitle: "Less Legal क्या है?",
       whatIsDesc: "Less Legal जटिल कानूनी वर्कफ़्लो और दैनिक डिजिटल सुविधा के बीच की दूरी को मिटाता है। यह कानूनी संदर्भों, पीडीएफ टूल्स, नोट्स और कोर्ट फीस कैलकुलेटर को एक एंड्रॉइड ऐप में जोड़ता है।",
       whatIsItem1: "नेटिव एंड्रॉइड प्रदर्शन और डिज़ाइन",
-      whatIsItem2: "कम इंटरनेट और ऑफ़लाइन उपयोगिता के लिए अनुकूलित",
+      whatIsItem2: "तीव्र गति और सहज उपयोगिता के लिए अनुकूलित",
       privacyTitle: "गोपनीयता एवं स्थानीय प्रोसेसिंग",
       privacyDesc: "कानूनी दस्तावेज़ संवेदनशील होते हैं। Less Legal आपके डिवाइस पर ही कार्य करता है: पीडीएफ मर्ज, स्प्लिट और नोट्स सीधे आपके फ़ोन में प्रोसेस होते हैं।",
       privacyItem1: "निजी पीडीएफ फाइलों का कोई सर्वर अपलोड नहीं",
@@ -465,35 +837,92 @@ export const translations: Record<Language, TranslationSchema> = {
     featuresPage: {
       badge: "सुविधा कैटलॉग",
       title: "प्रैक्टिस के लिए निर्मित टूल्स एवं सुविधाएँ",
-      subtitle: "Less Legal एंड्रॉइड ऐप में उपलब्ध सत्यापित सुविधाओं की सूची देखें।",
+      subtitle: "Less Legal एंड्रॉइड ऐप में उपलब्ध सभी सत्यापित सुविधाओं की सूची देखें।",
       searchPlaceholder: "टूल्स, कैलकुलेटर, पीडीएफ सुविधाएँ खोजें...",
-      allCategories: "सभी श्रेणियाँ"
+      allCategories: "सभी श्रेणियाँ",
+      categories: {
+        all: "सभी",
+        pdfFiles: "पीडीएफ और फाइलें",
+        legalUtilities: "कानूनी उपयोगिताएं",
+        calculatorsConverters: "कैलकुलेटर और कनवर्टर",
+        learningReference: "शिक्षा और संदर्भ"
+      },
+      noResults: "आपकी खोज से मेल खाने वाली कोई सुविधा नहीं मिली।"
     },
     premiumPage: {
       badge: "विज्ञापन-मुक्त पास",
-      title: "सरल एवं पारदर्शी मूल्य",
+      title: "सरल एवं पारदर्शी मूल्य निर्धारण",
       subtitle: "सभी टूल्स और कैलकुलेटर पर पूरी तरह से विज्ञापन-मुक्त अनुभव का आनंद लें।",
-      plan90Days: "90 दिन का पास",
-      plan1Year: "1 वर्ष का पास",
-      oneTimePayment: "/ एक बार का भुगतान",
-      bestValue: "सर्वश्रेष्ठ मूल्य (365 दिन)"
+      transparentNoticeTitle: "पारदर्शी बिलिंग सूचना एवं उपभोक्ता शर्तें",
+      notice1Title: "निश्चित वैधता अवधि",
+      notice1Text: "प्रीमियम पास खरीदी गई अवधि के लिए विज्ञापन-मुक्त पहुंच प्रदान करते हैं (₹59 में 90 दिन या ₹179 में 365 दिन)।",
+      notice2Title: "कोई स्वचालित नवीनीकरण नहीं",
+      notice2Text: "हम भुगतान कार्ड स्टोर नहीं करते हैं और न ही ऑटो-डेबिट शुरू करते हैं। जब आपका पास समाप्त हो जाता है, तो यह मानक विज्ञापन-समर्थित पहुंच पर वापस आ जाता है।",
+      notice3Title: "इन-ऐप सक्रियण",
+      notice3Text: "खरीदारी सीधे Less Legal एंड्रॉइड ऐप के भीतर प्रमाणित भुगतान गेटवे के माध्यम से की जाती है।",
+      plan90DaysTitle: "3 महीने का प्लान",
+      plan90DaysPrice: "₹59",
+      plan90DaysValidity: "90 दिनों की वैधता",
+      plan90DaysTagline: "सभी टूल्स पर 90 दिनों के लिए विज्ञापन-मुक्त अनुभव",
+      plan1YearTitle: "1 वर्ष का प्लान",
+      plan1YearPrice: "₹179",
+      plan1YearValidity: "365 दिनों की वैधता",
+      plan1YearTagline: "365 दिनों के लिए सर्वश्रेष्ठ मूल्य विज्ञापन-मुक्त अनुभव",
+      bestValueBadge: "सर्वश्रेष्ठ मूल्य (365 दिन)",
+      oneTimePaymentLabel: "/ एक बार का भुगतान",
+      features90Days: [
+        "90 निरंतर दिनों के लिए विज्ञापन-मुक्त इंटरफ़ेस",
+        "पीडीएफ टूल्स (मर्ज, स्प्लिट, कनवर्ट, लॉक)",
+        "लोकल पीडीएफ रीडर एवं बुकमार्किंग",
+        "केस डायरी एवं सुनवाई तिथि ट्रैकर",
+        "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर",
+        "कोर्ट फीस कैलकुलेटर एवं लीगल शब्दावली",
+        "क्विक नोट्स एवं LessShare लोकल फाइल ट्रांसफर",
+        "बेयर एक्ट्स रेफरेंस लाइब्रेरी एवं लीगल क्विज़",
+        "कोई स्वचालित नवीनीकरण नहीं — एक बार का भुगतान"
+      ],
+      features1Year: [
+        "365 निरंतर दिनों के लिए विज्ञापन-मुक्त इंटरफ़ेस",
+        "पीडीएफ टूल्स (मर्ज, स्प्लिट, कनवर्ट, लॉक)",
+        "लोकल पीडीएफ रीडर एवं बुकमार्किंग",
+        "केस डायरी एवं सुनवाई तिथि ट्रैकर",
+        "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर",
+        "कोर्ट फीस कैलकुलेटर एवं लीगल शब्दावली",
+        "क्विक नोट्स एवं LessShare लोकल फाइल ट्रांसफर",
+        "बेयर एक्ट्स रेफरेंस लाइब्रेरी एवं लीगल क्विज़",
+        "कोई स्वचालित नवीनीकरण नहीं — एक बार का भुगतान"
+      ]
     },
     downloadPage: {
       badge: "आधिकारिक एंड्रॉइड ऐप",
       title: "एंड्रॉइड के लिए Less Legal प्राप्त करें",
       subtitle: "गूगल प्ले स्टोर से सीधे डाउनलोड करें या मैनुअल इंस्टॉल के लिए सत्यापित APK प्राप्त करें।",
       directApk: "सीधा APK डाउनलोड",
-      playStore: "गूगल प्ले पर प्राप्त करें"
+      playStore: "गूगल प्ले पर प्राप्त करें",
+      versionInfo: "संस्करण 8.7.5 • एंड्रॉइड 7.0+ समर्थित • सुरक्षित एवं सत्यापित",
+      reqTitle: "सिस्टम आवश्यकताएं",
+      reqAndroidVer: "एंड्रॉइड 7.0 (नौगट) या उच्चतर",
+      reqDeviceType: "स्मार्टफोन और टैबलेट समर्थित",
+      reqStorage: "लगभग 25 MB स्टोरेज स्पेस",
+      permissionTitle: "ऐप अनुमतियाँ एवं गोपनीयता पारदर्शिता",
+      permissions: [
+        "स्टोरेज एक्सेस (केवल चयनित पीडीएफ फाइलों को स्थानीय रूप से पढ़ने और संपादित करने के लिए)",
+        "वाई-फाई एवं हॉटस्पॉट (LessShare फ़ाइल ट्रांसफर के लिए)",
+        "नोटीफिकेशन (केस डायरी में सुनवाई की तारीखों के लिए वैकल्पिक रिमाइंडर)"
+      ]
     },
     contactPage: {
       badge: "हमसे संपर्क करें",
       title: "संपर्क एवं सहायता",
       subtitle: "क्या आपके पास कोई प्रश्न, सुझाव या पास खरीद में सहायता की आवश्यकता है?",
-      nameLabel: "आपका नाम",
+      nameLabel: "आपका पूरा नाम",
       emailLabel: "ईमेल पता",
       subjectLabel: "विषय / पूछताछ का प्रकार",
       messageLabel: "संदेश",
-      sendButton: "पूछताछ भेजें"
+      sendButton: "पूछताछ भेजें",
+      successMessage: "धन्यवाद! आपका संदेश तैयार हो गया है। यदि आपका ईमेल क्लाइंट खुला है, तो कृपया डिलीवरी पूरी करने के लिए भेजें पर क्लिक करें।",
+      supportInfoTitle: "आधिकारिक सहायता संपर्क",
+      supportInfoSub: "हम त्वरित और उपयोगी सहायता प्रदान करने के लिए प्रतिबद्ध हैं।"
     }
   }
 };

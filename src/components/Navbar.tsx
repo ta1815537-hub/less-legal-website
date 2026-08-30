@@ -68,8 +68,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   Product Studio
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-[#B8B3AF] hidden md:block line-clamp-1 whitespace-nowrap">
-                Technology, Utilities & Digital Products
+              <p className="text-[10px] sm:text-[11px] font-semibold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">
+                अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
               </p>
             </div>
           </button>
@@ -102,26 +102,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             })}
           </nav>
 
-          {/* CTA Controls, Language & Theme Toggle */}
+          {/* CTA Controls & Theme Toggle */}
           <div className="hidden sm:flex items-center gap-2 md:gap-2.5 shrink-0">
             
-            {/* Global Language Selector [ EN | हिन्दी ] */}
-            <motion.button
-              onClick={toggleLanguage}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.94 }}
-              className="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200/80 dark:hover:bg-white/10 text-slate-800 dark:text-[#F5F2EE] border border-slate-200/90 dark:border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap shrink-0"
-              aria-label="Switch Language"
-              title="Switch Language / भाषा बदलें"
-            >
-              <Globe className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#D8BD82] shrink-0" />
-              <div className="text-xs font-bold flex items-center gap-1 whitespace-nowrap">
-                <span className={language === 'en' ? 'text-[#C21F2F] dark:text-[#D8BD82] font-black' : 'text-slate-500 dark:text-slate-400'}>EN</span>
-                <span className="text-slate-300 dark:text-slate-600">|</span>
-                <span className={language === 'hi' ? 'text-[#C21F2F] dark:text-[#D8BD82] font-black' : 'text-slate-500 dark:text-slate-400'}>हिन्दी</span>
-              </div>
-            </motion.button>
-
             {/* Theme Switcher Toggle Button */}
             <motion.button
               onClick={toggleTheme}
@@ -172,17 +155,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
           </div>
 
           {/* Mobile Navigation Trigger */}
-          <div className="flex lg:hidden items-center gap-1 sm:gap-1.5 shrink-0">
-            {/* Mobile Language Switcher */}
-            <motion.button
-              onClick={toggleLanguage}
-              whileTap={{ scale: 0.92 }}
-              className="px-2 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-800 dark:text-[#D8BD82] border border-slate-200 dark:border-white/10 text-xs font-bold cursor-pointer shrink-0 flex items-center gap-1"
-            >
-              <Globe className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#D8BD82]" />
-              <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
-            </motion.button>
-
+          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
             <motion.button
               onClick={toggleTheme}
               whileTap={{ scale: 0.92 }}

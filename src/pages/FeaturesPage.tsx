@@ -13,16 +13,35 @@ import {
   ScrollReveal, HeroAmbientGlow, GlowingButton 
 } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FeaturesPageProps {
   onNavigate: (route: PageRoute) => void;
 }
 
 export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
+  const { t, language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const categories = ['All', 'PDF & Files', 'Legal Utilities', 'Calculators & Converters', 'Learning & Reference'];
+  const categories = [
+    { key: 'All', label: t.featuresPage.categories.all },
+    { key: 'PDF & Files', label: t.featuresPage.categories.pdfFiles },
+    { key: 'Legal Utilities', label: t.featuresPage.categories.legalUtilities },
+    { key: 'Calculators & Converters', label: t.featuresPage.categories.calculatorsConverters },
+    { key: 'Learning & Reference', label: t.featuresPage.categories.learningReference },
+  ];
+
+  // Category translation mapping
+  const getCategoryLabel = (category: string) => {
+    switch (category) {
+      case 'PDF & Files': return t.featuresPage.categories.pdfFiles;
+      case 'Legal Utilities': return t.featuresPage.categories.legalUtilities;
+      case 'Calculators & Converters': return t.featuresPage.categories.calculatorsConverters;
+      case 'Learning & Reference': return t.featuresPage.categories.learningReference;
+      default: return category;
+    }
+  };
 
   // Map icon names to Lucide icons
   const getIcon = (iconName: string) => {
@@ -82,13 +101,13 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
         >
           <Layers className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] animate-pulse shrink-0" />
-          <span className="whitespace-nowrap">Verified Feature Suite</span>
+          <span className="whitespace-nowrap">{t.featuresPage.badge}</span>
         </motion.div>
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-          Everything Inside Less Legal
+          {t.featuresPage.title}
         </h1>
         <p className="text-base sm:text-lg text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-          Explore all verified tools, utilities, document handlers, and legal references built into the Less Legal Android application.
+          {t.featuresPage.subtitle}
         </p>
       </ScrollReveal>
 
@@ -98,11 +117,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
             <span>
-              <strong className="text-slate-900 dark:text-[#F5F2EE]">Verified Scope:</strong> This catalog includes only active, confirmed tools in the current Less Legal Android application.
+              <strong className="text-slate-900 dark:text-[#F5F2EE]">{t.common.verifiedNotice}:</strong> {t.featuresPage.subtitle}
             </span>
           </div>
           <span className="text-[11px] font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-amber-600/30 dark:border-[#D8BD82]/30 hidden sm:inline-block whitespace-nowrap">
-            {SITE_CONFIG.features.length} Live Features
+            {SITE_CONFIG.features.length} {language === 'hi' ? 'सक्रिय सुविधाएँ' : 'Live Features'}
           </span>
         </div>
       </ScrollReveal>
@@ -114,16 +133,16 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
         <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar flex-nowrap shrink-0">
           {categories.map((cat) => (
             <motion.button
-              key={cat}
+              key={cat.key}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedCategory(cat)}
+              onClick={() => setSelectedCategory(cat.key)}
               className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
-                selectedCategory === cat
+                selectedCategory === cat.key
                   ? 'btn-crimson font-bold text-white shadow-md'
                   : 'glass-panel text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-[#F5F2EE]'
               }`}
             >
-              {cat}
+              {cat.label}
             </motion.button>
           ))}
         </div>
@@ -133,7 +152,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           <Search className="w-4 h-4 text-slate-400 dark:text-[#77736F] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search features..."
+            placeholder={t.featuresPage.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-9 pr-4 py-2.5 glass-input text-xs text-slate-900 dark:text-[#F5F2EE] rounded-xl"
@@ -166,7 +185,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                         {getIcon(feature.iconName)}
                       </div>
                       <span className="text-[10px] font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-1 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30 whitespace-nowrap">
-                        {feature.category}
+                        {getCategoryLabel(feature.category)}
                       </span>
                     </div>
 
@@ -181,7 +200,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                   <div>
                     <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-1.5">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F]">
-                        Key Highlights
+                        {language === 'hi' ? 'मुख्य विशेषताएं' : 'Key Highlights'}
                       </span>
                       <div className="grid grid-cols-2 gap-1 text-[11px] text-slate-600 dark:text-[#B8B3AF]">
                         {feature.highlights.map((highlight, hIdx) => (
@@ -203,12 +222,12 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
               animate={{ opacity: 1 }}
               className="text-center py-12 glass-panel rounded-2xl p-8"
             >
-              <p className="text-sm font-semibold text-slate-900 dark:text-[#F5F2EE]">No features found matching "{searchQuery}".</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-[#F5F2EE]">{t.featuresPage.noResults}</p>
               <button
                 onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
                 className="mt-3 text-xs font-bold text-amber-800 dark:text-[#D8BD82] underline cursor-pointer"
               >
-                Reset filters
+                {language === 'hi' ? 'फ़िल्टर रीसेट करें' : 'Reset filters'}
               </button>
             </motion.div>
           )}
@@ -218,9 +237,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       {/* Bottom CTA */}
       <ScrollReveal direction="up" className="p-8 glass-panel-gradient rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 relative z-10 border border-slate-200 dark:border-white/15">
         <div className="space-y-1 text-center md:text-left">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-[#F5F2EE]">Ready to use these tools on Android?</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-[#F5F2EE]">
+            {language === 'hi' ? 'एंड्रॉइड पर इन टूल्स का उपयोग करने के लिए तैयार हैं?' : 'Ready to use these tools on Android?'}
+          </h2>
           <p className="text-xs text-slate-600 dark:text-[#B8B3AF]">
-            Download Less Legal today to access on-device PDF utilities, case diary, and legal tools.
+            {t.home.heroSubtitle}
           </p>
         </div>
         <GlowingButton
@@ -229,7 +250,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           className="px-6 py-3 text-xs whitespace-nowrap shrink-0"
         >
           <Download className="w-4 h-4 shrink-0" />
-          <span className="whitespace-nowrap">Download Android App</span>
+          <span className="whitespace-nowrap">{t.nav.downloadApp}</span>
         </GlowingButton>
       </ScrollReveal>
 

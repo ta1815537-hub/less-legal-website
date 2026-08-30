@@ -46,6 +46,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [landUnit, setLandUnit] = useState<string>('bigha');
   const [copiedUnit, setCopiedUnit] = useState<string | null>(null);
 
+  // 4. Real Working Direct WhatsApp State
+  const [waNumber, setWaNumber] = useState<string>('');
+
+  const handleOpenWhatsApp = () => {
+    const cleanDigits = waNumber.replace(/\D/g, '');
+    if (!cleanDigits) {
+      alert(t.common?.verifiedNotice ? 'कृपया एक मोबाइल नंबर दर्ज करें (10 अंक)' : 'Please enter a valid 10-digit mobile number');
+      return;
+    }
+    let fullNumber = cleanDigits;
+    if (cleanDigits.length === 10) {
+      fullNumber = '91' + cleanDigits;
+    }
+    const targetUrl = `https://wa.me/${fullNumber}`;
+    window.open(targetUrl, '_blank', 'noopener,noreferrer');
+  };
+
   // 4. Interactive FAQ Accordion
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
@@ -83,7 +100,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     },
     {
       q: "Does the app require internet to access Bare Acts and Calculators?",
-      a: "No! All core 46+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate 100% offline directly on your device with zero cloud tracking."
+      a: "No! All core 46+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
     },
     {
       q: "How does the 'File Transfer (LessShare)' feature work?",
@@ -103,47 +120,34 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     <div className="space-y-20 sm:space-y-32 py-4 sm:py-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       
       {/* 1. HERO SECTION WITH CINEMATIC GLASSMORPHISM */}
-      <section className="relative -mt-4 sm:-mt-8 text-slate-900 dark:text-white pt-20 sm:pt-32 pb-16 sm:pb-28 overflow-hidden border-b border-slate-200 dark:border-white/10">
+      <section className="relative -mt-4 sm:-mt-6 text-slate-900 dark:text-white pt-6 sm:pt-10 pb-12 sm:pb-20 overflow-hidden border-b border-slate-200 dark:border-white/10">
         <HeroAmbientGlow />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 space-y-8">
-          
-          {/* Top Announcement Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-800 dark:text-[#D8BD82] text-xs sm:text-sm font-semibold backdrop-blur-xl shadow-xs dark:shadow-lg hover:border-amber-600/60 dark:hover:border-[#D8BD82]/60 transition-all cursor-pointer"
-            onClick={() => onNavigate('features')}
-          >
-            <Sparkles className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] animate-pulse" />
-            <span>Less Legal v8.7.5 • 46+ Integrated Offline Utilities</span>
-            <ChevronRight className="w-4 h-4 text-amber-600 dark:text-[#D8BD82]" />
-          </motion.div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 space-y-4 sm:space-y-6">
           
           {/* Main Title & Brand Tagline */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="space-y-4 max-w-4xl mx-auto"
+            transition={{ duration: 0.5 }}
+            className="space-y-3 sm:space-y-4 max-w-4xl mx-auto"
           >
-            {/* Orbital Logo Showcase */}
-            <div className="flex justify-center mb-6">
-              <div className="p-4 rounded-3xl bg-white dark:bg-[#0D0D0F]/80 border border-slate-200 dark:border-white/15 shadow-md dark:shadow-[0_0_40px_rgba(194,31,47,0.3)] backdrop-blur-2xl">
-                <LTLogo className="w-16 h-16 sm:w-20 sm:h-20" />
+            {/* Orbital Logo Showcase - Shifted Up Near Header */}
+            <div className="flex justify-center mb-3">
+              <div className="p-3 sm:p-4 rounded-3xl bg-white dark:bg-[#0D0D0F]/80 border border-slate-200 dark:border-white/15 shadow-md dark:shadow-[0_0_40px_rgba(194,31,47,0.3)] backdrop-blur-2xl">
+                <LTLogo className="w-14 h-14 sm:w-20 sm:h-20" />
               </div>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] text-slate-900 dark:text-[#F5F2EE]">
+            <h1 className="text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] text-slate-900 dark:text-[#F5F2EE]">
               Legal Knowledge & <br className="hidden sm:inline" />
               <span className="text-gradient-crimson-gold">
                 Digital Utilities Suite
               </span>
             </h1>
             
-            <p className="text-base sm:text-xl text-slate-600 dark:text-[#B8B3AF] font-medium max-w-2xl mx-auto leading-relaxed">
-              Designed for advocates, law students, and citizens. Access Bare Acts, Case Diary, PDF workspace, area converters, and court tools offline.
+            <p className="text-sm sm:text-xl text-slate-600 dark:text-[#B8B3AF] font-medium max-w-2xl mx-auto leading-relaxed">
+              Designed for advocates, law students, and citizens. Access Bare Acts, Case Diary, PDF workspace, area converters, and court tools seamlessly.
             </p>
           </motion.div>
 
@@ -181,23 +185,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35, duration: 0.5 }}
-            className="pt-8 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto text-xs text-[#B8B3AF]"
+            className="pt-8 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-xs text-[#B8B3AF]"
           >
-            <div className="flex items-center justify-center gap-2 p-3 rounded-2xl glass-panel border border-white/10">
-              <Zap className="w-4 h-4 text-[#D8BD82] shrink-0" />
-              <span>100% Offline Engine</span>
+            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-white/10 whitespace-nowrap badge-one-line">
+              <Zap className="w-3.5 h-3.5 text-[#D8BD82] shrink-0" />
+              <span className="whitespace-nowrap badge-one-line">Fast On-Device Engine</span>
             </div>
-            <div className="flex items-center justify-center gap-2 p-3 rounded-2xl glass-panel border border-white/10">
-              <ShieldCheck className="w-4 h-4 text-[#E03A3E] shrink-0" />
-              <span>On-Device Privacy</span>
+            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-white/10 whitespace-nowrap badge-one-line">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#E03A3E] shrink-0" />
+              <span className="whitespace-nowrap badge-one-line">On-Device Privacy</span>
             </div>
-            <div className="flex items-center justify-center gap-2 p-3 rounded-2xl glass-panel border border-white/10">
-              <LayoutGrid className="w-4 h-4 text-[#D8BD82] shrink-0" />
-              <span>46+ Integrated Tools</span>
+            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-white/10 whitespace-nowrap badge-one-line">
+              <LayoutGrid className="w-3.5 h-3.5 text-[#D8BD82] shrink-0" />
+              <span className="whitespace-nowrap badge-one-line">46+ Integrated Tools</span>
             </div>
-            <div className="flex items-center justify-center gap-2 p-3 rounded-2xl glass-panel border border-white/10">
-              <Smartphone className="w-4 h-4 text-[#E03A3E] shrink-0" />
-              <span>Android 7.0 to 15 Ready</span>
+            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-white/10 whitespace-nowrap badge-one-line">
+              <Smartphone className="w-3.5 h-3.5 text-[#E03A3E] shrink-0" />
+              <span className="whitespace-nowrap badge-one-line">Android 7.0 to 15 Ready</span>
             </div>
           </motion.div>
 
@@ -220,81 +224,81 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         {/* Simulator Tabs Header */}
-        <div className="flex items-center justify-center gap-2 overflow-x-auto pb-4 no-scrollbar max-w-4xl mx-auto">
+        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 no-scrollbar max-w-4xl mx-auto px-1">
           <button
             onClick={() => setSimTab('diary')}
-            className={`px-4 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap border ${
+            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
               simTab === 'diary'
-                ? 'btn-crimson scale-105'
+                ? 'btn-crimson text-white border-[#C21F2F]'
                 : 'glass-panel text-[#B8B3AF] hover:text-[#F5F2EE] hover:border-white/20'
             }`}
           >
-            <Calendar className="w-4 h-4" />
-            <span>Case Diary & Planner</span>
+            <Calendar className="w-4 h-4 shrink-0 text-[#E03A3E]" />
+            <span className="whitespace-nowrap badge-one-line">Case Diary & Planner</span>
           </button>
 
           <button
             onClick={() => setSimTab('converter')}
-            className={`px-4 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap border ${
+            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
               simTab === 'converter'
-                ? 'btn-crimson scale-105'
+                ? 'btn-crimson text-white border-[#C21F2F]'
                 : 'glass-panel text-[#B8B3AF] hover:text-[#F5F2EE] hover:border-white/20'
             }`}
           >
-            <Compass className="w-4 h-4" />
-            <span>Live Area Converter</span>
+            <Compass className="w-4 h-4 shrink-0 text-[#D8BD82]" />
+            <span className="whitespace-nowrap badge-one-line">Live Area Converter</span>
           </button>
 
           <button
             onClick={() => setSimTab('pdf')}
-            className={`px-4 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap border ${
+            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
               simTab === 'pdf'
-                ? 'btn-crimson scale-105'
+                ? 'btn-crimson text-white border-[#C21F2F]'
                 : 'glass-panel text-[#B8B3AF] hover:text-[#F5F2EE] hover:border-white/20'
             }`}
           >
-            <FileText className="w-4 h-4" />
-            <span>PDF Engine & Share</span>
+            <FileText className="w-4 h-4 shrink-0 text-[#E03A3E]" />
+            <span className="whitespace-nowrap badge-one-line">PDF Engine & Share</span>
           </button>
 
           <button
             onClick={() => setSimTab('whatsapp')}
-            className={`px-4 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap border ${
+            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
               simTab === 'whatsapp'
-                ? 'btn-crimson scale-105'
+                ? 'btn-crimson text-white border-[#C21F2F]'
                 : 'glass-panel text-[#B8B3AF] hover:text-[#F5F2EE] hover:border-white/20'
             }`}
           >
-            <MessageSquare className="w-4 h-4" />
-            <span>Direct WhatsApp</span>
+            <MessageSquare className="w-4 h-4 shrink-0 text-[#25D366]" />
+            <span className="whitespace-nowrap badge-one-line">Direct WhatsApp</span>
           </button>
         </div>
 
         {/* Simulator Frame Container */}
-        <div className="glass-panel-gradient rounded-3xl p-5 sm:p-8 border border-white/12 shadow-2xl max-w-4xl mx-auto relative overflow-hidden">
+        <div className="glass-panel-gradient rounded-3xl p-4 sm:p-8 border border-white/12 shadow-2xl max-w-4xl mx-auto relative overflow-hidden">
           {/* Subtle Ambient Red Blur Inside Card */}
           <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-[#8B0000]/20 rounded-full blur-3xl pointer-events-none" />
 
           {/* Phone Header Mockup */}
-          <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#C21F2F]/20 border border-[#C21F2F]/40 flex items-center justify-center text-[#E03A3E]">
-                <Scale className="w-4.5 h-4.5" />
+          <div className="flex items-center justify-between border-b border-white/10 pb-3.5 mb-5">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#C21F2F]/20 border border-[#C21F2F]/40 flex items-center justify-center text-[#E03A3E] shrink-0">
+                <Scale className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
               </div>
               <div>
-                <div className="text-xs font-bold text-[#F5F2EE] flex items-center gap-2">
-                  <span>Less Legal Interface</span>
-                  <span className="text-[10px] bg-[#D8BD82]/20 text-[#D8BD82] px-2.5 py-0.5 rounded-full border border-[#D8BD82]/40 font-semibold">
-                    100% Offline
+                <div className="text-xs font-bold text-[#F5F2EE] flex items-center gap-2 whitespace-nowrap badge-one-line">
+                  <span className="whitespace-nowrap badge-one-line">Less Legal Interface</span>
+                  <span className="text-[10px] bg-[#D8BD82]/20 text-[#D8BD82] px-2 py-0.5 rounded-full border border-[#D8BD82]/40 font-semibold whitespace-nowrap badge-one-line">
+                    On-Device
                   </span>
                 </div>
-                <div className="text-[11px] text-[#B8B3AF]">Android Application Sandbox</div>
+                <div className="text-[11px] text-[#B8B3AF] whitespace-nowrap badge-one-line">Android Application Sandbox</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-xs text-[#B8B3AF]">
-              <Lock className="w-3.5 h-3.5 text-[#D8BD82]" />
-              <span className="hidden sm:inline">On-Device Encrypted</span>
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-[#B8B3AF] shrink-0">
+              <Lock className="w-3.5 h-3.5 text-[#D8BD82] shrink-0" />
+              <span className="hidden sm:inline whitespace-nowrap badge-one-line">On-Device Encrypted</span>
             </div>
           </div>
 
@@ -305,35 +309,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {simTab === 'diary' && (
               <motion.div
                 key="diary"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
                 <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-3">
-                  <div className="flex items-center justify-between text-xs text-[#B8B3AF]">
-                    <span className="font-bold text-[#D8BD82]">Today's Hearing Schedule (Advocate Chamber)</span>
-                    <span>3 Active Cases</span>
+                  <div className="flex items-center justify-between text-xs text-[#B8B3AF] gap-2">
+                    <span className="font-bold text-[#D8BD82] whitespace-nowrap badge-one-line">Today's Hearing Schedule</span>
+                    <span className="whitespace-nowrap badge-one-line shrink-0">3 Active Cases</span>
                   </div>
 
                   <div className="space-y-2.5">
-                    <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="text-xs font-bold text-[#F5F2EE]">Sharma vs. State of UP</div>
-                        <div className="text-[11px] text-[#B8B3AF]">Court No. 4 • Criminal Appeal • Item #12</div>
+                    <div className="p-3 sm:p-3.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                      <div className="space-y-0.5 min-w-0">
+                        <div className="text-xs font-bold text-[#F5F2EE] truncate">Sharma vs. State of UP</div>
+                        <div className="text-[11px] text-[#B8B3AF] truncate">Court No. 4 • Criminal Appeal • Item #12</div>
                       </div>
-                      <span className="text-[10px] font-bold bg-[#C21F2F]/20 text-[#E03A3E] px-2.5 py-1 rounded-lg border border-[#C21F2F]/40">
+                      <span className="text-[10px] font-bold bg-[#C21F2F]/20 text-[#E03A3E] px-2.5 py-1 rounded-lg border border-[#C21F2F]/40 whitespace-nowrap badge-one-line shrink-0">
                         Arguments
                       </span>
                     </div>
 
-                    <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <div className="text-xs font-bold text-[#F5F2EE]">Verma Infra vs. City Development</div>
-                        <div className="text-[11px] text-[#B8B3AF]">District Tribunal • Arbitration • Item #5</div>
+                    <div className="p-3 sm:p-3.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                      <div className="space-y-0.5 min-w-0">
+                        <div className="text-xs font-bold text-[#F5F2EE] truncate">Verma Infra vs. City Development</div>
+                        <div className="text-[11px] text-[#B8B3AF] truncate">District Tribunal • Arbitration • Item #5</div>
                       </div>
-                      <span className="text-[10px] font-bold bg-[#D8BD82]/20 text-[#D8BD82] px-2.5 py-1 rounded-lg border border-[#D8BD82]/40">
+                      <span className="text-[10px] font-bold bg-[#D8BD82]/20 text-[#D8BD82] px-2.5 py-1 rounded-lg border border-[#D8BD82]/40 whitespace-nowrap badge-one-line shrink-0">
                         Evidence Stage
                       </span>
                     </div>
@@ -343,15 +347,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <div className="p-3.5 bg-[#0A0A0C]/90 rounded-xl border border-white/10 text-center">
                     <div className="text-xl font-extrabold text-[#E03A3E]">24</div>
-                    <div className="text-[10px] text-[#B8B3AF]">Pending Tasks</div>
+                    <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">Pending Tasks</div>
                   </div>
                   <div className="p-3.5 bg-[#0A0A0C]/90 rounded-xl border border-white/10 text-center">
                     <div className="text-xl font-extrabold text-[#D8BD82]">100%</div>
-                    <div className="text-[10px] text-[#B8B3AF]">Auto-Saved Notes</div>
+                    <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">Auto-Saved Notes</div>
                   </div>
                   <div className="p-3.5 bg-[#0A0A0C]/90 rounded-xl border border-white/10 text-center col-span-2 sm:col-span-1">
-                    <div className="text-xl font-extrabold text-[#F5F2EE]">Offline</div>
-                    <div className="text-[10px] text-[#B8B3AF]">Local Database</div>
+                    <div className="text-xl font-extrabold text-[#F5F2EE]">Local</div>
+                    <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">On-Device Database</div>
                   </div>
                 </div>
               </motion.div>
@@ -361,22 +365,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {simTab === 'converter' && (
               <motion.div
                 key="converter"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
                 <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-[#D8BD82]">Type Land Quantity & Select Source Unit:</label>
+                      <label className="text-xs font-bold text-[#D8BD82] whitespace-nowrap badge-one-line block">Type Quantity & Source Unit:</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
                           value={landValue}
                           onChange={(e) => setLandValue(parseFloat(e.target.value) || 0)}
-                          className="w-28 px-3 py-2 bg-white/5 border border-white/15 rounded-xl text-[#F5F2EE] text-sm font-bold focus:outline-none focus:border-[#C21F2F]"
+                          className="w-24 sm:w-28 px-3 py-2 bg-white/5 border border-white/15 rounded-xl text-[#F5F2EE] text-sm font-bold focus:outline-none focus:border-[#C21F2F]"
                         />
                         <select
                           value={landUnit}
@@ -390,9 +394,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       </div>
                     </div>
 
-                    <div className="text-right">
-                      <div className="text-[10px] text-[#B8B3AF]">Calculated Area Base</div>
-                      <div className="text-base font-extrabold text-[#D8BD82]">{baseSqFt.toLocaleString()} Sq. Ft.</div>
+                    <div className="text-left sm:text-right">
+                      <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">Calculated Area Base</div>
+                      <div className="text-base font-extrabold text-[#D8BD82] whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
                     </div>
                   </div>
 
@@ -413,11 +417,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                           }`}
                         >
                           <div className="flex items-center justify-between text-[10px] text-[#B8B3AF] mb-1">
-                            <span>{u.label}</span>
-                            {copiedUnit === key ? <Check className="w-3 h-3 text-[#D8BD82]" /> : <Copy className="w-3 h-3 text-[#77736F]" />}
+                            <span className="whitespace-nowrap badge-one-line">{u.label}</span>
+                            {copiedUnit === key ? <Check className="w-3 h-3 text-[#D8BD82] shrink-0" /> : <Copy className="w-3 h-3 text-[#77736F] shrink-0" />}
                           </div>
-                          <div className="text-sm font-extrabold text-[#F5F2EE]">{convertedVal}</div>
-                          <div className="text-[9px] text-[#D8BD82]/80 mt-0.5">{u.region}</div>
+                          <div className="text-sm font-extrabold text-[#F5F2EE] whitespace-nowrap badge-one-line">{convertedVal}</div>
+                          <div className="text-[9px] text-[#D8BD82]/80 mt-0.5 whitespace-nowrap badge-one-line">{u.region}</div>
                         </div>
                       );
                     })}
@@ -430,32 +434,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {simTab === 'pdf' && (
               <motion.div
                 key="pdf"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
                 <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-3">
-                  <div className="text-xs font-bold text-[#D8BD82]">PDF Document Processing & Local Transfer</div>
+                  <div className="text-xs font-bold text-[#D8BD82] whitespace-nowrap badge-one-line">PDF Document Processing & Local Transfer</div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 space-y-1">
                       <FileText className="w-5 h-5 text-[#E03A3E] mb-1" />
-                      <div className="text-xs font-bold text-[#F5F2EE]">Merge & Split PDFs</div>
+                      <div className="text-xs font-bold text-[#F5F2EE] whitespace-nowrap badge-one-line">Merge & Split PDFs</div>
                       <div className="text-[10px] text-[#B8B3AF]">Combine multiple court filings into a single indexed PDF.</div>
                     </div>
 
                     <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 space-y-1">
                       <Lock className="w-5 h-5 text-[#D8BD82] mb-1" />
-                      <div className="text-xs font-bold text-[#F5F2EE]">Encrypt & Password</div>
+                      <div className="text-xs font-bold text-[#F5F2EE] whitespace-nowrap badge-one-line">Encrypt & Password</div>
                       <div className="text-[10px] text-[#B8B3AF]">Add 256-bit passwords to secure client documents.</div>
                     </div>
 
                     <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 space-y-1">
                       <Share2 className="w-5 h-5 text-[#E03A3E] mb-1" />
-                      <div className="text-xs font-bold text-[#F5F2EE]">LessShare Transfer</div>
-                      <div className="text-[10px] text-[#B8B3AF]">Send files peer-to-peer via local Wi-Fi offline.</div>
+                      <div className="text-xs font-bold text-[#F5F2EE] whitespace-nowrap badge-one-line">LessShare Transfer</div>
+                      <div className="text-[10px] text-[#B8B3AF]">Send files peer-to-peer via direct local Wi-Fi.</div>
                     </div>
                   </div>
                 </div>
@@ -466,28 +470,55 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {simTab === 'whatsapp' && (
               <motion.div
                 key="whatsapp"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
                 <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-3">
-                  <div className="text-xs font-bold text-[#D8BD82]">Direct WhatsApp Utility (No Contact Saving Required)</div>
+                  <div className="flex items-center justify-between text-xs font-bold text-[#D8BD82] whitespace-nowrap badge-one-line">
+                    <span>Direct WhatsApp Utility</span>
+                    <span className="text-[10px] bg-[#25D366]/20 text-[#25D366] px-2 py-0.5 rounded-md border border-[#25D366]/40">Real Working Tool</span>
+                  </div>
                   
-                  <div className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-3 max-w-md mx-auto">
-                    <div className="text-xs text-[#B8B3AF]">Quickly send WhatsApp legal memos or notice drafts to clients without cluttering your phone contact book.</div>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        disabled
-                        value="+91 98765 43210"
-                        className="flex-1 px-3 py-2 bg-[#0A0A0C] border border-white/15 rounded-xl text-xs text-[#F5F2EE]"
-                      />
-                      <button className="px-4 py-2 btn-crimson text-white font-bold text-xs rounded-xl flex items-center gap-1.5">
-                        <MessageSquare className="w-3.5 h-3.5" />
-                        <span>Chat Now</span>
+                  <div className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-3 max-w-lg">
+                    <div className="text-xs text-[#B8B3AF] leading-relaxed">
+                      Enter any phone number below to open a direct WhatsApp chat window without saving the number to your contact list.
+                    </div>
+                    
+                    {/* Compact input & Left-aligned Chat Now Button */}
+                    <div className="flex flex-wrap items-center justify-start gap-2.5 pt-1">
+                      {/* Compact Number Input Box */}
+                      <div className="flex items-center gap-1.5 bg-[#0A0A0C] border border-white/15 rounded-xl px-3 py-2 w-36 sm:w-44 focus-within:border-[#C21F2F] transition-colors">
+                        <span className="text-xs font-bold text-[#D8BD82] shrink-0">+91</span>
+                        <input
+                          type="tel"
+                          value={waNumber}
+                          onChange={(e) => setWaNumber(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleOpenWhatsApp();
+                          }}
+                          placeholder="9876543210"
+                          className="w-full bg-transparent text-xs font-semibold text-[#F5F2EE] focus:outline-none"
+                          maxLength={15}
+                        />
+                      </div>
+
+                      {/* Small Chat Now Button moved to Left Side */}
+                      <button 
+                        onClick={handleOpenWhatsApp}
+                        className="px-3 py-2 btn-crimson text-white font-bold text-xs rounded-xl flex items-center gap-1.5 whitespace-nowrap badge-one-line shrink-0 hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md"
+                        title="Open WhatsApp Chat"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#25D366]" />
+                        <span className="whitespace-nowrap badge-one-line">Chat Now</span>
                       </button>
+                    </div>
+
+                    <div className="text-[10px] text-[#77736F] flex items-center gap-1 pt-0.5">
+                      <Lock className="w-3 h-3 text-[#D8BD82] shrink-0" />
+                      <span>Opens WhatsApp app or web directly on your device. Zero data saved.</span>
                     </div>
                   </div>
                 </div>
@@ -777,9 +808,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="w-10 h-10 rounded-xl bg-[#D8BD82]/20 text-[#D8BD82] border border-[#D8BD82]/40 flex items-center justify-center font-bold">
               <Zap className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-[#F5F2EE]">Lightning Fast & Offline</h3>
+            <h3 className="text-base font-bold text-[#F5F2EE]">Lightning Fast Performance</h3>
             <p className="text-xs text-[#B8B3AF] leading-relaxed">
-              Launch Bare Acts, perform land unit conversions, and draft legal memos instantly without requiring active internet access.
+              Launch Bare Acts, perform land unit conversions, and draft legal memos instantly with smooth on-device processing.
             </p>
           </div>
 
@@ -976,7 +1007,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 Ready to Simplify Your Legal Workflow?
               </h2>
               <p className="text-xs sm:text-sm text-[#B8B3AF] max-w-xl mx-auto">
-                Download Less Legal today on your Android smartphone or tablet to access offline Bare Acts, PDF converters, and Case Diary.
+                Download Less Legal today on your Android smartphone or tablet to access Bare Acts, PDF converters, and Case Diary.
               </p>
             </div>
 

@@ -139,7 +139,7 @@ export const AppMockupPreview: React.FC = () => {
                       <BookOpen className="w-3.5 h-3.5" />
                     </div>
                     <div className="text-[11px] font-bold text-slate-800 dark:text-slate-200">PDF Reader</div>
-                    <div className="text-[9px] text-slate-400">Fast offline viewer</div>
+                    <div className="text-[9px] text-slate-400">Fast document viewer</div>
                   </div>
                   <div className="p-2.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 shadow-xs">
                     <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1.5">
