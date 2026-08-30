@@ -57,9 +57,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 className="relative group w-full max-w-sm"
               >
                 {/* Outer Flowing Animated Rotating Gradient Border */}
-                <div className="animated-founder-border shadow-2xl rounded-2xl overflow-hidden p-1">
+                <div className="animated-founder-border shadow-2xl rounded-[24px] overflow-hidden p-1" style={{ transform: 'translateZ(0)' }}>
                   
-                  <div className="relative rounded-xl overflow-hidden bg-white dark:bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl">
+                  <div className="relative rounded-[20px] overflow-hidden bg-white dark:bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl" style={{ transform: 'translateZ(0)' }}>
                     
                     {!imgError ? (
                       <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center">

@@ -340,29 +340,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-3">
-                  <div className="flex items-center justify-between text-xs text-[#B8B3AF] gap-2">
-                    <span className="font-bold text-[#D8BD82] whitespace-nowrap badge-one-line">Today's Hearing Schedule</span>
+                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
+                  <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#B8B3AF] gap-2">
+                    <span className="font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">Today's Hearing Schedule</span>
                     <span className="whitespace-nowrap badge-one-line shrink-0">3 Active Cases</span>
                   </div>
 
                   <div className="space-y-2.5">
-                    <div className="p-3 sm:p-3.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                    <div className="p-3 sm:p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
                       <div className="space-y-0.5 min-w-0">
-                        <div className="text-xs font-bold text-[#F5F2EE] truncate">Sharma vs. State of UP</div>
-                        <div className="text-[11px] text-[#B8B3AF] truncate">Court No. 4 • Criminal Appeal • Item #12</div>
+                        <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Sharma vs. State of UP</div>
+                        <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">Court No. 4 • Criminal Appeal • Item #12</div>
                       </div>
-                      <span className="text-[10px] font-bold bg-[#C21F2F]/20 text-[#E03A3E] px-2.5 py-1 rounded-lg border border-[#C21F2F]/40 whitespace-nowrap badge-one-line shrink-0">
+                      <span className="text-[10px] font-bold bg-red-100 dark:bg-[#C21F2F]/20 text-red-700 dark:text-[#E03A3E] px-2.5 py-1 rounded-lg border border-red-200 dark:border-[#C21F2F]/40 whitespace-nowrap badge-one-line shrink-0">
                         Arguments
                       </span>
                     </div>
 
-                    <div className="p-3 sm:p-3.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between gap-2">
+                    <div className="p-3 sm:p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
                       <div className="space-y-0.5 min-w-0">
-                        <div className="text-xs font-bold text-[#F5F2EE] truncate">Verma Infra vs. City Development</div>
-                        <div className="text-[11px] text-[#B8B3AF] truncate">District Tribunal • Arbitration • Item #5</div>
+                        <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Verma Infra vs. City Development</div>
+                        <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">District Tribunal • Arbitration • Item #5</div>
                       </div>
-                      <span className="text-[10px] font-bold bg-[#D8BD82]/20 text-[#D8BD82] px-2.5 py-1 rounded-lg border border-[#D8BD82]/40 whitespace-nowrap badge-one-line shrink-0">
+                      <span className="text-[10px] font-bold bg-amber-100 dark:bg-[#D8BD82]/20 text-amber-800 dark:text-[#D8BD82] px-2.5 py-1 rounded-lg border border-amber-200 dark:border-[#D8BD82]/40 whitespace-nowrap badge-one-line shrink-0">
                         Evidence Stage
                       </span>
                     </div>
@@ -370,17 +370,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="p-3.5 bg-[#0A0A0C]/90 rounded-xl border border-white/10 text-center">
-                    <div className="text-xl font-extrabold text-[#E03A3E]">24</div>
-                    <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">Pending Tasks</div>
+                  <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center">
+                    <div className="text-xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">24</div>
+                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Pending Tasks</div>
                   </div>
-                  <div className="p-3.5 bg-[#0A0A0C]/90 rounded-xl border border-white/10 text-center">
-                    <div className="text-xl font-extrabold text-[#D8BD82]">100%</div>
-                    <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">Auto-Saved Notes</div>
+                  <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center">
+                    <div className="text-xl font-extrabold text-amber-700 dark:text-[#D8BD82]">100%</div>
+                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Auto-Saved Notes</div>
                   </div>
-                  <div className="p-3.5 bg-[#0A0A0C]/90 rounded-xl border border-white/10 text-center col-span-2 sm:col-span-1">
-                    <div className="text-xl font-extrabold text-[#F5F2EE]">Local</div>
-                    <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">On-Device Database</div>
+                  <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center col-span-2 sm:col-span-1">
+                    <div className="text-xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">Local</div>
+                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">On-Device Database</div>
                   </div>
                 </div>
               </motion.div>
@@ -396,32 +396,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-4">
+                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-[#D8BD82] whitespace-nowrap badge-one-line block">Type Quantity & Source Unit:</label>
+                      <label className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line block">Type Quantity & Source Unit:</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
                           value={landValue}
                           onChange={(e) => setLandValue(parseFloat(e.target.value) || 0)}
-                          className="w-24 sm:w-28 px-3 py-2 bg-white/5 border border-white/15 rounded-xl text-[#F5F2EE] text-sm font-bold focus:outline-none focus:border-[#C21F2F]"
+                          className="w-24 sm:w-28 px-3 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-xl text-slate-900 dark:text-[#F5F2EE] text-sm font-bold focus:outline-none focus:border-[#C21F2F]"
                         />
                         <select
                           value={landUnit}
                           onChange={(e) => setLandUnit(e.target.value)}
-                          className="px-3 py-2 bg-slate-900 text-white border border-white/15 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#C21F2F]"
+                          className="px-3 py-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#C21F2F]"
                         >
                           {Object.entries(SQFT_RATES).map(([key, u]) => (
-                            <option key={key} value={key} className="bg-[#0A0A0C] text-[#F5F2EE]">{u.label}</option>
+                            <option key={key} value={key} className="bg-white dark:bg-[#0A0A0C] text-slate-900 dark:text-[#F5F2EE]">{u.label}</option>
                           ))}
                         </select>
                       </div>
                     </div>
 
                     <div className="text-left sm:text-right">
-                      <div className="text-[10px] text-[#B8B3AF] whitespace-nowrap badge-one-line">Calculated Area Base</div>
-                      <div className="text-base font-extrabold text-[#D8BD82] whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
+                      <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Calculated Area Base</div>
+                      <div className="text-base font-extrabold text-amber-700 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
                     </div>
                   </div>
 
@@ -437,16 +437,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                           onClick={() => handleCopyValue(key, convertedVal)}
                           className={`p-3 rounded-xl border transition-all cursor-pointer ${
                             isSelected 
-                              ? 'bg-[#C21F2F]/20 border-[#C21F2F]/60 text-white' 
-                              : 'bg-white/5 border-white/10 hover:border-white/20 text-[#B8B3AF]'
+                              ? 'bg-red-50 dark:bg-[#C21F2F]/20 border-red-300 dark:border-[#C21F2F]/60 text-red-900 dark:text-white shadow-sm dark:shadow-none' 
+                              : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 text-slate-600 dark:text-[#B8B3AF]'
                           }`}
                         >
-                          <div className="flex items-center justify-between text-[10px] text-[#B8B3AF] mb-1">
+                          <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-[#B8B3AF] mb-1">
                             <span className="whitespace-nowrap badge-one-line">{u.label}</span>
-                            {copiedUnit === key ? <Check className="w-3 h-3 text-[#D8BD82] shrink-0" /> : <Copy className="w-3 h-3 text-[#77736F] shrink-0" />}
+                            {copiedUnit === key ? <Check className="w-3 h-3 text-amber-700 dark:text-[#D8BD82] shrink-0" /> : <Copy className="w-3 h-3 text-slate-400 dark:text-[#77736F] shrink-0" />}
                           </div>
-                          <div className="text-sm font-extrabold text-[#F5F2EE] whitespace-nowrap badge-one-line">{convertedVal}</div>
-                          <div className="text-[9px] text-[#D8BD82]/80 mt-0.5 whitespace-nowrap badge-one-line">{u.region}</div>
+                          <div className="text-sm font-extrabold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{convertedVal}</div>
+                          <div className="text-[9px] text-amber-600 dark:text-[#D8BD82]/80 mt-0.5 whitespace-nowrap badge-one-line">{u.region}</div>
                         </div>
                       );
                     })}
@@ -465,26 +465,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-3">
-                  <div className="text-xs font-bold text-[#D8BD82] whitespace-nowrap badge-one-line">PDF Document Processing & Local Transfer</div>
+                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
+                  <div className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">PDF Document Processing & Local Transfer</div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 space-y-1">
-                      <FileText className="w-5 h-5 text-[#E03A3E] mb-1" />
-                      <div className="text-xs font-bold text-[#F5F2EE] whitespace-nowrap badge-one-line">Merge & Split PDFs</div>
-                      <div className="text-[10px] text-[#B8B3AF]">Combine multiple court filings into a single indexed PDF.</div>
+                    <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
+                      <FileText className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
+                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">Merge & Split PDFs</div>
+                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">Combine multiple court filings into a single indexed PDF.</div>
                     </div>
 
-                    <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 space-y-1">
-                      <Lock className="w-5 h-5 text-[#D8BD82] mb-1" />
-                      <div className="text-xs font-bold text-[#F5F2EE] whitespace-nowrap badge-one-line">Encrypt & Password</div>
-                      <div className="text-[10px] text-[#B8B3AF]">Add 256-bit passwords to secure client documents.</div>
+                    <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
+                      <Lock className="w-5 h-5 text-amber-700 dark:text-[#D8BD82] mb-1" />
+                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">Encrypt & Password</div>
+                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">Add 256-bit passwords to secure client documents.</div>
                     </div>
 
-                    <div className="p-3.5 bg-white/5 rounded-xl border border-white/10 space-y-1">
-                      <Share2 className="w-5 h-5 text-[#E03A3E] mb-1" />
-                      <div className="text-xs font-bold text-[#F5F2EE] whitespace-nowrap badge-one-line">LessShare Transfer</div>
-                      <div className="text-[10px] text-[#B8B3AF]">Send files peer-to-peer via direct local Wi-Fi.</div>
+                    <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
+                      <Share2 className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
+                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">LessShare Transfer</div>
+                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">Send files peer-to-peer via direct local Wi-Fi.</div>
                     </div>
                   </div>
                 </div>
@@ -501,22 +501,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-[#0A0A0C]/90 p-4 rounded-2xl border border-white/10 space-y-3">
-                  <div className="flex items-center justify-between text-xs font-bold text-[#D8BD82] whitespace-nowrap badge-one-line">
+                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
+                  <div className="flex items-center justify-between text-xs font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">
                     <span>Direct WhatsApp Utility</span>
-                    <span className="text-[10px] bg-[#25D366]/20 text-[#25D366] px-2 py-0.5 rounded-md border border-[#25D366]/40">Real Working Tool</span>
+                    <span className="text-[10px] bg-green-100 dark:bg-[#25D366]/20 text-green-700 dark:text-[#25D366] px-2 py-0.5 rounded-md border border-green-200 dark:border-[#25D366]/40">Real Working Tool</span>
                   </div>
                   
-                  <div className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-3 max-w-lg">
-                    <div className="text-xs text-[#B8B3AF] leading-relaxed">
+                  <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-3 max-w-lg">
+                    <div className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
                       Enter any phone number below to open a direct WhatsApp chat window without saving the number to your contact list.
                     </div>
                     
                     {/* Compact input & Left-aligned Chat Now Button */}
                     <div className="flex flex-wrap items-center justify-start gap-2.5 pt-1">
                       {/* Compact Number Input Box */}
-                      <div className="flex items-center gap-1.5 bg-[#0A0A0C] border border-white/15 rounded-xl px-3 py-2 w-36 sm:w-44 focus-within:border-[#C21F2F] transition-colors">
-                        <span className="text-xs font-bold text-[#D8BD82] shrink-0">+91</span>
+                      <div className="flex items-center gap-1.5 bg-white dark:bg-[#0A0A0C] border border-slate-200 dark:border-white/15 rounded-xl px-3 py-2 w-36 sm:w-44 focus-within:border-[#C21F2F] transition-colors">
+                        <span className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] shrink-0">+91</span>
                         <input
                           type="tel"
                           value={waNumber}
@@ -525,7 +525,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                             if (e.key === 'Enter') handleOpenWhatsApp();
                           }}
                           placeholder="9876543210"
-                          className="w-full bg-transparent text-xs font-semibold text-[#F5F2EE] focus:outline-none"
+                          className="w-full bg-transparent text-xs font-semibold text-slate-900 dark:text-[#F5F2EE] placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none"
                           maxLength={15}
                         />
                       </div>
@@ -541,8 +541,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       </button>
                     </div>
 
-                    <div className="text-[10px] text-[#77736F] flex items-center gap-1 pt-0.5">
-                      <Lock className="w-3 h-3 text-[#D8BD82] shrink-0" />
+                    <div className="text-[10px] text-slate-500 dark:text-[#77736F] flex items-center gap-1 pt-0.5">
+                      <Lock className="w-3 h-3 text-amber-700 dark:text-[#D8BD82] shrink-0" />
                       <span>Opens WhatsApp app or web directly on your device. Zero data saved.</span>
                     </div>
                   </div>
@@ -738,7 +738,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer active:scale-95 ${
+              className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? 'btn-crimson font-bold text-white shadow-md'
                   : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'

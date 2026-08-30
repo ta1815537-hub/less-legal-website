@@ -53,11 +53,13 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-      document.documentElement.lang = lang;
-      triggerGoogleTranslate(lang);
+    if (lang !== language) {
+      setLanguageState(lang);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+        document.documentElement.lang = lang;
+        triggerGoogleTranslate(lang);
+      }
     }
   };
 
@@ -68,6 +70,15 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     document.documentElement.lang = language;
     
+    // Set initial cookie based on language state so Google Translate initializes correctly
+    if (typeof window !== 'undefined') {
+      const langCode = language === 'hi' ? '/en/hi' : '/en/en';
+      document.cookie = `googtrans=${langCode}; path=/;`;
+      if (window.location.hostname) {
+        document.cookie = `googtrans=${langCode}; path=/; domain=${window.location.hostname};`;
+      }
+    }
+    
     // Inject Google Translate script if not present
     if (typeof window !== 'undefined') {
       window.googleTranslateElementInit = () => {
@@ -77,7 +88,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               pageLanguage: 'en',
               includedLanguages: 'en,hi',
               layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-              autoDisplay: false
+              autoDisplay: true
             },
             'google_translate_element'
           );
