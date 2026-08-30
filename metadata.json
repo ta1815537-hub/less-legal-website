@@ -1,0 +1,6 @@
+{
+  "name": "Less Legal",
+  "description": "Less Legal brings useful legal resources, PDF tools, notes, calculators and everyday digital utilities together in one Android application.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

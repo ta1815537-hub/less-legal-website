@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #1e293b;
+    background-color: #f8fafc;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Custom Neomorphic and Soft-Shadow Utilities */
+.neo-box {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  box-shadow: 8px 8px 24px rgba(148, 163, 184, 0.12), -8px -8px 24px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.neo-box-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neo-box-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 12px 14px 30px rgba(148, 163, 184, 0.18), -10px -10px 28px rgba(255, 255, 255, 0.95);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.neo-inset {
+  background: #f1f5f9;
+  border-radius: 0.875rem;
+  box-shadow: inset 3px 3px 7px rgba(148, 163, 184, 0.2), inset -3px -3px 7px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.neo-btn {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 4px 4px 12px rgba(148, 163, 184, 0.14), -4px -4px 12px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  transition: all 0.2s ease;
+}
+
+.neo-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 6px 6px 16px rgba(148, 163, 184, 0.2), -5px -5px 14px rgba(255, 255, 255, 0.95);
+}
+
+.neo-btn:active {
+  transform: translateY(0);
+  box-shadow: inset 2px 2px 5px rgba(148, 163, 184, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+}
