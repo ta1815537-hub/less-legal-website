@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from './types';
+import { AnimatePresence } from 'motion/react';
+import { PageTransition } from './components/MotionWrappers';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
@@ -84,23 +86,28 @@ export default function App() {
       {/* Navigation Header */}
       <Navbar currentRoute={currentRoute} onNavigate={navigateTo} />
 
-      {/* Main Page Route Content */}
-      <main className="flex-1">
-        {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}
-        {currentRoute === 'about' && <AboutPage onNavigate={navigateTo} />}
-        {currentRoute === 'features' && <FeaturesPage onNavigate={navigateTo} />}
-        {currentRoute === 'premium' && <PremiumPage onNavigate={navigateTo} />}
-        {currentRoute === 'contact' && <ContactPage onNavigate={navigateTo} />}
-        {currentRoute === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
-        {currentRoute === 'terms' && <TermsPage onNavigate={navigateTo} />}
-        {currentRoute === 'refund' && <RefundPolicyPage onNavigate={navigateTo} />}
-        {currentRoute === 'disclaimer' && <DisclaimerPage onNavigate={navigateTo} />}
-        {currentRoute === 'download' && <DownloadPage onNavigate={navigateTo} />}
+      {/* Main Page Route Content with Smooth Transitions */}
+      <main className="flex-1 flex flex-col">
+        <AnimatePresence mode="wait">
+          <PageTransition routeKey={currentRoute}>
+            {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}
+            {currentRoute === 'about' && <AboutPage onNavigate={navigateTo} />}
+            {currentRoute === 'features' && <FeaturesPage onNavigate={navigateTo} />}
+            {currentRoute === 'premium' && <PremiumPage onNavigate={navigateTo} />}
+            {currentRoute === 'contact' && <ContactPage onNavigate={navigateTo} />}
+            {currentRoute === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
+            {currentRoute === 'terms' && <TermsPage onNavigate={navigateTo} />}
+            {currentRoute === 'refund' && <RefundPolicyPage onNavigate={navigateTo} />}
+            {currentRoute === 'disclaimer' && <DisclaimerPage onNavigate={navigateTo} />}
+            {currentRoute === 'download' && <DownloadPage onNavigate={navigateTo} />}
+          </PageTransition>
+        </AnimatePresence>
       </main>
 
-      {/* Footer with Mandatory Direct Policy Links for PayU Merchant Verification */}
+      {/* Footer with Mandatory Direct Policy Links */}
       <Footer onNavigate={navigateTo} />
 
     </div>
   );
 }
+
