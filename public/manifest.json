@@ -1,0 +1,18 @@
+{
+  "name": "Less Legal – Legal Knowledge & Digital Utilities",
+  "short_name": "Less Legal",
+  "description": "Less Legal brings useful legal resources, PDF tools, notes, calculators and everyday digital utilities together in one Android application.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect x='16' y='16' width='480' height='480' rx='110' fill='%230D0D0F' stroke='%23D8BD82' stroke-width='10'/%3E%3Cpath d='M346 172C332 144 340 102 376 76C408 53 430 84 416 122C404 154 372 188 346 172Z' fill='%23D8BD82'/%3E%3Cpath d='M306 126C210 102 102 170 102 278C102 374 196 438 280 422C220 404 168 350 168 282C168 200 234 154 306 126Z' fill='%23C21F2F'/%3E%3Ccircle cx='256' cy='260' r='52' fill='%23D8BD82'/%3E%3Cpath d='M226 348C226 332 238 322 254 322C320 322 378 312 402 242C418 296 386 394 286 400C248 402 226 380 226 348Z' fill='%238B0000'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
