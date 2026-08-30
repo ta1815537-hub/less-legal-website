@@ -88,6 +88,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button
+                  id="footer-nav-founder"
+                  onClick={() => onNavigate('founder')}
+                  className="text-amber-800 dark:text-[#D8BD82] hover:text-[#C21F2F] dark:hover:text-[#F5F2EE] font-semibold transition-colors flex items-center gap-1.5 cursor-pointer text-left"
+                >
+                  <span>Founder (Anurag Gurauli)</span>
+                </button>
+              </li>
+              <li>
+                <button
                   id="footer-nav-features"
                   onClick={() => onNavigate('features')}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"

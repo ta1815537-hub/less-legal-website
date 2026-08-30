@@ -7,30 +7,33 @@ import {
   HeroAmbientGlow, GlowingButton 
 } from '../components/MotionWrappers';
 import { motion } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface AboutPageProps {
   onNavigate: (route: PageRoute) => void;
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
+
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 overflow-hidden bg-[#080808]">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 overflow-hidden bg-slate-50 dark:bg-[#080808]">
       <HeroAmbientGlow />
       
       {/* Page Header */}
       <ScrollReveal direction="up" className="space-y-4 text-center max-w-3xl mx-auto relative z-10">
         <motion.div 
           whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-[#D8BD82]/30 text-[#D8BD82] text-xs font-bold shadow-xs cursor-default"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/60 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default"
         >
-          <Scale className="w-3.5 h-3.5 text-[#E03A3E] animate-pulse" />
-          <span>About Less Legal</span>
+          <Scale className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] animate-pulse" />
+          <span>{t.about.badge}</span>
         </motion.div>
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#F5F2EE] tracking-tight">
-          Purpose, Utility & Philosophy
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          {t.about.title}
         </h1>
-        <p className="text-base sm:text-lg text-[#B8B3AF] leading-relaxed">
-          {SITE_CONFIG.shortDescription}
+        <p className="text-base sm:text-lg text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+          {t.about.subtitle}
         </p>
       </ScrollReveal>
 
@@ -41,15 +44,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             <div className="w-10 h-10 rounded-xl bg-[#C21F2F] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
               <AlertTriangle className="w-5 h-5" />
             </div>
-            <h2 className="text-lg font-bold text-[#F5F2EE]">
-              Official Independence & Non-Government Declaration
+            <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE]">
+              {t.about.declarationTitle}
             </h2>
           </div>
-          <p className="text-sm text-[#F5F2EE] leading-relaxed">
-            <strong>Less Legal is an independent software application</strong> developed to provide digital utilities, calculators, and educational legal reference materials.
+          <p className="text-sm text-slate-800 dark:text-[#F5F2EE] leading-relaxed font-semibold">
+            {t.about.declarationP1}
           </p>
-          <p className="text-xs text-[#B8B3AF] leading-relaxed">
-            Less Legal is <strong>NOT</strong> affiliated with, associated with, authorized by, endorsed by, or in any way officially connected to the Government of India, the Supreme Court of India, any High Court, District Court, Bar Council, or any ministry or department of the central or state governments. All official government portal links provided in the app are purely informational shortcuts to public resources.
+          <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+            {t.about.declarationP2}
           </p>
         </div>
       </ScrollReveal>
@@ -60,25 +63,25 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         <ScrollReveal direction="left" delay={0.1} className="h-full">
           <div className="glass-card p-6 sm:p-8 flex flex-col justify-between h-full space-y-4">
             <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/20 text-[#E03A3E] border border-[#C21F2F]/40 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/40 flex items-center justify-center font-bold">
                 <Smartphone className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold text-[#F5F2EE]">
-                What is Less Legal?
+              <h3 className="text-xl font-bold text-slate-900 dark:text-[#F5F2EE]">
+                {t.about.whatIsTitle}
               </h3>
-              <p className="text-sm text-[#B8B3AF] leading-relaxed">
-                Less Legal was created to bridge the gap between complex legal workflows and everyday digital convenience. Rather than juggling multiple standalone apps for file operations, fee calculations, hearing schedules, and statutory lookups, Less Legal combines them into a cohesive Android utility suite.
+              <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+                {t.about.whatIsDesc}
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/10 space-y-2 text-xs text-[#B8B3AF]">
+            <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2 text-xs text-slate-600 dark:text-[#B8B3AF]">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-[#D8BD82] shrink-0" />
-                <span>Native Android performance and layout</span>
+                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <span>{t.about.whatIsItem1}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-[#D8BD82] shrink-0" />
-                <span>Optimized for low-bandwidth and offline usability</span>
+                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <span>{t.about.whatIsItem2}</span>
               </div>
             </div>
           </div>
@@ -87,25 +90,25 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         <ScrollReveal direction="right" delay={0.14} className="h-full">
           <div className="glass-card p-6 sm:p-8 flex flex-col justify-between h-full space-y-4">
             <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-[#D8BD82]/20 text-[#D8BD82] border border-[#D8BD82]/40 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/40 flex items-center justify-center font-bold">
                 <Lock className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold text-[#F5F2EE]">
-                Privacy & Local Processing
+              <h3 className="text-xl font-bold text-slate-900 dark:text-[#F5F2EE]">
+                {t.about.privacyTitle}
               </h3>
-              <p className="text-sm text-[#B8B3AF] leading-relaxed">
-                Legal documents and notes are sensitive. Less Legal is engineered with an on-device architecture: PDF merging, splitting, reading, and notes are processed directly on your Android hardware rather than transmitted to remote servers.
+              <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+                {t.about.privacyDesc}
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/10 space-y-2 text-xs text-[#B8B3AF]">
+            <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2 text-xs text-slate-600 dark:text-[#B8B3AF]">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-[#D8BD82] shrink-0" />
-                <span>No unauthorized cloud uploading of private PDFs</span>
+                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <span>{t.about.privacyItem1}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-[#D8BD82] shrink-0" />
-                <span>Encrypted local direct device sharing via Less Share</span>
+                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <span>{t.about.privacyItem2}</span>
               </div>
             </div>
           </div>
@@ -116,44 +119,44 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       {/* Core Principles */}
       <div className="space-y-6 relative z-10">
         <ScrollReveal direction="up" className="text-center space-y-1">
-          <h2 className="text-2xl font-bold text-[#F5F2EE]">Our Core Principles</h2>
-          <p className="text-sm text-[#B8B3AF]">Built around utility, transparency, and accuracy.</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">{t.about.principlesTitle}</h2>
+          <p className="text-sm text-slate-600 dark:text-[#B8B3AF]">{t.about.principlesSub}</p>
         </ScrollReveal>
 
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           <StaggerItem>
             <div className="glass-card p-6 space-y-3 h-full">
-              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-[#E03A3E] flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center font-bold">
                 <FileCheck className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-[#F5F2EE]">Factual Transparency</h3>
-              <p className="text-xs text-[#B8B3AF] leading-relaxed">
-                We present factual statutory references, exact formulas for calculations, and straightforward descriptions of what each feature can and cannot do.
+              <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">{t.about.p1Title}</h3>
+              <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+                {t.about.p1Desc}
               </p>
             </div>
           </StaggerItem>
 
           <StaggerItem>
             <div className="glass-card p-6 space-y-3 h-full">
-              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-[#D8BD82] flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center font-bold">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-[#F5F2EE]">Honest Pricing</h3>
-              <p className="text-xs text-[#B8B3AF] leading-relaxed">
-                Ad-free access is offered through transparent one-time passes (₹59 for 3 Months or ₹179 for 1 Year). We never perform hidden recurring subscription debits.
+              <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">{t.about.p2Title}</h3>
+              <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+                {t.about.p2Desc}
               </p>
             </div>
           </StaggerItem>
 
           <StaggerItem>
             <div className="glass-card p-6 space-y-3 h-full">
-              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-[#E03A3E] flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center font-bold">
                 <Scale className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-[#F5F2EE]">No Advisory Substitution</h3>
-              <p className="text-xs text-[#B8B3AF] leading-relaxed">
-                Less Legal provides informational tools and calculation utilities. We explicitly remind users that no digital tool replaces qualified legal counsel for active litigation.
+              <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">{t.about.p3Title}</h3>
+              <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+                {t.about.p3Desc}
               </p>
             </div>
           </StaggerItem>
@@ -162,9 +165,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Call to actions */}
-      <ScrollReveal direction="up" className="p-8 glass-panel-gradient rounded-3xl text-center space-y-4 relative z-10 border border-white/15">
-        <h2 className="text-2xl font-bold tracking-tight text-[#F5F2EE]">Explore Less Legal Tools</h2>
-        <p className="text-sm text-[#B8B3AF] max-w-xl mx-auto">
+      <ScrollReveal direction="up" className="p-8 glass-panel-gradient rounded-3xl text-center space-y-4 relative z-10 border border-slate-200 dark:border-white/15">
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-[#F5F2EE]">{t.common.exploreFeatures}</h2>
+        <p className="text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto">
           Review our complete catalog of verified features or download the app on Android.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
@@ -173,14 +176,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('features')}
             className="px-6 py-3 text-xs"
           >
-            <span>Explore All Features</span>
+            <span>{t.common.exploreFeatures}</span>
           </GlowingButton>
           <GlowingButton
             variant="outline"
             onClick={() => onNavigate('contact')}
             className="px-6 py-3 text-xs"
           >
-            <span>Contact & Support</span>
+            <span>{t.nav.contact}</span>
           </GlowingButton>
         </div>
       </ScrollReveal>
@@ -188,3 +191,4 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+

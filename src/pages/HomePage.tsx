@@ -6,7 +6,7 @@ import {
   FileText, Calendar, Compass, Scale, Lock, CheckCircle2, 
   Smartphone, Check, Layers, LayoutGrid,
   Search, Zap, Share2, MessageSquare, ChevronRight,
-  Copy, Play, ChevronDown
+  Copy, Play, ChevronDown, UserCheck
 } from 'lucide-react';
 import { LTLogo } from '../components/LTLogo';
 import { 
@@ -14,6 +14,7 @@ import {
   StaggerItem, GlowingButton, HeroAmbientGlow 
 } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HomePageProps {
   onNavigate: (route: PageRoute) => void;
@@ -30,6 +31,9 @@ const SQFT_RATES: Record<string, { label: string; rate: number; region: string }
 };
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
+  const [founderImgErr, setFounderImgErr] = useState(false);
+
   // 1. Interactive Simulator Tab
   const [simTab, setSimTab] = useState<'diary' | 'converter' | 'pdf' | 'whatsapp'>('diary');
 
@@ -571,6 +575,72 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             );
           })}
         </StaggerContainer>
+      </section>
+
+      {/* FOUNDER PREVIEW SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollReveal direction="up" className="relative z-10">
+          <div className="p-6 sm:p-10 rounded-3xl glass-panel-gradient border border-slate-200 dark:border-white/15 shadow-2xl overflow-hidden relative">
+            
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+              
+              {/* Founder Image Thumbnail */}
+              <div className="md:col-span-4 flex justify-center">
+                <div className="relative w-48 sm:w-56 aspect-[4/5] rounded-2xl overflow-hidden border-2 border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl bg-[#0D131F]">
+                  {!founderImgErr ? (
+                    <img 
+                      src="/images/founder.jpg" 
+                      alt="Anurag Gurauli — Founder of Less Technologies"
+                      onError={() => setFounderImgErr(true)}
+                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-b from-[#0F172A] to-[#1A0A0D] flex flex-col items-center justify-center p-4 text-center">
+                      <Scale className="w-10 h-10 text-[#D8BD82] mb-2" />
+                      <div className="text-sm font-bold text-[#F5F2EE]">{t.founder.name}</div>
+                      <div className="text-[10px] text-[#D8BD82]">{t.founder.role}</div>
+                    </div>
+                  )}
+                  <div className="absolute bottom-0 inset-x-0 p-2 bg-black/80 backdrop-blur-xs text-center">
+                    <span className="text-[10px] font-bold text-[#D8BD82] tracking-wider uppercase">{t.founder.badge}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Founder Info & CTA */}
+              <div className="md:col-span-8 space-y-4 text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold">
+                  <UserCheck className="w-3.5 h-3.5 text-[#C21F2F]" />
+                  <span>{t.home.founderPreviewBadge}</span>
+                </div>
+
+                <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">
+                  {t.home.founderPreviewTitle}
+                </h3>
+
+                <p className="text-sm sm:text-base text-slate-700 dark:text-[#B8B3AF] leading-relaxed">
+                  {t.home.founderPreviewText}
+                </p>
+
+                <p className="text-xs text-amber-800 dark:text-[#D8BD82] font-semibold italic">
+                  {t.founder.shortQuote}
+                </p>
+
+                <div className="pt-2">
+                  <GlowingButton
+                    variant="primary"
+                    onClick={() => onNavigate('founder')}
+                    className="px-6 py-3 text-xs font-bold"
+                  >
+                    <span>{t.common.meetFounder}</span>
+                  </GlowingButton>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </ScrollReveal>
       </section>
 
       {/* 4. SEARCHABLE & FILTERABLE FEATURE CATALOG */}

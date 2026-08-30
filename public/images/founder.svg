@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1060" width="100%" height="100%">
+  <defs>
+    <!-- Background Peach Gradient from Photo -->
+    <linearGradient id="peachBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F3C3B0"/>
+      <stop offset="50%" stop-color="#EEB7A2"/>
+      <stop offset="100%" stop-color="#E4A892"/>
+    </linearGradient>
+
+    <!-- Navy Blue T-Shirt Gradient -->
+    <linearGradient id="navyShirt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#234168"/>
+      <stop offset="40%" stop-color="#193252"/>
+      <stop offset="100%" stop-color="#0F213A"/>
+    </linearGradient>
+
+    <!-- Skin Tones -->
+    <linearGradient id="skin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F2BF9E"/>
+      <stop offset="60%" stop-color="#E2A986"/>
+      <stop offset="100%" stop-color="#C98B68"/>
+    </linearGradient>
+
+    <!-- Outer Dark Vintage Border Texture -->
+    <linearGradient id="outerBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141B26"/>
+      <stop offset="50%" stop-color="#0A0E15"/>
+      <stop offset="100%" stop-color="#05070B"/>
+    </linearGradient>
+
+    <!-- Frame Shadow -->
+    <filter id="innerShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- 1. Outer Dark Grain Vintage Frame -->
+  <rect width="800" height="1060" fill="url(#outerBorder)"/>
+
+  <!-- Vintage Specks on Dark Outer Border -->
+  <circle cx="120" cy="80" r="1.5" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="710" cy="140" r="1.2" fill="#FFFFFF" opacity="0.25"/>
+  <circle cx="90" cy="950" r="1" fill="#FFFFFF" opacity="0.4"/>
+  <circle cx="730" cy="890" r="1.5" fill="#FFFFFF" opacity="0.3"/>
+
+  <!-- 2. Inner White/Cream Matte Border -->
+  <rect x="50" y="50" width="700" height="960" fill="#F8EFEA" rx="2" filter="url(#innerShadow)"/>
+
+  <!-- 3. Photo Canvas Box -->
+  <g transform="translate(68, 68)">
+    <clipPath id="photoClip">
+      <rect width="664" height="924" rx="2"/>
+    </clipPath>
+
+    <g clip-path="url(#photoClip)">
+      <!-- Peach Photo Background -->
+      <rect width="664" height="924" fill="url(#peachBg)"/>
+
+      <!-- Ambient Back Shadow -->
+      <ellipse cx="332" cy="480" rx="220" ry="280" fill="#2A1710" opacity="0.08"/>
+
+      <!-- SHOULDERS & NAVY SHIRT -->
+      <path d="M 40 924 L 40 700 C 60 630, 160 575, 332 575 C 504 575, 604 630, 624 700 L 624 924 Z" fill="url(#navyShirt)"/>
+      <!-- Shirt Crew Neckband -->
+      <path d="M 235 580 C 270 630, 394 630, 429 580 C 405 650, 259 650, 235 580 Z" fill="#2E4C78"/>
+      <path d="M 245 582 C 275 622, 389 622, 419 582 C 400 638, 264 638, 245 582 Z" fill="#142640"/>
+
+      <!-- Shirt Fabric Folds -->
+      <path d="M 120 750 Q 200 800 280 820" stroke="#102038" stroke-width="8" fill="none" opacity="0.4" stroke-linecap="round"/>
+      <path d="M 540 750 Q 460 800 380 820" stroke="#102038" stroke-width="8" fill="none" opacity="0.4" stroke-linecap="round"/>
+
+      <!-- NECK -->
+      <path d="M 255 420 L 409 420 L 420 590 C 375 615, 289 615, 244 590 Z" fill="url(#skin)"/>
+      <path d="M 255 420 C 285 480, 379 480, 409 420 C 385 530, 279 530, 255 420 Z" fill="#C48666" opacity="0.5"/>
+
+      <!-- HEAD & FACE BASE -->
+      <!-- Jawline and Face Shape matching photo -->
+      <path d="M 210 280 C 200 370, 220 500, 332 515 C 444 500, 464 370, 454 280 C 444 190, 380 155, 332 155 C 284 155, 220 190, 210 280 Z" fill="url(#skin)"/>
+
+      <!-- EARS -->
+      <ellipse cx="205" cy="355" rx="18" ry="32" fill="#DA9C7B"/>
+      <ellipse cx="459" cy="355" rx="18" ry="32" fill="#DA9C7B"/>
+      <ellipse cx="207" cy="355" rx="10" ry="20" fill="#C08262"/>
+      <ellipse cx="457" cy="355" rx="10" ry="20" fill="#C08262"/>
+
+      <!-- HAIR (Short neat haircut matching photo) -->
+      <path d="M 195 320 C 188 230, 225 150, 280 135 C 310 125, 350 125, 385 138 C 435 155, 470 230, 465 320 C 452 240, 430 185, 385 168 C 345 152, 310 155, 275 168 C 230 185, 208 240, 195 320 Z" fill="#1C1819"/>
+      <!-- Top Hair Volume -->
+      <path d="M 230 180 C 260 130, 330 115, 375 125 C 420 138, 450 175, 455 210 C 435 155, 375 142, 332 142 C 280 142, 240 162, 230 180 Z" fill="#2A2426"/>
+
+      <!-- EYES & EYEBROWS -->
+      <!-- Thick Trimmed Eyebrows -->
+      <path d="M 235 292 C 260 280, 290 282, 308 296 C 290 288, 260 286, 235 296 Z" fill="#1A1517"/>
+      <path d="M 356 296 C 374 282, 404 280, 429 292 C 404 286, 374 288, 356 296 Z" fill="#1A1517"/>
+
+      <!-- Eye Sockets & Lids -->
+      <ellipse cx="272" cy="322" rx="22" ry="13" fill="#FFFFFF"/>
+      <ellipse cx="392" cy="322" rx="22" ry="13" fill="#FFFFFF"/>
+      <circle cx="272" cy="322" r="10" fill="#1C1618"/>
+      <circle cx="392" cy="322" r="10" fill="#1C1618"/>
+      <circle cx="270" cy="320" r="3" fill="#FFFFFF"/>
+      <circle cx="390" cy="320" r="3" fill="#FFFFFF"/>
+
+      <!-- Upper Eyeliner -->
+      <path d="M 246 318 Q 272 308 298 318" stroke="#1A1517" stroke-width="3" fill="none"/>
+      <path d="M 366 318 Q 392 308 418 318" stroke="#1A1517" stroke-width="3" fill="none"/>
+
+      <!-- NOSE -->
+      <path d="M 332 290 L 324 370 Q 332 382 340 370 Z" fill="#CD8E6D"/>
+      <!-- Nostrils -->
+      <ellipse cx="318" cy="375" rx="7" ry="4" fill="#92593C"/>
+      <ellipse cx="346" cy="375" rx="7" ry="4" fill="#92593C"/>
+
+      <!-- MUSTACHE (Exact trimmed shape from uploaded photo) -->
+      <path d="M 260 405 C 285 390, 315 396, 332 404 C 349 396, 379 390, 404 405 C 388 424, 350 422, 332 414 C 314 422, 276 424, 260 405 Z" fill="#161214"/>
+
+      <!-- SMILE & LIPS -->
+      <!-- Teeth showing slightly -->
+      <path d="M 285 428 Q 332 444 379 428 Q 332 450 285 428 Z" fill="#FFFFFF"/>
+      <path d="M 280 426 Q 332 446 384 426" stroke="#A65842" stroke-width="3.5" fill="none"/>
+
+      <!-- Chin Dimple / Shadow -->
+      <path d="M 312 475 Q 332 482 352 475" stroke="#BA7A5A" stroke-width="3" fill="none" opacity="0.6"/>
+
+      <!-- Vintage Photo Overlay Texture Grain -->
+      <rect width="664" height="924" fill="#503020" opacity="0.03" style="mix-blend-mode: overlay;"/>
+    </g>
+  </g>
+</svg>

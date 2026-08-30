@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
-import { Download, Sparkles, Moon, Sun } from 'lucide-react';
+import { Download, Sparkles, Moon, Sun, Globe } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { motion, AnimatePresence } from 'motion/react';
 import { EASING_SPRING } from './MotionWrappers';
 import { useTheme } from '../hooks/useTheme';
+import { useLanguage } from '../context/LanguageContext';
 
 interface NavbarProps {
   currentRoute: PageRoute;
@@ -17,6 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
   
   const { isDark: globalIsDark, toggleTheme } = useTheme();
+  const { language, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 15);
@@ -25,11 +27,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   }, []);
 
   const navLinks: { label: string; route: PageRoute }[] = [
-    { label: 'Home', route: 'home' },
-    { label: 'About', route: 'about' },
-    { label: 'Features', route: 'features' },
-    { label: 'Premium', route: 'premium' },
-    { label: 'Contact', route: 'contact' },
+    { label: t.nav.home, route: 'home' },
+    { label: t.nav.founder, route: 'founder' },
+    { label: t.nav.about, route: 'about' },
+    { label: t.nav.features, route: 'features' },
+    { label: t.nav.premium, route: 'premium' },
+    { label: t.nav.contact, route: 'contact' },
   ];
 
   const handleNavClick = (route: PageRoute) => {
@@ -99,8 +102,26 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             })}
           </nav>
 
-          {/* CTA Controls & Theme Toggle */}
-          <div className="hidden sm:flex items-center gap-2 md:gap-3 shrink-0">
+          {/* CTA Controls, Language & Theme Toggle */}
+          <div className="hidden sm:flex items-center gap-2 md:gap-2.5 shrink-0">
+            
+            {/* Global Language Selector [ EN | हिन्दी ] */}
+            <motion.button
+              onClick={toggleLanguage}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.94 }}
+              className="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200/80 dark:hover:bg-white/10 text-slate-800 dark:text-[#F5F2EE] border border-slate-200/90 dark:border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap shrink-0"
+              aria-label="Switch Language"
+              title="Switch Language / भाषा बदलें"
+            >
+              <Globe className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#D8BD82] shrink-0" />
+              <div className="text-xs font-bold flex items-center gap-1 whitespace-nowrap">
+                <span className={language === 'en' ? 'text-[#C21F2F] dark:text-[#D8BD82] font-black' : 'text-slate-500 dark:text-slate-400'}>EN</span>
+                <span className="text-slate-300 dark:text-slate-600">|</span>
+                <span className={language === 'hi' ? 'text-[#C21F2F] dark:text-[#D8BD82] font-black' : 'text-slate-500 dark:text-slate-400'}>हिन्दी</span>
+              </div>
+            </motion.button>
+
             {/* Theme Switcher Toggle Button */}
             <motion.button
               onClick={toggleTheme}
@@ -113,12 +134,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               {globalIsDark ? (
                 <>
                   <Sun className="w-3.5 h-3.5 text-[#D8BD82]" />
-                  <span className="text-xs font-bold text-[#D8BD82] whitespace-nowrap">Light Theme</span>
+                  <span className="text-xs font-bold text-[#D8BD82] whitespace-nowrap">Light</span>
                 </>
               ) : (
                 <>
                   <Moon className="w-3.5 h-3.5 text-slate-700" />
-                  <span className="text-xs font-bold text-slate-800 whitespace-nowrap">Dark Theme</span>
+                  <span className="text-xs font-bold text-slate-800 whitespace-nowrap">Dark</span>
                 </>
               )}
             </motion.button>
@@ -129,10 +150,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               onClick={() => handleNavClick('premium')}
               whileHover={{ y: -1, scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
-              className="text-xs font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/10 hover:bg-amber-500/20 dark:hover:bg-[#D8BD82]/20 border border-amber-600/30 dark:border-[#D8BD82]/30 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer whitespace-nowrap shrink-0"
+              className="text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-xl text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/10 hover:bg-amber-500/20 dark:hover:bg-[#D8BD82]/20 border border-amber-600/30 dark:border-[#D8BD82]/30 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer whitespace-nowrap shrink-0"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] animate-pulse shrink-0" />
-              <span className="whitespace-nowrap">Ad-Free Plans</span>
+              <span className="whitespace-nowrap">{t.nav.premium}</span>
             </motion.button>
 
             {/* Download App Primary Crimson Button */}
@@ -142,16 +163,26 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               whileHover={{ y: -1, scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               transition={{ duration: 0.2, ease: EASING_SPRING }}
-              className="relative group overflow-hidden px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold btn-crimson flex items-center gap-1.5 sm:gap-2 cursor-pointer whitespace-nowrap shrink-0"
+              className="relative group overflow-hidden px-3 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold btn-crimson flex items-center gap-1.5 sm:gap-2 cursor-pointer whitespace-nowrap shrink-0"
             >
               <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
               <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-y-0.5 transition-transform duration-200 shrink-0" />
-              <span className="whitespace-nowrap">Download App</span>
+              <span className="whitespace-nowrap">{t.nav.download}</span>
             </motion.button>
           </div>
 
           {/* Mobile Navigation Trigger */}
-          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex lg:hidden items-center gap-1 sm:gap-1.5 shrink-0">
+            {/* Mobile Language Switcher */}
+            <motion.button
+              onClick={toggleLanguage}
+              whileTap={{ scale: 0.92 }}
+              className="px-2 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-800 dark:text-[#D8BD82] border border-slate-200 dark:border-white/10 text-xs font-bold cursor-pointer shrink-0 flex items-center gap-1"
+            >
+              <Globe className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#D8BD82]" />
+              <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
+            </motion.button>
+
             <motion.button
               onClick={toggleTheme}
               whileTap={{ scale: 0.92 }}
@@ -238,24 +269,34 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.18, duration: 0.25 }}
-              className="pt-3 border-t border-slate-200 dark:border-white/10 grid grid-cols-2 gap-2"
+              className="pt-3 border-t border-slate-200 dark:border-white/10 space-y-2"
             >
               <button
-                id="mobile-premium-btn"
-                onClick={() => handleNavClick('premium')}
-                className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/10 border border-amber-600/30 dark:border-[#D8BD82]/30 text-center flex items-center justify-center gap-1.5 active:scale-95 transition-transform cursor-pointer whitespace-nowrap"
+                onClick={toggleLanguage}
+                className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-slate-900 dark:text-[#F5F2EE] bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
-                <span className="whitespace-nowrap">Ad-Free Plans</span>
+                <Globe className="w-4 h-4 text-[#C21F2F] dark:text-[#D8BD82]" />
+                <span>Switch to {language === 'en' ? 'हिन्दी (Hindi)' : 'English'}</span>
               </button>
-              <button
-                id="mobile-download-drawer-btn"
-                onClick={() => handleNavClick('download')}
-                className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-white btn-crimson text-center flex items-center justify-center gap-1.5 active:scale-95 transition-transform cursor-pointer whitespace-nowrap"
-              >
-                <Download className="w-3.5 h-3.5 shrink-0" />
-                <span className="whitespace-nowrap">Download App</span>
-              </button>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  id="mobile-premium-btn"
+                  onClick={() => handleNavClick('premium')}
+                  className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/10 border border-amber-600/30 dark:border-[#D8BD82]/30 text-center flex items-center justify-center gap-1.5 active:scale-95 transition-transform cursor-pointer whitespace-nowrap"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                  <span className="whitespace-nowrap">{t.nav.premium}</span>
+                </button>
+                <button
+                  id="mobile-download-drawer-btn"
+                  onClick={() => handleNavClick('download')}
+                  className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-white btn-crimson text-center flex items-center justify-center gap-1.5 active:scale-95 transition-transform cursor-pointer whitespace-nowrap"
+                >
+                  <Download className="w-3.5 h-3.5 shrink-0" />
+                  <span className="whitespace-nowrap">{t.nav.download}</span>
+                </button>
+              </div>
             </motion.div>
 
             <div className="pt-2 text-center text-xs font-medium text-slate-500 dark:text-[#77736F]">

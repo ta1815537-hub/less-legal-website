@@ -1,6 +1,7 @@
 export type PageRoute = 
   | 'home'
   | 'about'
+  | 'founder'
   | 'features'
   | 'premium'
   | 'contact'
