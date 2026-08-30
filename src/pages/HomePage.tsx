@@ -115,7 +115,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const faqs = [
     {
       q: "Is Less Legal affiliated with the Government of India or any Court?",
-      a: "No. Less Legal is an entirely independent, private software utility application developed by Less Technologies. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
+      a: "No. Less Legal is an entirely independent, private software utility application developed by Less Creation. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
     },
     {
       q: "Does the app require internet to access Bare Acts and Calculators?",
@@ -549,7 +549,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {t.home.ecosystemBadge || "Product Ecosystem"}
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-            {t.home.ecosystemTitle || "Built by Less Technologies"}
+            {t.home.ecosystemTitle || "Built by Less Creation"}
           </h2>
           <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
             {t.home.ecosystemSub || "Discover our suite of independent digital tools designed to simplify daily workflows."}
@@ -638,7 +638,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   {!founderImgErr ? (
                     <img 
                       src="/images/anurag_tiwari.jpg" 
-                      alt="Anurag Tiwari {Gurauli} — Founder of Less Technologies"
+                      alt="Anurag Tiwari {Gurauli} — Founder of Less Creation"
                       onError={() => setFounderImgErr(true)}
                       className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
                     />
@@ -1052,7 +1052,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 variant="secondary"
                 className="w-full sm:w-auto px-8 py-4 text-sm font-bold"
               >
-                <span>About Less Technologies</span>
+                <span>About Less Creation</span>
               </GlowingButton>
             </div>
 

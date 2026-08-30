@@ -474,7 +474,7 @@ export const translations: Record<Language, TranslationSchema> = {
       termsConditions: "Terms & Conditions",
       refundCancellation: "Refund & Cancellation",
       legalDisclaimer: "Legal Disclaimer",
-      supportAvailable: "Official support is available for all Less Technologies products.",
+      supportAvailable: "Official support is available for all Less Creation products.",
       disclaimerTitle: "Independent Application Disclaimer:",
       disclaimerText: "Less Legal is an independent software application and is not affiliated with, authorized, maintained, sponsored or endorsed by the Government of India, courts, or any state judicial department.",
       readFullDisclaimer: "Read Full Disclaimer",
@@ -486,14 +486,14 @@ export const translations: Record<Language, TranslationSchema> = {
       badge: "FOUNDER & CREATOR",
       name: "Anurag Tiwari {Gurauli}",
       role: "Advocate",
-      subtitle: "Advocate | Founder, Less Technologies",
+      subtitle: "Advocate | Founder, Less Creation",
       practice: "Practicing as an Advocate before the Allahabad High Court.",
-      shortQuote: "“Less Technologies is built around a simple idea: technology should make useful knowledge, tools and digital services easier to access.”",
+      shortQuote: "“Less Creation is built around a simple idea: technology should make useful knowledge, tools and digital services easier to access.”",
 
-      storyTitle: "The Person Behind Less Technologies",
-      storyP1: "My name is Anurag Tiwari {Gurauli}. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Technologies.",
+      storyTitle: "The Person Behind Less Creation",
+      storyP1: "My name is Anurag Tiwari {Gurauli}. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Creation.",
       storyP2: "My professional journey in law has given me a close understanding of the practical challenges faced by advocates, law students and ordinary citizens while accessing legal information and everyday digital tools.",
-      storyP3: "Less Technologies is my effort to bring practical technology into that space — creating simple, useful and accessible digital products that solve real-world problems.",
+      storyP3: "Less Creation is my effort to bring practical technology into that space — creating simple, useful and accessible digital products that solve real-world problems.",
       storyP4: "Less Legal is the first major product in this vision.",
 
       whyTitle: "Why I Created Less Legal",
@@ -512,9 +512,9 @@ export const translations: Record<Language, TranslationSchema> = {
       disclaimerNote: "Less Legal is an informational and utility application. It does not replace a lawyer, court, legal advice, or professional legal representation.",
 
       visionTitle: "My Vision",
-      visionP1: "My vision for Less Technologies is to build a growing ecosystem of practical digital products.",
+      visionP1: "My vision for Less Creation is to build a growing ecosystem of practical digital products.",
       visionP2: "Less Legal is only the beginning.",
-      visionP3: "Over time, Less Technologies can bring together products across different areas such as productivity, utilities, education, media and other practical digital services.",
+      visionP3: "Over time, Less Creation can bring together products across different areas such as productivity, utilities, education, media and other practical digital services.",
       visionP4: "The goal is not to build technology simply for the sake of technology.",
       visionP5: "The goal is to build technology that is genuinely useful to people.",
       visionSteps: {
@@ -526,15 +526,15 @@ export const translations: Record<Language, TranslationSchema> = {
       },
 
       messageTitle: "A Message From The Founder",
-      messageQuote: "I believe technology becomes meaningful when it makes something genuinely useful simpler and more accessible. Less Technologies is being built with that belief.",
-      messageAuthor: "Anurag Tiwari {Gurauli} • Founder, Less Technologies",
+      messageQuote: "I believe technology becomes meaningful when it makes something genuinely useful simpler and more accessible. Less Creation is being built with that belief.",
+      messageAuthor: "Anurag Tiwari {Gurauli} • Founder, Less Creation",
 
       timelineTitle: "From Legal Practice to Digital Innovation",
       timelineItems: [
         { step: "01", title: "Understanding Real-World Legal Needs", desc: "Recognizing the friction advocates and citizens face when locating daily tools and statutory references." },
         { step: "02", title: "Identifying Everyday Digital Challenges", desc: "Mapping out essential file tools, calculators, and notes needed in daily practice." },
         { step: "03", title: "Creating Less Legal", desc: "Developing the flagship Android app uniting legal references, PDF tools, and utilities." },
-        { step: "04", title: "Building Less Technologies", desc: "Establishing a dedicated digital product studio centered around simplicity and utility." },
+        { step: "04", title: "Building Less Creation", desc: "Establishing a dedicated digital product studio centered around simplicity and utility." },
         { step: "05", title: "Expanding Into More Useful Digital Products", desc: "Planning future applications in productivity, education, notes, and everyday tools." }
       ],
 
@@ -593,12 +593,12 @@ export const translations: Record<Language, TranslationSchema> = {
       featureSectionSub: "From instant PDF merging to regional land converters, examine all tools available inside the app.",
 
       ecosystemBadge: "DIGITAL ECOSYSTEM",
-      ecosystemTitle: "Products by Less Technologies",
+      ecosystemTitle: "Products by Less Creation",
       ecosystemSub: "Built with a core focus on simplicity, utility, and user privacy.",
 
       founderPreviewBadge: "MEET THE FOUNDER",
       founderPreviewTitle: "Created by an Advocate for Real-World Utility",
-      founderPreviewText: "Anurag Tiwari {Gurauli}, Advocate practicing before the Allahabad High Court, founded Less Technologies to simplify legal access and everyday digital tasks.",
+      founderPreviewText: "Anurag Tiwari {Gurauli}, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.",
 
       faqBadge: "FREQUENTLY ASKED QUESTIONS",
       faqTitle: "Got Questions? We Have Factual Answers",
@@ -606,7 +606,7 @@ export const translations: Record<Language, TranslationSchema> = {
       faqs: [
         {
           q: "Is Less Legal affiliated with the Government of India or any Court?",
-          a: "No. Less Legal is an entirely independent, private software utility application developed by Less Technologies. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
+          a: "No. Less Legal is an entirely independent, private software utility application developed by Less Creation. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
         },
         {
           q: "Does the app require internet to access Bare Acts and Calculators?",
@@ -942,7 +942,7 @@ export const translations: Record<Language, TranslationSchema> = {
       termsConditions: "नियम एवं शर्तें",
       refundCancellation: "रिफंड एवं रद्दीकरण",
       legalDisclaimer: "कानूनी अस्वीकरण",
-      supportAvailable: "Less Technologies के सभी उत्पादों के लिए आधिकारिक सहायता उपलब्ध है।",
+      supportAvailable: "Less Creation के सभी उत्पादों के लिए आधिकारिक सहायता उपलब्ध है।",
       disclaimerTitle: "स्वतंत्र एप्लिकेशन घोषणा:",
       disclaimerText: "Less Legal एक स्वतंत्र सॉफ्टवेयर एप्लिकेशन है और यह भारत सरकार, अदालतों, या किसी राज्य न्यायिक विभाग से संबद्ध, अधिकृत या अनुमोदित नहीं है।",
       readFullDisclaimer: "पूरा अस्वीकरण पढ़ें",
@@ -954,14 +954,14 @@ export const translations: Record<Language, TranslationSchema> = {
       badge: "संस्थापक एवं निर्माता",
       name: "अनुराग गुरौली",
       role: "अधिवक्ता",
-      subtitle: "अधिवक्ता | संस्थापक, Less Technologies",
+      subtitle: "अधिवक्ता | संस्थापक, Less Creation",
       practice: "इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिसरत।",
-      shortQuote: "“Less Technologies इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।”",
+      shortQuote: "“Less Creation इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।”",
 
-      storyTitle: "Less Technologies के पीछे व्यक्ति",
-      storyP1: "मेरा नाम अनुराग गुरौली है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और Less Technologies तथा Less Legal की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
+      storyTitle: "Less Creation के पीछे व्यक्ति",
+      storyP1: "मेरा नाम अनुराग गुरौली है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और Less Creation तथा Less Legal की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
       storyP2: "कानून के क्षेत्र में कार्य करते हुए मुझे यह समझने का अवसर मिला कि अधिवक्ताओं, विधि छात्रों और आम नागरिकों के लिए कानूनी जानकारी तथा रोज़मर्रा के उपयोगी डिजिटल टूल्स तक आसान पहुँच कितनी महत्वपूर्ण है।",
-      storyP3: "Less Technologies इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।",
+      storyP3: "Less Creation इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।",
       storyP4: "Less Legal इसी दृष्टिकोण का पहला प्रमुख उत्पाद है।",
 
       whyTitle: "Less Legal क्यों बनाया गया?",
@@ -980,9 +980,9 @@ export const translations: Record<Language, TranslationSchema> = {
       disclaimerNote: "Less Legal एक सूचनात्मक और उपयोगिता एप्लिकेशन है। यह किसी वकील, अदालत, कानूनी सलाह या पेशेवर कानूनी प्रतिनिधित्व का विकल्प नहीं है।",
 
       visionTitle: "मेरा विज़न",
-      visionP1: "Less Technologies के लिए मेरा विज़न ऐसे उपयोगी डिजिटल उत्पादों का एक बढ़ता हुआ ecosystem तैयार करना है जो लोगों की वास्तविक आवश्यकताओं को ध्यान में रखकर बनाए जाएँ।",
+      visionP1: "Less Creation के लिए मेरा विज़न ऐसे उपयोगी डिजिटल उत्पादों का एक बढ़ता हुआ ecosystem तैयार करना है जो लोगों की वास्तविक आवश्यकताओं को ध्यान में रखकर बनाए जाएँ।",
       visionP2: "Less Legal इस यात्रा की शुरुआत है।",
-      visionP3: "आने वाले समय में Less Technologies के अंतर्गत productivity, utilities, education, media और अन्य व्यावहारिक डिजिटल सेवाओं से जुड़े उत्पाद विकसित किए जा सकते हैं।",
+      visionP3: "आने वाले समय में Less Creation के अंतर्गत productivity, utilities, education, media और अन्य व्यावहारिक डिजिटल सेवाओं से जुड़े उत्पाद विकसित किए जा सकते हैं।",
       visionP4: "उद्देश्य केवल तकनीक बनाना नहीं है।",
       visionP5: "उद्देश्य ऐसी तकनीक बनाना है जो वास्तव में लोगों के काम आए।",
       visionSteps: {
@@ -994,15 +994,15 @@ export const translations: Record<Language, TranslationSchema> = {
       },
 
       messageTitle: "संस्थापक की ओर से",
-      messageQuote: "मेरा मानना है कि तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। Less Technologies इसी विचार के साथ बनाया जा रहा है।",
-      messageAuthor: "अनुराग गुरौली • संस्थापक, Less Technologies",
+      messageQuote: "मेरा मानना है कि तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। Less Creation इसी विचार के साथ बनाया जा रहा है।",
+      messageAuthor: "अनुराग गुरौली • संस्थापक, Less Creation",
 
       timelineTitle: "कानूनी प्रैक्टिस से डिजिटल नवाचार तक",
       timelineItems: [
         { step: "01", title: "व्यावहारिक कानूनी आवश्यकताओं को समझना", desc: "दैनिक टूल्स और कानूनी संदर्भ ढूँढने में अधिवक्ताओं और नागरिकों को होने वाली व्यावहारिक समस्याओं की पहचान।" },
         { step: "02", title: "रोज़मर्रा की डिजिटल चुनौतियों की पहचान करना", desc: "दैनिक प्रैक्टिस के लिए आवश्यक फ़ाइल टूल्स, कैलकुलेटर और नोट्स को सूचीबद्ध करना।" },
         { step: "03", title: "Less Legal का निर्माण", desc: "कानूनी संदर्भों, पीडीएफ टूल्स और कैलकुलेटर को एक एंड्रॉइड ऐप में जोड़ना।" },
-        { step: "04", title: "Less Technologies का विकास", desc: "सादगी और उपयोगिता को समर्पित एक डिजिटल उत्पाद ब्रांड स्थापित करना।" },
+        { step: "04", title: "Less Creation का विकास", desc: "सादगी और उपयोगिता को समर्पित एक डिजिटल उत्पाद ब्रांड स्थापित करना।" },
         { step: "05", title: "अधिक उपयोगी डिजिटल उत्पादों का विस्तार", desc: "उत्पादकता, शिक्षा, नोट्स और दैनिक उपयोगिताओं के नए अनुप्रयोगों की योजना।" }
       ],
 
@@ -1061,12 +1061,12 @@ export const translations: Record<Language, TranslationSchema> = {
       featureSectionSub: "पीडीएफ मर्जर से लेकर क्षेत्रीय भूमि कनवर्टर तक, ऐप में उपलब्ध सभी टूल्स देखें।",
 
       ecosystemBadge: "डिजिटल पारिस्थितिकी तंत्र",
-      ecosystemTitle: "Less Technologies के उत्पाद",
+      ecosystemTitle: "Less Creation के उत्पाद",
       ecosystemSub: "सादगी, उपयोगिता और उपयोगकर्ता गोपनीयता पर विशेष ध्यान देकर निर्मित।",
 
       founderPreviewBadge: "संस्थापक से मिलें",
       founderPreviewTitle: "व्यावहारिक उपयोगिता के लिए एक अधिवक्ता द्वारा निर्मित",
-      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए Less Technologies की स्थापना की।",
+      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए Less Creation की स्थापना की।",
 
       faqBadge: "अक्सर पूछे जाने वाले प्रश्न",
       faqTitle: "क्या आपके पास प्रश्न हैं? हमारे पास सटीक उत्तर हैं",
@@ -1074,7 +1074,7 @@ export const translations: Record<Language, TranslationSchema> = {
       faqs: [
         {
           q: "क्या Less Legal भारत सरकार या किसी अदालत से संबद्ध है?",
-          a: "नहीं। Less Legal, Less Technologies द्वारा विकसित एक पूरी तरह से स्वतंत्र, निजी सॉफ्टवेयर उपयोगिता एप्लिकेशन है। यह किसी भी सरकारी संस्था या अदालत से संबद्ध या संचालित नहीं है। प्रदान की गई सभी संदर्भ सामग्री केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है।"
+          a: "नहीं। Less Legal, Less Creation द्वारा विकसित एक पूरी तरह से स्वतंत्र, निजी सॉफ्टवेयर उपयोगिता एप्लिकेशन है। यह किसी भी सरकारी संस्था या अदालत से संबद्ध या संचालित नहीं है। प्रदान की गई सभी संदर्भ सामग्री केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है।"
         },
         {
           q: "क्या बेयर एक्ट्स और कैलकुलेटर एक्सेस करने के लिए इंटरनेट की आवश्यकता है?",

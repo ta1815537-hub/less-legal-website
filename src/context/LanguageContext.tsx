@@ -27,7 +27,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return saved;
       }
     }
-    return 'en';
+    return 'hi';
   });
 
   const triggerGoogleTranslate = (lang: Language) => {

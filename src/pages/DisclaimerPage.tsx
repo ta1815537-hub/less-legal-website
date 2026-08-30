@@ -118,8 +118,26 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
 
       </div>
 
+      {/* Jurisdiction Clause (Red Banner) */}
+      <div className="relative z-10 mt-10 rounded-2xl overflow-hidden shadow-xl shadow-red-900/10 dark:shadow-red-900/20 border border-red-700/50">
+        <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 p-6 sm:p-8 text-center">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <Scale className="w-7 h-7 text-red-100 drop-shadow-sm" />
+            <div className="space-y-3 max-w-3xl mx-auto">
+              <p className="text-sm sm:text-base font-bold text-white tracking-wide leading-relaxed drop-shadow-sm">
+                JURISDICTION: All disputes shall be subject to the exclusive jurisdiction of the Hon'ble High Court of Judicature at Allahabad.
+              </p>
+              <div className="w-16 h-px bg-red-400/60 mx-auto"></div>
+              <p className="text-sm sm:text-base font-bold text-white tracking-wide leading-relaxed drop-shadow-sm">
+                अधिकार क्षेत्र: सभी विवाद माननीय उच्च न्यायालय इलाहाबाद के अनन्य क्षेत्राधिकार के अधीन होंगे।
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Navigation Footer */}
-      <div className="pt-6 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10">
+      <div className="pt-8 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10 mt-8">
         <button
           onClick={() => onNavigate('terms')}
           className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors"

@@ -19,8 +19,8 @@ export const LTLogo: React.FC<LTLogoProps> = ({
     >
       {!imgErr ? (
         <img 
-          src="/Logo.png" 
-          alt="Less Technologies Logo" 
+          src="/images/lg.png" 
+          alt="Less Creation Logo" 
           className="w-full h-full object-contain select-none drop-shadow-[0_0_12px_rgba(194,31,47,0.35)]"
           onError={() => setImgErr(true)}
         />

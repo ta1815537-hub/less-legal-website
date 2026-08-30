@@ -45,7 +45,7 @@ export interface ProductItem {
 
 export const SITE_CONFIG = {
   // Brand
-  companyName: "Less Technologies",
+  companyName: "Less Creation",
   companyTagline: "Technology, Utilities & Digital Products — Built with Simplicity in Mind.",
   appName: "Less Legal",
   tagline: "Legal Knowledge • Useful Tools • Personal Assistant",
