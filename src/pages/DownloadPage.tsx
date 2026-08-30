@@ -25,7 +25,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
   );
 
   return (
-    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 sm:-mt-6 pt-2 sm:pt-4 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
       
       {/* Header */}
@@ -85,30 +85,30 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          {/* Real Play Store link or "Coming Soon on Google Play" status */}
-          <div className="pt-2">
+          {/* Real Play Store link & Apple App Store Coming Soon status */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
             {isPlayStoreConfigured ? (
               <a
                 id="download-playstore-link"
                 href={SITE_CONFIG.playStoreUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block outline-none"
+                className="inline-block outline-none w-full sm:w-auto"
               >
                 <motion.div
-                  whileHover={{ scale: 1.04, y: -4 }}
-                  whileTap={{ scale: 0.96 }}
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                  className="relative group cursor-pointer inline-block"
+                  className="relative group cursor-pointer inline-block w-full sm:w-auto"
                 >
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#C21F2F] via-[#D8BD82] to-[#8B0000] rounded-3xl blur-lg opacity-40 group-hover:opacity-100 transition duration-500"></div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-[#C21F2F] via-[#D8BD82] to-[#8B0000] rounded-3xl blur-md opacity-40 group-hover:opacity-90 transition duration-500"></div>
                   
-                  <div className="relative flex items-center justify-center gap-4 px-10 py-4 rounded-2xl bg-[#0D0D0F] text-white shadow-2xl border border-white/15 shine-sweep-overlay">
+                  <div className="relative flex items-center justify-center gap-3.5 px-8 py-3.5 rounded-2xl bg-[#0D0D0F] text-white shadow-xl border border-white/15 shine-sweep-overlay">
                     
                     <motion.svg 
                       whileHover={{ rotate: [-2, 2, -2, 0] }}
                       transition={{ duration: 0.5 }}
-                      className="w-10 h-10 drop-shadow-lg shrink-0" 
+                      className="w-9 h-9 drop-shadow-md shrink-0" 
                       viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     >
                        <path d="M4 3.5C4 2.8 4.6 2.3 5.2 2.6L19.4 10.9C20.2 11.4 20.2 12.6 19.4 13.1L5.2 21.4C4.6 21.7 4 21.2 4 20.5V3.5Z" fill="url(#play-grad)"/>
@@ -123,26 +123,43 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                     </motion.svg>
 
                     <div className="text-left relative z-10 whitespace-nowrap">
-                      <div className="text-xs text-slate-300 font-medium tracking-wide mb-0.5 whitespace-nowrap">GET IT ON</div>
-                      <div className="text-2xl font-extrabold leading-none tracking-tight text-white whitespace-nowrap">Google Play</div>
+                      <div className="text-[10px] text-slate-300 font-medium tracking-wide mb-0.5 whitespace-nowrap">GET IT ON</div>
+                      <div className="text-xl font-extrabold leading-none tracking-tight text-white whitespace-nowrap">Google Play</div>
                     </div>
                   </div>
                 </motion.div>
               </a>
             ) : (
-              <div className="p-5 glass-panel rounded-2xl border border-slate-200 dark:border-white/10 max-w-md mx-auto space-y-2">
+              <div className="p-4 glass-panel rounded-2xl border border-slate-200 dark:border-white/10 max-w-xs mx-auto text-center space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 text-amber-900 dark:text-[#D8BD82] font-bold text-xs border border-amber-600/30 dark:border-[#D8BD82]/30 whitespace-nowrap">
                   <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
                   <span className="whitespace-nowrap">Coming soon on Google Play</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-                  The Less Legal Android application is currently undergoing official verification and Google Play Store publication.
-                </p>
-                <div className="text-[11px] text-amber-800 dark:text-[#D8BD82] font-semibold pt-1">
-                  Stay tuned for direct installation link.
-                </div>
               </div>
             )}
+
+            {/* Apple App Store (Coming Soon) Tab */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -2 }}
+              className="relative group cursor-default inline-block w-full sm:w-auto"
+            >
+              <div className="relative flex items-center justify-center gap-3.5 px-8 py-3.5 rounded-2xl bg-[#0D0D0F] text-white shadow-xl border border-white/15">
+                <svg className="w-8 h-8 fill-current text-white shrink-0 drop-shadow-md" viewBox="0 0 170 170">
+                  <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-5.02.24-9.94-1.81-14.77-6.14-3.32-2.92-7.25-7.65-11.8-14.19-6.3-8.99-11.23-18.72-14.77-29.2-3.54-10.48-5.31-20.35-5.31-29.61 0-12.28 3.12-22.58 9.38-30.9 6.25-8.32 14.16-12.58 23.71-12.78 4.67 0 9.77 1.15 15.3 3.44 5.53 2.29 9.38 3.44 11.55 3.44 2.06 0 5.96-1.15 11.71-3.44 5.75-2.29 10.66-3.35 14.73-3.18 10.15.53 18.23 4.29 24.26 11.27-9.08 5.53-13.52 13.1-13.31 22.7.21 7.57 3.09 13.9 8.64 18.99 5.55 5.09 12.22 7.9 20.02 8.44-2.53 7.42-6.02 14.91-10.47 22.48zM119.22 31.75c0-6.12 2.22-11.83 6.66-17.13 4.44-5.3 9.94-8.58 16.5-9.84.21 1.06.32 2.02.32 2.87 0 6.02-2.25 11.72-6.75 17.1-4.5 5.38-10.05 8.71-16.65 9.98-.08-.98-.08-1.96-.08-2.98z" />
+                </svg>
+
+                <div className="text-left relative z-10 whitespace-nowrap">
+                  <div className="text-[10px] text-amber-400 font-bold tracking-wide mb-0.5 whitespace-nowrap flex items-center gap-1">
+                    <span>COMING SOON ON</span>
+                  </div>
+                  <div className="text-xl font-extrabold leading-none tracking-tight text-white whitespace-nowrap">App Store</div>
+                </div>
+
+                <span className="ml-1 px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-extrabold text-[10px] border border-amber-500/30 whitespace-nowrap">
+                  iOS
+                </span>
+              </div>
+            </motion.div>
           </div>
 
           {/* Key Features Included Marquee */}

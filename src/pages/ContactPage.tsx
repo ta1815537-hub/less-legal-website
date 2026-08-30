@@ -62,7 +62,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 sm:-mt-6 pt-2 sm:pt-4 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
       
       {/* Header */}
@@ -96,8 +96,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
         {/* Left Column: Official Contact Details & Instructions */}
         <ScrollReveal direction="up" delay={0.08} className="lg:col-span-5 space-y-6">
           
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-xl space-y-6">
-            <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-3">
+          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl space-y-6">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] border-b border-slate-200 dark:border-white/10 pb-3">
               Official Communication Channels
             </h2>
 
@@ -107,16 +107,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 
                 {hasEmail && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                      <div className="w-8 h-8 rounded-lg bg-[#C21F2F]/20 text-[#E03A3E] flex items-center justify-center font-bold shrink-0 border border-[#C21F2F]/40">
+                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                      <div className="w-8 h-8 rounded-lg bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center font-bold shrink-0 border border-[#C21F2F]/40">
                         <Mail className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-[#F5F2EE]">Email Support</div>
-                        <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[#D8BD82] hover:underline font-semibold break-all">
+                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">Email Support</div>
+                        <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-amber-800 dark:text-[#D8BD82] hover:underline font-semibold break-all">
                           {SITE_CONFIG.supportEmail}
                         </a>
-                        <div className="text-[11px] text-[#77736F] mt-0.5">Response within 24-48 business hours</div>
+                        <div className="text-[11px] text-slate-600 dark:text-[#77736F] mt-0.5">Response within 24-48 business hours</div>
                       </div>
                     </div>
                   </StaggerItem>
@@ -124,16 +124,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {hasPhone && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                      <div className="w-8 h-8 rounded-lg bg-[#D8BD82]/20 text-[#D8BD82] flex items-center justify-center font-bold shrink-0 border border-[#D8BD82]/40">
+                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-800 dark:text-[#D8BD82] flex items-center justify-center font-bold shrink-0 border border-amber-600/40 dark:border-[#D8BD82]/40">
                         <Phone className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-[#F5F2EE]">Telephone / Helpline</div>
-                        <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-[#B8B3AF] font-semibold">
+                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">Telephone / Helpline</div>
+                        <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-slate-700 dark:text-[#B8B3AF] font-semibold">
                           {SITE_CONFIG.supportPhone}
                         </a>
-                        <div className="text-[11px] text-[#77736F] mt-0.5">Mon - Fri, 10:00 AM - 6:00 PM IST</div>
+                        <div className="text-[11px] text-slate-600 dark:text-[#77736F] mt-0.5">Mon - Fri, 10:00 AM - 6:00 PM IST</div>
                       </div>
                     </div>
                   </StaggerItem>
@@ -141,13 +141,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {hasAddress && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                      <div className="w-8 h-8 rounded-lg bg-white/5 text-[#F5F2EE] flex items-center justify-center font-bold shrink-0 border border-white/10">
+                    <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                      <div className="w-8 h-8 rounded-lg bg-slate-200 dark:bg-white/5 text-slate-900 dark:text-[#F5F2EE] flex items-center justify-center font-bold shrink-0 border border-slate-300 dark:border-white/10">
                         <MapPin className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-[#F5F2EE]">Registered Business Address</div>
-                        <p className="text-[#B8B3AF] leading-relaxed mt-0.5">{SITE_CONFIG.businessAddress}</p>
+                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">Registered Business Address</div>
+                        <p className="text-slate-700 dark:text-[#B8B3AF] leading-relaxed mt-0.5">{SITE_CONFIG.businessAddress}</p>
                       </div>
                     </div>
                   </StaggerItem>
@@ -155,38 +155,38 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
               </StaggerContainer>
             ) : (
-              <div className="p-4 bg-white/5 rounded-2xl border border-white/10 text-xs text-[#B8B3AF] space-y-2">
-                <div className="font-bold text-[#F5F2EE] flex items-center gap-1.5">
-                  <Smartphone className="w-4 h-4 text-[#E03A3E]" />
+              <div className="p-4 bg-slate-100/80 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-[#B8B3AF] space-y-2">
+                <div className="font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5">
+                  <Smartphone className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E]" />
                   <span>In-App Support Desk</span>
                 </div>
                 <p>
-                  For immediate assistance, open the <strong className="text-[#F5F2EE]">Less Legal</strong> Android application and navigate to <em>Settings &gt; Help & Support</em>.
+                  For immediate assistance, open the <strong className="text-slate-900 dark:text-[#F5F2EE]">Less Legal</strong> Android application and navigate to <em>Settings &gt; Help & Support</em>.
                 </p>
-                <p className="text-[11px] text-[#77736F]">
+                <p className="text-[11px] text-slate-600 dark:text-[#77736F]">
                   You can also use the message form on this page to log a support or verification request.
                 </p>
               </div>
             )}
 
             {/* Support Standards */}
-            <div className="pt-2 space-y-3 text-xs text-[#B8B3AF]">
+            <div className="pt-2 space-y-3 text-xs text-slate-700 dark:text-[#B8B3AF]">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#D8BD82] shrink-0" />
-                <span><strong className="text-[#F5F2EE]">Standard Turnaround:</strong> 24 to 48 business hours</span>
+                <Clock className="w-4 h-4 text-amber-700 dark:text-[#D8BD82] shrink-0" />
+                <span><strong className="text-slate-900 dark:text-[#F5F2EE]">Standard Turnaround:</strong> 24 to 48 business hours</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#E03A3E] shrink-0" />
-                <span><strong className="text-[#F5F2EE]">Transaction Inquiries:</strong> Include Order / Transaction ID for faster resolution</span>
+                <ShieldCheck className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                <span><strong className="text-slate-900 dark:text-[#F5F2EE]">Transaction Inquiries:</strong> Include Order / Transaction ID for faster resolution</span>
               </div>
             </div>
 
           </div>
 
           {/* Grievance Redressal Notice */}
-          <div className="p-5 glass-panel rounded-2xl border border-white/10 text-xs text-[#B8B3AF] space-y-2">
-            <h3 className="font-bold text-[#F5F2EE] flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#D8BD82]" />
+          <div className="p-5 glass-panel rounded-2xl border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-[#B8B3AF] space-y-2">
+            <h3 className="font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-amber-700 dark:text-[#D8BD82]" />
               <span>Grievance Redressal Mechanism</span>
             </h3>
             <p className="leading-relaxed text-[11px]">

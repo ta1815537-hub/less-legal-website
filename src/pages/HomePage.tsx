@@ -4,7 +4,7 @@ import { SITE_CONFIG } from '../config';
 import { 
   Download, ArrowRight, ShieldCheck, Sparkles, 
   FileText, Calendar, Compass, Scale, Lock, CheckCircle2, 
-  Smartphone, Check, Layers, LayoutGrid,
+  Smartphone, Check, Layers, LayoutGrid, Music, Edit3,
   Search, Zap, Share2, MessageSquare, ChevronRight,
   Copy, Play, ChevronDown, UserCheck
 } from 'lucide-react';
@@ -124,7 +124,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     <div className="space-y-20 sm:space-y-32 py-4 sm:py-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       
       {/* 1. HERO SECTION WITH CINEMATIC GLASSMORPHISM */}
-      <section className="relative -mt-4 sm:-mt-6 text-slate-900 dark:text-white pt-6 sm:pt-10 pb-12 sm:pb-20 overflow-hidden border-b border-slate-200 dark:border-white/10">
+      <section className="relative text-slate-900 dark:text-white pt-6 sm:pt-10 pb-12 sm:pb-20 overflow-hidden border-b border-slate-200 dark:border-white/10">
         <HeroAmbientGlow />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 space-y-4 sm:space-y-6">
@@ -160,7 +160,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2"
           >
             <GlowingButton
               onClick={() => onNavigate('download')}
@@ -170,6 +170,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <Download className="w-4.5 h-4.5 group-hover:translate-y-0.5 transition-transform" />
               <span>Get App for Android</span>
             </GlowingButton>
+
+            {/* Apple App Store Coming Soon Tab */}
+            <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#0D0D0F] text-white border border-white/15 shadow-xl w-full sm:w-auto justify-center cursor-default">
+              <svg className="w-6 h-6 fill-current text-white shrink-0 drop-shadow" viewBox="0 0 170 170">
+                <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-5.02.24-9.94-1.81-14.77-6.14-3.32-2.92-7.25-7.65-11.8-14.19-6.3-8.99-11.23-18.72-14.77-29.2-3.54-10.48-5.31-20.35-5.31-29.61 0-12.28 3.12-22.58 9.38-30.9 6.25-8.32 14.16-12.58 23.71-12.78 4.67 0 9.77 1.15 15.3 3.44 5.53 2.29 9.38 3.44 11.55 3.44 2.06 0 5.96-1.15 11.71-3.44 5.75-2.29 10.66-3.35 14.73-3.18 10.15.53 18.23 4.29 24.26 11.27-9.08 5.53-13.52 13.1-13.31 22.7.21 7.57 3.09 13.9 8.64 18.99 5.55 5.09 12.22 7.9 20.02 8.44-2.53 7.42-6.02 14.91-10.47 22.48zM119.22 31.75c0-6.12 2.22-11.83 6.66-17.13 4.44-5.3 9.94-8.58 16.5-9.84.21 1.06.32 2.02.32 2.87 0 6.02-2.25 11.72-6.75 17.1-4.5 5.38-10.05 8.71-16.65 9.98-.08-.98-.08-1.96-.08-2.98z" />
+              </svg>
+              <div className="text-left whitespace-nowrap">
+                <div className="text-[9px] text-amber-400 font-extrabold tracking-wider leading-none mb-0.5">APP STORE</div>
+                <div className="text-xs font-bold text-white leading-tight">Coming Soon iOS</div>
+              </div>
+            </div>
             
             <GlowingButton
               onClick={() => {
@@ -553,6 +564,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             const isFlagship = product.category === 'Flagship Product';
             const isAvailable = product.status === 'Available';
 
+            let IconComp = Scale;
+            if (product.iconName === 'Calendar') IconComp = Calendar;
+            if (product.iconName === 'Music') IconComp = Music;
+            if (product.iconName === 'Edit3') IconComp = Edit3;
+
             return (
               <StaggerItem key={product.id}>
                 <div className={`group relative p-6 rounded-3xl transition-all duration-300 h-full flex flex-col ${
@@ -570,17 +586,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   )}
 
                   <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center mb-5 transition-transform group-hover:scale-110">
-                    <Scale className="w-6 h-6" />
+                    <IconComp className="w-6 h-6" />
                   </div>
 
                   <div className="flex-grow space-y-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <h3 className="text-xl font-bold text-slate-900 dark:text-[#F5F2EE]">
                         {product.name}
                       </h3>
                       {!isAvailable && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md border border-slate-200 dark:border-white/10">
-                          Coming Soon
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/30 whitespace-nowrap">
+                          In Development
                         </span>
                       )}
                     </div>
@@ -599,8 +615,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         <span>Get App</span>
                       </button>
                     ) : (
-                      <button disabled className="w-full py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-400 dark:text-[#77736F] flex items-center justify-center gap-2 cursor-not-allowed">
-                        <Lock className="w-3.5 h-3.5" />
+                      <button disabled className="w-full py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-[#77736F] flex items-center justify-center gap-2 cursor-not-allowed">
+                        <Lock className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82]" />
                         <span>In Development</span>
                       </button>
                     )}

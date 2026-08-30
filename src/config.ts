@@ -58,7 +58,7 @@ export const SITE_CONFIG = {
     {
       id: "prod-less-legal",
       name: "Less Legal",
-      description: "Legal Knowledge & Digital Utilities",
+      description: "Legal Knowledge & Digital Utilities for Law Professionals & Citizens.",
       category: "Flagship Product",
       iconName: "Scale",
       status: "Available",
@@ -69,27 +69,27 @@ export const SITE_CONFIG = {
       features: ["PDF Workspace", "Case Diary", "Calculator Hub", "Bare Acts", "Legal Drafts"]
     },
     {
-      id: "prod-productivity",
+      id: "prod-faget-app",
+      name: "Faget App",
+      description: "Events management app for Indian Peoples.",
+      category: "Events & Management",
+      iconName: "Calendar",
+      status: "Coming Soon"
+    },
+    {
+      id: "prod-less-music",
+      name: "Less Music",
+      description: "3000+ offline music Hub of India's culture.",
+      category: "Music & Culture",
+      iconName: "Music",
+      status: "Coming Soon"
+    },
+    {
+      id: "prod-less-notes",
       name: "Less Notes",
-      description: "Minimalist productivity and secure markdown notes.",
+      description: "Minimalist productivity notes & quick document scratchpad.",
       category: "Productivity",
       iconName: "Edit3",
-      status: "Coming Soon"
-    },
-    {
-      id: "prod-education",
-      name: "Less Learn",
-      description: "Focused educational modules and learning trackers.",
-      category: "Education",
-      iconName: "BookOpen",
-      status: "Coming Soon"
-    },
-    {
-      id: "prod-utilities",
-      name: "Less Tools",
-      description: "Everyday standalone utilities and converters.",
-      category: "Utilities",
-      iconName: "Tool",
       status: "Coming Soon"
     }
   ] as ProductItem[],

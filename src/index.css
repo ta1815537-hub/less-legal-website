@@ -426,32 +426,34 @@
 @keyframes rotating-border-glow {
   0% {
     background-position: 0% 50%;
-    box-shadow: 0 0 20px rgba(194, 31, 47, 0.5), 0 0 40px rgba(194, 31, 47, 0.25);
+    box-shadow: 0 0 25px rgba(194, 31, 47, 0.45), 0 0 50px rgba(216, 189, 130, 0.3);
   }
   50% {
     background-position: 100% 50%;
-    box-shadow: 0 0 30px rgba(216, 189, 130, 0.75), 0 0 50px rgba(216, 189, 130, 0.35);
+    box-shadow: 0 0 35px rgba(216, 189, 130, 0.65), 0 0 60px rgba(224, 58, 62, 0.4);
   }
   100% {
     background-position: 0% 50%;
-    box-shadow: 0 0 20px rgba(194, 31, 47, 0.5), 0 0 40px rgba(194, 31, 47, 0.25);
+    box-shadow: 0 0 25px rgba(194, 31, 47, 0.45), 0 0 50px rgba(216, 189, 130, 0.3);
   }
 }
 
 .animated-founder-border {
   position: relative;
   border-radius: 1.5rem;
-  padding: 3.5px;
+  padding: 4px;
   background: linear-gradient(
-    270deg,
-    #C21F2F 0%,
-    #E03A3E 25%,
-    #D8BD82 50%,
-    #FFD700 75%,
-    #C21F2F 100%
+    90deg,
+    #C21F2F,
+    #E03A3E,
+    #D8BD82,
+    #FFD700,
+    #3B82F6,
+    #10B981,
+    #C21F2F
   );
-  background-size: 300% 300%;
-  animation: rotating-border-glow 4s ease-in-out infinite;
+  background-size: 400% 400%;
+  animation: rotating-border-glow 4s linear infinite;
 }
 
 /* Active Click & Hold Micro Interaction Feedback */

@@ -10,7 +10,7 @@ interface RefundPolicyPageProps {
 
 export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }) => {
   return (
-    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 sm:-mt-6 pt-2 sm:pt-4 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
       
       {/* Top Breadcrumb & Title */}
