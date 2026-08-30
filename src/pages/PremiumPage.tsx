@@ -3,7 +3,7 @@ import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
 import { 
   Sparkles, CheckCircle2, ShieldCheck, 
-  FileText, ArrowUpRight
+  FileText, ArrowUpRight, ArrowLeft
 } from 'lucide-react';
 import { 
   ScrollReveal, StaggerContainer, StaggerItem, 
@@ -23,11 +23,20 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
   const features1Year = t.premiumPage.features1Year || SITE_CONFIG.premiumPlans[1].features;
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 sm:-mt-6 pt-2 sm:pt-4 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
       
       {/* Header */}
-      <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
+      <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3 relative z-10">
+        <motion.button
+          whileHover={{ x: -3 }}
+          onClick={() => onNavigate('home')}
+          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
+        >
+          <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
+          <span className="whitespace-nowrap">{t.common.backToHome}</span>
+        </motion.button>
+
         <motion.div 
           whileHover={{ scale: 1.05 }}
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"

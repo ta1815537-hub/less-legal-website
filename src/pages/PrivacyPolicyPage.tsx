@@ -12,16 +12,16 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
   const hasEmail = Boolean(SITE_CONFIG.supportEmail && SITE_CONFIG.supportEmail.trim() !== "");
 
   return (
-    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10 overflow-hidden bg-[#080808]">
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 sm:-mt-6 pt-2 sm:pt-4 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
       
       {/* Top Breadcrumb & Title */}
-      <div className="space-y-4 relative z-10">
+      <div className="space-y-4 relative z-10 text-center sm:text-left">
         <button
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-[#D8BD82] hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
           <span>Back to Home</span>
         </button>
 

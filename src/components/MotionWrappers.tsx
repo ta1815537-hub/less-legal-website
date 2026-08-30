@@ -220,7 +220,7 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
       case 'gold':
         return 'btn-gold shine-sweep-overlay';
       case 'outline':
-        return 'bg-transparent border border-white/20 hover:border-white/40 text-[#F5F2EE] hover:bg-white/5 backdrop-blur-md shine-sweep-overlay';
+        return 'bg-white/90 dark:bg-transparent border border-slate-300 dark:border-white/20 hover:border-slate-400 dark:hover:border-white/40 text-slate-900 dark:text-[#F5F2EE] hover:bg-slate-100 dark:hover:bg-white/5 backdrop-blur-md shine-sweep-overlay shadow-xs dark:shadow-none';
     }
   };
 

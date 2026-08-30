@@ -64,9 +64,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 <span className="font-extrabold text-base sm:text-lg md:text-xl tracking-tight text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] transition-colors whitespace-nowrap">
                   {SITE_CONFIG.companyName || 'Less Technologies'}
                 </span>
-                <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#C21F2F]/10 dark:bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/30 dark:border-[#C21F2F]/40 whitespace-nowrap">
-                  Product Studio
-                </span>
               </div>
               <p className="text-[10px] sm:text-[11px] font-semibold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">
                 अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः

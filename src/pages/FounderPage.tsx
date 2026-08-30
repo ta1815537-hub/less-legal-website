@@ -22,17 +22,17 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
   const [isHoveredLessLegal, setIsHoveredLessLegal] = useState(false);
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-16 overflow-hidden bg-[#080808]">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 sm:-mt-6 pt-2 sm:pt-4 pb-12 sm:pb-16 space-y-10 overflow-hidden bg-[#080808]">
       <HeroAmbientGlow />
 
       {/* Back Button */}
-      <div className="relative z-10">
+      <div className="relative z-10 text-center">
         <motion.button
           whileHover={{ x: -3 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3.5 py-1.5 rounded-full shadow-xs"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
           <span>{t.common.backToHome}</span>
         </motion.button>
       </div>

@@ -39,9 +39,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-[#F5F2EE]">
                   {SITE_CONFIG.companyName || SITE_CONFIG.appName}
                 </span>
-                <span className="ml-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 dark:bg-[#D8BD82]/15 text-amber-800 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/30">
-                  {t.footer.productStudio}
-                </span>
               </div>
             </motion.div>
 
