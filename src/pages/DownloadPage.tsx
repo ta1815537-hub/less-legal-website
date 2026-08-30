@@ -48,17 +48,17 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           </motion.div>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Download Less Legal
         </h1>
-        <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
           Get the all-in-one legal knowledge and digital utilities suite for your Android smartphone or tablet.
         </p>
       </ScrollReveal>
 
       {/* Main Download Card */}
       <ScrollReveal direction="up" delay={0.08} className="relative z-10">
-        <div className="card-interactive neo-box p-8 sm:p-12 bg-white rounded-3xl border border-slate-200 shadow-sm text-center max-w-2xl mx-auto space-y-6">
+        <div className="card-interactive neo-box p-8 sm:p-12 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-700/80 shadow-sm text-center max-w-2xl mx-auto space-y-6">
           
           <motion.div
             initial={{ scale: 0.9, y: 5 }}
@@ -76,10 +76,10 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           </motion.div>
 
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
               {SITE_CONFIG.appName} for Android
             </h2>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Version {SITE_CONFIG.appVersion} • Minimum Requirement: {SITE_CONFIG.minAndroidVersion}
             </p>
           </div>
@@ -136,11 +136,11 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               </a>
             ) : (
               <div className="p-5 bg-indigo-50/80 rounded-2xl border border-indigo-100 max-w-md mx-auto space-y-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-indigo-700 font-bold text-xs shadow-xs border border-indigo-200">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-slate-900 text-indigo-700 font-bold text-xs shadow-xs border border-indigo-200">
                   <Clock className="w-3.5 h-3.5 text-indigo-600" />
                   <span>Coming soon on Google Play</span>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   The Less Legal Android application is currently undergoing official verification and Google Play Store publication.
                 </p>
                 <div className="text-[11px] text-indigo-800 font-semibold pt-1">
@@ -151,7 +151,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Key Features Included Marquee */}
-          <div className="pt-6 border-t border-slate-100 overflow-hidden relative">
+          <div className="pt-6 border-t border-slate-100 dark:border-slate-700/50 overflow-hidden relative">
             <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
             
@@ -163,9 +163,9 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 className="flex items-center gap-3 w-max"
               >
                 {[...SITE_CONFIG.features.slice(0, 20), ...SITE_CONFIG.features.slice(0, 20)].map((feature, idx) => (
-                  <div key={`dl-top-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg whitespace-nowrap">
+                  <div key={`dl-top-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-700/50 rounded-lg whitespace-nowrap">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span className="text-[11px] font-medium text-slate-700">{feature.title}</span>
+                    <span className="text-[11px] font-medium text-slate-700 dark:text-slate-300">{feature.title}</span>
                   </div>
                 ))}
               </motion.div>
@@ -179,9 +179,9 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 className="flex items-center gap-3 w-max"
               >
                 {[...SITE_CONFIG.features.slice(20, 40), ...SITE_CONFIG.features.slice(20, 40)].map((feature, idx) => (
-                  <div key={`dl-bot-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg whitespace-nowrap">
+                  <div key={`dl-bot-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-700/50 rounded-lg whitespace-nowrap">
                     <CheckCircle2 className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
-                    <span className="text-[11px] font-medium text-slate-700">{feature.title}</span>
+                    <span className="text-[11px] font-medium text-slate-700 dark:text-slate-300">{feature.title}</span>
                   </div>
                 ))}
               </motion.div>
@@ -194,12 +194,12 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
       {/* System Requirements */}
       <div className="max-w-4xl mx-auto relative z-10 mb-6">
         <ScrollReveal direction="up" delay={0.12}>
-          <div className="card-interactive p-6 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-3">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+          <div className="card-interactive p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs space-y-3">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Smartphone className="w-4 h-4 text-indigo-600" />
               <span>System Requirements</span>
             </h3>
-            <ul className="space-y-2 text-xs text-slate-600 grid grid-cols-1 md:grid-cols-2 gap-2">
+            <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400 grid grid-cols-1 md:grid-cols-2 gap-2">
               <li>• Android 7.0 (API Level 24) or higher</li>
               <li>• Suitable for smartphones and tablets</li>
               <li>• Internet connection required for initial sync, Bare Act downloads & updates</li>
@@ -212,42 +212,42 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
       {/* App Permissions Explained */}
       <div className="max-w-4xl mx-auto relative z-10">
         <ScrollReveal direction="up" delay={0.15}>
-          <div className="card-interactive p-6 md:p-8 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-4">
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+          <div className="card-interactive p-6 md:p-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs space-y-4">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-emerald-600" />
               <span>App Permissions & Usage Guide</span>
             </h3>
-            <p className="text-[13px] md:text-sm text-slate-600 leading-relaxed pb-3 border-b border-slate-100">
+            <p className="text-[13px] md:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pb-3 border-b border-slate-100 dark:border-slate-700/50">
               To provide you with a seamless and fully functional experience, our app requests the following core permissions on your device. We respect your privacy and only use these permissions for specific app features:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 pt-2">
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-800 flex items-center gap-1.5"><Camera className="w-4 h-4 text-slate-500" /> 1. Camera</div>
-                <p className="text-[13px] text-slate-600 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700">Why we need it:</span> Used for scanning QR Codes and Barcodes (Quick Scan Billing) and capturing images for documents or case files.</p>
+                <div className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5"><Camera className="w-4 h-4 text-slate-500 dark:text-slate-400" /> 1. Camera</div>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700 dark:text-slate-300">Why we need it:</span> Used for scanning QR Codes and Barcodes (Quick Scan Billing) and capturing images for documents or case files.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-800 flex items-center gap-1.5"><FolderOpen className="w-4 h-4 text-slate-500" /> 2. Storage & Media</div>
-                <p className="text-[13px] text-slate-600 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700">Why we need it:</span> Required to save, read, and manage your PDFs, legal drafts, and documents (used in PDF Workspace, Document Hub, and Poster Hub).</p>
+                <div className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5"><FolderOpen className="w-4 h-4 text-slate-500 dark:text-slate-400" /> 2. Storage & Media</div>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700 dark:text-slate-300">Why we need it:</span> Required to save, read, and manage your PDFs, legal drafts, and documents (used in PDF Workspace, Document Hub, and Poster Hub).</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-800 flex items-center gap-1.5"><MapPin className="w-4 h-4 text-slate-500" /> 3. Location (Fine & Coarse)</div>
-                <p className="text-[13px] text-slate-600 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700">Why we need it:</span> Needed for location-based features like the Jurisdiction Finder, Court Finder, and providing accurate local timings for the Calendar & Panchang.</p>
+                <div className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5"><MapPin className="w-4 h-4 text-slate-500 dark:text-slate-400" /> 3. Location (Fine & Coarse)</div>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700 dark:text-slate-300">Why we need it:</span> Needed for location-based features like the Jurisdiction Finder, Court Finder, and providing accurate local timings for the Calendar & Panchang.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-800 flex items-center gap-1.5"><Mic className="w-4 h-4 text-slate-500" /> 4. Microphone (Record Audio)</div>
-                <p className="text-[13px] text-slate-600 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700">Why we need it:</span> Required for creating quick voice notes, audio typing, or communicating with the AI Support Chat.</p>
+                <div className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5"><Mic className="w-4 h-4 text-slate-500 dark:text-slate-400" /> 4. Microphone (Record Audio)</div>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700 dark:text-slate-300">Why we need it:</span> Required for creating quick voice notes, audio typing, or communicating with the AI Support Chat.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-800 flex items-center gap-1.5"><Users className="w-4 h-4 text-slate-500" /> 5. Contacts</div>
-                <p className="text-[13px] text-slate-600 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700">Why we need it:</span> Used for the Direct WhatsApp feature, allowing you to instantly message saved or unsaved contacts directly from the app.</p>
+                <div className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5"><Users className="w-4 h-4 text-slate-500 dark:text-slate-400" /> 5. Contacts</div>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700 dark:text-slate-300">Why we need it:</span> Used for the Direct WhatsApp feature, allowing you to instantly message saved or unsaved contacts directly from the app.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-800 flex items-center gap-1.5"><Bell className="w-4 h-4 text-slate-500" /> 6. Notifications & Alarms</div>
-                <p className="text-[13px] text-slate-600 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700">Why we need it:</span> Used to send you important reminders for your Case Diary, hearing dates, Job/Internship alerts, and daily updates.</p>
+                <div className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5"><Bell className="w-4 h-4 text-slate-500 dark:text-slate-400" /> 6. Notifications & Alarms</div>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700 dark:text-slate-300">Why we need it:</span> Used to send you important reminders for your Case Diary, hearing dates, Job/Internship alerts, and daily updates.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-800 flex items-center gap-1.5"><Bluetooth className="w-4 h-4 text-slate-500" /> 7. Bluetooth & Nearby Devices</div>
-                <p className="text-[13px] text-slate-600 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700">Why we need it:</span> Required exclusively for the "File Transfer (LessShare)" feature to securely connect and share files offline with nearby devices.</p>
+                <div className="text-[13px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5"><Bluetooth className="w-4 h-4 text-slate-500 dark:text-slate-400" /> 7. Bluetooth & Nearby Devices</div>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed pl-5.5"><span className="font-semibold text-slate-700 dark:text-slate-300">Why we need it:</span> Required exclusively for the "File Transfer (LessShare)" feature to securely connect and share files offline with nearby devices.</p>
               </div>
             </div>
           </div>

@@ -64,10 +64,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           <MessageSquare className="w-3.5 h-3.5 text-indigo-600 animate-pulse-subtle" />
           <span>Support & Grievance Redressal</span>
         </motion.div>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Contact Official Support
         </h1>
-        <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
           Need assistance with Less Legal Android application, feature guidance, or transaction verification? Our support team is here to help.
         </p>
       </ScrollReveal>
@@ -77,8 +77,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
         {/* Left Column: Official Contact Details (Configured only) & Instructions */}
         <ScrollReveal direction="up" delay={0.08} className="lg:col-span-5 space-y-6">
           
-          <div className="neo-box p-6 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-6">
-            <h2 className="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">
+          <div className="neo-box p-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs space-y-6">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700/50 pb-3">
               Official Communication Channels
             </h2>
 
@@ -88,16 +88,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 
                 {hasEmail && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-indigo-200 transition-colors">
+                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 hover:border-indigo-200 transition-colors">
                       <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold shrink-0">
                         <Mail className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-900">Email Support</div>
+                        <div className="font-bold text-slate-900 dark:text-white">Email Support</div>
                         <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-indigo-600 hover:underline font-semibold break-all">
                           {SITE_CONFIG.supportEmail}
                         </a>
-                        <div className="text-[11px] text-slate-500 mt-0.5">Response within 24-48 business hours</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Response within 24-48 business hours</div>
                       </div>
                     </div>
                   </StaggerItem>
@@ -105,16 +105,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {hasPhone && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-indigo-200 transition-colors">
+                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 hover:border-indigo-200 transition-colors">
                       <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold shrink-0">
                         <Phone className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-900">Telephone / Helpline</div>
-                        <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-slate-800 font-semibold">
+                        <div className="font-bold text-slate-900 dark:text-white">Telephone / Helpline</div>
+                        <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-slate-800 dark:text-slate-200 font-semibold">
                           {SITE_CONFIG.supportPhone}
                         </a>
-                        <div className="text-[11px] text-slate-500 mt-0.5">Mon - Fri, 10:00 AM - 6:00 PM IST</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Mon - Fri, 10:00 AM - 6:00 PM IST</div>
                       </div>
                     </div>
                   </StaggerItem>
@@ -122,13 +122,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {hasAddress && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-indigo-200 transition-colors">
+                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200/80 hover:border-indigo-200 transition-colors">
                       <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold shrink-0">
                         <MapPin className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-900">Registered Business Address</div>
-                        <p className="text-slate-700 leading-relaxed mt-0.5">{SITE_CONFIG.businessAddress}</p>
+                        <div className="font-bold text-slate-900 dark:text-white">Registered Business Address</div>
+                        <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-0.5">{SITE_CONFIG.businessAddress}</p>
                       </div>
                     </div>
                   </StaggerItem>
@@ -136,22 +136,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
               </StaggerContainer>
             ) : (
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-2">
-                <div className="font-bold text-slate-800 flex items-center gap-1.5">
+              <div className="p-4 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-700/80 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+                <div className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                   <Smartphone className="w-4 h-4 text-indigo-600" />
                   <span>In-App Support Desk</span>
                 </div>
                 <p>
                   For immediate assistance, open the <strong>Less Legal</strong> Android application and navigate to <em>Settings &gt; Help & Support</em>.
                 </p>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   You can also use the message form on this page to log a support or verification request.
                 </p>
               </div>
             )}
 
             {/* Support Standards */}
-            <div className="pt-2 space-y-3 text-xs text-slate-600">
+            <div className="pt-2 space-y-3 text-xs text-slate-600 dark:text-slate-400">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-indigo-600 shrink-0" />
                 <span><strong>Standard Turnaround:</strong> 24 to 48 business hours</span>
@@ -165,8 +165,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Grievance Redressal Notice */}
-          <div className="p-5 bg-slate-100/80 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-2">
-            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+          <div className="p-5 bg-slate-100/80 rounded-2xl border border-slate-200 dark:border-slate-700/80 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-indigo-600" />
               <span>Grievance Redressal Mechanism</span>
             </h3>
@@ -179,12 +179,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
         {/* Right Column: Support Inquiry Form */}
         <ScrollReveal direction="up" delay={0.14} className="lg:col-span-7">
-          <div className="neo-box p-6 sm:p-8 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <div className="neo-box p-6 sm:p-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs">
             
-            <h2 className="text-lg font-bold text-slate-900 mb-1">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
               Submit a Support Request
             </h2>
-            <p className="text-xs text-slate-500 mb-6">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
               Fill in your details and describe your inquiry. We will assist you promptly.
             </p>
 
@@ -234,7 +234,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-name" className="font-bold text-slate-700">
+                      <label htmlFor="contact-name" className="font-bold text-slate-700 dark:text-slate-300">
                         Full Name <span className="text-rose-500">*</span>
                       </label>
                       <input
@@ -244,12 +244,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Your full name"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-email" className="font-bold text-slate-700">
+                      <label htmlFor="contact-email" className="font-bold text-slate-700 dark:text-slate-300">
                         Email Address <span className="text-rose-500">*</span>
                       </label>
                       <input
@@ -259,21 +259,21 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="name@example.com"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-subject" className="font-bold text-slate-700">
+                      <label htmlFor="contact-subject" className="font-bold text-slate-700 dark:text-slate-300">
                         Category
                       </label>
                       <select
                         id="contact-subject"
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                       >
                         <option value="General Inquiry">General Inquiry</option>
                         <option value="Technical Support">Technical Support</option>
@@ -286,7 +286,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label htmlFor="contact-txnid" className="font-bold text-slate-700">
+                      <label htmlFor="contact-txnid" className="font-bold text-slate-700 dark:text-slate-300">
                         Transaction ID <span className="text-slate-400 font-normal">(Optional)</span>
                       </label>
                       <input
@@ -295,13 +295,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         value={formData.transactionId}
                         onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
                         placeholder="e.g. PayU / Google Play Order ID"
-                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="contact-message" className="font-bold text-slate-700">
+                    <label htmlFor="contact-message" className="font-bold text-slate-700 dark:text-slate-300">
                       Message / Issue Description <span className="text-rose-500">*</span>
                     </label>
                     <textarea
@@ -311,7 +311,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Please provide details regarding your query..."
-                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-y"
+                      className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700/80 rounded-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-y"
                     />
                   </div>
 

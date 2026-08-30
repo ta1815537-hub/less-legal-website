@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
-import { Download, Sparkles } from 'lucide-react';
+import { Download, Sparkles, Moon, Sun } from 'lucide-react';
 import { LTLogo } from './LTLogo';
-import { AppLogo } from './AppLogo';
 import { motion, AnimatePresence } from 'motion/react';
 import { EASING_SPRING } from './MotionWrappers';
+import { useTheme } from '../hooks/useTheme';
 
 interface NavbarProps {
   currentRoute: PageRoute;
@@ -16,7 +16,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  const isDark = currentRoute === 'home';
+  const { isDark: globalIsDark, toggleTheme } = useTheme();
+  
+  const isHomeRoute = currentRoute === 'home';
+  const isDark = isHomeRoute || globalIsDark;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -44,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
           ? scrolled 
             ? 'bg-slate-950/90 backdrop-blur-md border-b border-white/5 shadow-lg' 
             : 'bg-transparent border-b border-transparent'
-          : 'bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-xs'
+          : 'bg-white/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/80 shadow-xs'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,13 +69,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             <div>
               <div className="flex items-center gap-2">
                 <span className={`font-extrabold text-xl tracking-tight transition-colors ${
-                  isDark ? 'text-white group-hover:text-indigo-400' : 'text-slate-900 group-hover:text-indigo-600'
+                  isDark ? 'text-white group-hover:text-indigo-400' : 'text-slate-900 dark:text-white group-hover:text-indigo-600'
                 }`}>
                   {SITE_CONFIG.companyName || SITE_CONFIG.appName}
                 </span>
               </div>
               <p className={`text-[11px] font-medium hidden md:block line-clamp-1 ${
-                isDark ? 'text-slate-400' : 'text-slate-500'
+                isDark ? 'text-slate-400' : 'text-slate-500 dark:text-slate-400'
               }`}>
                 Technology, Utilities & Digital Products
               </p>
@@ -93,14 +96,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   className={`relative px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-colors duration-200 ${
                     isActive
                       ? (isDark ? 'text-white font-bold' : 'text-indigo-700 font-bold')
-                      : (isDark ? 'text-slate-300 hover:text-white hover:bg-white/10' : 'text-slate-600 hover:text-slate-900 hover:bg-white/50')
+                      : (isDark ? 'text-slate-300 hover:text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white hover:bg-white/50')
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="navbar-active-pill"
                       className={`absolute inset-0 rounded-lg shadow-xs border -z-10 ${
-                        isDark ? 'bg-white/10 border-white/20' : 'bg-white border-indigo-100/80'
+                        isDark ? 'bg-white/10 border-white/20' : 'bg-white dark:bg-slate-900 border-indigo-100/80'
                       }`}
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
@@ -113,6 +116,19 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
 
           {/* CTA Buttons */}
           <div className="hidden sm:flex items-center gap-3">
+            <motion.button
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`p-2 rounded-xl transition-colors border ${
+                isDark 
+                  ? 'bg-white/10 hover:bg-white/20 text-yellow-300 border-white/20' 
+                  : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 border-slate-200/50'
+              }`}
+              aria-label="Toggle Dark Mode"
+            >
+              {globalIsDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </motion.button>
             <motion.button
               id="nav-premium-btn"
               onClick={() => handleNavClick('premium')}
@@ -142,6 +158,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
           {/* Mobile Hamburger / X Button with Smooth SVG Morph */}
           <div className="flex md:hidden items-center gap-2">
             <motion.button
+              onClick={toggleTheme}
+              whileTap={{ scale: 0.92 }}
+              className={`p-2 rounded-lg shadow-xs sm:hidden ${
+                isDark ? 'bg-white/10 text-yellow-300' : 'bg-slate-100 text-slate-700'
+              }`}
+              aria-label="Toggle Dark Mode"
+            >
+              {globalIsDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </motion.button>
+            <motion.button
               id="nav-mobile-download-icon"
               onClick={() => handleNavClick('download')}
               whileTap={{ scale: 0.92 }}
@@ -157,28 +183,28 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               id="nav-mobile-toggle-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`p-2 rounded-xl focus:outline-none transition-colors ${
-                isDark ? 'text-slate-300 hover:text-white hover:bg-white/10' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+                isDark ? 'text-slate-300 hover:text-white hover:bg-white/10' : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:text-white hover:bg-slate-100 dark:bg-slate-800'
               }`}
               aria-label="Toggle navigation menu"
             >
               <div className="w-6 h-5 relative flex flex-col justify-between items-center">
                 <span
                   className={`w-6 h-0.5 rounded-full transition-all duration-300 transform origin-left ${
-                    isDark ? 'bg-white' : 'bg-slate-700'
+                    isDark ? 'bg-white dark:bg-slate-900' : 'bg-slate-700'
                   } ${
                     mobileMenuOpen ? 'rotate-45 translate-x-0.5 -translate-y-0.5' : ''
                   }`}
                 />
                 <span
                   className={`w-6 h-0.5 rounded-full transition-all duration-200 ${
-                    isDark ? 'bg-white' : 'bg-slate-700'
+                    isDark ? 'bg-white dark:bg-slate-900' : 'bg-slate-700'
                   } ${
                     mobileMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100'
                   }`}
                 />
                 <span
                   className={`w-6 h-0.5 rounded-full transition-all duration-300 transform origin-left ${
-                    isDark ? 'bg-white' : 'bg-slate-700'
+                    isDark ? 'bg-white dark:bg-slate-900' : 'bg-slate-700'
                   } ${
                     mobileMenuOpen ? '-rotate-45 translate-x-0.5 translate-y-0.5' : ''
                   }`}
@@ -200,7 +226,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             transition={{ duration: 0.25, ease: EASING_SPRING }}
             style={{ willChange: "transform, opacity" }}
             className={`md:hidden absolute top-full left-0 right-0 border-b shadow-xl px-4 pt-3 pb-6 space-y-3 overflow-hidden z-40 ${
-              isDark ? 'bg-slate-950/95 backdrop-blur-xl border-white/10' : 'bg-white border-slate-200'
+              isDark ? 'bg-slate-950/95 backdrop-blur-xl border-white/10' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700/80'
             }`}
           >
             <div className="flex flex-col space-y-1">
@@ -217,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                     className={`text-left px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                       isActive
                         ? (isDark ? 'bg-indigo-500/20 text-indigo-300 font-bold border border-indigo-500/30' : 'bg-indigo-50 text-indigo-700 font-bold border border-indigo-100')
-                        : (isDark ? 'text-slate-300 hover:bg-white/10' : 'text-slate-700 hover:bg-slate-100')
+                        : (isDark ? 'text-slate-300 hover:bg-white/10' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:bg-slate-800')
                     }`}
                   >
                     {item.label}
@@ -231,7 +257,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.18, duration: 0.25 }}
               className={`pt-3 border-t grid grid-cols-2 gap-2 ${
-                isDark ? 'border-white/10' : 'border-slate-100'
+                isDark ? 'border-white/10' : 'border-slate-100 dark:border-slate-700/50'
               }`}
             >
               <button
@@ -254,7 +280,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               </button>
             </motion.div>
 
-            <div className={`pt-2 text-center text-xs font-medium ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+            <div className={`pt-2 text-center text-xs font-medium ${isDark ? 'text-slate-500 dark:text-slate-400' : 'text-slate-400'}`}>
               Less Technologies • Built with Simplicity
             </div>
           </motion.div>

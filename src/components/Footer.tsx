@@ -138,7 +138,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white transition-colors text-slate-300 font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">Privacy Policy</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
               <li>
@@ -148,7 +148,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white transition-colors text-slate-300 font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">Terms & Conditions</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
               <li>
@@ -158,7 +158,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white transition-colors text-slate-300 font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">Refund & Cancellation</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
               <li>
@@ -168,7 +168,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="hover:text-white transition-colors text-slate-300 font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">Legal Disclaimer</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
             </ul>
@@ -243,7 +243,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         {/* Bottom copyright & details */}
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
           <p>
             © {new Date().getFullYear()} {SITE_CONFIG.companyName || SITE_CONFIG.appName}. All rights reserved.
           </p>

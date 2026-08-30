@@ -28,11 +28,11 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
           <span>Privacy & Security Commitment</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Privacy Policy for Less Legal Android App
         </h1>
         
-        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pb-4 border-b border-slate-200">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400 pb-4 border-b border-slate-200 dark:border-slate-700/80">
           <span>Effective Date: March 1, 2025</span>
           <span>•</span>
           <span>Last Updated: March 2025</span>
@@ -53,11 +53,11 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
       </div>
 
       {/* Policy Content Sections */}
-      <div className="prose prose-slate max-w-none text-slate-700 space-y-8 text-sm leading-relaxed">
+      <div className="prose prose-slate max-w-none text-slate-700 dark:text-slate-300 space-y-8 text-sm leading-relaxed">
         
         {/* Section 1 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             1. Introduction & Scope
           </h2>
           <p>
@@ -70,7 +70,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 2 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             2. Information We Collect
           </h2>
           <p>
@@ -91,12 +91,12 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 3 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             3. On-Device File & PDF Processing
           </h2>
-          <div className="bg-slate-100 p-4 rounded-xl border border-slate-200 space-y-2">
-            <div className="font-bold text-slate-900">Your documents remain strictly on your device:</div>
-            <p className="text-xs text-slate-600">
+          <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-2">
+            <div className="font-bold text-slate-900 dark:text-white">Your documents remain strictly on your device:</div>
+            <p className="text-xs text-slate-600 dark:text-slate-400">
               When you use our PDF Tools (Merge, Split, Compress, Lock/Unlock) or the PDF Reader, document processing occurs natively on your Android device's hardware. <strong>Less Legal does NOT upload, store, or transmit the contents of your PDF files to external cloud servers.</strong>
             </p>
           </div>
@@ -104,7 +104,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 4 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             4. Less Share Local File Transfer
           </h2>
           <p>
@@ -114,7 +114,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 5 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             5. Payment & Transaction Information
           </h2>
           <p>
@@ -132,7 +132,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 6 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             6. Advertising & Google AdMob
           </h2>
           <p>
@@ -142,7 +142,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 7 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             7. Third-Party Service Providers
           </h2>
           <p>
@@ -158,7 +158,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 8 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             8. Data Security & Storage
           </h2>
           <p>
@@ -168,7 +168,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 9 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             9. User Rights & Data Deletion
           </h2>
           <p>
@@ -178,7 +178,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 10 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             10. Children's Privacy
           </h2>
           <p>
@@ -188,7 +188,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
 
         {/* Section 11 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             11. Contact for Privacy Inquiries
           </h2>
           <p>
@@ -200,7 +200,7 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
       </div>
 
       {/* Navigation Footer */}
-      <div className="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <div className="pt-6 border-t border-slate-200 dark:border-slate-700/80 flex flex-wrap items-center justify-between gap-4">
         <button
           onClick={() => onNavigate('terms')}
           className="text-xs font-bold text-indigo-600 hover:text-indigo-700"

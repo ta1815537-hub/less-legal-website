@@ -28,11 +28,11 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
           <span>Service Agreement</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Terms & Conditions
         </h1>
         
-        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pb-4 border-b border-slate-200">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400 pb-4 border-b border-slate-200 dark:border-slate-700/80">
           <span>Effective Date: March 1, 2025</span>
           <span>•</span>
           <span>Last Updated: March 2025</span>
@@ -53,11 +53,11 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Terms Content */}
-      <div className="prose prose-slate max-w-none text-slate-700 space-y-8 text-sm leading-relaxed">
+      <div className="prose prose-slate max-w-none text-slate-700 dark:text-slate-300 space-y-8 text-sm leading-relaxed">
         
         {/* 1 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             1. Acceptance of Terms
           </h2>
           <p>
@@ -67,7 +67,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
 
         {/* 2 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             2. Permitted Use & User Responsibilities
           </h2>
           <p>
@@ -82,7 +82,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
 
         {/* 3 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             3. Premium Passes & Billing Terms
           </h2>
           <p>
@@ -106,7 +106,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
 
         {/* 4 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             4. Payment Gateway & Transaction Processing
           </h2>
           <p>
@@ -116,7 +116,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
 
         {/* 5 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             5. Intellectual Property
           </h2>
           <p>
@@ -126,7 +126,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
 
         {/* 6 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             6. Limitation of Liability
           </h2>
           <p>
@@ -141,7 +141,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
 
         {/* 7 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             7. Modifications to Service & Terms
           </h2>
           <p>
@@ -151,7 +151,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
 
         {/* 8 */}
         <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
             8. Governing Law & Dispute Resolution
           </h2>
           <p>
@@ -162,7 +162,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Navigation Footer */}
-      <div className="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <div className="pt-6 border-t border-slate-200 dark:border-slate-700/80 flex flex-wrap items-center justify-between gap-4">
         <button
           onClick={() => onNavigate('privacy')}
           className="text-xs font-bold text-indigo-600 hover:text-indigo-700"

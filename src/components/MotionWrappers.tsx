@@ -190,7 +190,7 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
       case 'primary':
         return 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white shadow-md shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/35 border border-indigo-500/30';
       case 'secondary':
-        return 'bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-200';
+        return 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-200';
       case 'dark':
         return 'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 hover:shadow-xl hover:shadow-slate-900/40 border border-slate-700/50';
       case 'outline':
