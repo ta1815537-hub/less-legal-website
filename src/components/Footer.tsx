@@ -263,6 +263,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
             </p>
           </div>
+          
+          {/* Security & Anti-Hacking Protection Shield Badge */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-200/70 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold whitespace-nowrap badge-one-line">
+            <Lock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>256-Bit SSL Encrypted • Anti-Hacking & XSS Shield Active</span>
+          </div>
+
           <div className="flex items-center gap-4 text-[11px] whitespace-nowrap badge-one-line">
             <span>{t.footer.platformInfo}</span>
             <span>•</span>

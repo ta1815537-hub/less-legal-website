@@ -12,6 +12,7 @@ import {
 } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { sanitizeText, isRateLimited } from '../utils/security';
 
 interface ContactPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -36,14 +37,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+    if (isRateLimited('contact_form_submit', 3000)) return;
+    
+    const cleanName = sanitizeText(formData.name).trim();
+    const cleanEmail = sanitizeText(formData.email).trim();
+    const cleanSubject = sanitizeText(formData.subject).trim();
+    const cleanTxnId = sanitizeText(formData.transactionId).trim();
+    const cleanMessage = sanitizeText(formData.message).trim();
+
+    if (!cleanName || !cleanEmail || !cleanMessage) return;
     
     setIsSubmitting(true);
 
     setTimeout(() => {
       if (hasEmail) {
-        const mailtoUrl = `mailto:${SITE_CONFIG.supportEmail}?subject=${encodeURIComponent(`[Less Legal Support] ${formData.subject} - ${formData.name}`)}&body=${encodeURIComponent(
-          `Name: ${formData.name}\nEmail: ${formData.email}\n${formData.transactionId ? `Transaction ID: ${formData.transactionId}\n` : ''}\nMessage:\n${formData.message}`
+        const mailtoUrl = `mailto:${SITE_CONFIG.supportEmail}?subject=${encodeURIComponent(`[Less Legal Support] ${cleanSubject} - ${cleanName}`)}&body=${encodeURIComponent(
+          `Name: ${cleanName}\nEmail: ${cleanEmail}\n${cleanTxnId ? `Transaction ID: ${cleanTxnId}\n` : ''}\nMessage:\n${cleanMessage}`
         )}`;
         window.location.href = mailtoUrl;
       }

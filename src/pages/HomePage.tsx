@@ -15,6 +15,7 @@ import {
 } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { sanitizePhoneNumber, isRateLimited, isSafeUrl } from '../utils/security';
 
 interface HomePageProps {
   onNavigate: (route: PageRoute) => void;
@@ -50,7 +51,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [waNumber, setWaNumber] = useState<string>('');
 
   const handleOpenWhatsApp = () => {
-    const cleanDigits = waNumber.replace(/\D/g, '');
+    if (isRateLimited('whatsapp_trigger', 1500)) return;
+    const cleanDigits = sanitizePhoneNumber(waNumber).replace(/\D/g, '');
     if (!cleanDigits) {
       alert(t.common?.verifiedNotice ? 'कृपया एक मोबाइल नंबर दर्ज करें (10 अंक)' : 'Please enter a valid 10-digit mobile number');
       return;
@@ -60,7 +62,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       fullNumber = '91' + cleanDigits;
     }
     const targetUrl = `https://wa.me/${fullNumber}`;
-    window.open(targetUrl, '_blank', 'noopener,noreferrer');
+    if (isSafeUrl(targetUrl)) {
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   // 4. Interactive FAQ Accordion
