@@ -465,7 +465,7 @@ export const translations: Record<Language, TranslationSchema> = {
       legalHeader: "Legal & Policies",
       supportHeader: "Support & Contact",
       aboutLessLegal: "About Less Legal",
-      founderLabel: "Founder (Anurag Gurauli)",
+      founderLabel: "Founder (Anurag Tiwari {Gurauli})",
       appFeatures: "App Features",
       premiumPlans: "Premium Plans",
       downloadApp: "Download App",
@@ -484,14 +484,14 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     founder: {
       badge: "FOUNDER & CREATOR",
-      name: "Anurag Gurauli",
+      name: "Anurag Tiwari {Gurauli}",
       role: "Advocate",
       subtitle: "Advocate | Founder, Less Technologies",
       practice: "Practicing as an Advocate before the Allahabad High Court.",
       shortQuote: "“Less Technologies is built around a simple idea: technology should make useful knowledge, tools and digital services easier to access.”",
 
       storyTitle: "The Person Behind Less Technologies",
-      storyP1: "My name is Anurag Gurauli. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Technologies.",
+      storyP1: "My name is Anurag Tiwari {Gurauli}. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Technologies.",
       storyP2: "My professional journey in law has given me a close understanding of the practical challenges faced by advocates, law students and ordinary citizens while accessing legal information and everyday digital tools.",
       storyP3: "Less Technologies is my effort to bring practical technology into that space — creating simple, useful and accessible digital products that solve real-world problems.",
       storyP4: "Less Legal is the first major product in this vision.",
@@ -527,7 +527,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       messageTitle: "A Message From The Founder",
       messageQuote: "I believe technology becomes meaningful when it makes something genuinely useful simpler and more accessible. Less Technologies is being built with that belief.",
-      messageAuthor: "Anurag Gurauli • Founder, Less Technologies",
+      messageAuthor: "Anurag Tiwari {Gurauli} • Founder, Less Technologies",
 
       timelineTitle: "From Legal Practice to Digital Innovation",
       timelineItems: [
@@ -598,7 +598,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       founderPreviewBadge: "MEET THE FOUNDER",
       founderPreviewTitle: "Created by an Advocate for Real-World Utility",
-      founderPreviewText: "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Technologies to simplify legal access and everyday digital tasks.",
+      founderPreviewText: "Anurag Tiwari {Gurauli}, Advocate practicing before the Allahabad High Court, founded Less Technologies to simplify legal access and everyday digital tasks.",
 
       faqBadge: "FREQUENTLY ASKED QUESTIONS",
       faqTitle: "Got Questions? We Have Factual Answers",

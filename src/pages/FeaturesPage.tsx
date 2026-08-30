@@ -12,6 +12,7 @@ import {
 import { 
   ScrollReveal, HeroAmbientGlow, GlowingButton 
 } from '../components/MotionWrappers';
+import { useAutoScroll } from '../hooks/useAutoScroll';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -21,6 +22,7 @@ interface FeaturesPageProps {
 
 export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
+  const categoriesRef = useAutoScroll(0.7);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -136,27 +138,33 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       </ScrollReveal>
 
       {/* Filter & Search Bar */}
-      <ScrollReveal direction="up" delay={0.1} className="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+      <ScrollReveal direction="up" delay={0.1} className="flex flex-col md:flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10 overflow-hidden">
         
-        {/* Category Pills - Auto Screen Adjust & Single Line Text */}
-        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar flex-nowrap shrink-0">
-          {categories.map((cat) => (
-            <motion.button
-              key={cat.key}
-              onClick={() => setSelectedCategory(cat.key)}
-              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
-                selectedCategory === cat.key
-                  ? 'btn-crimson font-bold text-white shadow-md'
-                  : 'glass-panel text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-[#F5F2EE]'
-              }`}
-            >
-              {cat.label}
-            </motion.button>
-          ))}
+        {/* Category Pills - Marquee */}
+        <div className="overflow-hidden w-full lg:flex-1 mask-edges-x pb-2">
+          <div ref={categoriesRef} className="flex items-center overflow-x-auto no-scrollbar w-full select-none cursor-grab">
+            {[...Array(4)].map((_, arrayIdx) => (
+              <div key={arrayIdx} className="flex items-center gap-1.5 sm:gap-2 pr-1.5 sm:pr-2 shrink-0">
+                {categories.map((cat, idx) => (
+                  <motion.button
+                    key={`${cat.key}-${idx}-${arrayIdx}`}
+                    onClick={() => setSelectedCategory(cat.key)}
+                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
+                      selectedCategory === cat.key
+                        ? 'btn-crimson font-bold text-white shadow-md'
+                        : 'glass-panel text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-[#F5F2EE]'
+                    }`}
+                  >
+                    {cat.label}
+                  </motion.button>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Search Input */}
-        <div className="relative w-full md:w-80 shrink-0">
+        <div className="relative w-full lg:w-80 shrink-0">
           <Search className="w-4 h-4 text-slate-400 dark:text-[#77736F] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
@@ -212,7 +220,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                       <div className="grid grid-cols-2 gap-1 text-[11px] text-slate-600 dark:text-[#B8B3AF]">
                         {feature.highlights.map((highlight, hIdx) => (
                           <div key={hIdx} className="flex items-center gap-1.5">
-                            <Check className="w-3 h-3 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                            <Check className="w-3 h-3 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                             <span className="line-clamp-1">{highlight}</span>
                           </div>
                         ))}

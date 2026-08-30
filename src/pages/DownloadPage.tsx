@@ -33,7 +33,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
         <motion.button
           whileHover={{ x: -3 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
+          className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
         >
           <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
           <span className="whitespace-nowrap">{t.common.backToHome}</span>
@@ -42,7 +42,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
         <div>
           <motion.div 
             whileHover={{ scale: 1.05 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
           >
             <Smartphone className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] animate-pulse shrink-0" />
             <span className="whitespace-nowrap">{t.downloadPage.badge}</span>
@@ -131,8 +131,8 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               </a>
             ) : (
               <div className="p-4 glass-panel rounded-2xl border border-slate-200 dark:border-white/10 max-w-xs mx-auto text-center space-y-1">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 text-amber-900 dark:text-[#D8BD82] font-bold text-xs border border-amber-600/30 dark:border-[#D8BD82]/30 whitespace-nowrap">
-                  <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 text-amber-700 dark:text-[#D8BD82] font-bold text-xs border border-amber-600/30 dark:border-[#D8BD82]/30 whitespace-nowrap">
+                  <Clock className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
                   <span className="whitespace-nowrap">Coming soon on Google Play</span>
                 </div>
               </div>
@@ -176,7 +176,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               >
                 {[...SITE_CONFIG.features.slice(0, 20), ...SITE_CONFIG.features.slice(0, 20)].map((feature, idx) => (
                   <div key={`dl-top-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg whitespace-nowrap">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     <span className="text-[11px] font-medium text-slate-700 dark:text-[#B8B3AF]">{feature.title}</span>
                   </div>
                 ))}
@@ -192,7 +192,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               >
                 {[...SITE_CONFIG.features.slice(20, 40), ...SITE_CONFIG.features.slice(20, 40)].map((feature, idx) => (
                   <div key={`dl-bot-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg whitespace-nowrap">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     <span className="text-[11px] font-medium text-slate-700 dark:text-[#B8B3AF]">{feature.title}</span>
                   </div>
                 ))}
@@ -208,7 +208,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
         <ScrollReveal direction="up" delay={0.12}>
           <div className="glass-panel p-6 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl space-y-3">
             <h3 className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2">
-              <Smartphone className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+              <Smartphone className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span>System Requirements</span>
             </h3>
             <ul className="space-y-2 text-xs text-slate-600 dark:text-[#B8B3AF] grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -234,31 +234,31 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 pt-2">
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Camera className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 1. Camera</div>
+                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Camera className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 1. Camera</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Used for scanning QR Codes and Barcodes (Quick Scan Billing) and capturing images for documents or case files.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><FolderOpen className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 2. Storage & Media</div>
+                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><FolderOpen className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 2. Storage & Media</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Required to save, read, and manage your PDFs, legal drafts, and documents (used in PDF Workspace, Document Hub, and Poster Hub).</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><MapPin className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 3. Location (Fine & Coarse)</div>
+                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 3. Location (Fine & Coarse)</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Needed for location-based features like the Jurisdiction Finder, Court Finder, and providing accurate local timings for the Calendar & Panchang.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Mic className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 4. Microphone (Record Audio)</div>
+                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Mic className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 4. Microphone (Record Audio)</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Required for creating quick voice notes, audio typing, or communicating with the AI Support Chat.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Users className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 5. Contacts</div>
+                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Users className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 5. Contacts</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Used for the Direct WhatsApp feature, allowing you to instantly message saved or unsaved contacts directly from the app.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Bell className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 6. Notifications & Alarms</div>
+                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Bell className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 6. Notifications & Alarms</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Used to send you important reminders for your Case Diary, hearing dates, Job/Internship alerts, and daily updates.</p>
               </div>
               <div className="space-y-1">
-                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Bluetooth className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" /> 7. Bluetooth & Nearby Devices</div>
+                <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Bluetooth className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 7. Bluetooth & Nearby Devices</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Required exclusively for the "File Transfer (LessShare)" feature to securely connect and share files directly with nearby devices.</p>
               </div>
             </div>

@@ -70,7 +70,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
         <motion.button
           whileHover={{ x: -3 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
+          className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
         >
           <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
           <span className="whitespace-nowrap">{t.common.backToHome}</span>
@@ -78,7 +78,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
         <motion.div 
           whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
         >
           <MessageSquare className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] animate-pulse shrink-0" />
           <span className="whitespace-nowrap">{t.contactPage.badge}</span>
@@ -113,7 +113,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       </div>
                       <div>
                         <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">Email Support</div>
-                        <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-amber-800 dark:text-[#D8BD82] hover:underline font-semibold break-all">
+                        <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[#C21F2F] dark:text-[#E03A3E] hover:underline font-semibold break-all">
                           {SITE_CONFIG.supportEmail}
                         </a>
                         <div className="text-[11px] text-slate-600 dark:text-[#77736F] mt-0.5">Response within 24-48 business hours</div>
@@ -125,7 +125,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 {hasPhone && (
                   <StaggerItem>
                     <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200 dark:border-white/10">
-                      <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-800 dark:text-[#D8BD82] flex items-center justify-center font-bold shrink-0 border border-amber-600/40 dark:border-[#D8BD82]/40">
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center font-bold shrink-0 border border-amber-600/40 dark:border-[#D8BD82]/40">
                         <Phone className="w-4 h-4" />
                       </div>
                       <div>
@@ -172,7 +172,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             {/* Support Standards */}
             <div className="pt-2 space-y-3 text-xs text-slate-700 dark:text-[#B8B3AF]">
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-700 dark:text-[#D8BD82] shrink-0" />
+                <Clock className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
                 <span><strong className="text-slate-900 dark:text-[#F5F2EE]">Standard Turnaround:</strong> 24 to 48 business hours</span>
               </div>
               <div className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           {/* Grievance Redressal Notice */}
           <div className="p-5 glass-panel rounded-2xl border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-[#B8B3AF] space-y-2">
             <h3 className="font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-amber-700 dark:text-[#D8BD82]" />
+              <ShieldCheck className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E]" />
               <span>Grievance Redressal Mechanism</span>
             </h3>
             <p className="leading-relaxed text-[11px]">
@@ -236,7 +236,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       setSubmitted(false);
                       setFormData({ name: '', email: '', subject: 'General Inquiry', transactionId: '', message: '' });
                     }}
-                    className="mt-2 text-xs font-bold text-amber-800 dark:text-[#D8BD82] underline cursor-pointer"
+                    className="mt-2 text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] underline cursor-pointer"
                   >
                     {language === 'hi' ? 'दूसरा प्रश्न भेजें' : 'Send another inquiry'}
                   </button>

@@ -85,11 +85,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
             <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2 text-xs text-slate-600 dark:text-[#B8B3AF]">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <CheckCircle className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                 <span>{t.about.whatIsItem1}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <CheckCircle className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                 <span>{t.about.whatIsItem2}</span>
               </div>
             </div>
@@ -112,11 +112,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
             <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2 text-xs text-slate-600 dark:text-[#B8B3AF]">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <CheckCircle className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                 <span>{t.about.privacyItem1}</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+                <CheckCircle className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                 <span>{t.about.privacyItem2}</span>
               </div>
             </div>

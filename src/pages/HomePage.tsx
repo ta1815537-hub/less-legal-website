@@ -13,6 +13,7 @@ import {
   ScrollReveal, StaggerContainer, 
   StaggerItem, GlowingButton, HeroAmbientGlow 
 } from '../components/MotionWrappers';
+import { useAutoScroll } from '../hooks/useAutoScroll';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { sanitizePhoneNumber, isRateLimited, isSafeUrl } from '../utils/security';
@@ -34,6 +35,10 @@ const SQFT_RATES: Record<string, { label: string; rate: number; region: string }
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
   const [founderImgErr, setFounderImgErr] = useState(false);
+
+  // Auto-scroll refs
+  const simTabRef = useAutoScroll(0.7);
+  const categoriesRef = useAutoScroll(0.7);
 
   const getProductDesc = (prod: (typeof SITE_CONFIG.products)[0]) => {
     if (language === 'hi') {
@@ -131,10 +136,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="space-y-20 sm:space-y-32 py-4 sm:py-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="space-y-12 sm:space-y-16 py-4 sm:py-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       
       {/* 1. HERO SECTION WITH CINEMATIC GLASSMORPHISM */}
-      <section className="relative text-slate-900 dark:text-white pt-6 sm:pt-10 pb-12 sm:pb-20 overflow-hidden border-b border-slate-200 dark:border-white/10">
+      <section className="relative text-slate-900 dark:text-white pt-6 sm:pt-8 pb-8 sm:pb-10 overflow-hidden">
         <HeroAmbientGlow />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 space-y-4 sm:space-y-6">
@@ -147,15 +152,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             className="space-y-3 sm:space-y-4 max-w-4xl mx-auto"
           >
             {/* Orbital Logo Showcase - Shifted Up Near Header */}
-            <div className="flex justify-center mb-3">
-              <div className="p-3 sm:p-4 rounded-3xl bg-white dark:bg-[#0D0D0F]/80 border border-slate-200 dark:border-white/15 shadow-md dark:shadow-[0_0_40px_rgba(194,31,47,0.3)] backdrop-blur-2xl">
-                <LTLogo className="w-14 h-14 sm:w-20 sm:h-20" />
+            <div className="flex justify-center mb-6">
+              <div className="p-4 sm:p-5 rounded-[2rem] bg-white dark:bg-[#0D0D0F]/80 border border-slate-200 dark:border-white/15 shadow-xl dark:shadow-[0_0_50px_rgba(194,31,47,0.4)] backdrop-blur-3xl transition-transform hover:scale-105 duration-500">
+                <LTLogo className="w-16 h-16 sm:w-24 sm:h-24" />
               </div>
             </div>
 
-            <h1 className="text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1] text-slate-900 dark:text-[#F5F2EE]">
-              Legal Knowledge & <br className="hidden sm:inline" />
-              <span className="text-gradient-crimson-gold">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#B8B3AF] text-xs font-bold mb-4 sm:mb-6 uppercase tracking-widest shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#C21F2F] animate-pulse"></span>
+              The Ultimate
+            </div>
+
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[1.1] pb-2 px-2">
+              <span className="text-gradient-crimson-gold drop-shadow-md dark:drop-shadow-[0_0_30px_rgba(224,58,62,0.3)]">
                 Digital Utilities Suite
               </span>
             </h1>
@@ -213,7 +222,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             className="pt-8 border-t border-slate-200 dark:border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-xs text-slate-700 dark:text-[#B8B3AF]"
           >
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
-              <Zap className="w-3.5 h-3.5 text-amber-700 dark:text-[#D8BD82] shrink-0" />
+              <Zap className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span className="whitespace-nowrap badge-one-line">Fast On-Device Engine</span>
             </div>
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
@@ -221,7 +230,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <span className="whitespace-nowrap badge-one-line">On-Device Privacy</span>
             </div>
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
-              <LayoutGrid className="w-3.5 h-3.5 text-amber-700 dark:text-[#D8BD82] shrink-0" />
+              <LayoutGrid className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span className="whitespace-nowrap badge-one-line">46+ Integrated Tools</span>
             </div>
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
@@ -235,7 +244,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* 2. INTERACTIVE LIVE APP SIMULATOR SHOWCASE */}
       <section id="interactive-simulator" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto mb-6 space-y-3">
           <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C21F2F]/15 border border-[#C21F2F]/30 text-[#C21F2F] dark:text-[#E03A3E] text-xs font-bold">
             <Smartphone className="w-4 h-4" />
             Interactive App Preview
@@ -249,54 +258,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         {/* Simulator Tabs Header */}
-        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 no-scrollbar max-w-4xl mx-auto px-1">
-          <button
-            onClick={() => setSimTab('diary')}
-            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
-              simTab === 'diary'
-                ? 'btn-crimson text-white border-[#C21F2F]'
-                : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
-            }`}
-          >
-            <Calendar className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
-            <span className="whitespace-nowrap badge-one-line">Case Diary & Planner</span>
-          </button>
-
-          <button
-            onClick={() => setSimTab('converter')}
-            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
-              simTab === 'converter'
-                ? 'btn-crimson text-white border-[#C21F2F]'
-                : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
-            }`}
-          >
-            <Compass className="w-4 h-4 shrink-0 text-amber-700 dark:text-[#D8BD82]" />
-            <span className="whitespace-nowrap badge-one-line">Live Area Converter</span>
-          </button>
-
-          <button
-            onClick={() => setSimTab('pdf')}
-            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
-              simTab === 'pdf'
-                ? 'btn-crimson text-white border-[#C21F2F]'
-                : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
-            }`}
-          >
-            <FileText className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
-            <span className="whitespace-nowrap badge-one-line">PDF Engine & Share</span>
-          </button>
-
-          <button
-            onClick={() => setSimTab('whatsapp')}
-            className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
-              simTab === 'whatsapp'
-                ? 'btn-crimson text-white border-[#C21F2F]'
-                : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
-            }`}
-          >
-            <MessageSquare className="w-4 h-4 shrink-0 text-[#25D366]" />
-            <span className="whitespace-nowrap badge-one-line">Direct WhatsApp</span>
-          </button>
+        <div className="overflow-hidden w-full pb-4 mask-edges-x max-w-7xl mx-auto px-1">
+          <div ref={simTabRef} className="flex items-center overflow-x-auto no-scrollbar w-full select-none cursor-grab">
+            {[...Array(4)].map((_, arrayIdx) => (
+              <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
+                {[
+                  { id: 'diary', icon: Calendar, label: 'Case Diary & Planner', iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
+                  { id: 'converter', icon: Compass, label: 'Live Area Converter', iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
+                  { id: 'pdf', icon: FileText, label: 'PDF Engine & Share', iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
+                  { id: 'whatsapp', icon: MessageSquare, label: 'Direct WhatsApp', iconColor: 'text-[#25D366]' }
+                ].map((tab) => (
+                  <button
+                    key={`${tab.id}-${arrayIdx}`}
+                    onClick={() => setSimTab(tab.id as typeof simTab)}
+                    className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
+                      simTab === tab.id
+                        ? 'btn-crimson text-white border-[#C21F2F]'
+                        : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
+                    }`}
+                  >
+                    <tab.icon className={`w-4 h-4 shrink-0 ${tab.iconColor}`} />
+                    <span className="whitespace-nowrap badge-one-line">{tab.label}</span>
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Simulator Frame Container */}
@@ -313,7 +300,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2 whitespace-nowrap badge-one-line">
                   <span className="whitespace-nowrap badge-one-line">Less Legal Interface</span>
-                  <span className="text-[10px] bg-amber-500/10 dark:bg-[#D8BD82]/20 text-amber-800 dark:text-[#D8BD82] px-2 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/40 font-semibold whitespace-nowrap badge-one-line">
+                  <span className="text-[10px] bg-amber-500/10 dark:bg-[#D8BD82]/20 text-amber-700 dark:text-[#D8BD82] px-2 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/40 font-semibold whitespace-nowrap badge-one-line">
                     On-Device
                   </span>
                 </div>
@@ -322,7 +309,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-600 dark:text-[#B8B3AF] shrink-0">
-              <Lock className="w-3.5 h-3.5 text-amber-700 dark:text-[#D8BD82] shrink-0" />
+              <Lock className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap badge-one-line">On-Device Encrypted</span>
             </div>
           </div>
@@ -342,7 +329,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               >
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
                   <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#B8B3AF] gap-2">
-                    <span className="font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">Today's Hearing Schedule</span>
+                    <span className="font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">Today's Hearing Schedule</span>
                     <span className="whitespace-nowrap badge-one-line shrink-0">3 Active Cases</span>
                   </div>
 
@@ -362,7 +349,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Verma Infra vs. City Development</div>
                         <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">District Tribunal • Arbitration • Item #5</div>
                       </div>
-                      <span className="text-[10px] font-bold bg-amber-100 dark:bg-[#D8BD82]/20 text-amber-800 dark:text-[#D8BD82] px-2.5 py-1 rounded-lg border border-amber-200 dark:border-[#D8BD82]/40 whitespace-nowrap badge-one-line shrink-0">
+                      <span className="text-[10px] font-bold bg-amber-100 dark:bg-[#D8BD82]/20 text-amber-700 dark:text-[#D8BD82] px-2.5 py-1 rounded-lg border border-amber-200 dark:border-[#D8BD82]/40 whitespace-nowrap badge-one-line shrink-0">
                         Evidence Stage
                       </span>
                     </div>
@@ -375,7 +362,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Pending Tasks</div>
                   </div>
                   <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center">
-                    <div className="text-xl font-extrabold text-amber-700 dark:text-[#D8BD82]">100%</div>
+                    <div className="text-xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">100%</div>
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Auto-Saved Notes</div>
                   </div>
                   <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center col-span-2 sm:col-span-1">
@@ -399,7 +386,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line block">Type Quantity & Source Unit:</label>
+                      <label className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line block">Type Quantity & Source Unit:</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
@@ -421,7 +408,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                     <div className="text-left sm:text-right">
                       <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Calculated Area Base</div>
-                      <div className="text-base font-extrabold text-amber-700 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
+                      <div className="text-base font-extrabold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
                     </div>
                   </div>
 
@@ -443,10 +430,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         >
                           <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-[#B8B3AF] mb-1">
                             <span className="whitespace-nowrap badge-one-line">{u.label}</span>
-                            {copiedUnit === key ? <Check className="w-3 h-3 text-amber-700 dark:text-[#D8BD82] shrink-0" /> : <Copy className="w-3 h-3 text-slate-400 dark:text-[#77736F] shrink-0" />}
+                            {copiedUnit === key ? <Check className="w-3 h-3 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> : <Copy className="w-3 h-3 text-slate-400 dark:text-[#77736F] shrink-0" />}
                           </div>
                           <div className="text-sm font-extrabold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{convertedVal}</div>
-                          <div className="text-[9px] text-amber-600 dark:text-[#D8BD82]/80 mt-0.5 whitespace-nowrap badge-one-line">{u.region}</div>
+                          <div className="text-[9px] text-[#C21F2F] dark:text-[#E03A3E]/80 mt-0.5 whitespace-nowrap badge-one-line">{u.region}</div>
                         </div>
                       );
                     })}
@@ -466,7 +453,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 className="space-y-4"
               >
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
-                  <div className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">PDF Document Processing & Local Transfer</div>
+                  <div className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">PDF Document Processing & Local Transfer</div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
@@ -476,7 +463,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     </div>
 
                     <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
-                      <Lock className="w-5 h-5 text-amber-700 dark:text-[#D8BD82] mb-1" />
+                      <Lock className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
                       <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">Encrypt & Password</div>
                       <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">Add 256-bit passwords to secure client documents.</div>
                     </div>
@@ -502,7 +489,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 className="space-y-4"
               >
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
-                  <div className="flex items-center justify-between text-xs font-bold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">
+                  <div className="flex items-center justify-between text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">
                     <span>Direct WhatsApp Utility</span>
                     <span className="text-[10px] bg-green-100 dark:bg-[#25D366]/20 text-green-700 dark:text-[#25D366] px-2 py-0.5 rounded-md border border-green-200 dark:border-[#25D366]/40">Real Working Tool</span>
                   </div>
@@ -516,7 +503,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     <div className="flex flex-wrap items-center justify-start gap-2.5 pt-1">
                       {/* Compact Number Input Box */}
                       <div className="flex items-center gap-1.5 bg-white dark:bg-[#0A0A0C] border border-slate-200 dark:border-white/15 rounded-xl px-3 py-2 w-36 sm:w-44 focus-within:border-[#C21F2F] transition-colors">
-                        <span className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] shrink-0">+91</span>
+                        <span className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] shrink-0">+91</span>
                         <input
                           type="tel"
                           value={waNumber}
@@ -542,7 +529,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     </div>
 
                     <div className="text-[10px] text-slate-500 dark:text-[#77736F] flex items-center gap-1 pt-0.5">
-                      <Lock className="w-3 h-3 text-amber-700 dark:text-[#D8BD82] shrink-0" />
+                      <Lock className="w-3 h-3 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
                       <span>Opens WhatsApp app or web directly on your device. Zero data saved.</span>
                     </div>
                   </div>
@@ -557,7 +544,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 3. PRODUCT ECOSYSTEM GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold">
             <LayoutGrid className="w-3.5 h-3.5" />
             {t.home.ecosystemBadge || "Product Ecosystem"}
           </span>
@@ -605,7 +592,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         {product.name}
                       </h3>
                       {!isAvailable && (
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/30 whitespace-nowrap">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/30 whitespace-nowrap">
                           {language === 'hi' ? 'विकास में (In Development)' : 'In Development'}
                         </span>
                       )}
@@ -626,7 +613,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       </button>
                     ) : (
                       <button disabled className="w-full py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-[#77736F] flex items-center justify-center gap-2 cursor-not-allowed">
-                        <Lock className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82]" />
+                        <Lock className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
                         <span>{language === 'hi' ? 'विकास में (In Development)' : 'In Development'}</span>
                       </button>
                     )}
@@ -650,8 +637,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="relative w-48 sm:w-56 aspect-[4/5] rounded-2xl overflow-hidden border-2 border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl bg-[#0D131F]">
                   {!founderImgErr ? (
                     <img 
-                      src="/images/founder.jpg" 
-                      alt="Anurag Gurauli — Founder of Less Technologies"
+                      src="/images/anurag_tiwari.jpg" 
+                      alt="Anurag Tiwari {Gurauli} — Founder of Less Technologies"
                       onError={() => setFounderImgErr(true)}
                       className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
                     />
@@ -670,8 +657,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
               {/* Founder Info & CTA */}
               <div className="md:col-span-8 space-y-4 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold">
-                  <UserCheck className="w-3.5 h-3.5 text-[#C21F2F]" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold">
+                  <UserCheck className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
                   <span>{t.home.founderPreviewBadge}</span>
                 </div>
 
@@ -683,7 +670,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   {t.home.founderPreviewText}
                 </p>
 
-                <p className="text-xs text-amber-800 dark:text-[#D8BD82] font-semibold italic">
+                <p className="text-xs text-[#C21F2F] dark:text-[#E03A3E] font-semibold italic">
                   {t.founder.shortQuote}
                 </p>
 
@@ -708,7 +695,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <ScrollReveal direction="up" className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
               Complete Integrated Suite
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight mt-1">
@@ -733,20 +720,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         {/* Filter Categories Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar flex-nowrap shrink-0">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer ${
-                selectedCategory === cat
-                  ? 'btn-crimson font-bold text-white shadow-md'
-                  : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="overflow-hidden w-full pb-2 mask-edges-x">
+          <div ref={categoriesRef} className="flex items-center overflow-x-auto no-scrollbar w-full select-none cursor-grab">
+            {[...Array(4)].map((_, arrayIdx) => (
+              <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
+                {categories.map((cat, idx) => (
+                  <button
+                    key={`${cat}-${idx}-${arrayIdx}`}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer ${
+                      selectedCategory === cat
+                        ? 'btn-crimson font-bold text-white shadow-md'
+                        : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Feature Items Grid */}
@@ -764,10 +757,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div key={item.id} className="glass-card p-5 flex flex-col justify-between h-full space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
+                      <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
                         {item.category}
                       </span>
-                      <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     </div>
 
                     <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
@@ -821,7 +814,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 5. FOUR PILLARS OF EXCELLENCE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82]">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
             Engineered for Security & Speed
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
@@ -844,7 +837,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="glass-card p-6 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
               <Zap className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">Lightning Fast Performance</h3>
@@ -864,7 +857,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="glass-card p-6 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-800 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
               <Lock className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">Fixed-Validity Passes</h3>
@@ -883,8 +876,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="relative max-w-5xl mx-auto text-center space-y-8">
           
           <ScrollReveal direction="up" className="space-y-3">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 dark:bg-[#D8BD82]/15 text-amber-900 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/30">
-              <Sparkles className="w-3.5 h-3.5 text-amber-700 dark:text-[#D8BD82]" />
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 dark:bg-[#D8BD82]/15 text-amber-700 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/30">
+              <Sparkles className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
               Transparent Passes
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-[#F5F2EE]">
@@ -902,7 +895,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">3 Months Pass</span>
-                  <span className="text-[10px] font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
+                  <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
                     90 Days Validity
                   </span>
                 </div>
@@ -915,11 +908,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </p>
                 <ul className="space-y-2 text-xs text-slate-700 dark:text-[#B8B3AF]">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     <span>Ad-free tool navigation & PDF utilities</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     <span>Strict one-time purchase (No recurring fee)</span>
                   </li>
                 </ul>
@@ -934,51 +927,45 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             {/* 1 Year Pass (Best Value) */}
-            <div className="glass-panel-crimson glow-crimson-gold rounded-2xl p-6 border-2 relative flex flex-col justify-between space-y-6">
-              <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-[#D8BD82] to-[#C7A96B] text-[#080808] text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-lg">
+            <div className="relative h-full">
+              <div className="glass-panel-crimson glow-crimson-gold rounded-2xl p-6 border-2 flex flex-col justify-between space-y-6 h-full">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-bold text-[#C21F2F] dark:text-[#E03A3E]">1 Year Pass</span>
+                    <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/20 dark:bg-[#D8BD82]/20 px-2.5 py-0.5 rounded-full border border-amber-600/40 dark:border-[#D8BD82]/40">
+                      365 Days Validity
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-1 mb-2">
+                    <span className="text-4xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">₹179</span>
+                    <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">/ one-time payment</span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4">
+                    Best value ad-free experience for 365 full days
+                  </p>
+                  <ul className="space-y-2 text-xs text-slate-700 dark:text-[#B8B3AF]">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
+                      <span>365 days uninterrupted validity</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
+                      <span>Strict one-time purchase (No recurring fee)</span>
+                    </li>
+                  </ul>
+                </div>
+                <button 
+                  onClick={() => onNavigate('premium')}
+                  className="w-full py-3 rounded-xl btn-crimson font-bold text-xs cursor-pointer text-white shadow-lg"
+                >
+                  Get 1 Year Pass
+                </button>
+              </div>
+              <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-[#D8BD82] to-[#C7A96B] text-[#080808] text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-lg z-10">
                 Best Value
               </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-bold text-amber-800 dark:text-[#D8BD82]">1 Year Pass</span>
-                  <span className="text-[10px] font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/20 dark:bg-[#D8BD82]/20 px-2.5 py-0.5 rounded-full border border-amber-600/40 dark:border-[#D8BD82]/40">
-                    365 Days Validity
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">₹179</span>
-                  <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">/ one-time payment</span>
-                </div>
-                <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4">
-                  Full access to all 46 tools ad-free for 1 full year.
-                </p>
-                <ul className="space-y-2 text-xs text-slate-800 dark:text-[#F5F2EE]">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-amber-700 dark:text-[#D8BD82] shrink-0" />
-                    <span>Ad-free tool navigation & PDF utilities</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-amber-700 dark:text-[#D8BD82] shrink-0" />
-                    <span>365 days uninterrupted validity</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-amber-700 dark:text-[#D8BD82] shrink-0" />
-                    <span>Strict one-time purchase (No recurring fee)</span>
-                  </li>
-                </ul>
-              </div>
-
-              <button
-                onClick={() => onNavigate('premium')}
-                className="w-full py-3 rounded-xl btn-crimson font-bold text-xs cursor-pointer"
-              >
-                Get 1 Year Pass
-              </button>
             </div>
-
           </div>
-
           <div className="pt-2 text-xs text-slate-500 dark:text-[#77736F]">
             Purchases are made securely inside the Android application via certified Play Store / PayU gateway.
           </div>
@@ -989,7 +976,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 7. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <ScrollReveal direction="up" className="text-center space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82]">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
             Got Questions?
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">

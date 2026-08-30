@@ -31,7 +31,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
         <motion.button
           whileHover={{ x: -3 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
+          className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3 py-1 rounded-full shadow-xs"
         >
           <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
           <span className="whitespace-nowrap">{t.common.backToHome}</span>
@@ -39,9 +39,9 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
         <motion.div 
           whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] animate-pulse shrink-0" />
+          <Sparkles className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] animate-pulse shrink-0" />
           <span className="whitespace-nowrap">{t.premiumPage.badge}</span>
         </motion.div>
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
@@ -56,7 +56,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
       <ScrollReveal direction="up" delay={0.06} className="relative z-10">
         <div className="glass-panel rounded-3xl p-6 border border-slate-200 dark:border-white/10 shadow-xl space-y-3">
           <div className="flex items-center gap-2.5 text-slate-900 dark:text-[#F5F2EE] font-bold text-sm">
-            <ShieldCheck className="w-5 h-5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
             <span>{t.premiumPage.transparentNoticeTitle}</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600 dark:text-[#B8B3AF]">
@@ -87,7 +87,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F]">
                   {language === 'hi' ? 'तिमाही पास' : 'Quarterly Pass'}
                 </span>
-                <span className="text-xs font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-1 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30 whitespace-nowrap">
+                <span className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-1 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30 whitespace-nowrap">
                   {t.premiumPage.plan90DaysValidity}
                 </span>
               </div>
@@ -110,7 +110,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 <ul className="space-y-2.5 text-xs text-slate-700 dark:text-[#B8B3AF]">
                   {features90Days.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -144,22 +144,15 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
         {/* Plan 2: ₹179 / 1 Year (Best Value) */}
         <ScrollReveal direction="up" delay={0.16} className="h-full">
-          <div className="glass-panel-crimson glow-crimson-gold shine-sweep-overlay p-6 sm:p-8 rounded-3xl border-2 relative flex flex-col justify-between h-full">
-            <motion.div 
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              transition={{ repeat: Infinity, repeatType: 'reverse', duration: 2.5 }}
-              className="absolute -top-3.5 right-8 bg-gradient-to-r from-amber-600 to-amber-700 dark:from-[#D8BD82] dark:to-[#C7A96B] text-white dark:text-[#080808] text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-lg whitespace-nowrap"
-            >
-              {t.premiumPage.bestValueBadge}
-            </motion.div>
+          <div className="relative h-full">
+            <div className="glass-panel-crimson glow-crimson-gold shine-sweep-overlay p-6 sm:p-8 rounded-3xl border-2 flex flex-col justify-between h-full">
 
             <div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-900 dark:text-[#D8BD82]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
                   {language === 'hi' ? 'वार्षिक पास' : 'Annual Pass'}
                 </span>
-                <span className="text-xs font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/20 dark:bg-[#D8BD82]/20 px-2.5 py-1 rounded-full border border-amber-600/40 dark:border-[#D8BD82]/40 whitespace-nowrap">
+                <span className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/20 dark:bg-[#D8BD82]/20 px-2.5 py-1 rounded-full border border-amber-600/40 dark:border-[#D8BD82]/40 whitespace-nowrap">
                   {t.premiumPage.plan1YearValidity}
                 </span>
               </div>
@@ -182,7 +175,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 <ul className="space-y-2.5 text-xs text-slate-800 dark:text-[#F5F2EE]">
                   {features1Year.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -191,7 +184,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 space-y-3">
-              <div className="text-center text-[11px] text-amber-900 dark:text-[#D8BD82] font-semibold">
+              <div className="text-center text-[11px] text-[#C21F2F] dark:text-[#E03A3E] font-semibold">
                 {language === 'hi' ? 'दैनिक कानूनी उपयोगिता के लिए सर्वोत्तम बचत' : 'Best savings for long-term daily legal utility usage'}
               </div>
               <a
@@ -215,6 +208,15 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               </a>
             </div>
           </div>
+            <motion.div 
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ repeat: Infinity, repeatType: "reverse", duration: 2.5 }}
+              className="absolute -top-3.5 right-8 bg-gradient-to-r from-amber-600 to-amber-700 dark:from-[#D8BD82] dark:to-[#C7A96B] text-white dark:text-[#080808] text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-lg whitespace-nowrap z-10"
+            >
+              {t.premiumPage.bestValueBadge}
+            </motion.div>
+          </div>
         </ScrollReveal>
 
       </div>
@@ -223,7 +225,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
       <ScrollReveal direction="up" delay={0.2} className="relative z-10">
         <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl space-y-4">
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2">
-            <FileText className="w-4 h-4 text-amber-600 dark:text-[#D8BD82]" />
+            <FileText className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E]" />
             <span>Policies & Terms for Premium Purchases</span>
           </h3>
           
@@ -239,12 +241,12 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 className="w-full p-3.5 bg-slate-100/80 hover:bg-slate-200/60 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl border border-slate-200 dark:border-white/10 text-left transition-colors group flex items-center justify-between cursor-pointer"
               >
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
+                  <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
                     View Terms & Conditions
                   </div>
                   <div className="text-[11px] text-slate-500 dark:text-[#77736F]">Service terms & pass rules</div>
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
             </StaggerItem>
 
@@ -255,12 +257,12 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 className="w-full p-3.5 bg-slate-100/80 hover:bg-slate-200/60 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl border border-slate-200 dark:border-white/10 text-left transition-colors group flex items-center justify-between cursor-pointer"
               >
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
+                  <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
                     Refund & Cancellation Policy
                   </div>
                   <div className="text-[11px] text-slate-500 dark:text-[#77736F]">Guidelines for ₹59 & ₹179 passes</div>
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
             </StaggerItem>
 
@@ -271,12 +273,12 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 className="w-full p-3.5 bg-slate-100/80 hover:bg-slate-200/60 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl border border-slate-200 dark:border-white/10 text-left transition-colors group flex items-center justify-between cursor-pointer"
               >
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
+                  <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
                     Contact Support
                   </div>
                   <div className="text-[11px] text-slate-500 dark:text-[#77736F]">Assistance for active transactions</div>
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
             </StaggerItem>
           </StaggerContainer>

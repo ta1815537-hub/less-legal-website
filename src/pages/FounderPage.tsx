@@ -30,7 +30,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <motion.button
           whileHover={{ x: -3 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-amber-800 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3.5 py-1.5 rounded-full shadow-xs"
+          className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3.5 py-1.5 rounded-full shadow-xs"
         >
           <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
           <span>{t.common.backToHome}</span>
@@ -64,8 +64,8 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                     {!imgError ? (
                       <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center">
                         <img 
-                          src="/images/anurag_gurauli.jpg" 
-                          alt="Anurag Gurauli — Founder of Less Technologies" 
+                          src="/images/anurag_tiwari.jpg" 
+                          alt="Anurag Tiwari {Gurauli} — Founder of Less Technologies" 
                           onError={() => setImgError(true)}
                           loading="eager"
                           className="w-full h-auto max-h-[480px] object-cover object-top transform group-hover:scale-[1.02] transition-transform duration-500 ease-out"
@@ -77,11 +77,11 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                       /* Styled Fallback */
                       <div className="aspect-[4/5] bg-gradient-to-b from-slate-100 via-white to-amber-50 dark:from-[#0F172A] dark:via-[#080808] dark:to-[#1A0A0D] flex flex-col items-center justify-center p-6 text-center space-y-4">
                         <div className="w-20 h-20 rounded-full bg-amber-500/10 dark:bg-[#C21F2F]/20 border-2 border-amber-600 dark:border-[#D8BD82] flex items-center justify-center shadow-lg">
-                          <Scale className="w-10 h-10 text-amber-700 dark:text-[#D8BD82]" />
+                          <Scale className="w-10 h-10 text-[#C21F2F] dark:text-[#E03A3E]" />
                         </div>
                         <div>
                           <div className="text-xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-wide whitespace-nowrap badge-one-line">{t.founder.name}</div>
-                          <div className="text-xs font-semibold text-amber-700 dark:text-[#D8BD82] uppercase tracking-wider mt-1 whitespace-nowrap badge-one-line">{t.founder.role}</div>
+                          <div className="text-xs font-semibold text-[#C21F2F] dark:text-[#E03A3E] uppercase tracking-wider mt-1 whitespace-nowrap badge-one-line">{t.founder.role}</div>
                           <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] mt-1 whitespace-nowrap badge-one-line">Allahabad High Court</div>
                         </div>
                         <div className="px-3 py-1 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-[10px] text-amber-800 dark:text-[#B8BD82] whitespace-nowrap badge-one-line">
@@ -93,7 +93,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                     {/* Caption Bar */}
                     <div className="p-3.5 bg-slate-100/95 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs">
                       <span className="font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.founder.name}</span>
-                      <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-[#D8BD82] font-extrabold text-[11px] whitespace-nowrap badge-one-line border border-amber-600/20 dark:border-[#D8BD82]/30">{t.founder.role}</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-[#D8BD82] font-extrabold text-[11px] whitespace-nowrap badge-one-line border border-amber-600/20 dark:border-[#D8BD82]/30">{t.founder.role}</span>
                     </div>
 
                   </div>
@@ -107,7 +107,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <div className="space-y-3">
                 <motion.div 
                   whileHover={{ scale: 1.03 }}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
                   <span className="whitespace-nowrap tracking-wider">{t.founder.badge}</span>
@@ -117,12 +117,12 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                   {t.founder.name}
                 </h1>
                 
-                <p className="text-base sm:text-lg font-bold text-amber-800 dark:text-[#D8BD82]">
+                <p className="text-base sm:text-lg font-bold text-[#C21F2F] dark:text-[#E03A3E]">
                   {t.founder.subtitle}
                 </p>
 
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                  <UserCheck className="w-4 h-4 text-[#C21F2F] shrink-0" />
+                  <UserCheck className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
                   <span>{t.founder.practice}</span>
                 </p>
               </div>
@@ -164,7 +164,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       <ScrollReveal direction="up" delay={0.06} className="relative z-10">
         <div className="glass-card p-6 sm:p-10 rounded-3xl space-y-6">
           <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/15 border border-[#C21F2F]/30 text-[#C21F2F] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/15 border border-[#C21F2F]/30 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center shrink-0">
               <Scale className="w-5 h-5" />
             </div>
             <div>
@@ -179,7 +179,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <p className="font-semibold text-slate-900 dark:text-[#F5F2EE]">{t.founder.storyP1}</p>
             <p>{t.founder.storyP2}</p>
             <p>{t.founder.storyP3}</p>
-            <p className="font-semibold text-amber-800 dark:text-[#D8BD82]">{t.founder.storyP4}</p>
+            <p className="font-semibold text-[#C21F2F] dark:text-[#E03A3E]">{t.founder.storyP4}</p>
           </div>
         </div>
       </ScrollReveal>
@@ -191,7 +191,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <div className="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-200 dark:border-white/12 space-y-6">
           
           <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-600/30 text-amber-600 dark:text-[#D8BD82] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-600/30 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center shrink-0">
               <Target className="w-5 h-5" />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
@@ -211,7 +211,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                   whileHover={{ scale: 1.02, x: 2 }}
                   className="p-3 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-[#F5F2EE]"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-[#C21F2F] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                   <span>{bullet}</span>
                 </motion.div>
               ))}
@@ -223,7 +223,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
           {/* Factual Disclaimer Banner */}
           <div className="p-4 rounded-2xl bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 text-xs text-slate-600 dark:text-[#B8B3AF] flex items-start gap-3">
-            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
             <p>{t.founder.disclaimerNote}</p>
           </div>
 
@@ -250,27 +250,27 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             
             {/* Step 1: Founder */}
             <div className="p-5 rounded-2xl bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/10 shadow-lg w-full md:w-64 text-center space-y-2">
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-600 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">1</div>
+              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">1</div>
               <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.founderLabel}</div>
               <div className="text-base font-extrabold text-slate-900 dark:text-[#F5F2EE]">{t.founder.name}</div>
               <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">{t.founder.role}</div>
             </div>
 
             {/* Connecting Arrow 1 */}
-            <div className="text-amber-600 dark:text-[#D8BD82] font-bold flex md:block transform rotate-90 md:rotate-0">
+            <div className="text-[#C21F2F] dark:text-[#E03A3E] font-bold flex md:block transform rotate-90 md:rotate-0">
               <ArrowRight className="w-5 h-5 animate-pulse" />
             </div>
 
             {/* Step 2: Parent Brand */}
             <div className="p-5 rounded-2xl bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/10 shadow-lg w-full md:w-64 text-center space-y-2">
-              <div className="w-8 h-8 rounded-full bg-[#C21F2F]/20 text-[#C21F2F] flex items-center justify-center mx-auto text-xs font-bold">2</div>
+              <div className="w-8 h-8 rounded-full bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center mx-auto text-xs font-bold">2</div>
               <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.parentBrandLabel}</div>
-              <div className="text-base font-extrabold text-[#C21F2F]">Less Technologies</div>
+              <div className="text-base font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">Less Technologies</div>
               <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">Digital Product Studio</div>
             </div>
 
             {/* Connecting Arrow 2 */}
-            <div className="text-amber-600 dark:text-[#D8BD82] font-bold flex md:block transform rotate-90 md:rotate-0">
+            <div className="text-[#C21F2F] dark:text-[#E03A3E] font-bold flex md:block transform rotate-90 md:rotate-0">
               <ArrowRight className="w-5 h-5 animate-pulse" />
             </div>
 
@@ -286,11 +286,11 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                   : 'border-slate-200 dark:border-white/10 shadow-lg'
               }`}
             >
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-600 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">3</div>
+              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">3</div>
               <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.flagshipProductLabel}</div>
               <div className="text-base font-extrabold text-slate-900 dark:text-[#F5F2EE] flex items-center justify-center gap-1">
                 <span>Less Legal</span>
-                <ExternalLink className="w-3.5 h-3.5 text-[#C21F2F]" />
+                <ExternalLink className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
               </div>
               <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">Legal Knowledge & Utilities</div>
             </motion.div>
@@ -307,7 +307,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <div className="glass-card p-6 sm:p-10 rounded-3xl space-y-8">
           
           <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-600/30 text-amber-600 dark:text-[#D8BD82] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-600/30 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center shrink-0">
               <Lightbulb className="w-5 h-5" />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
@@ -320,7 +320,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <p className="font-semibold text-slate-900 dark:text-[#F5F2EE]">{t.founder.visionP2}</p>
             <p>{t.founder.visionP3}</p>
             <p>{t.founder.visionP4}</p>
-            <p className="font-semibold text-amber-800 dark:text-[#D8BD82]">{t.founder.visionP5}</p>
+            <p className="font-semibold text-[#C21F2F] dark:text-[#E03A3E]">{t.founder.visionP5}</p>
           </div>
 
           {/* Animated Visual Progression Bar */}
@@ -332,9 +332,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <StaggerContainer className="grid grid-cols-1 sm:grid-cols-5 gap-3">
               {[
                 { label: t.founder.visionSteps.idea, icon: Lightbulb, color: "text-amber-500" },
-                { label: t.founder.visionSteps.problem, icon: AlertCircle, color: "text-[#C21F2F]" },
+                { label: t.founder.visionSteps.problem, icon: AlertCircle, color: "text-[#C21F2F] dark:text-[#E03A3E]" },
                 { label: t.founder.visionSteps.technology, icon: Layers, color: "text-blue-500" },
-                { label: t.founder.visionSteps.product, icon: Scale, color: "text-amber-600 dark:text-[#D8BD82]" },
+                { label: t.founder.visionSteps.product, icon: Scale, color: "text-[#C21F2F] dark:text-[#E03A3E]" },
                 { label: t.founder.visionSteps.impact, icon: Award, color: "text-emerald-500" }
               ].map((step, idx) => {
                 const IconComponent = step.icon;
@@ -377,7 +377,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2 h-full flex flex-col justify-between shadow-md"
               >
                 <div>
-                  <div className="text-2xl font-black text-amber-600 dark:text-[#D8BD82] opacity-80 mb-1">
+                  <div className="text-2xl font-black text-[#C21F2F] dark:text-[#E03A3E] opacity-80 mb-1">
                     {item.step}
                   </div>
                   <h3 className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] leading-snug">
@@ -401,11 +401,11 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           whileHover={{ scale: 1.01 }}
           className="p-8 sm:p-12 rounded-3xl glass-panel-crimson border border-[#C21F2F]/40 shadow-2xl text-center space-y-6 max-w-3xl mx-auto relative overflow-hidden"
         >
-          <div className="w-12 h-12 rounded-full bg-amber-500/15 dark:bg-[#C21F2F]/20 text-amber-800 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/40 flex items-center justify-center mx-auto text-xl font-serif shadow-xs">
+          <div className="w-12 h-12 rounded-full bg-amber-500/15 dark:bg-[#C21F2F]/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/40 flex items-center justify-center mx-auto text-xl font-serif shadow-xs">
             “
           </div>
           
-          <h3 className="text-xs font-bold text-amber-600 dark:text-[#D8BD82] uppercase tracking-wider">
+          <h3 className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] uppercase tracking-wider">
             {t.founder.messageTitle}
           </h3>
 
@@ -413,7 +413,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             “{t.founder.messageQuote}”
           </blockquote>
 
-          <div className="pt-2 border-t border-slate-200 dark:border-white/10 text-xs font-bold text-amber-800 dark:text-[#D8BD82]">
+          <div className="pt-2 border-t border-slate-200 dark:border-white/10 text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E]">
             {t.founder.messageAuthor}
           </div>
         </motion.div>

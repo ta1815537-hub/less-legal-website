@@ -102,7 +102,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
 
         <div className="space-y-3 text-xs text-slate-700 dark:text-[#B8B3AF]">
           <div className="flex items-start gap-2.5 p-4 glass-panel rounded-2xl border border-slate-200 dark:border-white/10">
-            <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0 mt-0.5" />
             <div>
               <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-0.5">{t.refundPolicyPage.cond1Title}</strong>
               {t.refundPolicyPage.cond1Text}
@@ -110,7 +110,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
           </div>
 
           <div className="flex items-start gap-2.5 p-4 glass-panel rounded-2xl border border-slate-200 dark:border-white/10">
-            <CheckCircle2 className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0 mt-0.5" />
             <div>
               <strong className="text-slate-900 dark:text-[#F5F2EE] block mb-0.5">{t.refundPolicyPage.cond2Title}</strong>
               {t.refundPolicyPage.cond2Text}
