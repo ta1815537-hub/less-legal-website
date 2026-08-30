@@ -96,12 +96,20 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             <div className="text-center text-[11px] text-slate-500 font-medium">
               Purchase directly inside the Less Legal Android App
             </div>
-            <button
-              onClick={() => onNavigate('download')}
-              className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-colors"
+            <a
+              href={SITE_CONFIG.playStoreUrl || '#'}
+              target={SITE_CONFIG.playStoreUrl ? "_blank" : "_self"}
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                if (!SITE_CONFIG.playStoreUrl) {
+                  e.preventDefault();
+                  onNavigate('download');
+                }
+              }}
+              className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition-colors flex items-center justify-center gap-2"
             >
-              Get Less Legal on Android
-            </button>
+              <span>Open Less Legal App to Purchase</span>
+            </a>
           </div>
         </div>
 
@@ -151,12 +159,20 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             <div className="text-center text-[11px] text-indigo-700 font-medium">
               Best savings for long-term daily legal utility usage
             </div>
-            <button
-              onClick={() => onNavigate('download')}
-              className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-600/30 transition-colors"
+            <a
+              href={SITE_CONFIG.playStoreUrl || '#'}
+              target={SITE_CONFIG.playStoreUrl ? "_blank" : "_self"}
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                if (!SITE_CONFIG.playStoreUrl) {
+                  e.preventDefault();
+                  onNavigate('download');
+                }
+              }}
+              className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-600/30 transition-colors flex items-center justify-center gap-2"
             >
-              Get Less Legal on Android
-            </button>
+              <span>Open Less Legal App to Purchase</span>
+            </a>
           </div>
         </div>
 

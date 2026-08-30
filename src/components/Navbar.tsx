@@ -31,7 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
           <Shield className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
           <span>
-            Official Website for <strong className="text-white">Less Legal</strong> Android Application — Independent Legal & Digital Utilities
+            Official Website of Less Legal Android Application
           </span>
         </div>
       </div>

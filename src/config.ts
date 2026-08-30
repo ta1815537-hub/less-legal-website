@@ -37,18 +37,16 @@ export const SITE_CONFIG = {
   shortDescription: "An independent Android application providing legal reference resources, useful digital tools, PDF utilities, calculators, productivity tools and everyday utilities.",
   fullDescription: "Less Legal is an independent Android utility application designed to bring together essential legal reference materials, calculators, document tools, and day-to-day digital utilities into a single, intuitive interface.",
   
-  // Real Contact Details (Leave as "" if not yet configured)
-  // The UI will NEVER show fake phone numbers, fake emails, or fake addresses.
-  supportEmail: "",        // e.g. "support@lesslegal.com" (Leave empty until real email is provided)
+  // Real Contact Details
+  supportEmail: "lesslegalsupport@gmail.com",
   supportPhone: "",        // e.g. "+91 9876543210"
   businessAddress: "",     // e.g. "Office No. 102, Legal Hub Tower, Bangalore, Karnataka, India"
   
-  // Real Play Store URL (Leave as "" if not yet published / configured)
-  // If empty, the app will cleanly show "Android App Coming Soon"
-  playStoreUrl: "",        // e.g. "https://play.google.com/store/apps/details?id=com.lesslegal.app"
+  // Real Play Store URL
+  playStoreUrl: "https://play.google.com/store/apps/details?id=com.lesslegal.app",
 
   // App Metadata
-  appVersion: "1.0.0",
+  appVersion: "8.7.5",
   platform: "Android",
   minAndroidVersion: "Android 7.0 (Nougat) or higher",
   lastUpdatedDate: "March 2025",
