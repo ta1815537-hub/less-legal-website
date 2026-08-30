@@ -64,7 +64,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                     {!imgError ? (
                       <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center">
                         <img 
-                          src="/images/founder.jpg" 
+                          src="/images/anurag_gurauli.jpg" 
                           alt="Anurag Gurauli — Founder of Less Technologies" 
                           onError={() => setImgError(true)}
                           loading="eager"
