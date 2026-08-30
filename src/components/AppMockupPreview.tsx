@@ -55,43 +55,43 @@ export const AppMockupPreview: React.FC = () => {
           </div>
 
           {/* Mockup Interactive Screen View Switcher */}
-          <div className="px-3 pt-2.5 pb-1.5 bg-slate-100/70 border-b border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-1 overflow-x-auto text-[11px]">
+          <div className="px-3 pt-2.5 pb-1.5 bg-slate-200/60 dark:bg-slate-900/80 border-b border-slate-300/80 dark:border-slate-700/80 flex items-center justify-between gap-1 overflow-x-auto no-scrollbar text-[11px] shrink-0">
             <button
               onClick={() => setActiveTab('pdf')}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'pdf'
-                  ? 'bg-white dark:bg-slate-900 text-indigo-700 shadow-xs border border-indigo-100'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               PDF Tools
             </button>
             <button
               onClick={() => setActiveTab('diary')}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'diary'
-                  ? 'bg-white dark:bg-slate-900 text-indigo-700 shadow-xs border border-indigo-100'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Case Diary
             </button>
             <button
               onClick={() => setActiveTab('calc')}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'calc'
-                  ? 'bg-white dark:bg-slate-900 text-indigo-700 shadow-xs border border-indigo-100'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Calculators
             </button>
             <button
               onClick={() => setActiveTab('acts')}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'acts'
-                  ? 'bg-white dark:bg-slate-900 text-indigo-700 shadow-xs border border-indigo-100'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Bare Acts

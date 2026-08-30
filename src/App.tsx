@@ -81,7 +81,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#080808] text-slate-900 dark:text-[#F5F2EE] font-sans selection:bg-[#C21F2F] selection:text-white transition-colors duration-300">
       
       {/* Navigation Header */}
       <Navbar currentRoute={currentRoute} onNavigate={navigateTo} />

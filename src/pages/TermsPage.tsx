@@ -1,38 +1,38 @@
 import React from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
-import { FileText, ArrowLeft, Shield, AlertTriangle } from 'lucide-react';
+import { FileText, ArrowLeft, AlertTriangle } from 'lucide-react';
+import { HeroAmbientGlow } from '../components/MotionWrappers';
 
 interface TermsPageProps {
   onNavigate: (route: PageRoute) => void;
 }
 
 export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
-  const hasEmail = Boolean(SITE_CONFIG.supportEmail && SITE_CONFIG.supportEmail.trim() !== "");
-
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10">
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10 overflow-hidden bg-[#080808]">
+      <HeroAmbientGlow />
       
       {/* Top Breadcrumb & Title */}
-      <div className="space-y-4">
+      <div className="space-y-4 relative z-10">
         <button
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5"
+          className="text-xs font-bold text-[#D8BD82] hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Home</span>
         </button>
 
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-bold">
-          <FileText className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-[#D8BD82]/30 text-[#D8BD82] text-xs font-bold">
+          <FileText className="w-3.5 h-3.5 text-[#E03A3E]" />
           <span>Service Agreement</span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-[#F5F2EE] tracking-tight">
           Terms & Conditions
         </h1>
         
-        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400 pb-4 border-b border-slate-200 dark:border-slate-700/80">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-[#77736F] pb-4 border-b border-white/10">
           <span>Effective Date: March 1, 2025</span>
           <span>•</span>
           <span>Last Updated: March 2025</span>
@@ -42,9 +42,9 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Prominent Legal Advice Disclaimer in Terms */}
-      <div className="bg-amber-50/90 rounded-2xl p-6 border border-amber-200 space-y-2 text-xs text-amber-950">
-        <div className="font-bold text-sm text-amber-900 flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-amber-600" />
+      <div className="glass-panel-crimson rounded-3xl p-6 border border-[#C21F2F]/40 space-y-2 text-xs text-[#B8B3AF] relative z-10">
+        <div className="font-bold text-sm text-[#F5F2EE] flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-[#E03A3E]" />
           <span>Informational Utility & No Legal Advice Disclaimer</span>
         </div>
         <p className="leading-relaxed">
@@ -53,21 +53,21 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Terms Content */}
-      <div className="prose prose-slate max-w-none text-slate-700 dark:text-slate-300 space-y-8 text-sm leading-relaxed">
+      <div className="space-y-8 text-sm leading-relaxed relative z-10 text-[#B8B3AF]">
         
         {/* 1 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             1. Acceptance of Terms
           </h2>
           <p>
-            By downloading, installing, accessing, or using the <strong>Less Legal</strong> Android application or this website, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must discontinue use of the application immediately.
+            By downloading, installing, accessing, or using the <strong className="text-[#F5F2EE]">Less Legal</strong> Android application or this website, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must discontinue use of the application immediately.
           </p>
         </section>
 
         {/* 2 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             2. Permitted Use & User Responsibilities
           </h2>
           <p>
@@ -81,8 +81,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 3 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             3. Premium Passes & Billing Terms
           </h2>
           <p>
@@ -90,33 +90,33 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <strong>Available Passes:</strong> ₹59 for 3 Months (90 days validity) and ₹179 for 1 Year (365 days validity).
+              <strong className="text-[#F5F2EE]">Available Passes:</strong> ₹59 for 3 Months (90 days validity) and ₹179 for 1 Year (365 days validity).
             </li>
             <li>
-              <strong>One-Time, Non-Recurring Purchases:</strong> Passes are one-time payments for a fixed validity duration. They are <strong>NOT</strong> automatically renewing subscriptions. We do not store payment instruments or perform recurring debits.
+              <strong className="text-[#F5F2EE]">One-Time, Non-Recurring Purchases:</strong> Passes are one-time payments for a fixed validity duration. They are <strong className="text-[#F5F2EE]">NOT</strong> automatically renewing subscriptions. We do not store payment instruments or perform recurring debits.
             </li>
             <li>
-              <strong>Expiration & Reversion:</strong> Upon expiration of the validity period, the account automatically reverts to standard ad-supported access unless a new pass is manually purchased by the user.
+              <strong className="text-[#F5F2EE]">Expiration & Reversion:</strong> Upon expiration of the validity period, the account automatically reverts to standard ad-supported access unless a new pass is manually purchased by the user.
             </li>
             <li>
-              <strong>No Lifetime Claims:</strong> Less Legal does not sell lifetime access passes. Validity is strictly tied to the purchased plan duration.
+              <strong className="text-[#F5F2EE]">No Lifetime Claims:</strong> Less Legal does not sell lifetime access passes. Validity is strictly tied to the purchased plan duration.
             </li>
           </ul>
         </section>
 
         {/* 4 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             4. Payment Gateway & Transaction Processing
           </h2>
           <p>
-            Payments are processed through authorized payment intermediaries including <strong>PayU</strong> and/or <strong>Google Play Billing</strong>. By completing a transaction, you agree to the payment provider's terms of service. Less Legal does not store sensitive cardholder data.
+            Payments are processed through authorized payment intermediaries including <strong className="text-[#F5F2EE]">PayU</strong> and/or <strong className="text-[#F5F2EE]">Google Play Billing</strong>. By completing a transaction, you agree to the payment provider's terms of service. Less Legal does not store sensitive cardholder data.
           </p>
         </section>
 
         {/* 5 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             5. Intellectual Property
           </h2>
           <p>
@@ -125,8 +125,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 6 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             6. Limitation of Liability
           </h2>
           <p>
@@ -140,8 +140,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 7 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             7. Modifications to Service & Terms
           </h2>
           <p>
@@ -150,8 +150,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 8 */}
-        <section className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-700/80 pb-2">
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-white/10">
+          <h2 className="text-lg font-bold text-[#F5F2EE] border-b border-white/10 pb-2">
             8. Governing Law & Dispute Resolution
           </h2>
           <p>
@@ -162,16 +162,16 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Navigation Footer */}
-      <div className="pt-6 border-t border-slate-200 dark:border-slate-700/80 flex flex-wrap items-center justify-between gap-4">
+      <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10">
         <button
           onClick={() => onNavigate('privacy')}
-          className="text-xs font-bold text-indigo-600 hover:text-indigo-700"
+          className="text-xs font-bold text-[#D8BD82] hover:text-white"
         >
           ← Read Privacy Policy
         </button>
         <button
           onClick={() => onNavigate('refund')}
-          className="text-xs font-bold text-indigo-600 hover:text-indigo-700"
+          className="text-xs font-bold text-[#D8BD82] hover:text-white"
         >
           Read Refund Policy →
         </button>

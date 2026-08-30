@@ -15,7 +15,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
 
   return (
     <div 
-      className={`relative flex items-center justify-center shrink-0 rounded-2xl ${showShadow ? 'shadow-md shadow-indigo-900/15' : ''} ${className}`}
+      className={`relative flex items-center justify-center shrink-0 rounded-2xl ${showShadow ? 'shadow-lg shadow-[#C21F2F]/20' : ''} ${className}`}
       style={style}
     >
       <svg 
@@ -25,54 +25,55 @@ export const AppLogo: React.FC<AppLogoProps> = ({
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Main Vibrant Cyan to Purple Gradient */}
+          {/* Main Crimson to Dark Red Gradient */}
           <linearGradient id="logoPrimaryGrad" x1="60" y1="60" x2="450" y2="450" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#00A3FF" />
-            <stop offset="35%" stopColor="#0EA5E9" />
-            <stop offset="65%" stopColor="#6366F1" />
-            <stop offset="100%" stopColor="#A855F7" />
+            <stop offset="0%" stopColor="#E03A3E" />
+            <stop offset="35%" stopColor="#C21F2F" />
+            <stop offset="70%" stopColor="#8B0000" />
+            <stop offset="100%" stopColor="#4A0000" />
           </linearGradient>
 
-          {/* Droplet Accent Gradient */}
+          {/* Gold Droplet Accent Gradient */}
           <linearGradient id="logoDropletGrad" x1="330" y1="80" x2="430" y2="180" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#00C2FF" />
-            <stop offset="100%" stopColor="#0284C7" />
+            <stop offset="0%" stopColor="#F3E5C8" />
+            <stop offset="50%" stopColor="#D8BD82" />
+            <stop offset="100%" stopColor="#9E7D3B" />
           </linearGradient>
 
-          {/* Center Dot Gradient */}
+          {/* Gold Center Dot Gradient */}
           <linearGradient id="logoCenterGrad" x1="200" y1="210" x2="310" y2="310" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#0284C7" />
-            <stop offset="50%" stopColor="#4F46E5" />
-            <stop offset="100%" stopColor="#9333EA" />
+            <stop offset="0%" stopColor="#F5F2EE" />
+            <stop offset="50%" stopColor="#D8BD82" />
+            <stop offset="100%" stopColor="#C21F2F" />
           </linearGradient>
 
-          {/* Bottom Loop Violet Gradient */}
+          {/* Bottom Loop Crimson Gold Blend */}
           <linearGradient id="logoLoopGrad" x1="220" y1="340" x2="420" y2="320" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#6366F1" />
-            <stop offset="50%" stopColor="#8B5CF6" />
-            <stop offset="100%" stopColor="#A855F7" />
+            <stop offset="0%" stopColor="#C21F2F" />
+            <stop offset="50%" stopColor="#D8BD82" />
+            <stop offset="100%" stopColor="#8B0000" />
           </linearGradient>
 
-          {/* Tile Bevel / Outer Lighting */}
+          {/* Dark Glass Tile Bevel */}
           <linearGradient id="tileBorderGrad" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="100%" stopColor="#E2E8F0" />
+            <stop offset="0%" stopColor="#D8BD82" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#C21F2F" stopOpacity="0.2" />
           </linearGradient>
 
           {/* Inner Groove Shadow */}
           <filter id="innerBevel" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#0F172A" floodOpacity="0.12" />
+            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.5" />
           </filter>
         </defs>
 
-        {/* Squircle White Tile Base */}
+        {/* Dark Squircle Tile Base */}
         <rect 
           x="12" 
           y="12" 
           width="488" 
           height="488" 
           rx="115" 
-          fill="#F8FAFC" 
+          fill="#0D0D0F" 
           stroke="url(#tileBorderGrad)" 
           strokeWidth="6"
         />
@@ -86,8 +87,8 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           rx="108" 
           fill="none" 
           stroke="#FFFFFF" 
-          strokeWidth="8"
-          opacity="0.9"
+          strokeWidth="2"
+          opacity="0.12"
         />
 
         {/* Top-Right Droplet / Leaf Element */}
@@ -113,7 +114,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           filter="url(#innerBevel)"
         />
 
-        {/* Inner Curved Hook / Bottom Purple Loop */}
+        {/* Inner Curved Hook / Bottom Crimson Loop */}
         <path 
           d="M 226 348 C 226 332 238 322 254 322 C 320 322 378 312 402 242 C 418 296 386 394 286 400 C 248 402 226 380 226 348 Z" 
           fill="url(#logoLoopGrad)" 
@@ -124,7 +125,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
         <path 
           d="M 124 250 C 124 176 186 126 270 120 C 204 136 148 186 142 254 C 132 252 124 251 124 250 Z" 
           fill="#FFFFFF" 
-          opacity="0.35"
+          opacity="0.2"
         />
         <circle 
           cx="242" 
@@ -136,7 +137,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
         <path 
           d="M 374 94 C 392 78 408 94 400 118 C 394 102 384 96 374 94 Z" 
           fill="#FFFFFF" 
-          opacity="0.4"
+          opacity="0.3"
         />
       </svg>
     </div>

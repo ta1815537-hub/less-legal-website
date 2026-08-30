@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
-import { motion, AnimatePresence, Variants } from 'motion/react';
+import { motion, Variants } from 'motion/react';
 
-// Common Easing Curve for Apple / Modern SaaS Feel
+// Common Easing Curve for Apple / Modern Glass Feel
 export const EASING_SPRING = [0.22, 1, 0.36, 1] as const;
 
 // 1. GLOBAL PAGE TRANSITION WRAPPER
@@ -122,45 +122,54 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string }> 
   );
 };
 
-// 4. HERO AMBIENT BACKGROUND GLOW
+// 4. HERO AMBIENT BACKGROUND GLOW (Crimson & Champagne Gold Orbs)
 export const HeroAmbientGlow: React.FC = () => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10 select-none">
-      {/* Soft Purple/Indigo Radial Orb 1 */}
-      <motion.div
-        animate={{
-          scale: [1, 1.12, 1],
-          x: [0, 20, 0],
-          y: [0, -15, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        style={{ willChange: "transform" }}
-        className="absolute -top-24 left-1/4 w-96 h-96 sm:w-[32rem] sm:h-[32rem] bg-gradient-to-tr from-indigo-400/15 to-purple-400/10 rounded-full blur-3xl"
-      />
-
-      {/* Cyan/Sky Ambient Glow Orb 2 */}
+      {/* Deep Crimson Radial Light Orb 1 */}
       <motion.div
         animate={{
           scale: [1, 1.15, 1],
-          x: [0, -25, 0],
-          y: [0, 20, 0],
+          x: [0, 30, 0],
+          y: [0, -20, 0],
         }}
         transition={{
           duration: 12,
           repeat: Infinity,
           ease: 'easeInOut',
-          delay: 1,
         }}
         style={{ willChange: "transform" }}
-        className="absolute top-1/3 right-10 w-80 h-80 sm:w-[28rem] sm:h-[28rem] bg-gradient-to-br from-sky-400/15 to-indigo-500/10 rounded-full blur-3xl"
+        className="absolute -top-32 left-1/4 w-[36rem] h-[36rem] bg-gradient-to-tr from-[#8B0000]/30 to-[#C21F2F]/20 rounded-full blur-[120px]"
       />
 
-      {/* Subtle Bottom Light Spread */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-32 bg-gradient-to-t from-white/80 to-transparent" />
+      {/* Champagne Gold Warm Ambient Orb 2 */}
+      <motion.div
+        animate={{
+          scale: [1, 1.18, 1],
+          x: [0, -35, 0],
+          y: [0, 25, 0],
+        }}
+        transition={{
+          duration: 14,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: 1.5,
+        }}
+        style={{ willChange: "transform" }}
+        className="absolute top-1/3 right-12 w-[32rem] h-[32rem] bg-gradient-to-br from-[#D8BD82]/15 to-[#C7A96B]/10 rounded-full blur-[110px]"
+      />
+
+      {/* Architectural Smoked Grid Overlay */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)`,
+          backgroundSize: '32px 32px'
+        }}
+      />
+
+      {/* Subtle Dark Vignette Bottom Fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#080808] to-transparent pointer-events-none" />
     </div>
   );
 };
@@ -170,7 +179,7 @@ interface GlowingButtonProps {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
-  variant?: 'primary' | 'secondary' | 'dark' | 'outline';
+  variant?: 'primary' | 'secondary' | 'gold' | 'outline';
   id?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
@@ -188,13 +197,13 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white shadow-md shadow-indigo-600/25 hover:shadow-xl hover:shadow-indigo-600/35 border border-indigo-500/30';
+        return 'btn-crimson';
       case 'secondary':
-        return 'bg-white dark:bg-slate-900 hover:bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-indigo-200';
-      case 'dark':
-        return 'bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/30 hover:shadow-xl hover:shadow-slate-900/40 border border-slate-700/50';
+        return 'btn-glass';
+      case 'gold':
+        return 'btn-gold';
       case 'outline':
-        return 'bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 shadow-2xs hover:shadow-xs';
+        return 'bg-transparent border border-white/20 hover:border-white/40 text-[#F5F2EE] hover:bg-white/5 backdrop-blur-md';
     }
   };
 
@@ -207,10 +216,10 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
       whileHover={{ y: -2, scale: 1.015 }}
       whileTap={{ scale: 0.975 }}
       transition={{ duration: 0.2, ease: EASING_SPRING }}
-      className={`relative group overflow-hidden transition-colors rounded-xl font-bold ${getVariantStyles()} ${className}`}
+      className={`relative group overflow-hidden transition-all rounded-xl font-semibold px-5 py-3 text-sm flex items-center justify-center gap-2 ${getVariantStyles()} ${className}`}
     >
       {/* Shimmer sweep effect */}
-      <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none" />
+      <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
       <span className="relative z-10 flex items-center justify-center gap-2">
         {children}
       </span>
