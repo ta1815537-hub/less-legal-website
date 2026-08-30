@@ -12,6 +12,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const LANGUAGE_STORAGE_KEY = 'app_language';
 
+declare global {
+  interface Window {
+    googleTranslateElementInit?: () => void;
+    google?: any;
+  }
+}
+
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
@@ -23,11 +30,34 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return 'en';
   });
 
+  const triggerGoogleTranslate = (lang: Language) => {
+    try {
+      const langCode = lang === 'hi' ? '/en/hi' : '/en/en';
+      const hostname = window.location.hostname;
+      
+      // Set googtrans cookie for domain and path
+      document.cookie = `googtrans=${langCode}; path=/;`;
+      if (hostname) {
+        document.cookie = `googtrans=${langCode}; path=/; domain=${hostname};`;
+      }
+      
+      // Try to trigger select element directly if present
+      const selectEl = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+      if (selectEl) {
+        selectEl.value = lang === 'hi' ? 'hi' : 'en';
+        selectEl.dispatchEvent(new Event('change'));
+      }
+    } catch (e) {
+      console.warn('Google Translate sync issue:', e);
+    }
+  };
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     if (typeof window !== 'undefined') {
       localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
       document.documentElement.lang = lang;
+      triggerGoogleTranslate(lang);
     }
   };
 
@@ -37,6 +67,40 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     document.documentElement.lang = language;
+    
+    // Inject Google Translate script if not present
+    if (typeof window !== 'undefined') {
+      window.googleTranslateElementInit = () => {
+        if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+          new window.google.translate.TranslateElement(
+            {
+              pageLanguage: 'en',
+              includedLanguages: 'en,hi',
+              layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+              autoDisplay: false
+            },
+            'google_translate_element'
+          );
+          if (language === 'hi') {
+            setTimeout(() => triggerGoogleTranslate('hi'), 300);
+          }
+        }
+      };
+
+      if (!document.getElementById('google-translate-script')) {
+        const script = document.createElement('script');
+        script.id = 'google-translate-script';
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        script.async = true;
+        document.body.appendChild(script);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      triggerGoogleTranslate(language);
+    }
   }, [language]);
 
   const value = {
@@ -49,6 +113,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   return (
     <LanguageContext.Provider value={value}>
       {children}
+      <div id="google_translate_element" className="hidden opacity-0 pointer-events-none fixed bottom-0 right-0 w-0 h-0 overflow-hidden" />
     </LanguageContext.Provider>
   );
 };

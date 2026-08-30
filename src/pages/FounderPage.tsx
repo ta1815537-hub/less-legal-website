@@ -22,7 +22,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
   const [isHoveredLessLegal, setIsHoveredLessLegal] = useState(false);
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-12 sm:pb-16 space-y-10 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-12 sm:pb-16 space-y-10 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
 
       {/* Back Button */}
@@ -57,21 +57,21 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 className="relative group w-full max-w-sm"
               >
                 {/* Outer Flowing Animated Rotating Gradient Border */}
-                <div className="animated-founder-border shadow-2xl">
+                <div className="animated-founder-border shadow-2xl rounded-2xl overflow-hidden p-1">
                   
-                  <div className="relative rounded-2xl overflow-hidden bg-white dark:bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl">
+                  <div className="relative rounded-xl overflow-hidden bg-white dark:bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl">
                     
                     {!imgError ? (
-                      <div className="relative overflow-hidden bg-slate-100 dark:bg-[#0F172A] p-2 flex justify-center items-center">
+                      <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center">
                         <img 
                           src="/images/founder.jpg" 
                           alt="Anurag Gurauli — Founder of Less Technologies" 
                           onError={() => setImgError(true)}
                           loading="eager"
-                          className="w-full h-auto max-h-[540px] object-contain rounded-xl transform group-hover:scale-[1.01] transition-transform duration-500 ease-out shadow-md"
+                          className="w-full h-auto max-h-[480px] object-cover object-top transform group-hover:scale-[1.02] transition-transform duration-500 ease-out"
                         />
                         {/* Light Sweep overlay on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/10 via-transparent to-white/20 dark:from-black/20 dark:to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl" />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                       </div>
                     ) : (
                       /* Styled Fallback */

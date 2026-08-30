@@ -91,7 +91,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
   });
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
       <HeroAmbientGlow />
       
       {/* Header */}
@@ -171,21 +171,20 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       </ScrollReveal>
 
       {/* Features Grid */}
-      <div className="relative z-10">
-        <AnimatePresence mode="popLayout">
+      <div className="relative z-10 min-h-[350px]">
+        <AnimatePresence mode="wait">
           {filteredFeatures.length > 0 ? (
             <motion.div 
-              layout
+              key={`${selectedCategory}-${searchQuery}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
-              {filteredFeatures.map((feature, idx) => (
-                <motion.div
-                  layout
+              {filteredFeatures.map((feature) => (
+                <div
                   key={feature.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3, delay: Math.min(idx * 0.03, 0.3) }}
                   className="glass-card p-6 flex flex-col justify-between"
                 >
                   <div>
@@ -222,7 +221,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                     </div>
                   </div>
 
-                </motion.div>
+                </div>
               ))}
             </motion.div>
           ) : (

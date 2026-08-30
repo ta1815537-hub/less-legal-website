@@ -32,8 +32,18 @@ const SQFT_RATES: Record<string, { label: string; rate: number; region: string }
 };
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [founderImgErr, setFounderImgErr] = useState(false);
+
+  const getProductDesc = (prod: (typeof SITE_CONFIG.products)[0]) => {
+    if (language === 'hi') {
+      if (prod.id === 'prod-less-legal') return 'कानून पेशेवरों और नागरिकों के लिए कानूनी ज्ञान एवं डिजिटल उपयोगिताएँ।';
+      if (prod.id === 'prod-faget-app') return 'भारतीय लोगों के लिए इवेंट्स प्रबंधन ऐप। (Events management app for Indian Peoples)';
+      if (prod.id === 'prod-less-music') return 'भारतीय संस्कृति का 3000+ ऑफ़लाइन संगीत हब। (3000+ offline music Hub of India\'s culture)';
+      if (prod.id === 'prod-less-notes') return 'सरल और तेज़ उत्पादकता नोट्स एवं त्वरित दस्तावेज़ पैड।';
+    }
+    return prod.description;
+  };
 
   // 1. Interactive Simulator Tab
   const [simTab, setSimTab] = useState<'diary' | 'converter' | 'pdf' | 'whatsapp'>('diary');
@@ -549,13 +559,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-12 space-y-3">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-900 dark:text-[#D8BD82] text-xs font-bold">
             <LayoutGrid className="w-3.5 h-3.5" />
-            Product Ecosystem
+            {t.home.ecosystemBadge || "Product Ecosystem"}
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-            Built by Less Technologies
+            {t.home.ecosystemTitle || "Built by Less Technologies"}
           </h2>
           <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-            Discover our suite of independent digital tools designed to simplify daily workflows.
+            {t.home.ecosystemSub || "Discover our suite of independent digital tools designed to simplify daily workflows."}
           </p>
         </ScrollReveal>
 
@@ -580,7 +590,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   {isFlagship && (
                     <div className="absolute top-0 right-0 -mt-3 mr-4">
                       <span className="bg-gradient-to-r from-[#D8BD82] to-[#C7A96B] text-[#080808] text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-md">
-                        Flagship App
+                        {language === 'hi' ? 'प्रमुख ऐप (Flagship)' : 'Flagship App'}
                       </span>
                     </div>
                   )}
@@ -596,12 +606,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       </h3>
                       {!isAvailable && (
                         <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/30 whitespace-nowrap">
-                          In Development
+                          {language === 'hi' ? 'विकास में (In Development)' : 'In Development'}
                         </span>
                       )}
                     </div>
                     <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-                      {product.description}
+                      {getProductDesc(product)}
                     </p>
                   </div>
 
@@ -612,12 +622,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         className="w-full py-2.5 rounded-xl text-xs font-bold btn-crimson flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
-                        <span>Get App</span>
+                        <span>{language === 'hi' ? 'ऐप प्राप्त करें' : 'Get App'}</span>
                       </button>
                     ) : (
                       <button disabled className="w-full py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-[#77736F] flex items-center justify-center gap-2 cursor-not-allowed">
                         <Lock className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82]" />
-                        <span>In Development</span>
+                        <span>{language === 'hi' ? 'विकास में (In Development)' : 'In Development'}</span>
                       </button>
                     )}
                   </div>
@@ -723,14 +733,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         {/* Filter Categories Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar flex-nowrap shrink-0">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer active:scale-95 ${
                 selectedCategory === cat
-                  ? 'btn-crimson font-bold text-white'
+                  ? 'btn-crimson font-bold text-white shadow-md'
                   : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
               }`}
             >
@@ -740,38 +750,47 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Feature Items Grid */}
-        <StaggerContainer key={`${selectedCategory}-${searchQuery}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredFeatures.slice(0, 12).map((item) => (
-            <StaggerItem key={item.id}>
-              <div className="glass-card p-5 flex flex-col justify-between h-full space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
-                      {item.category}
-                    </span>
-                    <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+        <div className="min-h-[280px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${selectedCategory}-${searchQuery}`}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.2 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+            >
+              {filteredFeatures.slice(0, 12).map((item) => (
+                <div key={item.id} className="glass-card p-5 flex flex-col justify-between h-full space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
+                        {item.category}
+                      </span>
+                      <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                    </div>
+
+                    <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
 
-                  <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-                    {item.description}
-                  </p>
+                  <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex flex-wrap gap-1.5">
+                    {item.highlights.map((tag, hIdx) => (
+                      <span key={hIdx} className="text-[10px] font-medium text-slate-600 dark:text-[#B8B3AF] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md border border-slate-200 dark:border-white/5">
+                        • {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-
-                <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex flex-wrap gap-1.5">
-                  {item.highlights.map((tag, hIdx) => (
-                    <span key={hIdx} className="text-[10px] font-medium text-slate-600 dark:text-[#B8B3AF] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md border border-slate-200 dark:border-white/5">
-                      • {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {filteredFeatures.length === 0 && (
           <div className="text-center py-12 glass-panel rounded-2xl p-6">
