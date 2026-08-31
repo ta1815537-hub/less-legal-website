@@ -278,7 +278,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             </motion.div>
 
             <div className="pt-2 text-center text-xs font-medium text-slate-500 dark:text-[#77736F]">
-              Less Creation • Built with Simplicity
+              {language === 'hi' ? 'लेस क्रिएशन • सरलता के साथ निर्मित' : 'Less Creation • Built with Simplicity'}
             </div>
           </motion.div>
         )}

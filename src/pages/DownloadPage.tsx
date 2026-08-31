@@ -164,39 +164,29 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
 
           {/* Key Features Included Marquee */}
           <div className="pt-6 border-t border-slate-200 dark:border-white/10 overflow-hidden relative">
-            <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-slate-50 dark:from-[#080808] to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-50 dark:from-[#080808] to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-slate-50 dark:from-[#080808] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-slate-50 dark:from-[#080808] to-transparent z-10 pointer-events-none" />
             
-            <div className="flex">
-              <motion.div 
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
-                style={{ willChange: "transform" }}
-                className="flex items-center gap-3 w-max"
-              >
+            <div className="flex overflow-hidden">
+              <div className="flex items-center gap-3 w-max animate-marquee-left pause-on-hover cursor-pointer">
                 {[...SITE_CONFIG.features.slice(0, 20), ...SITE_CONFIG.features.slice(0, 20)].map((feature, idx) => (
-                  <div key={`dl-top-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg whitespace-nowrap">
+                  <div key={`dl-top-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg whitespace-nowrap shadow-2xs hover:border-[#C21F2F]/40 transition-colors">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     <span className="text-[11px] font-medium text-slate-700 dark:text-[#B8B3AF]">{feature.title}</span>
                   </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
 
-            <div className="flex mt-3">
-              <motion.div 
-                animate={{ x: ["-50%", "0%"] }}
-                transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
-                style={{ willChange: "transform" }}
-                className="flex items-center gap-3 w-max"
-              >
+            <div className="flex overflow-hidden mt-3">
+              <div className="flex items-center gap-3 w-max animate-marquee-right pause-on-hover cursor-pointer">
                 {[...SITE_CONFIG.features.slice(20, 40), ...SITE_CONFIG.features.slice(20, 40)].map((feature, idx) => (
-                  <div key={`dl-bot-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg whitespace-nowrap">
+                  <div key={`dl-bot-${idx}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg whitespace-nowrap shadow-2xs hover:border-[#C21F2F]/40 transition-colors">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     <span className="text-[11px] font-medium text-slate-700 dark:text-[#B8B3AF]">{feature.title}</span>
                   </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
           </div>
 

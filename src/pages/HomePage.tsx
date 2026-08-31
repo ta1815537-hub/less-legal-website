@@ -160,17 +160,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#B8B3AF] text-xs font-bold mb-4 sm:mb-6 uppercase tracking-widest shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#C21F2F] animate-pulse"></span>
-              The Ultimate
+              {t.home.heroBadge || "Flagship Product Studio"}
             </div>
 
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[1.1] pb-2 px-2">
-              <span className="text-gradient-crimson-gold drop-shadow-md dark:drop-shadow-[0_0_30px_rgba(224,58,62,0.3)]">
-                Digital Utilities Suite
+              <span className="text-slate-900 dark:text-[#F5F2EE] mr-2 sm:mr-3">
+                {t.home.heroTitlePart1 || "Legal Knowledge & "}
+              </span>
+              <span className="text-gradient-crimson-gold drop-shadow-md dark:drop-shadow-[0_0_30px_rgba(224,58,62,0.3)] block sm:inline">
+                {t.home.heroTitlePart2 || "Digital Utilities Suite"}
               </span>
             </h1>
             
             <p className="text-sm sm:text-xl text-slate-600 dark:text-[#B8B3AF] font-medium max-w-2xl mx-auto leading-relaxed">
-              Designed for advocates, law students, and citizens. Access Bare Acts, Case Diary, PDF workspace, area converters, and court tools seamlessly.
+              {t.home.heroSubtitle || "Designed for advocates, law students, and citizens. Access Bare Acts, Case Diary, PDF workspace, area converters, and court tools seamlessly."}
             </p>
           </motion.div>
 
@@ -1054,7 +1057,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 variant="secondary"
                 className="w-full sm:w-auto px-8 py-4 text-sm font-bold"
               >
-                <span>About Less Creation</span>
+                <span>{language === 'hi' ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}</span>
               </GlowingButton>
             </div>
 

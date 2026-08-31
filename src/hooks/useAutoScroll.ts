@@ -67,14 +67,19 @@ export function useAutoScroll(speed = 0.5) {
     el.addEventListener('mouseup', handleMouseUp);
     el.addEventListener('mousemove', handleMouseMove);
 
+    let accumulatedScroll = el.scrollLeft;
+
     const scroll = () => {
       if (!isInteracting) {
-        el.scrollLeft += speed;
-        if (el.scrollLeft >= el.scrollWidth / 2) {
-          el.scrollLeft -= el.scrollWidth / 2;
-        } else if (el.scrollLeft <= 0) {
-          el.scrollLeft += el.scrollWidth / 2;
+        accumulatedScroll += speed;
+        if (accumulatedScroll >= el.scrollWidth / 2) {
+          accumulatedScroll -= el.scrollWidth / 2;
+        } else if (accumulatedScroll <= 0) {
+          accumulatedScroll += el.scrollWidth / 2;
         }
+        el.scrollLeft = accumulatedScroll;
+      } else {
+        accumulatedScroll = el.scrollLeft;
       }
       animationFrameId = requestAnimationFrame(scroll);
     };

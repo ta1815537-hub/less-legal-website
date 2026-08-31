@@ -85,7 +85,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                           <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] mt-1 whitespace-nowrap badge-one-line">Allahabad High Court</div>
                         </div>
                         <div className="px-3 py-1 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-[10px] text-amber-800 dark:text-[#B8BD82] whitespace-nowrap badge-one-line">
-                          Less Creation
+                          {t.founder.parentBrandLabel ? (t.founder.parentBrandLabel.includes('ब्रांड') ? 'लेस क्रिएशन' : 'Less Creation') : 'Less Creation'}
                         </div>
                       </div>
                     )}
@@ -265,7 +265,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <div className="p-5 rounded-2xl bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/10 shadow-lg w-full md:w-64 text-center space-y-2">
               <div className="w-8 h-8 rounded-full bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center mx-auto text-xs font-bold">2</div>
               <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.parentBrandLabel}</div>
-              <div className="text-base font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">Less Creation</div>
+              <div className="text-base font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">{t.founder.parentBrandLabel.includes('ब्रांड') ? 'लेस क्रिएशन' : 'Less Creation'}</div>
               <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">Digital Product Studio</div>
             </div>
 
