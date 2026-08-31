@@ -65,7 +65,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                       <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center">
                         <img 
                           src="/images/anurag_tiwari.jpg" 
-                          alt="Anurag Tiwari {Gurauli} — Founder of Less Creation" 
+                          alt="Anurag Tiwari — Founder of Less Creation" 
                           onError={() => setImgError(true)}
                           loading="eager"
                           className="w-full h-auto max-h-[480px] object-cover object-top transform group-hover:scale-[1.02] transition-transform duration-500 ease-out"

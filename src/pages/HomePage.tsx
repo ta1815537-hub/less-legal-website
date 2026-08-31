@@ -638,7 +638,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   {!founderImgErr ? (
                     <img 
                       src="/images/anurag_tiwari.jpg" 
-                      alt="Anurag Tiwari {Gurauli} — Founder of Less Creation"
+                      alt="Anurag Tiwari — Founder of Less Creation"
                       onError={() => setFounderImgErr(true)}
                       className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
                     />

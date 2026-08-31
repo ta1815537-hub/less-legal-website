@@ -465,7 +465,7 @@ export const translations: Record<Language, TranslationSchema> = {
       legalHeader: "Legal & Policies",
       supportHeader: "Support & Contact",
       aboutLessLegal: "About Less Legal",
-      founderLabel: "Founder (Anurag Tiwari {Gurauli})",
+      founderLabel: "Founder (Anurag Tiwari)",
       appFeatures: "App Features",
       premiumPlans: "Premium Plans",
       downloadApp: "Download App",
@@ -484,14 +484,14 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     founder: {
       badge: "FOUNDER & CREATOR",
-      name: "Anurag Tiwari {Gurauli}",
+      name: "Anurag Tiwari",
       role: "Advocate",
       subtitle: "Advocate | Founder, Less Creation",
       practice: "Practicing as an Advocate before the Allahabad High Court.",
       shortQuote: "“Less Creation is built around a simple idea: technology should make useful knowledge, tools and digital services easier to access.”",
 
       storyTitle: "The Person Behind Less Creation",
-      storyP1: "My name is Anurag Tiwari {Gurauli}. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Creation.",
+      storyP1: "My name is Anurag Tiwari. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Creation.",
       storyP2: "My professional journey in law has given me a close understanding of the practical challenges faced by advocates, law students and ordinary citizens while accessing legal information and everyday digital tools.",
       storyP3: "Less Creation is my effort to bring practical technology into that space — creating simple, useful and accessible digital products that solve real-world problems.",
       storyP4: "Less Legal is the first major product in this vision.",
@@ -527,7 +527,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       messageTitle: "A Message From The Founder",
       messageQuote: "I believe technology becomes meaningful when it makes something genuinely useful simpler and more accessible. Less Creation is being built with that belief.",
-      messageAuthor: "Anurag Tiwari {Gurauli} • Founder, Less Creation",
+      messageAuthor: "Anurag Tiwari • Founder, Less Creation",
 
       timelineTitle: "From Legal Practice to Digital Innovation",
       timelineItems: [
@@ -598,7 +598,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       founderPreviewBadge: "MEET THE FOUNDER",
       founderPreviewTitle: "Created by an Advocate for Real-World Utility",
-      founderPreviewText: "Anurag Tiwari {Gurauli}, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.",
+      founderPreviewText: "Anurag Tiwari, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.",
 
       faqBadge: "FREQUENTLY ASKED QUESTIONS",
       faqTitle: "Got Questions? We Have Factual Answers",
@@ -933,7 +933,7 @@ export const translations: Record<Language, TranslationSchema> = {
       legalHeader: "कानूनी एवं नीतियाँ",
       supportHeader: "सहायता एवं संपर्क",
       aboutLessLegal: "Less Legal के बारे में",
-      founderLabel: "संस्थापक (अनुराग गुरौली)",
+      founderLabel: "संस्थापक (अनुराग तिवारी)",
       appFeatures: "ऐप सुविधाएँ",
       premiumPlans: "प्रीमियम प्लान्स",
       downloadApp: "ऐप डाउनलोड करें",
@@ -952,14 +952,14 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     founder: {
       badge: "संस्थापक एवं निर्माता",
-      name: "अनुराग गुरौली",
+      name: "अनुराग तिवारी",
       role: "अधिवक्ता",
       subtitle: "अधिवक्ता | संस्थापक, Less Creation",
       practice: "इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिसरत।",
       shortQuote: "“Less Creation इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।”",
 
       storyTitle: "Less Creation के पीछे व्यक्ति",
-      storyP1: "मेरा नाम अनुराग गुरौली है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और Less Creation तथा Less Legal की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
+      storyP1: "मेरा नाम अनुराग तिवारी है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और Less Creation तथा Less Legal की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
       storyP2: "कानून के क्षेत्र में कार्य करते हुए मुझे यह समझने का अवसर मिला कि अधिवक्ताओं, विधि छात्रों और आम नागरिकों के लिए कानूनी जानकारी तथा रोज़मर्रा के उपयोगी डिजिटल टूल्स तक आसान पहुँच कितनी महत्वपूर्ण है।",
       storyP3: "Less Creation इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।",
       storyP4: "Less Legal इसी दृष्टिकोण का पहला प्रमुख उत्पाद है।",
@@ -995,7 +995,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       messageTitle: "संस्थापक की ओर से",
       messageQuote: "मेरा मानना है कि तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। Less Creation इसी विचार के साथ बनाया जा रहा है।",
-      messageAuthor: "अनुराग गुरौली • संस्थापक, Less Creation",
+      messageAuthor: "अनुराग तिवारी • संस्थापक, Less Creation",
 
       timelineTitle: "कानूनी प्रैक्टिस से डिजिटल नवाचार तक",
       timelineItems: [
@@ -1066,7 +1066,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       founderPreviewBadge: "संस्थापक से मिलें",
       founderPreviewTitle: "व्यावहारिक उपयोगिता के लिए एक अधिवक्ता द्वारा निर्मित",
-      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए Less Creation की स्थापना की।",
+      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग तिवारी ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए Less Creation की स्थापना की।",
 
       faqBadge: "अक्सर पूछे जाने वाले प्रश्न",
       faqTitle: "क्या आपके पास प्रश्न हैं? हमारे पास सटीक उत्तर हैं",
