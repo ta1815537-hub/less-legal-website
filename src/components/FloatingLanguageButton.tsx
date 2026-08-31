@@ -14,7 +14,7 @@ export const FloatingLanguageButton: React.FC = () => {
       whileHover={{ scale: 1.08, y: -3 }}
       whileTap={{ scale: 0.92 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className="fixed bottom-28 right-4 sm:bottom-32 sm:right-6 z-50 px-3.5 py-2.5 rounded-full bg-slate-900/90 dark:bg-[#0D0D0F]/95 text-white border border-amber-500/50 dark:border-[#D8BD82]/60 shadow-[0_8px_25px_rgba(194,31,47,0.35)] dark:shadow-[0_8px_25px_rgba(216,189,130,0.3)] backdrop-blur-xl flex items-center gap-2 cursor-pointer transition-all duration-300 group"
+      className="fixed bottom-24 right-4 sm:bottom-28 sm:right-6 z-50 px-3.5 py-2.5 rounded-full bg-slate-900/90 dark:bg-[#0D0D0F]/95 text-white border border-amber-500/40 dark:border-[#D8BD82]/50 shadow-lg shadow-black/20 backdrop-blur-xl flex items-center gap-2 cursor-pointer transition-all duration-300 group"
       aria-label="Switch Language / भाषा बदलें"
       title="Switch Language / भाषा बदलें"
     >

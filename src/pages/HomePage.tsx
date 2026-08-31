@@ -187,7 +187,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               className="px-8 py-4 text-sm font-bold w-full sm:w-auto shadow-2xl"
             >
               <Download className="w-4.5 h-4.5 group-hover:translate-y-0.5 transition-transform" />
-              <span>Get App for Android</span>
+              <span>{t.home.ctaDownload}</span>
             </GlowingButton>
 
             {/* Apple App Store Coming Soon Tab */}
@@ -871,7 +871,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 6. TRANSPARENT PRICING & AD-FREE PASSES */}
       <section className="glass-panel-gradient py-16 rounded-3xl mx-4 sm:mx-6 lg:mx-8 px-6 sm:px-12 relative overflow-hidden border border-slate-200 dark:border-white/15 shadow-2xl">
         <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-[#8B0000]/25 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-80 h-80 bg-[#D8BD82]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-80 h-80 bg-[#C21F2F]/10 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative max-w-5xl mx-auto text-center space-y-8">
           
@@ -995,22 +995,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               >
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-[#F5F2EE] focus:outline-none cursor-pointer"
+                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-[#F5F2EE] focus:outline-none cursor-pointer select-none"
                 >
                   <span>{faq.q}</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-[#77736F] shrink-0 transition-transform ${isOpen ? 'rotate-180 text-[#C21F2F] dark:text-[#E03A3E]' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-[#77736F] shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#C21F2F] dark:text-[#E03A3E]' : ''}`} />
                 </button>
 
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-700 dark:text-[#B8B3AF] leading-relaxed border-t border-slate-200 dark:border-white/10 pt-3"
+                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
                     >
-                      {faq.a}
+                      <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-700 dark:text-[#B8B3AF] leading-relaxed border-t border-slate-200 dark:border-white/10 pt-3">
+                        {faq.a}
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>

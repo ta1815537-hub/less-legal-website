@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
-import { Download, Sparkles, Moon, Sun, Globe } from 'lucide-react';
+import { Layers, Sparkles, Moon, Sun, Globe } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
 import { EASING_SPRING } from './MotionWrappers';
@@ -144,18 +144,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               <span className="whitespace-nowrap">{t.nav.premium}</span>
             </motion.button>
 
-            {/* Download App Primary Crimson Button */}
+            {/* Useful Features Primary Crimson Button */}
             <motion.button
-              id="nav-download-btn"
-              onClick={() => handleNavClick('download')}
+              id="nav-features-btn"
+              onClick={() => handleNavClick('features')}
               whileHover={{ y: -1, scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               transition={{ duration: 0.2, ease: EASING_SPRING }}
               className="relative group overflow-hidden px-2.5 lg:px-3.5 py-1.5 rounded-xl text-[11px] lg:text-sm font-bold btn-crimson flex items-center gap-1 lg:gap-2 cursor-pointer whitespace-nowrap shrink-0"
             >
               <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
-              <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-y-0.5 transition-transform duration-200 shrink-0" />
-              <span className="whitespace-nowrap">{t.nav.download}</span>
+              <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-y-0.5 transition-transform duration-200 shrink-0" />
+              <span className="whitespace-nowrap">{language === 'en' ? 'Useful Features' : 'उपयोगी सुविधाएँ'}</span>
             </motion.button>
           </div>
 
@@ -171,13 +171,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             </motion.button>
 
             <motion.button
-              id="nav-mobile-download-icon"
-              onClick={() => handleNavClick('download')}
+              id="nav-mobile-features-icon"
+              onClick={() => handleNavClick('features')}
               whileTap={{ scale: 0.92 }}
               className="p-2 rounded-xl bg-[#C21F2F]/15 dark:bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/30 dark:border-[#C21F2F]/40 sm:hidden cursor-pointer shrink-0"
-              aria-label="Download App"
+              aria-label="Useful Features"
             >
-              <Download className="w-4 h-4" />
+              <Layers className="w-4 h-4" />
             </motion.button>
 
             <button
@@ -267,12 +267,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   <span className="whitespace-nowrap">{t.nav.premium}</span>
                 </button>
                 <button
-                  id="mobile-download-drawer-btn"
-                  onClick={() => handleNavClick('download')}
+                  id="mobile-features-drawer-btn"
+                  onClick={() => handleNavClick('features')}
                   className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-white btn-crimson text-center flex items-center justify-center gap-1.5 active:scale-95 transition-transform cursor-pointer whitespace-nowrap"
                 >
-                  <Download className="w-3.5 h-3.5 shrink-0" />
-                  <span className="whitespace-nowrap">{t.nav.download}</span>
+                  <Layers className="w-3.5 h-3.5 shrink-0" />
+                  <span className="whitespace-nowrap">{language === 'en' ? 'Useful Features' : 'उपयोगी सुविधाएँ'}</span>
                 </button>
               </div>
             </motion.div>

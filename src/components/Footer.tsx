@@ -12,15 +12,17 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const hasEmail = Boolean(SITE_CONFIG.supportEmail && SITE_CONFIG.supportEmail.trim() !== "");
   const hasPhone = Boolean(SITE_CONFIG.supportPhone && SITE_CONFIG.supportPhone.trim() !== "");
   const hasAddress = Boolean(SITE_CONFIG.businessAddress && SITE_CONFIG.businessAddress.trim() !== "");
 
   return (
-    <footer className="bg-slate-100 dark:bg-[#0A0A0C] text-slate-600 dark:text-[#B8B3AF] pt-16 pb-12 border-t border-slate-200 dark:border-white/10 relative overflow-hidden mt-16 transition-colors duration-300">
-      {/* Top Crimson & Gold Ambient Blur */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-gradient-to-r from-[#8B0000]/10 via-[#C21F2F]/10 to-[#D8BD82]/10 blur-3xl pointer-events-none" />
+    <footer className="bg-slate-50 dark:bg-[#080808] text-slate-600 dark:text-[#B8B3AF] pt-16 pb-12 border-t border-slate-200 dark:border-white/10 relative overflow-hidden mt-16 transition-colors duration-300">
+      {/* Top Crimson Ambient Blur */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-gradient-to-r from-[#8B0000]/10 via-[#C21F2F]/10 to-[#8B0000]/10 blur-3xl" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -260,21 +262,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
             </p>
           </div>
-          
-          {/* Security & Anti-Hacking Protection Shield Badge */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-200/70 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold whitespace-nowrap badge-one-line">
-            <Lock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>256-Bit SSL Encrypted • Anti-Hacking & XSS Shield Active</span>
-          </div>
 
-          <div className="flex items-center gap-4 text-[11px] whitespace-nowrap badge-one-line">
-            <span>{t.footer.platformInfo}</span>
-            <span>•</span>
-            <span>{t.footer.improvingInfo}</span>
+          {/* Verified Legal Reference Badge */}
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300/80 dark:border-white/10 text-[11px] text-slate-700 dark:text-[#B8B3AF] font-medium whitespace-nowrap badge-one-line">
+            <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+            <span>
+              {language === 'hi' 
+                ? 'प्रत्येक भारतीय के लिए विश्वसनीय लीगल एवं यूटिलिटीज टूल' 
+                : 'Trusted Legal & Utilities Tool For Every Indian'}
+            </span>
           </div>
         </div>
-
       </div>
+      
     </footer>
   );
 };
