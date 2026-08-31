@@ -6,6 +6,8 @@ export type PageRoute =
   | 'premium'
   | 'contact'
   | 'privacy'
+  | 'app-privacy'
+  | 'app-delete-account'
   | 'terms'
   | 'refund'
   | 'disclaimer'

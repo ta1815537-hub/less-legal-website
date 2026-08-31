@@ -10,7 +10,9 @@ import { FeaturesPage } from './pages/FeaturesPage';
 import { FounderPage } from './pages/FounderPage';
 import { PremiumPage } from './pages/PremiumPage';
 import { ContactPage } from './pages/ContactPage';
-import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { WebsitePrivacyPage } from './pages/WebsitePrivacyPage';
+import { AppPrivacyPolicyPage } from './pages/AppPrivacyPolicyPage';
+import { AppDeleteAccountPage } from './pages/AppDeleteAccountPage';
 import { TermsPage } from './pages/TermsPage';
 import { RefundPolicyPage } from './pages/RefundPolicyPage';
 import { DisclaimerPage } from './pages/DisclaimerPage';
@@ -25,7 +27,7 @@ function getRouteFromLocation(): PageRoute {
   
   const target = hash || pathname;
 
-  switch (target) {
+  switch (target.toLowerCase()) {
     case 'about': return 'about';
     case 'founder':
     case 'founder-and-creator': return 'founder';
@@ -34,6 +36,15 @@ function getRouteFromLocation(): PageRoute {
     case 'contact': return 'contact';
     case 'privacy':
     case 'privacy-policy': return 'privacy';
+    case 'less-legal/privacy-policy':
+    case 'less-legal/privacy':
+    case 'less-legal-privacy':
+    case 'app-privacy': return 'app-privacy';
+    case 'less-legal/delete-account':
+    case 'less-legal/delete':
+    case 'less-legal-delete-account':
+    case 'delete-account':
+    case 'app-delete-account': return 'app-delete-account';
     case 'terms':
     case 'terms-and-conditions': return 'terms';
     case 'refund':
@@ -71,14 +82,20 @@ export default function App() {
   const navigateTo = (route: PageRoute) => {
     setCurrentRoute(route);
     
-    // Update path using history API for clean direct URLs (e.g. /privacy)
-    const targetPath = route === 'home' ? '/' : `/${route}`;
+    // Update path using history API for clean direct URLs
+    let targetPath = '/';
+    if (route === 'home') targetPath = '/';
+    else if (route === 'privacy') targetPath = '/privacy-policy';
+    else if (route === 'app-privacy') targetPath = '/less-legal/privacy-policy';
+    else if (route === 'app-delete-account') targetPath = '/less-legal/delete-account';
+    else targetPath = `/${route}`;
+
     if (window.location.pathname !== targetPath) {
       try {
         window.history.pushState({}, '', targetPath);
       } catch {
         // Fallback to hash if pushState is restricted
-        window.location.hash = `#/${route}`;
+        window.location.hash = `#/${targetPath.replace(/^\/+/, '')}`;
       }
     }
     
@@ -105,7 +122,9 @@ export default function App() {
               {currentRoute === 'features' && <FeaturesPage onNavigate={navigateTo} />}
               {currentRoute === 'premium' && <PremiumPage onNavigate={navigateTo} />}
               {currentRoute === 'contact' && <ContactPage onNavigate={navigateTo} />}
-              {currentRoute === 'privacy' && <PrivacyPolicyPage onNavigate={navigateTo} />}
+              {currentRoute === 'privacy' && <WebsitePrivacyPage onNavigate={navigateTo} />}
+              {currentRoute === 'app-privacy' && <AppPrivacyPolicyPage onNavigate={navigateTo} />}
+              {currentRoute === 'app-delete-account' && <AppDeleteAccountPage onNavigate={navigateTo} />}
               {currentRoute === 'terms' && <TermsPage onNavigate={navigateTo} />}
               {currentRoute === 'refund' && <RefundPolicyPage onNavigate={navigateTo} />}
               {currentRoute === 'disclaimer' && <DisclaimerPage onNavigate={navigateTo} />}

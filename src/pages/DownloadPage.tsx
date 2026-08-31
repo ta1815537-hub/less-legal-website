@@ -3,7 +3,7 @@ import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
 import { 
   Smartphone, ShieldCheck, CheckCircle2, 
-  Clock, ArrowLeft, Camera, FolderOpen, MapPin, Mic, Bell, Bluetooth, Users
+  Clock, ArrowLeft, Camera, FolderOpen, MapPin, Mic, Bell, Bluetooth, Users, ArrowUpRight
 } from 'lucide-react';
 import { AppLogo } from '../components/AppLogo';
 import { 
@@ -251,6 +251,56 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 <div className="text-[13px] font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5"><Bluetooth className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> 7. Bluetooth & Nearby Devices</div>
                 <p className="text-[13px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed pl-5.5"><span className="font-semibold text-slate-900 dark:text-[#F5F2EE]">Why we need it:</span> Required exclusively for the "File Transfer (LessShare)" feature to securely connect and share files directly with nearby devices.</p>
               </div>
+            </div>
+          </div>
+        </ScrollReveal>
+      </div>
+
+      {/* Less Legal App Legal & Compliance Footer Bar */}
+      <div className="max-w-4xl mx-auto relative z-10 pt-4">
+        <ScrollReveal direction="up" delay={0.18}>
+          <div className="glass-panel p-6 rounded-3xl border border-slate-200 dark:border-white/10 shadow-lg space-y-3 bg-slate-100/80 dark:bg-white/[0.03]">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-white/10">
+              <div className="space-y-0.5">
+                <div className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] uppercase tracking-wider">Less Legal App Compliance & Legal Resources</div>
+                <div className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">Official App Policies & Data Management</div>
+              </div>
+              <span className="text-[11px] font-mono text-slate-500 dark:text-[#77736F]">Package: com.lesslegal.app</span>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold text-slate-700 dark:text-[#B8B3AF]">
+              <button
+                onClick={() => onNavigate('app-privacy')}
+                className="hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <span>Privacy Policy</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82]" />
+              </button>
+              <button
+                onClick={() => onNavigate('app-delete-account')}
+                className="text-[#C21F2F] dark:text-[#E03A3E] hover:underline cursor-pointer flex items-center gap-1 font-bold"
+              >
+                <span>Delete Account & Data</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => onNavigate('terms')}
+                className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              >
+                Terms & Conditions
+              </button>
+              <button
+                onClick={() => onNavigate('refund')}
+                className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              >
+                Refund & Cancellation
+              </button>
+              <button
+                onClick={() => onNavigate('disclaimer')}
+                className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              >
+                Legal Disclaimer
+              </button>
             </div>
           </div>
         </ScrollReveal>

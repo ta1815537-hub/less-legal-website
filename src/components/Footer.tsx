@@ -135,10 +135,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </ul>
           </div>
 
-          {/* Column 3: Legal & Merchant Policies */}
+          {/* Column 3: Website Legal Policies */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82]">
-              {t.footer.legalHeader}
+              {language === 'hi' ? 'वेबसाइट नीतियां' : 'Website Legal'}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -147,7 +147,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('privacy')}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline">{t.footer.privacyPolicy}</span>
+                  <span className="group-hover:underline">{language === 'hi' ? 'वेबसाइट गोपनीयता नीति' : 'Website Privacy Policy'}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -179,6 +179,35 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 >
                   <span className="group-hover:underline">{t.footer.legalDisclaimer}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Less Legal App Policies */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
+              LESS LEGAL APP
+            </h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <button
+                  id="footer-link-app-privacy"
+                  onClick={() => onNavigate('app-privacy')}
+                  className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
+                >
+                  <span className="group-hover:underline">{language === 'hi' ? 'ऐप गोपनीयता नीति' : 'Privacy Policy'}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </button>
+              </li>
+              <li>
+                <button
+                  id="footer-link-app-delete-account"
+                  onClick={() => onNavigate('app-delete-account')}
+                  className="hover:text-red-700 dark:hover:text-red-400 transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
+                >
+                  <span className="group-hover:underline text-[#C21F2F] dark:text-[#E03A3E] font-bold">{language === 'hi' ? 'खाता एवं डेटा हटाएं' : 'Delete Account & Data'}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
             </ul>
