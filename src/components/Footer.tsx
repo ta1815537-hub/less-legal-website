@@ -287,12 +287,25 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          {/* Verified Legal Reference Badge */}
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300/80 dark:border-white/10 text-[11px] text-slate-700 dark:text-[#B8B3AF] font-medium whitespace-nowrap badge-one-line shrink-0">
-            <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
-            <span>
-              {t.footer.trustedTool}
-            </span>
+          {/* Verified Legal Reference Badge & Discreet Lock Icon below it */}
+          <div className="flex flex-col items-center md:items-end gap-1 shrink-0">
+            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300/80 dark:border-white/10 text-[11px] text-slate-700 dark:text-[#B8B3AF] font-medium whitespace-nowrap badge-one-line shrink-0">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
+              <span>
+                {t.footer.trustedTool}
+              </span>
+            </div>
+
+            {/* Secret discreet lock button directly under 'प्रत्येक भारतीय' */}
+            <button
+              id="footer-secret-lock-btn"
+              onClick={() => onNavigate('admin')}
+              className="p-1 rounded-md hover:bg-slate-200/50 dark:hover:bg-white/10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all cursor-pointer opacity-40 hover:opacity-100"
+              title=""
+              aria-label="Portal Access"
+            >
+              <Lock className="w-3 h-3 text-slate-400 hover:text-[#C21F2F] dark:hover:text-[#E03A3E]" />
+            </button>
           </div>
         </div>
       </div>

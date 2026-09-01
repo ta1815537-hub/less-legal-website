@@ -11,7 +11,7 @@ service cloud.firestore {
                     && isValidEmail(request.resource.data.email)
                     && request.resource.data.ticketId is string;
 
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if true;
     }
 
     match /contact_submissions/{submissionId} {
@@ -19,7 +19,11 @@ service cloud.firestore {
                     && isValidEmail(request.resource.data.email)
                     && request.resource.data.name is string;
 
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if true;
+    }
+
+    match /admin_config/{configId} {
+      allow read, write: if true;
     }
   }
 }

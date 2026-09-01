@@ -21,12 +21,14 @@ import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { LanguageProvider } from './context/LanguageContext';
 import { FloatingLanguageButton } from './components/FloatingLanguageButton';
 
-// Helper to determine route from current window path or hash
+// Helper to determine route from current window path, query param, or hash
 function getRouteFromLocation(): PageRoute {
   const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
   const hash = window.location.hash.replace(/^#\/?/, '');
-  
-  const target = hash || pathname;
+  const searchParams = new URLSearchParams(window.location.search);
+  const pageParam = searchParams.get('page') || searchParams.get('route') || (searchParams.has('admin') ? 'admin' : '');
+
+  const target = pageParam || hash || pathname;
 
   switch (target.toLowerCase()) {
     case 'about': return 'about';

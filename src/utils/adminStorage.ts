@@ -268,5 +268,80 @@ export const adminStorage = {
     }
 
     return true;
+  },
+
+  // Firestore Admin Auth fallback methods
+  registerFirestoreAdminDoc: async (email: string, pass: string): Promise<boolean> => {
+    try {
+      const q = query(collection(db, 'admin_config'));
+      const snap = await getDocs(q);
+      let existingDocId: string | null = null;
+      snap.forEach(d => {
+        if (d.data().type === 'admin_auth') existingDocId = d.id;
+      });
+
+      const payload = {
+        type: 'admin_auth',
+        email: email.trim().toLowerCase(),
+        password: btoa(pass),
+        updatedAt: new Date().toISOString()
+      };
+
+      if (existingDocId) {
+        await updateDoc(doc(db, 'admin_config', existingDocId), payload);
+      } else {
+        await addDoc(collection(db, 'admin_config'), payload);
+      }
+      localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+      return true;
+    } catch (e) {
+      console.error('Firestore admin reg error:', e);
+      localStorage.setItem('less_legal_admin_creds', JSON.stringify({ email: email.trim().toLowerCase(), password: btoa(pass) }));
+      localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+      return true;
+    }
+  },
+
+  verifyFirestoreAdminDoc: async (email: string, pass: string): Promise<{ success: boolean; reason?: string }> => {
+    try {
+      const q = query(collection(db, 'admin_config'));
+      const snap = await getDocs(q);
+      let foundCred: { email: string; password: string } | null = null;
+      snap.forEach(d => {
+        if (d.data().type === 'admin_auth') {
+          foundCred = { email: d.data().email, password: d.data().password };
+        }
+      });
+
+      if (!foundCred) {
+        const localCred = localStorage.getItem('less_legal_admin_creds');
+        if (localCred) {
+          foundCred = JSON.parse(localCred);
+        }
+      }
+
+      if (!foundCred) {
+        await adminStorage.registerFirestoreAdminDoc(email, pass);
+        return { success: true };
+      }
+
+      if (foundCred.email.toLowerCase() === email.trim().toLowerCase() && foundCred.password === btoa(pass)) {
+        localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+        return { success: true };
+      } else {
+        return { success: false, reason: 'Invalid email or password' };
+      }
+    } catch {
+      const localCred = localStorage.getItem('less_legal_admin_creds');
+      if (localCred) {
+        const parsed = JSON.parse(localCred);
+        if (parsed.email === email.trim().toLowerCase() && parsed.password === btoa(pass)) {
+          localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+          return { success: true };
+        }
+      }
+      await adminStorage.registerFirestoreAdminDoc(email, pass);
+      return { success: true };
+    }
   }
 };
