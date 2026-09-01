@@ -837,8 +837,8 @@ export const translations: Record<Language, TranslationSchema> = {
       sec2Title: "2. Information We Collect",
       sec2P1: "We collect only the minimum information necessary to provide application functionality and security:",
       sec2Bullets: [
-        "Authentication & Account Information: If you choose to sign in via Google Authentication or Firebase Auth, we receive basic profile details such as your display name, email address, and unique user ID to maintain your account state and purchase records.",
-        "Device & Diagnostic Data: Automatic technical metrics including device model, operating system version, unique device identifiers (for AdMob / Firebase analytics), crash logs, and network connection status to ensure app stability.",
+        "Authentication & Account Information: If you choose to sign in via Google Authentication or Secure Cloud Account Server, we receive basic profile details such as your display name, email address, and unique user ID to maintain your account state and purchase records.",
+        "Device & Diagnostic Data: Automatic technical metrics including device model, operating system version, unique device identifiers (for AdMob / diagnostic analytics), crash logs, and network connection status to ensure app stability.",
         "App Usage Preferences: Non-sensitive application configuration preferences such as bookmark states, theme settings, and tool configuration."
       ],
       sec3Title: "3. On-Device File & PDF Processing",
@@ -858,7 +858,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec7Text: "We may employ third-party services for essential infrastructure:",
       sec7Bullets: [
         "Google Play Services: Core Android system integration & billing",
-        "Firebase (Google LLC): Authentication and crash reporting",
+        "Secure Cloud Infrastructure: Authentication, database sync, and crash reporting",
         "Google AdMob: Banner and interstitial ad delivery (free tier only)",
         "PayU Payments: Secure payment gateway processing"
       ],
@@ -1314,8 +1314,8 @@ export const translations: Record<Language, TranslationSchema> = {
       sec2Title: "2. जानकारी जो हम एकत्र करते हैं",
       sec2P1: "हम एप्लिकेशन की कार्यक्षमता और सुरक्षा प्रदान करने के लिए आवश्यक न्यूनतम जानकारी ही एकत्र करते हैं:",
       sec2Bullets: [
-        "प्रमाणीकरण एवं खाता जानकारी: यदि आप Google Auth या Firebase Auth के माध्यम से साइन इन करना चुनते हैं, तो हम आपके खाते की स्थिति और खरीद रिकॉर्ड बनाए रखने के लिए बुनियादी प्रोफ़ाइल विवरण जैसे आपका नाम, ईमेल पता और विशिष्ट उपयोगकर्ता आईडी प्राप्त करते हैं।",
-        "डिवाइस एवं डायग्नोस्टिक डेटा: ऐप की स्थिरता सुनिश्चित करने के लिए डिवाइस मॉडल, ऑपरेटिंग सिस्टम संस्करण, विशिष्ट डिवाइस पहचानकर्ता (AdMob / Firebase Analytics के लिए), क्रैश लॉग और नेटवर्क कनेक्शन स्थिति सहित स्वचालित तकनीकी मीट्रिक।",
+        "प्रमाणीकरण एवं खाता जानकारी: यदि आप Google Auth या सुरक्षित क्लाउड खाता सर्वर के माध्यम से साइन इन करना चुनते हैं, तो हम आपके खाते की स्थिति और खरीद रिकॉर्ड बनाए रखने के लिए बुनियादी प्रोफ़ाइल विवरण जैसे आपका नाम, ईमेल पता और विशिष्ट उपयोगकर्ता आईडी प्राप्त करते हैं।",
+        "डिवाइस एवं डायग्नोस्टिक डेटा: ऐप की स्थिरता सुनिश्चित करने के लिए डिवाइस मॉडल, ऑपरेटिंग सिस्टम संस्करण, विशिष्ट डिवाइस पहचानकर्ता (AdMob / डायग्नोस्टिक एनालिटिक्स के लिए), क्रैश लॉग और नेटवर्क कनेक्शन स्थिति सहित स्वचालित तकनीकी मीट्रिक।",
         "ऐप उपयोग प्राथमिकताएं: गैर-संवेदनशील एप्लिकेशन कॉन्फ़िगरेशन प्राथमिकताएं जैसे बुकमार्क स्थिति, थीम सेटिंग्स और टूल कॉन्फ़िगरेशन।"
       ],
       sec3Title: "3. ऑन-डिवाइस फ़ाइल एवं पीडीएफ प्रोसेसिंग",
@@ -1327,7 +1327,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec5Text: "प्रीमियम पास (₹59 में 3 महीने या ₹179 में 1 वर्ष) खरीदते समय, वित्तीय लेनदेन PayU Payments Private Limited और/या Google Play Billing सहित प्रमाणित तृतीय-पक्ष भुगतान गेटवे द्वारा संसाधित किए जाते हैं।",
       sec5Bullets: [
         "Less Legal द्वारा कोई कार्ड विवरण संग्रहीत नहीं: Less Legal आपके क्रेडिट/डेबिट कार्ड नंबर, यूपीआई पिन, सीवीवी कोड या नेट बैंकिंग पासवर्ड कभी एकत्र या संग्रहीत नहीं करता है। सभी भुगतान प्राधिकरण PCI-DSS प्रमाणित गेटवे परिवेश पर होते हैं।",
-        "लेनदेन पुष्टि रिकॉर्ड: हम आपके विज्ञापन-मुक्त पास को सक्रिय और सत्यापित करने के लिए केवल गैर-संवेदनशील ऑर्डर पुष्टि विवरण (जैसे लेनदेन आईडी, टाइमस्टैम्प, खरीदा गया प्लान और भुगतान स्थिति) प्राप्त करते हैं।"
+        "लेनदेन पुष्टि रिकॉर्ड: हम आपके विज्ञापन-मुक्त पास को सक्रिय और सत्यापित करने के लिए केवल गैर-संवेदनशील ऑर्डर पुष्टि विवरण (जैसे लेनदेन आईडी, टाइमस्टैम्प, खरीदा गया प्लान और भुगतान स्थिति) प्राप्त करते हैं।",
       ],
       sec6Title: "6. विज्ञापन एवं Google AdMob",
       sec6Text: "Less Legal का निःशुल्क संस्करण Google AdMob द्वारा दिए गए तृतीय-पक्ष विज्ञापन प्रदर्शित करता है। Google AdMob प्रासंगिक विज्ञापन दिखाने के लिए विज्ञापन पहचानकर्ताओं (जैसे Google Advertising ID / AAID) और कुकीज़ का उपयोग कर सकता है। जो उपयोगकर्ता सक्रिय प्रीमियम पास खरीदते हैं, वे वैधता अवधि के लिए 100% विज्ञापन-मुक्त अनुभव का आनंद लेते हैं।",
@@ -1335,7 +1335,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec7Text: "हम आवश्यक बुनियादी ढांचे के लिए तृतीय-पक्ष सेवाओं का उपयोग कर सकते हैं:",
       sec7Bullets: [
         "Google Play Services: मुख्य एंड्रॉइड सिस्टम एकीकरण एवं बिलिंग",
-        "Firebase (Google LLC): प्रमाणीकरण और क्रैश रिपोर्टिंग",
+        "सुरक्षित क्लाउड इंफ्रास्ट्रक्चर (Secure Cloud Server): प्रमाणीकरण, डेटाबेस सिंक और क्रैश रिपोर्टिंग",
         "Google AdMob: बैनर और इंटरस्टिशियल विज्ञापन वितरण (केवल निःशुल्क संस्करण)",
         "PayU Payments: सुरक्षित भुगतान गेटवे प्रोसेसिंग"
       ],

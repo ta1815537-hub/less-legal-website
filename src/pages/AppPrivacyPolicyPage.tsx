@@ -19,7 +19,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       category: isHindi ? "खाता जानकारी (नाम, ईमेल, गूगल आईडी)" : "Account Info (Name, Email, Google User ID)",
       collected: isHindi ? "हाँ (साइन-इन करने पर)" : "Yes (when signed in)",
       purpose: isHindi ? "उपयोगकर्ता प्रमाणीकरण, खाता सिंक और प्रीमियम पास स्थिति मैपिंग" : "User authentication, profile sync, & Premium Pass subscription mapping",
-      storage: isHindi ? "Firebase Auth & Firestore (गूगल क्लाउड)" : "Firebase Authentication & Firestore (Google Cloud Infrastructure)",
+      storage: isHindi ? "सुरक्षित प्रमाणीकरण सर्वर एवं क्लाउड डेटाबेस" : "Secure Authentication Server & Cloud Database",
       shared: isHindi ? "नहीं" : "No",
       retention: isHindi ? "उपयोगकर्ता द्वारा खाता हटाने तक" : "Retained until account is deleted by user"
     },
@@ -35,7 +35,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       category: isHindi ? "केस डायरी रिकॉर्ड्स और क्लाइंट नोट्स" : "Case Diary Records & Client Notes",
       collected: isHindi ? "हाँ (यदि क्लाउड सिंक सक्षम है)" : "Yes (If cloud sync enabled)",
       purpose: isHindi ? "सुनवाई की तिथियां, केस तिथियां और नोट्स व्यवस्थित करना" : "Organizing court hearing schedules, client references, & notes",
-      storage: isHindi ? "डिवाइस स्टोरेज एवं Firestore (सिंक किए गए खातों के लिए)" : "Local Device Storage & Firestore (for cloud-synced accounts)",
+      storage: isHindi ? "डिवाइस स्टोरेज एवं सुरक्षित क्लाउड सर्वर (सिंक किए गए खातों के लिए)" : "Local Device Storage & Secure Cloud Server (for cloud-synced accounts)",
       shared: isHindi ? "नहीं" : "No",
       retention: isHindi ? "उपयोगकर्ता द्वारा डिलीट करने या खाता हटाने तक" : "Retained until deleted by user or account deletion"
     },
@@ -59,7 +59,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       category: isHindi ? "भुगतान एवं लेनदेन विवरण (Payment Info)" : "Payment & Transaction Details",
       collected: isHindi ? "हाँ (ऑर्डर आईडी एवं पास प्रकार)" : "Yes (Order ID & Plan Status)",
       purpose: isHindi ? "विज्ञापन-मुक्त पास सक्रिय करना और ग्राहक सहायता" : "Activating ad-free Premium Passes & billing customer support",
-      storage: isHindi ? "PayU Payments / Google Play Billing & Firestore" : "PayU Payments / Google Play Billing & Firestore pass status mapping",
+      storage: isHindi ? "PayU Payments / Google Play Billing एवं सुरक्षित सर्वर मैपिंग" : "PayU Payments / Google Play Billing & Secure Server pass status mapping",
       shared: isHindi ? "पेमेंट गेटवे (PayU / Google Play)" : "Payment Gateway (PayU / Google Play)",
       retention: isHindi ? "टैक्स और वित्तीय ऑडिट के लिए 7 साल तक सुरक्षित" : "Transaction receipts retained up to 7 years for tax compliance"
     }
@@ -89,10 +89,6 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </h1>
         
         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-[#B8B3AF] pb-4 border-b border-slate-200 dark:border-white/10 font-medium">
-          <span className="px-2.5 py-0.5 rounded-md bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 font-bold text-amber-900 dark:text-[#D8BD82]">
-            Package: com.lesslegal.app
-          </span>
-          <span>•</span>
           <span>{isHindi ? "प्रभावी तिथि: 1 मार्च 2025" : "Effective Date: March 1, 2025"}</span>
           <span>•</span>
           <span>{isHindi ? "प्लेटफॉर्म: गूगल प्ले स्टोर" : "Platform: Google Play Store Compliant"}</span>
@@ -107,8 +103,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </div>
         <p className="leading-relaxed text-sm">
           {isHindi
-            ? "Less Legal आपकी फ़ाइलों और दस्तावेज़ों की गोपनीयता को सर्वोच्च प्राथमिकता देता है। आपके पीडीएफ, नोट्स और लोकल रिकॉर्ड्स आपके एंड्रॉइड फोन पर स्थानीय रूप से प्रोसेस होते हैं। हम खाते के समन्वय के लिए Firebase Auth, मुफ्त संस्करण में विज्ञापनों के लिए Google AdMob, वैकल्पिक बैकअप के लिए Google Drive और विज्ञापन-मुक्त पास के लिए PayU / Google Play का उपयोग करते हैं।"
-            : "Less Legal is built with privacy at its core. Your private legal files, PDFs, notes, and local documents are processed locally on your Android device. We use Firebase Authentication for account sync, Google AdMob for free-tier advertising, optional user-initiated Google Drive backups, and PayU / Google Play for ad-free Premium Pass subscriptions."}
+            ? "Less Legal आपकी फ़ाइलों और दस्तावेज़ों की गोपनीयता को सर्वोच्च प्राथमिकता देता है। आपके पीडीएफ, नोट्स और लोकल रिकॉर्ड्स आपके एंड्रॉइड फोन पर स्थानीय रूप से प्रोसेस होते हैं। हम खाते के समन्वय के लिए सुरक्षित क्लाउड प्रमाणीकरण सर्वर, मुफ्त संस्करण में विज्ञापनों के लिए Google AdMob, वैकल्पिक बैकअप के लिए Google Drive और विज्ञापन-मुक्त पास के लिए PayU / Google Play का उपयोग करते हैं।"
+            : "Less Legal is built with privacy at its core. Your private legal files, PDFs, notes, and local documents are processed locally on your Android device. We use secure encrypted server authentication for account sync, Google AdMob for free-tier advertising, optional user-initiated Google Drive backups, and PayU / Google Play for ad-free Premium Pass subscriptions."}
         </p>
       </div>
 
@@ -168,34 +164,34 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-slate-800 dark:text-[#F5F2EE]">
             <li><strong>{isHindi ? "उपयोग का कारण:" : "Why Used:"}</strong> {isHindi ? "खाता बनाने, प्राथमिकताओं को सिंक करने और आपके विज्ञापन-मुक्त पास को प्रमाणित करने के लिए।" : "To manage your user account, synchronize preferences, and verify active ad-free Premium Passes."}</li>
-            <li><strong>{isHindi ? "भंडारण:" : "Storage:"}</strong> {isHindi ? "Firebase Authentication और Firestore (गूगल क्लाउड इंफ्रास्ट्रक्चर) में सुरक्षित रूप से।" : "Stored securely in Firebase Authentication and Firestore infrastructure."}</li>
+            <li><strong>{isHindi ? "भंडारण:" : "Storage:"}</strong> {isHindi ? "सुरक्षित एन्क्रिप्टेड प्रमाणीकरण सर्वर और क्लाउड डेटाबेस इंफ्रास्ट्रक्चर में।" : "Stored securely in encrypted authentication servers and cloud database infrastructure."}</li>
             <li><strong>{isHindi ? "गूगल पासवर्ड:" : "Google Passwords:"}</strong> {isHindi ? "Less Legal आपके गूगल पासवर्ड तक कभी भी पहुंच या भंडारण नहीं करता है।" : "Less Legal NEVER receives or stores your Google account passwords."}</li>
             <li><strong>{isHindi ? "विलोपन:" : "Deletion:"}</strong> {isHindi ? "आप ऐप सेटिंग से या /less-legal/delete-account पर जाकर अपना खाता और डेटा कभी भी डिलीट कर सकते हैं।" : "You can delete your account and profile data anytime via in-app settings or at /less-legal/delete-account."}</li>
           </ul>
         </section>
 
-        {/* Section 2: Firebase Integration */}
+        {/* Section 2: Server Infrastructure */}
         <section className="space-y-3 glass-panel p-6 rounded-3xl border border-slate-200 dark:border-white/10">
           <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] border-b border-slate-200 dark:border-white/10 pb-2">
-            {isHindi ? "2. Firebase इंफ्रास्ट्रक्चर सेवाएँ" : "2. Firebase Infrastructure Services"}
+            {isHindi ? "2. सुरक्षित क्लाउड सर्वर इंफ्रास्ट्रक्चर सेवाएँ" : "2. Cloud Server Infrastructure & Services"}
           </h2>
           <p>
             {isHindi
-              ? "Less Legal ऐप निम्नलिखित आधिकारिक Firebase सेवाओं का उपयोग करता है:"
-              : "Less Legal integrates specific Google Firebase platform products as detailed below:"}
+              ? "Less Legal ऐप निम्नलिखित सुरक्षित सर्वर सेवाओं का उपयोग करता है:"
+              : "Less Legal integrates secure cloud server infrastructure services as detailed below:"}
           </p>
           <ul className="space-y-2">
             <li className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
-              <div><strong>Firebase Authentication:</strong> {isHindi ? "सुरक्षित साइन-इन और टोकन प्रबंधन के लिए।" : "Provides secure sign-in token management."}</div>
+              <div><strong>{isHindi ? "सुरक्षित प्रमाणीकरण सर्वर (Authentication Server):" : "Secure Authentication Server:"}</strong> {isHindi ? "सुरक्षित साइन-इन और एन्क्रिप्टेड टोकन प्रबंधन के लिए।" : "Provides secure sign-in and encrypted session token management."}</div>
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
-              <div><strong>Firebase Firestore:</strong> {isHindi ? "उपयोगकर्ता प्रोफ़ाइल और क्लाउड-सिंक किए गए केस नोट्स (सक्षम होने पर) को संग्रहीत करने के लिए।" : "Stores account profile metadata and user-synced case diary notes if cloud sync is enabled."}</div>
+              <div><strong>{isHindi ? "क्लाउड डेटाबेस सर्वर (Cloud Database Server):" : "Cloud Database Server:"}</strong> {isHindi ? "उपयोगकर्ता प्रोफ़ाइल और क्लाउड-सिंक किए गए केस नोट्स (सक्षम होने पर) को संग्रहीत करने के लिए।" : "Stores account profile metadata and user-synced case diary notes if cloud sync is enabled."}</div>
             </li>
             <li className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
-              <div><strong>Firebase Crashlytics:</strong> {isHindi ? "अनाम क्रैश लॉग्स एकत्र करके ऐप की स्थिरता सुनिश्चित करने के लिए।" : "Captures anonymous diagnostic stack traces to identify and fix application crashes."}</div>
+              <div><strong>{isHindi ? "डायग्नोस्टिक एवं स्थिरता सर्वर (Diagnostic & Crash Reporting Server):" : "Diagnostic & Crash Reporting Server:"}</strong> {isHindi ? "अनाम क्रैश लॉग्स एकत्र करके ऐप की स्थिरता सुनिश्चित करने के लिए।" : "Captures anonymous diagnostic stack traces to identify and fix application crashes."}</div>
             </li>
           </ul>
         </section>

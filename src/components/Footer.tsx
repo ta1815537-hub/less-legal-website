@@ -17,6 +17,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const hasPhone = Boolean(SITE_CONFIG.supportPhone && SITE_CONFIG.supportPhone.trim() !== "");
   const hasAddress = Boolean(SITE_CONFIG.businessAddress && SITE_CONFIG.businessAddress.trim() !== "");
 
+  // Secret 7-tap admin lock state (completely stealthy, no UI counter or text shown)
+  const tapCountRef = React.useRef(0);
+  const resetTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleSecretLockClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    tapCountRef.current += 1;
+
+    if (resetTimerRef.current) {
+      clearTimeout(resetTimerRef.current);
+    }
+
+    if (tapCountRef.current >= 7) {
+      tapCountRef.current = 0;
+      onNavigate('admin');
+      return;
+    }
+
+    // Reset stealth counter after 4 seconds of inactivity
+    resetTimerRef.current = setTimeout(() => {
+      tapCountRef.current = 0;
+    }, 4000);
+  };
+
   return (
     <footer className="bg-slate-50 dark:bg-[#080808] text-slate-600 dark:text-[#B8B3AF] pt-16 pb-1 border-t border-slate-200 dark:border-white/10 relative overflow-hidden mt-16 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -296,13 +320,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </span>
             </div>
 
-            {/* Secret discreet lock button directly under 'प्रत्येक भारतीय' */}
+            {/* Secret discreet lock button directly under 'प्रत्येक भारतीय' - 7 taps required, stealth with no text or counter */}
             <button
               id="footer-secret-lock-btn"
-              onClick={() => onNavigate('admin')}
-              className="p-1 rounded-md hover:bg-slate-200/50 dark:hover:bg-white/10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all cursor-pointer opacity-40 hover:opacity-100"
-              title=""
-              aria-label="Portal Access"
+              onClick={handleSecretLockClick}
+              className="p-1 rounded-md hover:bg-slate-200/50 dark:hover:bg-white/10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all cursor-pointer opacity-40 hover:opacity-100 active:scale-95"
+              aria-label="Access"
             >
               <Lock className="w-3 h-3 text-slate-400 hover:text-[#C21F2F] dark:hover:text-[#E03A3E]" />
             </button>

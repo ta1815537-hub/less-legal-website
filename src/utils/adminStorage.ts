@@ -364,7 +364,119 @@ export const adminStorage = {
       console.warn('Firestore addDoc error for deletion request:', err);
     }
 
+    adminStorage.recordDeletionSubmission(newEntry.email);
+
     return newEntry;
+  },
+
+  checkDeletionRequestRateLimit: (email: string): { isLimited: boolean; remainingMs: number; count: number } => {
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail) return { isLimited: false, remainingMs: 0, count: 0 };
+
+    const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    let emailLogs: Record<string, number[]> = {};
+    try {
+      const raw = localStorage.getItem('deletion_form_email_submissions');
+      if (raw) emailLogs = JSON.parse(raw);
+    } catch (e) {
+      console.error('Failed to parse deletion logs:', e);
+    }
+
+    const allRequests = adminStorage.getDeletionRequests();
+    const subTimestamps = allRequests
+      .filter(s => s.email.trim().toLowerCase() === cleanEmail)
+      .map(s => new Date(s.timestamp).getTime());
+
+    const localTimestamps = emailLogs[cleanEmail] || [];
+    const combined = Array.from(new Set([...subTimestamps, ...localTimestamps])).sort((a, b) => a - b);
+
+    // Filter within last 24 hours
+    const recent = combined.filter(ts => (now - ts) < TWENTY_FOUR_HOURS_MS);
+
+    // Maximum 1 deletion request per 24 hours per email
+    if (recent.length >= 1) {
+      const oldestInWindow = recent[recent.length - 1];
+      const resetTime = oldestInWindow + TWENTY_FOUR_HOURS_MS;
+      const remainingMs = Math.max(0, resetTime - now);
+      if (remainingMs > 0) {
+        return { isLimited: true, remainingMs, count: recent.length };
+      }
+    }
+
+    return { isLimited: false, remainingMs: 0, count: recent.length };
+  },
+
+  recordDeletionSubmission: (email: string) => {
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail) return;
+
+    const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    let emailLogs: Record<string, number[]> = {};
+    try {
+      const raw = localStorage.getItem('deletion_form_email_submissions');
+      if (raw) emailLogs = JSON.parse(raw);
+    } catch (e) {}
+
+    const current = (emailLogs[cleanEmail] || []).filter(ts => (now - ts) < TWENTY_FOUR_HOURS_MS);
+    current.push(now);
+    emailLogs[cleanEmail] = current;
+
+    try {
+      localStorage.setItem('deletion_form_email_submissions', JSON.stringify(emailLogs));
+    } catch (e) {}
+  },
+
+  getDeletionRequestsByQuery: async (queryText: string): Promise<DeletionRequest[]> => {
+    const clean = queryText.trim().toLowerCase();
+    if (!clean) return [];
+
+    try {
+      const q = query(collection(db, 'account_deletion_requests'));
+      const querySnapshot = await getDocs(q);
+      const cloudMatches: DeletionRequest[] = [];
+
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const docEmail = String(data.email || '').trim().toLowerCase();
+        const docTicket = String(data.ticketId || '').trim().toLowerCase();
+        const docId = String(data.id || docSnap.id).trim().toLowerCase();
+        const docUserId = String(data.userId || '').trim().toLowerCase();
+
+        if (docEmail === clean || docTicket === clean || docId === clean || docUserId === clean) {
+          cloudMatches.push({
+            id: data.id || docSnap.id,
+            firestoreDocId: docSnap.id,
+            ticketId: data.ticketId || '',
+            email: data.email || '',
+            userId: data.userId || undefined,
+            reason: data.reason || undefined,
+            timestamp: data.timestamp || new Date().toISOString(),
+            status: data.status || 'Pending',
+            adminNotes: data.adminNotes || ''
+          });
+        }
+      });
+
+      if (cloudMatches.length > 0) {
+        cloudMatches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        return cloudMatches;
+      }
+    } catch (err) {
+      console.warn('Firestore deletion search failed:', err);
+    }
+
+    // Fallback to local storage
+    const localItems = adminStorage.getDeletionRequests();
+    return localItems.filter(item => {
+      const itemEmail = item.email.trim().toLowerCase();
+      const itemTicket = item.ticketId.trim().toLowerCase();
+      const itemId = item.id.trim().toLowerCase();
+      const itemUser = (item.userId || '').trim().toLowerCase();
+      return itemEmail === clean || itemTicket === clean || itemId === clean || itemUser === clean;
+    });
   },
 
   updateDeletionStatus: (id: string, status: DeletionRequest['status'], adminNotes?: string): boolean => {
@@ -435,12 +547,14 @@ export const adminStorage = {
       } else {
         await addDoc(collection(db, 'admin_config'), payload);
       }
-      localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+      sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
+      localStorage.removeItem('less_legal_admin_session');
       return true;
     } catch (e) {
       console.error('Firestore admin reg error:', e);
       localStorage.setItem('less_legal_admin_creds', JSON.stringify({ email: email.trim().toLowerCase(), password: btoa(pass) }));
-      localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+      sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
+      localStorage.removeItem('less_legal_admin_session');
       return true;
     }
   },
@@ -469,7 +583,8 @@ export const adminStorage = {
       }
 
       if (foundCred.email.toLowerCase() === email.trim().toLowerCase() && foundCred.password === btoa(pass)) {
-        localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+        sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
+        localStorage.removeItem('less_legal_admin_session');
         return { success: true };
       } else {
         return { success: false, reason: 'Invalid email or password' };
@@ -479,7 +594,8 @@ export const adminStorage = {
       if (localCred) {
         const parsed = JSON.parse(localCred);
         if (parsed.email === email.trim().toLowerCase() && parsed.password === btoa(pass)) {
-          localStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now() }));
+          sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
+          localStorage.removeItem('less_legal_admin_session');
           return { success: true };
         }
       }

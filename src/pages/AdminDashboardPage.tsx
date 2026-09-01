@@ -44,6 +44,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   // Tab State
   const [activeTab, setActiveTab] = useState<'deletions' | 'contacts' | 'settings'>('deletions');
 
+  // Security & Inactivity Session State (15 Minutes = 900 Seconds)
+  const INACTIVITY_TIMEOUT_SECONDS = 15 * 60;
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(INACTIVITY_TIMEOUT_SECONDS);
+  const [sessionExpiredNotice, setSessionExpiredNotice] = useState<boolean>(false);
+
   // Data State
   const [deletions, setDeletions] = useState<DeletionRequest[]>([]);
   const [contacts, setContacts] = useState<ContactSubmission[]>([]);
@@ -75,31 +80,106 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     };
   }, []);
 
-  // Monitor Firebase Auth status & Local Admin Session
+  // Monitor Secure Admin Session & enforce strict tab/inactivity boundaries
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
+    // Purge any persistent localStorage to prevent direct unauthorized access
+    localStorage.removeItem('less_legal_admin_session');
+
+    const sessStr = sessionStorage.getItem('less_legal_admin_session');
+    let validSession = false;
+    let sessionEmail = '';
+
+    if (sessStr) {
+      try {
+        const parsed = JSON.parse(sessStr);
+        const lastActive = parsed.lastActive || parsed.loggedInAt || 0;
+        const now = Date.now();
+        // Check 15 minutes limit (15 * 60 * 1000 = 900,000ms)
+        if (now - lastActive < 15 * 60 * 1000 && parsed.email) {
+          validSession = true;
+          sessionEmail = parsed.email;
+          const remaining = Math.max(0, Math.floor((15 * 60 * 1000 - (now - lastActive)) / 1000));
+          setRemainingSeconds(remaining);
+        } else {
+          sessionStorage.removeItem('less_legal_admin_session');
+          setSessionExpiredNotice(true);
+        }
+      } catch {
+        sessionStorage.removeItem('less_legal_admin_session');
+      }
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user && validSession) {
         setAdminUser(user);
         setIsAuthenticated(true);
+      } else if (validSession && sessionEmail) {
+        setAdminUser({ email: sessionEmail } as any);
+        setIsAuthenticated(true);
       } else {
-        // Check fallback session
-        const sess = localStorage.getItem('less_legal_admin_session');
-        if (sess) {
+        // Force cleanup if session is missing or expired
+        if (user) {
           try {
-            const parsed = JSON.parse(sess);
-            if (parsed.email) {
-              setAdminUser({ email: parsed.email } as any);
-              setIsAuthenticated(true);
-            }
-          } catch {
-            // ignore
-          }
+            await signOut(auth);
+          } catch {}
         }
+        setAdminUser(null);
+        setIsAuthenticated(false);
       }
       setAuthLoading(false);
     });
     return () => unsubscribe();
   }, []);
+
+  // Real-time Inactivity Auto-Logout Timer (15 Minutes) & User Interaction Reset
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const resetInactivityTimer = () => {
+      const now = Date.now();
+      const sessStr = sessionStorage.getItem('less_legal_admin_session');
+      if (sessStr) {
+        try {
+          const parsed = JSON.parse(sessStr);
+          parsed.lastActive = now;
+          sessionStorage.setItem('less_legal_admin_session', JSON.stringify(parsed));
+        } catch {}
+      }
+      setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
+    };
+
+    // User activity listeners (debounced)
+    const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll'];
+    let throttleTimeout: NodeJS.Timeout | null = null;
+    const handleActivity = () => {
+      if (!throttleTimeout) {
+        throttleTimeout = setTimeout(() => {
+          resetInactivityTimer();
+          throttleTimeout = null;
+        }, 1000);
+      }
+    };
+
+    activityEvents.forEach((ev) => window.addEventListener(ev, handleActivity, { passive: true }));
+
+    // 1-second countdown interval
+    const interval = setInterval(() => {
+      setRemainingSeconds((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          handleLogout(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      activityEvents.forEach((ev) => window.removeEventListener(ev, handleActivity));
+      if (throttleTimeout) clearTimeout(throttleTimeout);
+    };
+  }, [isAuthenticated]);
 
   // Load Data on Mount & Refresh
   const loadData = async () => {
@@ -230,19 +310,30 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     e.preventDefault();
     setAuthError(null);
     setAuthSuccessMsg(null);
+    setSessionExpiredNotice(false);
     setAuthLoading(true);
 
     try {
       await signInWithEmailAndPassword(auth, emailInput.trim(), passwordInput);
+      const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
+      sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
+      localStorage.removeItem('less_legal_admin_session');
+      setAdminUser({ email: emailInput.trim() } as any);
+      setIsAuthenticated(true);
+      setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
       setEmailInput('');
       setPasswordInput('');
     } catch (err: any) {
-      console.error('Firebase Login error:', err);
-      // Fallback for operation-not-allowed or direct verification
+      console.error('Login error:', err);
+      // Fallback for custom configuration or direct verification
       const verifyRes = await adminStorage.verifyFirestoreAdminDoc(emailInput.trim(), passwordInput);
       if (verifyRes.success) {
+        const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
+        sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
+        localStorage.removeItem('less_legal_admin_session');
         setAdminUser({ email: emailInput.trim() } as any);
         setIsAuthenticated(true);
+        setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
         setEmailInput('');
         setPasswordInput('');
         setAuthError(null);
@@ -262,6 +353,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     e.preventDefault();
     setAuthError(null);
     setAuthSuccessMsg(null);
+    setSessionExpiredNotice(false);
 
     if (passwordInput !== confirmPasswordInput) {
       setAuthError(isHindi ? 'पासवर्ड मेल नहीं खाते हैं!' : 'Passwords do not match!');
@@ -275,17 +367,26 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     setAuthLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, emailInput.trim(), passwordInput);
-      setAuthSuccessMsg(isHindi ? 'एडमिन खाता Firebase Auth में सफलतापूर्वक बन गया!' : 'Admin account created successfully in Firebase Auth!');
+      const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
+      sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
+      localStorage.removeItem('less_legal_admin_session');
+      setAdminUser({ email: emailInput.trim() } as any);
+      setIsAuthenticated(true);
+      setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
+      setAuthSuccessMsg(isHindi ? 'सुरक्षित एडमिन खाता सफलतापूर्वक बन गया!' : 'Admin account created successfully on Secure Server!');
       setEmailInput('');
       setPasswordInput('');
       setConfirmPasswordInput('');
     } catch (err: any) {
       console.error('Registration error:', err);
       if (err.code === 'auth/operation-not-allowed' || err.code === 'auth/admin-restricted-operation' || err.message?.includes('operation-not-allowed')) {
-        // Automatically register via Firestore Admin Auth Fallback
         await adminStorage.registerFirestoreAdminDoc(emailInput.trim(), passwordInput);
+        const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
+        sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
+        localStorage.removeItem('less_legal_admin_session');
         setAdminUser({ email: emailInput.trim() } as any);
         setIsAuthenticated(true);
+        setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
         setAuthSuccessMsg(isHindi ? 'सुरक्षित एडमिन खाता सफलतापूर्वक बन गया!' : 'Admin account registered successfully!');
         setEmailInput('');
         setPasswordInput('');
@@ -308,6 +409,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     e.preventDefault();
     setAuthError(null);
     setAuthSuccessMsg(null);
+    setSessionExpiredNotice(false);
 
     if (!emailInput.trim()) {
       setAuthError(isHindi ? 'कृपया अपनी पंजीकृत ईमेल आईडी दर्ज करें!' : 'Please enter your registered email address!');
@@ -326,15 +428,30 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (dueToInactivity = false) => {
     try {
       await signOut(auth);
     } catch (err) {
       console.error('Logout error:', err);
     }
+    sessionStorage.removeItem('less_legal_admin_session');
     localStorage.removeItem('less_legal_admin_session');
     setAdminUser(null);
     setIsAuthenticated(false);
+    if (dueToInactivity) {
+      setSessionExpiredNotice(true);
+      setAuthError(
+        isHindi
+          ? "सुरक्षा समय सीमा समाप्त (15 मिनट निष्क्रियता)! आपका एडमिन सत्र स्वतः लॉक/लॉगआउट कर दिया गया है।"
+          : "Security timeout (15 mins inactivity)! Your admin session has been automatically locked."
+      );
+    }
+  };
+
+  const formatRemainingTime = (totalSeconds: number) => {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   // Status Handlers
@@ -452,7 +569,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center space-y-4">
         <RefreshCw className="w-8 h-8 text-[#C21F2F] animate-spin" />
         <p className="text-sm font-semibold text-slate-600 dark:text-[#B8B3AF]">
-          {isHindi ? "Firebase क्लाउड प्रमाणीकरण की जाँच की जा रही है..." : "Authenticating with Firebase Cloud Auth..."}
+          {isHindi ? "सुरक्षित सर्वर प्रमाणीकरण की जाँच की जा रही है..." : "Verifying secure administrator session..."}
         </p>
       </div>
     );
@@ -474,6 +591,17 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               {isHindi ? "एडमिन पोर्टल" : "Admin Portal"}
             </h1>
           </div>
+
+          {/* Session Inactivity Expiry Notice */}
+          {sessionExpiredNotice && (
+            <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs text-left font-semibold flex items-start gap-2.5">
+              <Clock className="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
+              <div>
+                <strong className="block font-bold">{isHindi ? "सत्र समाप्ति (Session Timeout)" : "Session Expired"}</strong>
+                <span>{isHindi ? "15 मिनट की निष्क्रियता या ब्राउज़र बंद होने के कारण सुरक्षा हेतु सत्र समाप्त कर दिया गया है। कृपया पुनः लॉगिन करें।" : "Your session was locked due to 15 minutes of inactivity or window close. Please log in again."}</span>
+              </div>
+            </div>
+          )}
 
           {/* Auth Switcher Tabs */}
           <div className="flex rounded-xl bg-slate-100 dark:bg-[#151518] p-1 border border-slate-200 dark:border-white/10 text-xs font-bold">
@@ -656,7 +784,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             </span>
             <span className="text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center gap-1 bg-slate-200/60 dark:bg-white/5 px-2.5 py-0.5 rounded-full">
               <User className="w-3 h-3 text-emerald-500" />
-              {adminUser?.email || 'admin@firebase.com'}
+              {adminUser?.email || 'admin@lesslegal.in'}
             </span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
@@ -669,19 +797,42 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="px-4 py-2.5 rounded-xl bg-slate-200/70 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-300/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Live Inactivity Auto-Lock Countdown Badge */}
+          <div 
+            title={isHindi ? "15 मिनट की निष्क्रियता के बाद सत्र स्वतः लॉक हो जाएगा" : "Session automatically locks after 15 minutes of inactivity"}
+            className={`px-3 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 border transition-all ${
+              remainingSeconds < 120 
+                ? 'bg-red-500/15 border-red-500/40 text-red-600 dark:text-red-400 animate-pulse' 
+                : 'bg-slate-200/70 dark:bg-white/5 border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300'
+            }`}
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#C21F2F]' : ''}`} />
-            <span>{isRefreshing ? (isHindi ? "अपडेट हो रहा है..." : "Refreshing...") : (isHindi ? "रिफ्रेश" : "Refresh Data")}</span>
+            <Clock className="w-3.5 h-3.5 text-amber-500" />
+            <span>{isHindi ? "ऑटो-लॉक" : "Auto-Lock"}: {formatRemainingTime(remainingSeconds)}</span>
+          </div>
+
+          {/* Quick Lock Now Button */}
+          <button
+            onClick={() => handleLogout(false)}
+            title={isHindi ? "डैशबोर्ड को तुरंत लॉक करें" : "Lock Console Immediately"}
+            className="px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+          >
+            <Lock className="w-3.5 h-3.5" />
+            <span>{isHindi ? "तत्काल लॉक करें" : "Lock Now"}</span>
           </button>
 
           <button
-            onClick={handleLogout}
-            className="px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-2"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="px-3.5 py-2 rounded-xl bg-slate-200/70 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-300/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#C21F2F]' : ''}`} />
+            <span>{isRefreshing ? (isHindi ? "अपडेट..." : "Refreshing...") : (isHindi ? "रिफ्रेश" : "Refresh")}</span>
+          </button>
+
+          <button
+            onClick={() => handleLogout(false)}
+            className="px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>{isHindi ? "लॉग आउट" : "Sign Out"}</span>
