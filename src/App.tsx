@@ -17,6 +17,7 @@ import { TermsPage } from './pages/TermsPage';
 import { RefundPolicyPage } from './pages/RefundPolicyPage';
 import { DisclaimerPage } from './pages/DisclaimerPage';
 import { DownloadPage } from './pages/DownloadPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { LanguageProvider } from './context/LanguageContext';
 import { FloatingLanguageButton } from './components/FloatingLanguageButton';
 
@@ -53,6 +54,9 @@ function getRouteFromLocation(): PageRoute {
     case 'legal-disclaimer': return 'disclaimer';
     case 'download':
     case 'download-app': return 'download';
+    case 'admin':
+    case 'admin-dashboard':
+    case 'portal': return 'admin';
     case '':
     case 'home':
     default:
@@ -129,6 +133,7 @@ export default function App() {
               {currentRoute === 'refund' && <RefundPolicyPage onNavigate={navigateTo} />}
               {currentRoute === 'disclaimer' && <DisclaimerPage onNavigate={navigateTo} />}
               {currentRoute === 'download' && <DownloadPage onNavigate={navigateTo} />}
+              {currentRoute === 'admin' && <AdminDashboardPage onNavigate={navigateTo} />}
             </PageTransition>
           </AnimatePresence>
         </main>

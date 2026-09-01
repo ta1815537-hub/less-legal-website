@@ -11,7 +11,8 @@ export type PageRoute =
   | 'terms'
   | 'refund'
   | 'disclaimer'
-  | 'download';
+  | 'download'
+  | 'admin';
 
 export interface NavItem {
   label: string;

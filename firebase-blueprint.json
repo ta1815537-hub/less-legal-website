@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "account_deletion_requests": {
+      "title": "Account Deletion Requests",
+      "description": "User account deletion requests for mobile app compliance",
+      "properties": {
+        "ticketId": { "type": "string", "description": "Unique reference ticket ID" },
+        "email": { "type": "string", "description": "User email address" },
+        "userId": { "type": "string", "description": "App User ID or phone" },
+        "reason": { "type": "string", "description": "Reason for account deletion" },
+        "status": { "type": "string", "description": "Pending | Processing | Completed" },
+        "adminNotes": { "type": "string", "description": "Internal admin remarks" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "contact_submissions": {
+      "title": "Contact & Support Submissions",
+      "description": "Support tickets submitted via website contact form",
+      "properties": {
+        "name": { "type": "string", "description": "User full name" },
+        "email": { "type": "string", "description": "User email address" },
+        "subject": { "type": "string", "description": "Support subject" },
+        "transactionId": { "type": "string", "description": "Transaction ID if applicable" },
+        "message": { "type": "string", "description": "Message content" },
+        "status": { "type": "string", "description": "Pending | In Progress | Resolved" },
+        "adminNotes": { "type": "string", "description": "Internal admin notes" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" }
+      }
+    }
+  }
+}

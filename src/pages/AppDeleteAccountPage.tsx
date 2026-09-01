@@ -4,6 +4,7 @@ import { SITE_CONFIG } from '../config';
 import { Trash2, ShieldAlert, ArrowLeft, ArrowUpRight, CheckCircle2, HardDrive, Smartphone, Mail, AlertTriangle, Clock } from 'lucide-react';
 import { HeroAmbientGlow } from '../components/MotionWrappers';
 import { useLanguage } from '../context/LanguageContext';
+import { adminStorage } from '../utils/adminStorage';
 
 interface AppDeleteAccountPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -29,6 +30,14 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
 
     setTimeout(() => {
       const generatedId = 'DEL-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+      
+      adminStorage.addDeletionRequest({
+        ticketId: generatedId,
+        email: email.trim(),
+        userId: userId.trim() || undefined,
+        reason: reason.trim() || undefined
+      });
+
       setTicketId(generatedId);
       setIsSubmitting(false);
       setIsSubmitted(true);

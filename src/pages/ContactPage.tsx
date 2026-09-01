@@ -13,6 +13,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { sanitizeText, isRateLimited } from '../utils/security';
+import { adminStorage } from '../utils/adminStorage';
 
 interface ContactPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -48,6 +49,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
     if (!cleanName || !cleanEmail || !cleanMessage) return;
     
     setIsSubmitting(true);
+
+    // Persist to Admin Dashboard local storage
+    adminStorage.addContactSubmission({
+      name: cleanName,
+      email: cleanEmail,
+      subject: cleanSubject,
+      transactionId: cleanTxnId || undefined,
+      message: cleanMessage
+    });
 
     setTimeout(() => {
       if (hasEmail) {
