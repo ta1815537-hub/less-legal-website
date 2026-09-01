@@ -18,12 +18,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const hasAddress = Boolean(SITE_CONFIG.businessAddress && SITE_CONFIG.businessAddress.trim() !== "");
 
   return (
-    <footer className="bg-slate-50 dark:bg-[#080808] text-slate-600 dark:text-[#B8B3AF] pt-16 pb-12 border-t border-slate-200 dark:border-white/10 relative overflow-hidden mt-16 transition-colors duration-300">
-      {/* Top Crimson Ambient Blur */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-gradient-to-r from-[#8B0000]/10 via-[#C21F2F]/10 to-[#8B0000]/10 blur-3xl" />
-      </div>
-
+    <footer className="bg-slate-50 dark:bg-[#080808] text-slate-600 dark:text-[#B8B3AF] pt-16 pb-1 border-t border-slate-200 dark:border-white/10 relative overflow-hidden mt-16 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Main Footer Grid */}
@@ -299,11 +294,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               {t.footer.trustedTool}
             </span>
           </div>
-        </div>
-
-        {/* Strict Liability Disclaimer */}
-        <div className="mt-8 pt-4 border-t border-slate-200 dark:border-white/10 text-[10px] text-slate-500/90 dark:text-[#77736F]/90 text-center md:text-justify leading-relaxed max-w-5xl mx-auto">
-          {t.footer.strictLiabilityDisclaimer}
         </div>
       </div>
       

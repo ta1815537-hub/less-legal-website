@@ -30,15 +30,12 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeK
 // 2. GLOBAL ANIMATED SMOKE BACKGROUND COMPONENT
 export const SmokeBackground: React.FC = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none">
-      {/* Smoke Cloud 1 - Crimson / Ruby Ambient Vapor */}
-      <div className="smoke-cloud-1 absolute -top-40 -left-40 w-[45rem] h-[45rem] bg-gradient-to-br from-[#8B0000]/20 via-[#C21F2F]/15 to-transparent rounded-full blur-[130px] opacity-70 dark:opacity-60" />
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none hidden dark:block">
+      {/* Smoke Cloud 1 - Crimson / Ruby Ambient Vapor (Dark mode only) */}
+      <div className="smoke-cloud-1 absolute -top-40 -left-40 w-[45rem] h-[45rem] bg-gradient-to-br from-[#8B0000]/20 via-[#C21F2F]/15 to-transparent rounded-full blur-[130px] opacity-50" />
 
-      {/* Smoke Cloud 2 - Subtle Crimson Vapor */}
-      <div className="smoke-cloud-2 absolute top-1/4 -right-40 w-[40rem] h-[40rem] bg-gradient-to-bl from-[#C21F2F]/15 via-[#8B0000]/10 to-transparent rounded-full blur-[120px] opacity-60 dark:opacity-50" />
-
-      {/* Smoke Cloud 3 - Deep Crimson Bottom Vapor */}
-      <div className="smoke-cloud-1 absolute bottom-10 left-1/3 w-[38rem] h-[38rem] bg-gradient-to-tr from-[#8B0000]/15 via-[#C21F2F]/10 to-transparent rounded-full blur-[140px] opacity-40 dark:opacity-30" />
+      {/* Smoke Cloud 2 - Subtle Crimson Vapor (Dark mode only) */}
+      <div className="smoke-cloud-2 absolute top-1/4 -right-40 w-[40rem] h-[40rem] bg-gradient-to-bl from-[#C21F2F]/15 via-[#8B0000]/10 to-transparent rounded-full blur-[120px] opacity-40" />
     </div>
   );
 };

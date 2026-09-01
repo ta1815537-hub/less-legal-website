@@ -65,6 +65,16 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
       {/* Main Disclaimer Points */}
       <div className="space-y-6 text-sm leading-relaxed relative z-10 text-slate-700 dark:text-[#B8B3AF]">
         
+        {/* Strict Liability Disclaimer added here */}
+        <section className="space-y-3 glass-panel p-6 rounded-3xl border border-slate-200 dark:border-white/10">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] border-b border-slate-200 dark:border-white/10 pb-2">
+            {language === 'hi' ? 'डेटा और कानूनी दायित्व अस्वीकरण' : 'Data & Legal Liability Disclaimer'}
+          </h2>
+          <p className="font-medium text-slate-900 dark:text-[#F5F2EE]">
+            {t.footer.strictLiabilityDisclaimer}
+          </p>
+        </section>
+
         {/* Point 2 */}
         <section className="space-y-3 glass-panel p-6 rounded-3xl border border-slate-200 dark:border-white/10">
           <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] border-b border-slate-200 dark:border-white/10 pb-2">
