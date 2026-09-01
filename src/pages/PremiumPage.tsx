@@ -226,11 +226,11 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
         <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl space-y-4">
           <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2">
             <FileText className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E]" />
-            <span>Policies & Terms for Premium Purchases</span>
+            <span>{language === 'hi' ? 'प्रीमियम खरीदारी के लिए नीतियां और शर्तें' : 'Policies & Terms for Premium Purchases'}</span>
           </h3>
           
           <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-            Please review the official policies governing pass purchases, validities, cancellations, and support before completing any transaction in the app:
+            {language === 'hi' ? 'कृपया ऐप में कोई भी लेनदेन पूरा करने से पहले पास खरीद, वैधता, रद्दीकरण और सहायता को नियंत्रित करने वाली आधिकारिक नीतियों की समीक्षा करें:' : 'Please review the official policies governing pass purchases, validities, cancellations, and support before completing any transaction in the app:'}
           </p>
 
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
@@ -242,9 +242,9 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               >
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
-                    View Terms & Conditions
+                    {language === 'hi' ? 'नियम और शर्तें देखें' : 'View Terms & Conditions'}
                   </div>
-                  <div className="text-[11px] text-slate-500 dark:text-[#77736F]">Service terms & pass rules</div>
+                  <div className="text-[11px] text-slate-500 dark:text-[#77736F]">{language === 'hi' ? 'सेवा की शर्तें और पास नियम' : 'Service terms & pass rules'}</div>
                 </div>
                 <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
@@ -258,9 +258,9 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               >
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
-                    Refund & Cancellation Policy
+                    {language === 'hi' ? 'धनवापसी और रद्दीकरण नीति' : 'Refund & Cancellation Policy'}
                   </div>
-                  <div className="text-[11px] text-slate-500 dark:text-[#77736F]">Guidelines for ₹59 & ₹179 passes</div>
+                  <div className="text-[11px] text-slate-500 dark:text-[#77736F]">{language === 'hi' ? '₹59 और ₹179 पास के लिए दिशानिर्देश' : 'Guidelines for ₹59 & ₹179 passes'}</div>
                 </div>
                 <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>
@@ -274,9 +274,9 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               >
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] transition-colors whitespace-nowrap">
-                    Contact Support
+                    {language === 'hi' ? 'सहायता से संपर्क करें' : 'Contact Support'}
                   </div>
-                  <div className="text-[11px] text-slate-500 dark:text-[#77736F]">Assistance for active transactions</div>
+                  <div className="text-[11px] text-slate-500 dark:text-[#77736F]">{language === 'hi' ? 'सक्रिय लेनदेन के लिए सहायता' : 'Assistance for active transactions'}</div>
                 </div>
                 <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:text-[#E03A3E] dark:group-hover:text-[#D8BD82] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </button>

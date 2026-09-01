@@ -98,7 +98,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           
           <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl space-y-6">
             <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] border-b border-slate-200 dark:border-white/10 pb-3">
-              Official Communication Channels
+              {language === 'hi' ? 'आधिकारिक संचार चैनल' : 'Official Communication Channels'}
             </h2>
 
             {/* Direct Contact Channels */}
@@ -112,11 +112,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         <Mail className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">Email Support</div>
+                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">{language === 'hi' ? 'ईमेल सहायता' : 'Email Support'}</div>
                         <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[#C21F2F] dark:text-[#E03A3E] hover:underline font-semibold break-all">
                           {SITE_CONFIG.supportEmail}
                         </a>
-                        <div className="text-[11px] text-slate-600 dark:text-[#77736F] mt-0.5">Response within 24-48 business hours</div>
+                        <div className="text-[11px] text-slate-600 dark:text-[#77736F] mt-0.5">{language === 'hi' ? '24-48 व्यावसायिक घंटों के भीतर प्रतिक्रिया' : 'Response within 24-48 business hours'}</div>
                       </div>
                     </div>
                   </StaggerItem>
@@ -129,11 +129,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         <Phone className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">Telephone / Helpline</div>
+                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">{language === 'hi' ? 'टेलीफोन / हेल्पलाइन' : 'Telephone / Helpline'}</div>
                         <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-slate-700 dark:text-[#B8B3AF] font-semibold">
                           {SITE_CONFIG.supportPhone}
                         </a>
-                        <div className="text-[11px] text-slate-600 dark:text-[#77736F] mt-0.5">Mon - Fri, 10:00 AM - 6:00 PM IST</div>
+                        <div className="text-[11px] text-slate-600 dark:text-[#77736F] mt-0.5">{language === 'hi' ? 'सोम - शुक्र, सुबह 10:00 - शाम 6:00 IST' : 'Mon - Fri, 10:00 AM - 6:00 PM IST'}</div>
                       </div>
                     </div>
                   </StaggerItem>
@@ -146,7 +146,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         <MapPin className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">Registered Business Address</div>
+                        <div className="font-bold text-slate-900 dark:text-[#F5F2EE]">{language === 'hi' ? 'पंजीकृत व्यावसायिक पता' : 'Registered Business Address'}</div>
                         <p className="text-slate-700 dark:text-[#B8B3AF] leading-relaxed mt-0.5">{SITE_CONFIG.businessAddress}</p>
                       </div>
                     </div>
@@ -158,13 +158,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
               <div className="p-4 bg-slate-100/80 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-[#B8B3AF] space-y-2">
                 <div className="font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-1.5">
                   <Smartphone className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E]" />
-                  <span>In-App Support Desk</span>
+                  <span>{language === 'hi' ? 'इन-ऐप सहायता डेस्क' : 'In-App Support Desk'}</span>
                 </div>
                 <p>
-                  For immediate assistance, open the <strong className="text-slate-900 dark:text-[#F5F2EE]">Less Legal</strong> Android application and navigate to <em>Settings &gt; Help & Support</em>.
+                  {language === 'hi' ? 'तत्काल सहायता के लिए, ' : 'For immediate assistance, open the '}<strong className="text-slate-900 dark:text-[#F5F2EE]">Less Legal</strong> {language === 'hi' ? 'एंड्रॉइड ऐप खोलें और ' : 'Android application and navigate to '}<em>{language === 'hi' ? 'सेटिंग्स > सहायता और समर्थन' : 'Settings > Help & Support'}</em>{language === 'hi' ? ' पर जाएं।' : '.'}
                 </p>
                 <p className="text-[11px] text-slate-600 dark:text-[#77736F]">
-                  You can also use the message form on this page to log a support or verification request.
+                  {language === 'hi' ? 'आप सहायता या सत्यापन अनुरोध लॉग करने के लिए इस पृष्ठ पर संदेश फ़ॉर्म का भी उपयोग कर सकते हैं।' : 'You can also use the message form on this page to log a support or verification request.'}
                 </p>
               </div>
             )}
@@ -173,11 +173,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             <div className="pt-2 space-y-3 text-xs text-slate-700 dark:text-[#B8B3AF]">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-                <span><strong className="text-slate-900 dark:text-[#F5F2EE]">Standard Turnaround:</strong> 24 to 48 business hours</span>
+                <span><strong className="text-slate-900 dark:text-[#F5F2EE]">{language === 'hi' ? 'मानक टर्नअराउंड' : 'Standard Turnaround'}:</strong> {language === 'hi' ? '24 से 48 व्यावसायिक घंटे' : '24 to 48 business hours'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-                <span><strong className="text-slate-900 dark:text-[#F5F2EE]">Transaction Inquiries:</strong> Include Order / Transaction ID for faster resolution</span>
+                <span><strong className="text-slate-900 dark:text-[#F5F2EE]">{language === 'hi' ? 'लेनदेन पूछताछ' : 'Transaction Inquiries'}:</strong> {language === 'hi' ? 'तेजी से समाधान के लिए ऑर्डर / ट्रांजेक्शन आईडी शामिल करें' : 'Include Order / Transaction ID for faster resolution'}</span>
               </div>
             </div>
 
@@ -187,10 +187,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           <div className="p-5 glass-panel rounded-2xl border border-slate-200 dark:border-white/10 text-xs text-slate-700 dark:text-[#B8B3AF] space-y-2">
             <h3 className="font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E]" />
-              <span>Grievance Redressal Mechanism</span>
+              <span>{language === 'hi' ? 'शिकायत निवारण तंत्र' : 'Grievance Redressal Mechanism'}</span>
             </h3>
             <p className="leading-relaxed text-[11px]">
-              In accordance with Information Technology Rules and Consumer Protection guidelines, user grievances regarding app functionality, pass activation, or billing will be acknowledged promptly within 48 hours and addressed within 30 days.
+              {language === 'hi' ? 'सूचना प्रौद्योगिकी नियमों और उपभोक्ता संरक्षण दिशानिर्देशों के अनुसार, ऐप कार्यक्षमता, पास सक्रियण या बिलिंग के संबंध में उपयोगकर्ता की शिकायतों को 48 घंटों के भीतर स्वीकार किया जाएगा और 30 दिनों के भीतर संबोधित किया जाएगा।' : 'In accordance with Information Technology Rules and Consumer Protection guidelines, user grievances regarding app functionality, pass activation, or billing will be acknowledged promptly within 48 hours and addressed within 30 days.'}
             </p>
           </div>
 

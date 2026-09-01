@@ -24,12 +24,12 @@ interface HomePageProps {
 
 // Live Converter Units Reference (base in Sq. Ft.)
 const SQFT_RATES: Record<string, { label: string; rate: number; region: string }> = {
-  sqft: { label: 'Square Feet (Sq. Ft.)', rate: 1, region: 'Standard' },
-  acre: { label: 'Acre', rate: 43560, region: 'Universal' },
-  bigha: { label: 'Bigha (Standard)', rate: 27225, region: 'North/Central India' },
-  guntha: { label: 'Guntha', rate: 1089, region: 'Maharashtra/Gujarat/South' },
-  kanal: { label: 'Kanal', rate: 5445, region: 'Punjab/Haryana/J&K' },
-  marla: { label: 'Marla', rate: 272.25, region: 'North India' },
+  sqft: { label: 'वर्ग फुट (Sq. Ft.)', rate: 1, region: 'मानक (Standard)' },
+  acre: { label: 'एकड़ (Acre)', rate: 43560, region: 'यूनिवर्सल' },
+  bigha: { label: 'बीघा (Bigha)', rate: 27225, region: 'उत्तर/मध्य भारत' },
+  guntha: { label: 'गुंठा (Guntha)', rate: 1089, region: 'महाराष्ट्र/गुजरात/दक्षिण' },
+  kanal: { label: 'कनाल (Kanal)', rate: 5445, region: 'पंजाब/हरियाणा/J&K' },
+  marla: { label: 'मरला (Marla)', rate: 272.25, region: 'उत्तर भारत' },
 };
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
@@ -69,7 +69,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     if (isRateLimited('whatsapp_trigger', 1500)) return;
     const cleanDigits = sanitizePhoneNumber(waNumber).replace(/\D/g, '');
     if (!cleanDigits) {
-      alert(t.common?.verifiedNotice ? 'कृपया एक मोबाइल नंबर दर्ज करें (10 अंक)' : 'Please enter a valid 10-digit mobile number');
+      alert(language === 'hi' ? 'कृपया एक मान्य 10-अंकीय मोबाइल नंबर दर्ज करें' : 'Please enter a valid 10-digit mobile number');
       return;
     }
     let fullNumber = cleanDigits;
@@ -89,12 +89,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const baseSqFt = (landValue || 0) * SQFT_RATES[landUnit].rate;
 
   const categories = [
-    'All',
-    'PDF & Files',
-    'Legal Utilities',
-    'Calculators & Converters',
-    'Learning & Reference',
+    { key: 'All', label: t.featuresPage.categories.all },
+    { key: 'PDF & Files', label: t.featuresPage.categories.pdfFiles },
+    { key: 'Legal Utilities', label: t.featuresPage.categories.legalUtilities },
+    { key: 'Calculators & Converters', label: t.featuresPage.categories.calculatorsConverters },
+    { key: 'Learning & Reference', label: t.featuresPage.categories.learningReference },
   ];
+
+  // Category translation mapping
+  const getCategoryLabel = (category: string) => {
+    switch (category) {
+      case 'PDF & Files': return t.featuresPage.categories.pdfFiles;
+      case 'Legal Utilities': return t.featuresPage.categories.legalUtilities;
+      case 'Calculators & Converters': return t.featuresPage.categories.calculatorsConverters;
+      case 'Learning & Reference': return t.featuresPage.categories.learningReference;
+      default: return category;
+    }
+  };
 
   // Filter features based on Category and Search
   const filteredFeatures = SITE_CONFIG.features.filter((f) => {
@@ -112,28 +123,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     setTimeout(() => setCopiedUnit(null), 2000);
   };
 
-  const faqs = [
-    {
-      q: "Is Less Legal affiliated with the Government of India or any Court?",
-      a: "No. Less Legal is an entirely independent, private software utility application developed by Less Creation. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
-    },
-    {
-      q: "Does the app require internet to access Bare Acts and Calculators?",
-      a: "No! All core 46+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
-    },
-    {
-      q: "How does the 'File Transfer (LessShare)' feature work?",
-      a: "LessShare establishes a direct device-to-device local Wi-Fi / Hotspot connection to send heavy PDFs and legal documents without uploading anything to cloud servers. It provides instant, confidential local transfers."
-    },
-    {
-      q: "Are the Premium Passes auto-renewing subscriptions?",
-      a: "Never. All Premium Passes (3 Months for ₹59 or 1 Year for ₹179) are strict one-time purchases with fixed validity days. We never auto-debit your bank account or store your credit card details."
-    },
-    {
-      q: "What devices are supported by Less Legal?",
-      a: "Less Legal is fully optimized for Android smartphones and tablets running Android 7.0 (Nougat) and higher, supporting all modern screen resolutions and dark mode aesthetics."
-    }
-  ];
+  const faqs = t.home.faqs;
 
   return (
     <div className="space-y-12 sm:space-y-16 py-4 sm:py-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
@@ -160,20 +150,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#B8B3AF] text-xs font-bold mb-4 sm:mb-6 uppercase tracking-widest shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#C21F2F] animate-pulse"></span>
-              {t.home.heroBadge || "Flagship Product Studio"}
+              {t.home.heroBadge}
             </div>
 
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight leading-[1.1] pb-2 px-2">
               <span className="text-slate-900 dark:text-[#F5F2EE] mr-2 sm:mr-3">
-                {t.home.heroTitlePart1 || "Legal Knowledge & "}
+                {t.home.heroTitlePart1}
               </span>
               <span className="text-gradient-crimson-gold drop-shadow-md dark:drop-shadow-[0_0_30px_rgba(224,58,62,0.3)] block sm:inline">
-                {t.home.heroTitlePart2 || "Digital Utilities Suite"}
+                {t.home.heroTitlePart2}
               </span>
             </h1>
             
             <p className="text-sm sm:text-xl text-slate-600 dark:text-[#B8B3AF] font-medium max-w-2xl mx-auto leading-relaxed">
-              {t.home.heroSubtitle || "Designed for advocates, law students, and citizens. Access Bare Acts, Case Diary, PDF workspace, area converters, and court tools seamlessly."}
+              {t.home.heroSubtitle}
             </p>
           </motion.div>
 
@@ -199,8 +189,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-5.02.24-9.94-1.81-14.77-6.14-3.32-2.92-7.25-7.65-11.8-14.19-6.3-8.99-11.23-18.72-14.77-29.2-3.54-10.48-5.31-20.35-5.31-29.61 0-12.28 3.12-22.58 9.38-30.9 6.25-8.32 14.16-12.58 23.71-12.78 4.67 0 9.77 1.15 15.3 3.44 5.53 2.29 9.38 3.44 11.55 3.44 2.06 0 5.96-1.15 11.71-3.44 5.75-2.29 10.66-3.35 14.73-3.18 10.15.53 18.23 4.29 24.26 11.27-9.08 5.53-13.52 13.1-13.31 22.7.21 7.57 3.09 13.9 8.64 18.99 5.55 5.09 12.22 7.9 20.02 8.44-2.53 7.42-6.02 14.91-10.47 22.48zM119.22 31.75c0-6.12 2.22-11.83 6.66-17.13 4.44-5.3 9.94-8.58 16.5-9.84.21 1.06.32 2.02.32 2.87 0 6.02-2.25 11.72-6.75 17.1-4.5 5.38-10.05 8.71-16.65 9.98-.08-.98-.08-1.96-.08-2.98z" />
               </svg>
               <div className="text-left whitespace-nowrap">
-                <div className="text-[9px] text-amber-400 font-extrabold tracking-wider leading-none mb-0.5">APP STORE</div>
-                <div className="text-xs font-bold text-white leading-tight">Coming Soon iOS</div>
+                <div className="text-[9px] text-amber-400 font-extrabold tracking-wider leading-none mb-0.5">{language === 'hi' ? 'एप स्टोर' : 'APP STORE'}</div>
+                <div className="text-xs font-bold text-white leading-tight">{language === 'hi' ? 'iOS के लिए जल्द आ रहा है' : 'Coming Soon for iOS'}</div>
               </div>
             </div>
             
@@ -213,7 +203,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               className="px-8 py-4 text-sm font-bold w-full sm:w-auto cursor-pointer"
             >
               <Play className="w-4 h-4 text-amber-700 dark:text-[#D8BD82] group-hover:scale-110 transition-transform fill-amber-700/20 dark:fill-[#D8BD82]/20" />
-              <span>Try Live Interactive Demo</span>
+              <span>{t.home.ctaDemo}</span>
             </GlowingButton>
           </motion.div>
 
@@ -226,19 +216,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           >
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
               <Zap className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-              <span className="whitespace-nowrap badge-one-line">Fast On-Device Engine</span>
+              <span className="whitespace-nowrap badge-one-line">{t.home.trustFastEngine}</span>
             </div>
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-              <span className="whitespace-nowrap badge-one-line">On-Device Privacy</span>
+              <span className="whitespace-nowrap badge-one-line">{t.home.trustPrivacy}</span>
             </div>
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
               <LayoutGrid className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-              <span className="whitespace-nowrap badge-one-line">46+ Integrated Tools</span>
+              <span className="whitespace-nowrap badge-one-line">{t.home.trustToolsCount}</span>
             </div>
             <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
               <Smartphone className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-              <span className="whitespace-nowrap badge-one-line">Android 7.0 to 15 Ready</span>
+              <span className="whitespace-nowrap badge-one-line">{t.home.trustAndroidReady}</span>
             </div>
           </motion.div>
 
@@ -250,13 +240,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto mb-6 space-y-3">
           <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C21F2F]/15 border border-[#C21F2F]/30 text-[#C21F2F] dark:text-[#E03A3E] text-xs font-bold">
             <Smartphone className="w-4 h-4" />
-            Interactive App Preview
+            {t.home.simBadge}
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-            Experience Less Legal Live
+            {t.home.simTitle}
           </h2>
           <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-            Click through the tabs below to test our real interactive utility modules directly on this web page.
+            {t.home.simSub}
           </p>
         </ScrollReveal>
 
@@ -266,10 +256,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {[...Array(4)].map((_, arrayIdx) => (
               <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
                 {[
-                  { id: 'diary', icon: Calendar, label: 'Case Diary & Planner', iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
-                  { id: 'converter', icon: Compass, label: 'Live Area Converter', iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
-                  { id: 'pdf', icon: FileText, label: 'PDF Engine & Share', iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
-                  { id: 'whatsapp', icon: MessageSquare, label: 'Direct WhatsApp', iconColor: 'text-[#25D366]' }
+                  { id: 'diary', icon: Calendar, label: t.home.simDiary, iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
+                  { id: 'converter', icon: Compass, label: t.home.simConverter, iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
+                  { id: 'pdf', icon: FileText, label: t.home.simPdf, iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
+                  { id: 'whatsapp', icon: MessageSquare, label: t.home.simWhatsapp, iconColor: 'text-[#25D366]' }
                 ].map((tab) => (
                   <button
                     key={`${tab.id}-${arrayIdx}`}
@@ -302,18 +292,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2 whitespace-nowrap badge-one-line">
-                  <span className="whitespace-nowrap badge-one-line">Less Legal Interface</span>
+                  <span className="whitespace-nowrap badge-one-line">{t.home.simInterfaceLabel}</span>
                   <span className="text-[10px] bg-amber-500/10 dark:bg-[#D8BD82]/20 text-amber-700 dark:text-[#D8BD82] px-2 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/40 font-semibold whitespace-nowrap badge-one-line">
-                    On-Device
+                    {t.home.simOnDeviceBadge}
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Android Application Sandbox</div>
+                <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simSandboxSub}</div>
               </div>
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-600 dark:text-[#B8B3AF] shrink-0">
               <Lock className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-              <span className="hidden sm:inline whitespace-nowrap badge-one-line">On-Device Encrypted</span>
+              <span className="hidden sm:inline whitespace-nowrap badge-one-line">{t.home.simEncryptedLabel}</span>
             </div>
           </div>
 
@@ -332,8 +322,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               >
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
                   <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#B8B3AF] gap-2">
-                    <span className="font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">Today's Hearing Schedule</span>
-                    <span className="whitespace-nowrap badge-one-line shrink-0">3 Active Cases</span>
+                    <span className="font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">{t.home.simScheduleTitle}</span>
+                    <span className="whitespace-nowrap badge-one-line shrink-0">{t.home.simActiveCases}</span>
                   </div>
 
                   <div className="space-y-2.5">
@@ -343,7 +333,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">Court No. 4 • Criminal Appeal • Item #12</div>
                       </div>
                       <span className="text-[10px] font-bold bg-red-100 dark:bg-[#C21F2F]/20 text-red-700 dark:text-[#E03A3E] px-2.5 py-1 rounded-lg border border-red-200 dark:border-[#C21F2F]/40 whitespace-nowrap badge-one-line shrink-0">
-                        Arguments
+                        {t.home.simArgumentsStage}
                       </span>
                     </div>
 
@@ -353,7 +343,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">District Tribunal • Arbitration • Item #5</div>
                       </div>
                       <span className="text-[10px] font-bold bg-amber-100 dark:bg-[#D8BD82]/20 text-amber-700 dark:text-[#D8BD82] px-2.5 py-1 rounded-lg border border-amber-200 dark:border-[#D8BD82]/40 whitespace-nowrap badge-one-line shrink-0">
-                        Evidence Stage
+                        {t.home.simEvidenceStage}
                       </span>
                     </div>
                   </div>
@@ -362,15 +352,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center">
                     <div className="text-xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">24</div>
-                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Pending Tasks</div>
+                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simPendingTasks}</div>
                   </div>
                   <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center">
                     <div className="text-xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">100%</div>
-                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Auto-Saved Notes</div>
+                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simAutoSavedNotes}</div>
                   </div>
                   <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center col-span-2 sm:col-span-1">
                     <div className="text-xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">Local</div>
-                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">On-Device Database</div>
+                    <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simOnDeviceDb}</div>
                   </div>
                 </div>
               </motion.div>
@@ -389,7 +379,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line block">Type Quantity & Source Unit:</label>
+                      <label className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line block">{t.home.simTypeQuantity}</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
@@ -410,7 +400,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     </div>
 
                     <div className="text-left sm:text-right">
-                      <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">Calculated Area Base</div>
+                      <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simBaseSqFt}</div>
                       <div className="text-base font-extrabold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
                     </div>
                   </div>
@@ -456,25 +446,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 className="space-y-4"
               >
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
-                  <div className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">PDF Document Processing & Local Transfer</div>
+                  <div className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">{t.home.simPdfProcessingTitle}</div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
                       <FileText className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
-                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">Merge & Split PDFs</div>
-                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">Combine multiple court filings into a single indexed PDF.</div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfMergeTitle}</div>
+                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfMergeDesc}</div>
                     </div>
 
                     <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
                       <Lock className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
-                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">Encrypt & Password</div>
-                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">Add 256-bit passwords to secure client documents.</div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfEncryptTitle}</div>
+                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfEncryptDesc}</div>
                     </div>
 
                     <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
                       <Share2 className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
-                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">LessShare Transfer</div>
-                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">Send files peer-to-peer via direct local Wi-Fi.</div>
+                      <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfTransferTitle}</div>
+                      <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfTransferDesc}</div>
                     </div>
                   </div>
                 </div>
@@ -493,13 +483,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               >
                 <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
                   <div className="flex items-center justify-between text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">
-                    <span>Direct WhatsApp Utility</span>
-                    <span className="text-[10px] bg-green-100 dark:bg-[#25D366]/20 text-green-700 dark:text-[#25D366] px-2 py-0.5 rounded-md border border-green-200 dark:border-[#25D366]/40">Real Working Tool</span>
+                    <span>{t.home.simWhatsappTitle}</span>
+                    <span className="text-[10px] bg-green-100 dark:bg-[#25D366]/20 text-green-700 dark:text-[#25D366] px-2 py-0.5 rounded-md border border-green-200 dark:border-[#25D366]/40">{language === 'hi' ? 'वास्तविक टूल' : 'Real Working Tool'}</span>
                   </div>
                   
                   <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-3 max-w-lg">
                     <div className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-                      Enter any phone number below to open a direct WhatsApp chat window without saving the number to your contact list.
+                      {t.home.simWhatsappSub}
                     </div>
                     
                     {/* Compact input & Left-aligned Chat Now Button */}
@@ -524,16 +514,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       <button 
                         onClick={handleOpenWhatsApp}
                         className="px-3 py-2 btn-crimson text-white font-bold text-xs rounded-xl flex items-center gap-1.5 whitespace-nowrap badge-one-line shrink-0 hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md"
-                        title="Open WhatsApp Chat"
+                        title={t.home.simWhatsappBtn}
                       >
                         <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#25D366]" />
-                        <span className="whitespace-nowrap badge-one-line">Chat Now</span>
+                        <span className="whitespace-nowrap badge-one-line">{t.home.simWhatsappBtn}</span>
                       </button>
                     </div>
 
                     <div className="text-[10px] text-slate-500 dark:text-[#77736F] flex items-center gap-1 pt-0.5">
                       <Lock className="w-3 h-3 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
-                      <span>Opens WhatsApp app or web directly on your device. Zero data saved.</span>
+                      <span>{language === 'hi' ? 'व्हाट्सएप ऐप या वेब को सीधे आपके डिवाइस पर खोलता है। शून्य डेटा सहेजा गया।' : 'Opens WhatsApp app or web directly on your device. Zero data saved.'}</span>
                     </div>
                   </div>
                 </div>
@@ -699,13 +689,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <ScrollReveal direction="up" className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
-              Complete Integrated Suite
+              {t.home.featureSectionBadge}
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight mt-1">
-              Explore All 46 Features
+              {t.home.featureSectionTitle}
             </h2>
             <p className="text-sm text-slate-600 dark:text-[#B8B3AF] mt-1 max-w-xl">
-              Filter by category or search any legal tool, calculator, or PDF utility in real-time.
+              {t.home.featureSectionSub}
             </p>
           </div>
 
@@ -714,7 +704,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <Search className="w-4 h-4 text-slate-500 dark:text-[#77736F] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search features (e.g. Bare Acts, Bigha)..."
+              placeholder={language === 'hi' ? 'सुविधाएं खोजें (जैसे Bare Acts, Bigha)...' : 'Search features (e.g. Bare Acts, Bigha)...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-[#0D0D0F]/90 border border-slate-300 dark:border-white/15 text-xs text-slate-900 dark:text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F] shadow-xs"
@@ -729,15 +719,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
                 {categories.map((cat, idx) => (
                   <button
-                    key={`${cat}-${idx}-${arrayIdx}`}
-                    onClick={() => setSelectedCategory(cat)}
+                    key={`${cat.key}-${idx}-${arrayIdx}`}
+                    onClick={() => setSelectedCategory(cat.key)}
                     className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer ${
-                      selectedCategory === cat
+                      selectedCategory === cat.key
                         ? 'btn-crimson font-bold text-white shadow-md'
                         : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
                     }`}
                   >
-                    {cat}
+                    {cat.label}
                   </button>
                 ))}
               </div>
@@ -761,7 +751,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
-                        {item.category}
+                        {getCategoryLabel(item.category)}
                       </span>
                       <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
                     </div>
@@ -881,13 +871,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <ScrollReveal direction="up" className="space-y-3">
             <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 dark:bg-[#D8BD82]/15 text-amber-700 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/30">
               <Sparkles className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
-              Transparent Passes
+              {t.premiumPage.badge}
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-[#F5F2EE]">
-              Upgrade to 100% Ad-Free Practice
+              {t.premiumPage.title}
             </h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] max-w-2xl mx-auto">
-              Enjoy uninterrupted access to all tools and resources with fixed-validity passes. No auto-renewing subscriptions.
+              {t.premiumPage.subtitle}
             </p>
           </ScrollReveal>
 
@@ -897,26 +887,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="glass-panel rounded-2xl p-6 border border-slate-200 dark:border-white/12 flex flex-col justify-between space-y-6">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">3 Months Pass</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">{t.premiumPage.plan90DaysTitle}</span>
                   <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
-                    90 Days Validity
+                    {t.premiumPage.plan90DaysValidity}
                   </span>
                 </div>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">₹59</span>
-                  <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">/ one-time payment</span>
+                  <span className="text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">{t.premiumPage.plan90DaysPrice}</span>
+                  <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">{t.premiumPage.oneTimePaymentLabel}</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4">
-                  Full access to all 46 tools ad-free for 90 days.
+                  {t.premiumPage.plan90DaysTagline}
                 </p>
                 <ul className="space-y-2 text-xs text-slate-700 dark:text-[#B8B3AF]">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                    <span>Ad-free tool navigation & PDF utilities</span>
+                    <span>{t.premiumPage.features90Days[0]}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                    <span>Strict one-time purchase (No recurring fee)</span>
+                    <span>{t.premiumPage.features90Days[8]}</span>
                   </li>
                 </ul>
               </div>
@@ -925,7 +915,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('premium')}
                 className="w-full py-3 rounded-xl btn-glass font-bold text-xs cursor-pointer"
               >
-                View Pass Terms
+                {language === 'hi' ? 'पास की शर्तें देखें' : 'View Pass Terms'}
               </button>
             </div>
 
@@ -934,26 +924,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div className="glass-panel-crimson glow-crimson-gold rounded-2xl p-6 border-2 flex flex-col justify-between space-y-6 h-full">
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-bold text-[#C21F2F] dark:text-[#E03A3E]">1 Year Pass</span>
+                    <span className="text-sm font-bold text-[#C21F2F] dark:text-[#E03A3E]">{t.premiumPage.plan1YearTitle}</span>
                     <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/20 dark:bg-[#D8BD82]/20 px-2.5 py-0.5 rounded-full border border-amber-600/40 dark:border-[#D8BD82]/40">
-                      365 Days Validity
+                      {t.premiumPage.plan1YearValidity}
                     </span>
                   </div>
                   <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-4xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">₹179</span>
-                    <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">/ one-time payment</span>
+                    <span className="text-4xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">{t.premiumPage.plan1YearPrice}</span>
+                    <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">{t.premiumPage.oneTimePaymentLabel}</span>
                   </div>
                   <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4">
-                    Best value ad-free experience for 365 full days
+                    {t.premiumPage.plan1YearTagline}
                   </p>
                   <ul className="space-y-2 text-xs text-slate-700 dark:text-[#B8B3AF]">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                      <span>365 days uninterrupted validity</span>
+                      <span>{t.premiumPage.features1Year[0]}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                      <span>Strict one-time purchase (No recurring fee)</span>
+                      <span>{t.premiumPage.features1Year[8]}</span>
                     </li>
                   </ul>
                 </div>
@@ -961,16 +951,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('premium')}
                   className="w-full py-3 rounded-xl btn-crimson font-bold text-xs cursor-pointer text-white shadow-lg"
                 >
-                  Get 1 Year Pass
+                  {language === 'hi' ? '1 वर्ष का पास प्राप्त करें' : 'Get 1 Year Pass'}
                 </button>
               </div>
               <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-[#D8BD82] to-[#C7A96B] text-[#080808] text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-lg z-10">
-                Best Value
+                {t.premiumPage.bestValueBadge}
               </div>
             </div>
           </div>
           <div className="pt-2 text-xs text-slate-500 dark:text-[#77736F]">
-            Purchases are made securely inside the Android application via certified Play Store / PayU gateway.
+            {language === 'hi' ? 'खरीदारी सीधे Less Legal एंड्रॉइड ऐप के भीतर प्रमाणित भुगतान गेटवे के माध्यम से की जाती है।' : 'Purchases are made securely inside the Android application via certified Play Store / PayU gateway.'}
           </div>
 
         </div>
@@ -980,10 +970,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <ScrollReveal direction="up" className="text-center space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
-            Got Questions?
+            {t.home.faqBadge}
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-            Frequently Asked Questions
+            {t.home.faqTitle}
           </h2>
         </ScrollReveal>
 
@@ -1035,10 +1025,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
             <div className="space-y-2">
               <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-                Ready to Simplify Your Legal Workflow?
+                {language === 'hi' ? 'अपने कानूनी वर्कफ़्लो को सरल बनाने के लिए तैयार हैं?' : 'Ready to Simplify Your Legal Workflow?'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto">
-                Download Less Legal today on your Android smartphone or tablet to access Bare Acts, PDF converters, and Case Diary.
+                {language === 'hi' ? 'Bare Acts, PDF कन्वर्टर्स और केस डायरी एक्सेस करने के लिए आज ही अपने एंड्रॉइड स्मार्टफोन या टैबलेट पर Less Legal डाउनलोड करें।' : 'Download Less Legal today on your Android smartphone or tablet to access Bare Acts, PDF converters, and Case Diary.'}
               </p>
             </div>
 
@@ -1049,7 +1039,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 className="w-full sm:w-auto px-8 py-4 text-sm font-bold"
               >
                 <Download className="w-4 h-4" />
-                <span>Download Android APK</span>
+                <span>{language === 'hi' ? 'एंड्रॉइड APK डाउनलोड करें' : 'Download Android APK'}</span>
               </GlowingButton>
               
               <GlowingButton
@@ -1057,16 +1047,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 variant="secondary"
                 className="w-full sm:w-auto px-8 py-4 text-sm font-bold"
               >
-                <span>{language === 'hi' ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}</span>
+                <span>Less Creation {language === 'hi' ? 'के बारे में' : 'About'}</span>
               </GlowingButton>
             </div>
 
             <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-600 dark:text-[#77736F]">
-              <span>Android 7.0+ Minimum</span>
+              <span>{language === 'hi' ? 'एंड्रॉइड 7.0+ न्यूनतम' : 'Android 7.0+ Minimum'}</span>
               <span>•</span>
-              <span>100% On-Device Storage</span>
+              <span>{language === 'hi' ? '100% ऑन-डिवाइस स्टोरेज' : '100% On-Device Storage'}</span>
               <span>•</span>
-              <span>Independent & Factual</span>
+              <span>{language === 'hi' ? 'स्वतंत्र और तथ्यात्मक' : 'Independent & Factual'}</span>
             </div>
           </div>
         </ScrollReveal>

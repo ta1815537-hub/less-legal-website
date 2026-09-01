@@ -113,7 +113,7 @@ export default function App() {
         <Navbar currentRoute={currentRoute} onNavigate={navigateTo} />
 
         {/* Main Page Route Content with Smooth Transitions */}
-        <main className="flex-1 flex flex-col">
+        <main className="flex-1 flex flex-col pt-16 sm:pt-20">
           <AnimatePresence mode="wait">
             <PageTransition routeKey={currentRoute}>
               {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}

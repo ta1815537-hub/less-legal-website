@@ -41,6 +41,12 @@ export interface TranslationSchema {
     privacyConscious: string;
     navHeader: string;
     legalHeader: string;
+    websiteLegalHeader: string;
+    appLegalHeader: string;
+    websitePrivacyPolicy: string;
+    appPrivacyPolicy: string;
+    deleteAccount: string;
+    trustedTool: string;
     supportHeader: string;
     aboutLessLegal: string;
     founderLabel: string;
@@ -59,6 +65,7 @@ export interface TranslationSchema {
     rightsReserved: string;
     platformInfo: string;
     improvingInfo: string;
+    strictLiabilityDisclaimer: string;
   };
 
   // Founder Section
@@ -465,6 +472,12 @@ export const translations: Record<Language, TranslationSchema> = {
       privacyConscious: "Privacy Conscious",
       navHeader: "Navigation",
       legalHeader: "Legal & Policies",
+      websiteLegalHeader: "Website Legal",
+      appLegalHeader: "LESS LEGAL APP",
+      websitePrivacyPolicy: "Website Privacy Policy",
+      appPrivacyPolicy: "App Privacy Policy",
+      deleteAccount: "Delete Account & Data",
+      trustedTool: "Trusted Legal & Utilities Tool For Every Indian",
       supportHeader: "Support & Contact",
       aboutLessLegal: "About Less Legal",
       founderLabel: "Founder (Anurag Tiwari)",
@@ -482,7 +495,8 @@ export const translations: Record<Language, TranslationSchema> = {
       readFullDisclaimer: "Read Full Disclaimer",
       rightsReserved: "All rights reserved.",
       platformInfo: "Platform: Web & Android",
-      improvingInfo: "Continuously improving"
+      improvingInfo: "Continuously improving",
+      strictLiabilityDisclaimer: "Disclaimer: Less Legal is an independent platform and is not affiliated with or endorsed by any government entity. User emails or login data are collected strictly for authentication and personal identification. We do not sell, misuse, or unlawfully distribute user data under any circumstances. The developer and owner assume no liability for false claims or malicious legal actions regarding data misuse. By using this service, you agree to these terms."
     },
     founder: {
       badge: "FOUNDER & CREATOR",
@@ -935,6 +949,12 @@ export const translations: Record<Language, TranslationSchema> = {
       privacyConscious: "गोपनीयता के प्रति जागरूक",
       navHeader: "नेविगेशन",
       legalHeader: "कानूनी एवं नीतियाँ",
+      websiteLegalHeader: "वेबसाइट नीतियां",
+      appLegalHeader: "LESS LEGAL ऐप",
+      websitePrivacyPolicy: "वेबसाइट गोपनीयता नीति",
+      appPrivacyPolicy: "ऐप गोपनीयता नीति",
+      deleteAccount: "खाता एवं डेटा हटाएं",
+      trustedTool: "प्रत्येक भारतीय के लिए विश्वसनीय लीगल एवं यूटिलिटीज टूल",
       supportHeader: "सहायता एवं संपर्क",
       aboutLessLegal: "Less Legal के बारे में",
       founderLabel: "संस्थापक (अनुराग तिवारी)",
@@ -946,26 +966,27 @@ export const translations: Record<Language, TranslationSchema> = {
       termsConditions: "नियम एवं शर्तें",
       refundCancellation: "रिफंड एवं रद्दीकरण",
       legalDisclaimer: "कानूनी अस्वीकरण",
-      supportAvailable: "लेस क्रिएशन के सभी उत्पादों के लिए आधिकारिक सहायता उपलब्ध है।",
+      supportAvailable: "Less Creation के सभी उत्पादों के लिए आधिकारिक सहायता उपलब्ध है।",
       disclaimerTitle: "स्वतंत्र एप्लिकेशन घोषणा:",
       disclaimerText: "Less Legal एक स्वतंत्र सॉफ्टवेयर एप्लिकेशन है और यह भारत सरकार, अदालतों, या किसी राज्य न्यायिक विभाग से संबद्ध, अधिकृत या अनुमोदित नहीं है।",
       readFullDisclaimer: "पूरा अस्वीकरण पढ़ें",
       rightsReserved: "सर्वाधिकार सुरक्षित।",
       platformInfo: "प्लेटफ़ॉर्म: वेब और एंड्रॉइड",
-      improvingInfo: "निरंतर सुधार जारी"
+      improvingInfo: "निरंतर सुधार जारी",
+      strictLiabilityDisclaimer: "अस्वीकरण: Less Legal एक स्वतंत्र प्लेटफॉर्म है और किसी भी सरकारी संस्था से संबद्ध नहीं है। लॉगिन के लिए उपयोग की जाने वाली ईमेल आईडी केवल उपयोगकर्ता प्रमाणीकरण के लिए है। हम किसी भी परिस्थिति में उपयोगकर्ता डेटा को बेचते या उसका दुरुपयोग नहीं करते हैं। डेवलपर और ओनर डेटा के दुरुपयोग से संबंधित किसी भी झूठे दावे या दुर्भावनापूर्ण कानूनी कार्रवाई के लिए उत्तरदायी नहीं हैं। हमारी सेवा का उपयोग करके, आप इन शर्तों को स्वीकार करते हैं।"
     },
     founder: {
       badge: "संस्थापक एवं निर्माता",
       name: "अनुराग तिवारी",
       role: "अधिवक्ता",
-      subtitle: "अधिवक्ता | संस्थापक, लेस क्रिएशन",
+      subtitle: "अधिवक्ता | संस्थापक, Less Creation",
       practice: "इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिसरत।",
-      shortQuote: "“लेस क्रिएशन इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।”",
+      shortQuote: "“Less Creation इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।”",
 
-      storyTitle: "लेस क्रिएशन के पीछे व्यक्ति",
-      storyP1: "मेरा नाम अनुराग तिवारी है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और लेस क्रिएशन तथा Less Legal की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
+      storyTitle: "Less Creation के पीछे व्यक्ति",
+      storyP1: "मेरा नाम अनुराग तिवारी है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और Less Creation तथा Less Legal की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
       storyP2: "कानून के क्षेत्र में कार्य करते हुए मुझे यह समझने का अवसर मिला कि अधिवक्ताओं, विधि छात्रों और आम नागरिकों के लिए कानूनी जानकारी तथा रोज़मर्रा के उपयोगी डिजिटल टूल्स तक आसान पहुँच कितनी महत्वपूर्ण है।",
-      storyP3: "लेस क्रिएशन इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।",
+      storyP3: "Less Creation इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।",
       storyP4: "Less Legal इसी दृष्टिकोण का पहला प्रमुख उत्पाद है।",
 
       whyTitle: "Less Legal क्यों बनाया गया?",
@@ -984,9 +1005,9 @@ export const translations: Record<Language, TranslationSchema> = {
       disclaimerNote: "Less Legal एक सूचनात्मक और उपयोगिता एप्लिकेशन है। यह किसी वकील, अदालत, कानूनी सलाह या पेशेवर कानूनी प्रतिनिधित्व का विकल्प नहीं है।",
 
       visionTitle: "मेरा विज़न",
-      visionP1: "लेस क्रिएशन के लिए मेरा विज़न ऐसे उपयोगी डिजिटल उत्पादों का एक बढ़ता हुआ ecosystem तैयार करना है जो लोगों की वास्तविक आवश्यकताओं को ध्यान में रखकर बनाए जाएँ।",
+      visionP1: "Less Creation के लिए मेरा विज़न ऐसे उपयोगी डिजिटल उत्पादों का एक बढ़ता हुआ ecosystem तैयार करना है जो लोगों की वास्तविक आवश्यकताओं को ध्यान में रखकर बनाए जाएँ।",
       visionP2: "Less Legal इस यात्रा की शुरुआत है।",
-      visionP3: "आने वाले समय में लेस क्रिएशन के अंतर्गत productivity, utilities, education, media और अन्य व्यावहारिक डिजिटल सेवाओं से जुड़े उत्पाद विकसित किए जा सकते हैं।",
+      visionP3: "आने वाले समय में Less Creation के अंतर्गत productivity, utilities, education, media और अन्य व्यावहारिक डिजिटल सेवाओं से जुड़े उत्पाद विकसित किए जा सकते हैं।",
       visionP4: "उद्देश्य केवल तकनीक बनाना नहीं है।",
       visionP5: "उद्देश्य ऐसी तकनीक बनाना है जो वास्तव में लोगों के काम आए।",
       visionSteps: {
@@ -998,15 +1019,15 @@ export const translations: Record<Language, TranslationSchema> = {
       },
 
       messageTitle: "संस्थापक की ओर से",
-      messageQuote: "मेरा मानना है कि तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। लेस क्रिएशन इसी विचार के साथ बनाया जा रहा है।",
-      messageAuthor: "अनुराग तिवारी • संस्थापक, लेस क्रिएशन",
+      messageQuote: "मेरा मानना है कि तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। Less Creation इसी विचार के साथ बनाया जा रहा है।",
+      messageAuthor: "अनुराग तिवारी • संस्थापक, Less Creation",
 
       timelineTitle: "कानूनी प्रैक्टिस से डिजिटल नवाचार तक",
       timelineItems: [
         { step: "01", title: "व्यावहारिक कानूनी आवश्यकताओं को समझना", desc: "दैनिक टूल्स और कानूनी संदर्भ ढूँढने में अधिवक्ताओं और नागरिकों को होने वाली व्यावहारिक समस्याओं की पहचान।" },
         { step: "02", title: "रोज़मर्रा की डिजिटल चुनौतियों की पहचान करना", desc: "दैनिक प्रैक्टिस के लिए आवश्यक फ़ाइल टूल्स, कैलकुलेटर और नोट्स को सूचीबद्ध करना।" },
         { step: "03", title: "Less Legal का निर्माण", desc: "कानूनी संदर्भों, पीडीएफ टूल्स और कैलकुलेटर को एक एंड्रॉइड ऐप में जोड़ना।" },
-        { step: "04", title: "लेस क्रिएशन का विकास", desc: "सादगी और उपयोगिता को समर्पित एक डिजिटल उत्पाद ब्रांड स्थापित करना।" },
+        { step: "04", title: "Less Creation का विकास", desc: "सादगी और उपयोगिता को समर्पित एक डिजिटल उत्पाद ब्रांड स्थापित करना।" },
         { step: "05", title: "अधिक उपयोगी डिजिटल उत्पादों का विस्तार", desc: "उत्पादकता, शिक्षा, नोट्स और दैनिक उपयोगिताओं के नए अनुप्रयोगों की योजना।" }
       ],
 
@@ -1067,12 +1088,12 @@ export const translations: Record<Language, TranslationSchema> = {
       featureSectionSub: "पीडीएफ मर्जर से लेकर क्षेत्रीय भूमि कनवर्टर तक, ऐप में उपलब्ध सभी टूल्स देखें।",
 
       ecosystemBadge: "डिजिटल पारिस्थितिकी तंत्र",
-      ecosystemTitle: "लेस क्रिएशन के उत्पाद",
+      ecosystemTitle: "Less Creation के उत्पाद",
       ecosystemSub: "सादगी, उपयोगिता और उपयोगकर्ता गोपनीयता पर विशेष ध्यान देकर निर्मित।",
 
       founderPreviewBadge: "संस्थापक से मिलें",
       founderPreviewTitle: "व्यावहारिक उपयोगिता के लिए एक अधिवक्ता द्वारा निर्मित",
-      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग तिवारी ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए लेस क्रिएशन की स्थापना की।",
+      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग तिवारी ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए Less Creation की स्थापना की।",
 
       faqBadge: "अक्सर पूछे जाने वाले प्रश्न",
       faqTitle: "क्या आपके पास प्रश्न हैं? हमारे पास सटीक उत्तर हैं",
@@ -1080,7 +1101,7 @@ export const translations: Record<Language, TranslationSchema> = {
       faqs: [
         {
           q: "क्या Less Legal भारत सरकार या किसी अदालत से संबद्ध है?",
-          a: "नहीं। Less Legal, लेस क्रिएशन द्वारा विकसित एक पूरी तरह से स्वतंत्र, निजी सॉफ्टवेयर उपयोगिता एप्लिकेशन है। यह किसी भी सरकारी संस्था या अदालत से संबद्ध या संचालित नहीं है। प्रदान की गई सभी संदर्भ सामग्री केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है।"
+          a: "नहीं। Less Legal, Less Creation द्वारा विकसित एक पूरी तरह से स्वतंत्र, निजी सॉफ्टवेयर उपयोगिता एप्लिकेशन है। यह किसी भी सरकारी संस्था या अदालत से संबद्ध या संचालित नहीं है। प्रदान की गई सभी संदर्भ सामग्री केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है।"
         },
         {
           q: "क्या बेयर एक्ट्स और कैलकुलेटर एक्सेस करने के लिए इंटरनेट की आवश्यकता है?",

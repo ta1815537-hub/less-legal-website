@@ -1,6 +1,6 @@
 {
-  "name": "Less Legal",
-  "description": "Less Legal brings useful legal resources, PDF tools, notes, calculators and everyday digital utilities together in one Android application.",
+  "name": "Less Legal (लेस लीगल)",
+  "description": "लेस लीगल कानूनी संसाधनों, पीडीएफ टूल्स, नोट्स, कैलकुलेटर और रोजमर्रा की डिजिटल उपयोगिताओं को एक एंड्रॉइड एप्लिकेशन में लाता है।",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

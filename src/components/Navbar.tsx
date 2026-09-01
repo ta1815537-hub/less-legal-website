@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
         className="fixed top-0 left-0 right-0 h-1 sm:h-1.5 z-[60] bg-gradient-to-r from-amber-400 via-[#E03A3E] to-[#8B0000] dark:from-[#D8BD82] dark:via-[#E03A3E] dark:to-[#C21F2F]"
       />
-      <header className="sticky top-0 z-50 w-full bg-white/95 dark:bg-[#080808]/95 backdrop-blur-xl border-b border-slate-200/85 dark:border-white/10 shadow-xs dark:shadow-md transition-all duration-300">
+      <header className="fixed top-0 z-50 w-full bg-white/95 dark:bg-[#080808]/95 backdrop-blur-xl border-b border-slate-200/85 dark:border-white/10 shadow-xs dark:shadow-md transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
           
@@ -122,12 +122,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               {globalIsDark ? (
                 <>
                   <Sun className="w-3.5 h-3.5 text-[#D8BD82]" />
-                  <span className="hidden xl:inline text-xs font-bold text-[#D8BD82] whitespace-nowrap">Light</span>
+                  <span className="hidden xl:inline text-xs font-bold text-[#D8BD82] whitespace-nowrap">लाइट</span>
                 </>
               ) : (
                 <>
                   <Moon className="w-3.5 h-3.5 text-slate-700" />
-                  <span className="hidden xl:inline text-xs font-bold text-slate-800 whitespace-nowrap">Dark</span>
+                  <span className="hidden xl:inline text-xs font-bold text-slate-800 whitespace-nowrap">डार्क</span>
                 </>
               )}
             </motion.button>
@@ -254,7 +254,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-slate-900 dark:text-[#F5F2EE] bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Globe className="w-4 h-4 text-[#C21F2F] dark:text-[#D8BD82]" />
-                <span>Switch to {language === 'en' ? 'हिन्दी (Hindi)' : 'English'}</span>
+                <span>{language === 'hi' ? 'English में बदलें' : 'Switch to हिन्दी (Hindi)'}</span>
               </button>
 
               <div className="grid grid-cols-2 gap-2">
@@ -278,7 +278,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             </motion.div>
 
             <div className="pt-2 text-center text-xs font-medium text-slate-500 dark:text-[#77736F]">
-              {language === 'hi' ? 'लेस क्रिएशन • सरलता के साथ निर्मित' : 'Less Creation • Built with Simplicity'}
+              Less Creation • {language === 'hi' ? 'सरलता के साथ निर्मित' : 'Built with Simplicity'}
             </div>
           </motion.div>
         )}

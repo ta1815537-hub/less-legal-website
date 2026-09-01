@@ -46,32 +46,32 @@ export interface ProductItem {
 export const SITE_CONFIG = {
   // Brand
   companyName: "Less Creation",
-  companyTagline: "Technology, Utilities & Digital Products — Built with Simplicity in Mind.",
+  companyTagline: "टेक्नोलॉजी, यूटिलिटीज और डिजिटल प्रोडक्ट्स — सादगी को ध्यान में रखकर निर्मित।",
   appName: "Less Legal",
-  tagline: "Legal Knowledge • Useful Tools • Personal Assistant",
-  subTagline: "Legal Knowledge + Useful Digital Tools in One Android App",
-  shortDescription: "An independent Android application providing legal reference resources, useful digital tools, PDF utilities, calculators, productivity tools and everyday utilities.",
-  fullDescription: "Less Legal is an independent Android utility application designed to bring together essential legal reference materials, calculators, document tools, and day-to-day digital utilities into a single, intuitive interface.",
+  tagline: "कानूनी ज्ञान • उपयोगी उपकरण • व्यक्तिगत सहायक",
+  subTagline: "एक एंड्रॉइड ऐप में कानूनी ज्ञान + उपयोगी डिजिटल टूल्स",
+  shortDescription: "एक स्वतंत्र एंड्रॉइड एप्लिकेशन जो कानूनी संदर्भ संसाधन, उपयोगी डिजिटल उपकरण, पीडीएफ उपयोगिताओं, कैलकुलेटर, उत्पादकता उपकरण और रोजमर्रा की उपयोगिताओं प्रदान करता है।",
+  fullDescription: "लेस लीगल एक स्वतंत्र एंड्रॉइड यूटिलिटी एप्लिकेशन है जिसे आवश्यक कानूनी संदर्भ सामग्री, कैलकुलेटर, दस्तावेज़ उपकरण और दिन-प्रतिदिन की डिजिटल उपयोगिताओं को एक एकल, सहज इंटरफ़ेस में लाने के लिए डिज़ाइन किया गया है।",
   
   // Products Ecosystem
   products: [
     {
       id: "prod-less-legal",
       name: "Less Legal",
-      description: "Legal Knowledge & Digital Utilities for Law Professionals & Citizens.",
-      category: "Flagship Product",
+      description: "कानून पेशेवरों और नागरिकों के लिए कानूनी ज्ञान एवं डिजिटल उपयोगिताएँ।",
+      category: "Flagship",
       iconName: "Scale",
       status: "Available",
       version: "8.7.5",
       platforms: ["Android"],
       downloadUrl: "/download",
       detailUrl: "/features",
-      features: ["PDF Workspace", "Case Diary", "Calculator Hub", "Bare Acts", "Legal Drafts"]
+      features: ["PDF वर्कस्पेस", "केस डायरी", "कैलकुलेटर हब", "बेयर एक्ट्स", "कानूनी ड्राफ्ट"]
     },
     {
       id: "prod-faget-app",
       name: "Faget App",
-      description: "Events management app for Indian Peoples.",
+      description: "भारतीय लोगों के लिए इवेंट्स प्रबंधन ऐप।",
       category: "Events & Management",
       iconName: "Calendar",
       status: "Coming Soon"
@@ -79,7 +79,7 @@ export const SITE_CONFIG = {
     {
       id: "prod-less-music",
       name: "Less Music",
-      description: "3000+ offline music Hub of India's culture.",
+      description: "भारतीय संस्कृति का 3000+ ऑफ़लाइन संगीत हब।",
       category: "Music & Culture",
       iconName: "Music",
       status: "Coming Soon"
@@ -87,7 +87,7 @@ export const SITE_CONFIG = {
     {
       id: "prod-less-notes",
       name: "Less Notes",
-      description: "Minimalist productivity notes & quick document scratchpad.",
+      description: "न्यूनतम उत्पादकता नोट्स और त्वरित दस्तावेज़ स्क्रैचपैड।",
       category: "Productivity",
       iconName: "Edit3",
       status: "Coming Soon"
@@ -113,46 +113,46 @@ export const SITE_CONFIG = {
   premiumPlans: [
     {
       id: "plan-3m",
-      name: "3 Months Pass",
+      name: "3 महीने का पास (3 Months Pass)",
       price: "₹59",
       rawPrice: 59,
-      duration: "3 Months",
+      duration: "3 महीने",
       validityDays: 90,
-      billingType: "One-Time Payment (Non-Renewing)",
-      tagline: "Ad-free experience for 90 days across all utility tools",
+      billingType: "एक बार का भुगतान (गैर-नवीकरणीय)",
+      tagline: "सभी टूल्स पर 90 दिनों के लिए विज्ञापन-मुक्त अनुभव",
       isPopular: false,
       features: [
-        "Ad-free interface for 90 continuous days",
-        "PDF Tools (Merge, Split, Convert, Lock)",
-        "Local PDF Reader with document bookmarking",
-        "Case Diary & hearing date tracker",
-        "Calculator Hub & Land Unit Converter",
-        "Court Fee Calculator & Legal Glossary",
-        "Quick Notes & Less Share local file transfer",
-        "Bare Acts reference library & Legal Quiz",
-        "No automatic renewal — one-time purchase completed in app"
+        "90 निरंतर दिनों के लिए विज्ञापन-मुक्त इंटरफ़ेस",
+        "पीडीएफ टूल्स (मर्ज, स्प्लिट, कनवर्ट, लॉक)",
+        "लोकल पीडीएफ रीडर एवं बुकमार्किंग",
+        "केस डायरी एवं सुनवाई तिथि ट्रैकर",
+        "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर",
+        "कोर्ट फीस कैलकुलेटर एवं लीगल शब्दावली",
+        "क्विक नोट्स एवं Less Share स्थानीय फ़ाइल स्थानांतरण",
+        "बेयर एक्ट्स रेफरेंस लाइब्रेरी एवं लीगल क्विज़",
+        "कोई स्वचालित नवीनीकरण नहीं — ऐप में पूरा किया गया एक बार का भुगतान"
       ]
     },
     {
       id: "plan-1y",
-      name: "1 Year Pass",
+      name: "1 वर्ष का पास (1 Year Pass)",
       price: "₹179",
       rawPrice: 179,
-      duration: "1 Year",
+      duration: "1 वर्ष",
       validityDays: 365,
-      billingType: "One-Time Payment (Non-Renewing)",
-      tagline: "Best value ad-free experience for 365 full days",
+      billingType: "एक बार का भुगतान (गैर-नवीकरणीय)",
+      tagline: "365 पूर्ण दिनों के लिए सर्वश्रेष्ठ मूल्य विज्ञापन-मुक्त अनुभव",
       isPopular: true,
       features: [
-        "Ad-free interface for 365 continuous days",
-        "PDF Tools (Merge, Split, Convert, Lock)",
-        "Local PDF Reader with document bookmarking",
-        "Case Diary & hearing date tracker",
-        "Calculator Hub & Land Unit Converter",
-        "Court Fee Calculator & Legal Glossary",
-        "Quick Notes & Less Share local file transfer",
-        "Bare Acts reference library & Legal Quiz",
-        "No automatic renewal — one-time purchase completed in app"
+        "365 निरंतर दिनों के लिए विज्ञापन-मुक्त इंटरफ़ेस",
+        "पीडीएफ टूल्स (मर्ज, स्प्लिट, कनवर्ट, लॉक)",
+        "लोकल पीडीएफ रीडर एवं बुकमार्किंग",
+        "केस डायरी एवं सुनवाई तिथि ट्रैकर",
+        "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर",
+        "कोर्ट फीस कैलकुलेटर एवं लीगल शब्दावली",
+        "क्विक नोट्स एवं Less Share स्थानीय फ़ाइल स्थानांतरण",
+        "बेयर एक्ट्स रेफरेंस लाइब्रेरी एवं लीगल क्विज़",
+        "कोई स्वचालित नवीनीकरण नहीं — ऐप में पूरा किया गया एक बार का भुगतान"
       ]
     }
   ] as PremiumPlan[],
@@ -161,377 +161,377 @@ export const SITE_CONFIG = {
   features: [
     {
       id: "f1-calendar",
-      title: "Calendar & Panchang",
+      title: "कैलेंडर एवं पंचांग (Calendar & Panchang)",
       category: "Legal Utilities",
-      description: "Keep track of important dates, legal holidays, and traditional Panchang schedules integrated for easy daily reference.",
+      description: "महत्वपूर्ण तिथियों, कानूनी छुट्टियों और पारंपरिक पंचांगों को ट्रैक करें।",
       iconName: "Calendar",
-      highlights: ["Legal Holidays", "Daily Panchang", "Court Vacations", "Quick Reference"]
+      highlights: ["कानूनी छुट्टियां", "दैनिक पंचांग", "न्यायालय अवकाश", "त्वरित संदर्भ"]
     },
     {
       id: "f2-pdf-workspace",
-      title: "PDF Workspace",
+      title: "पीडीएफ वर्कस्पेस (PDF Workspace)",
       category: "PDF & Files",
-      description: "Utility suite to merge multiple PDFs, split documents, compress file sizes, and convert formats directly on your device.",
+      description: "पीडीएफ मर्ज करें, स्प्लिट करें, फाइल साइज कंप्रेस करें और फॉर्मेट बदलें।",
       iconName: "FileText",
-      highlights: ["Merge & Split PDFs", "Compress File Size", "Convert Formats", "On-Device Processing"]
+      highlights: ["मर्ज और स्प्लिट", "कंप्रेस फाइल साइज", "फॉर्मेट बदलें", "ऑन-डिवाइस प्रोसेसिंग"]
     },
     {
       id: "f3-document-hub",
-      title: "Document Hub",
+      title: "दस्तावेज़ हब (Document Hub)",
       category: "PDF & Files",
-      description: "A centralized secure vault for all your legal drafts, templates, and essential case files with quick retrieval.",
+      description: "कानूनी ड्राफ्ट, टेम्पलेट और केस फाइलों के लिए एक सुरक्षित तिजोरी।",
       iconName: "Layers",
-      highlights: ["Centralized Storage", "Quick Retrieval", "Secure Vault", "Folder Organization"]
+      highlights: ["केंद्रीकृत भंडारण", "त्वरित पुनर्प्राप्ति", "सुरक्षित तिजोरी", "फ़ोल्डर संगठन"]
     },
     {
       id: "f4-text-tools",
-      title: "Text Tools",
+      title: "टेक्स्ट टूल्स (Text Tools)",
       category: "Legal Utilities",
-      description: "Quick utilities for text formatting, case-conversion, word counting, and preparing draft snippets on the go.",
+      description: "टेक्स्ट फॉर्मेटिंग, केस-कन्वर्ट और वर्ड काउंटिंग के लिए त्वरित उपयोगिताएँ।",
       iconName: "Edit3",
-      highlights: ["Word Count", "Case Conversion", "Text Formatting", "Draft Snippets"]
+      highlights: ["शब्द गणना", "केस रूपांतरण", "टेक्स्ट फॉर्मेटिंग", "ड्राफ्ट स्निपेट्स"]
     },
     {
       id: "f5-case-diary",
-      title: "Case Diary",
+      title: "केस डायरी (Case Diary)",
       category: "Legal Utilities",
-      description: "A personal digital organizer to record hearing schedules, track next court dates, and maintain client reference records.",
+      description: "सुनवाई की तारीखों को ट्रैक करने और क्लाइंट रिकॉर्ड बनाए रखने के लिए एक डिजिटल ऑर्गनाइज़र।",
       iconName: "Calendar",
-      highlights: ["Hearing Tracker", "Client Notes", "Stage of Proceedings", "Local Storage"]
+      highlights: ["सुनवाई ट्रैकर", "क्लाइंट नोट्स", "कार्यवाही का चरण", "स्थानीय भंडारण"]
     },
     {
       id: "f6-info-vault",
-      title: "Info Vault",
+      title: "सूचना तिजोरी (Info Vault)",
       category: "Legal Utilities",
-      description: "Secure, encrypted on-device storage for your most sensitive client details, passwords, and private case references.",
+      description: "संवेदनशील क्लाइंट विवरण और पासवर्ड के लिए सुरक्षित ऑन-डिवाइस भंडारण।",
       iconName: "ShieldCheck",
-      highlights: ["Local Encryption", "Password Protected", "Client Details", "Secure Access"]
+      highlights: ["स्थानीय एन्क्रिप्शन", "पासवर्ड सुरक्षित", "क्लाइंट विवरण", "सुरक्षित पहुंच"]
     },
     {
       id: "f7-helpline",
-      title: "Helpline Directory",
+      title: "हेल्पलाइन निर्देशिका (Helpline Directory)",
       category: "Legal Utilities",
-      description: "One-tap access to national emergency numbers, legal aid clinics, and essential government helpline contacts.",
+      description: "आपातकालीन नंबरों और कानूनी सहायता क्लीनिकों तक वन-टैप पहुंच।",
       iconName: "Phone",
-      highlights: ["Emergency Numbers", "Legal Aid Clinics", "One-Tap Call", "National Directory"]
+      highlights: ["आपातकालीन नंबर", "कानूनी सहायता", "वन-टैप कॉल", "राष्ट्रीय निर्देशिका"]
     },
     {
       id: "f8-official-portals",
-      title: "Official Portals",
+      title: "आधिकारिक पोर्टल (Official Portals)",
       category: "Legal Utilities",
-      description: "Direct shortcuts to official judicial and public portals including e-Courts, Supreme Court, and statutory gazettes.",
+      description: "ई-कोर्ट, सुप्रीम कोर्ट और वैधानिक राजपत्रों के लिए सीधा शॉर्टकट।",
       iconName: "ExternalLink",
-      highlights: ["e-Courts Services", "Supreme Court", "High Courts", "Official Gazettes"]
+      highlights: ["ई-कोर्ट सेवा", "सुप्रीम कोर्ट", "उच्च न्यायालय", "आधिकारिक राजपत्र"]
     },
     {
       id: "f9-rti-generator",
-      title: "RTI Generator",
+      title: "आरटीआई जनरेटर (RTI Generator)",
       category: "Legal Utilities",
-      description: "Draft Right to Information (RTI) applications instantly with guided templates tailored for various government departments.",
+      description: "विभिन्न सरकारी विभागों के लिए आरटीआई आवेदन तुरंत ड्राफ्ट करें।",
       iconName: "FileText",
-      highlights: ["Guided Templates", "Instant Drafting", "Department Wise", "Easy Export"]
+      highlights: ["निर्देशित टेम्पलेट्स", "त्वरित ड्राफ्टिंग", "विभाग वार", "आसान निर्यात"]
     },
     {
       id: "f10-latest-judgments",
-      title: "Latest Judgments",
+      title: "नवीनतम निर्णय (Latest Judgments)",
       category: "Learning & Reference",
-      description: "Stay updated with recent, highly relevant judgments from the Supreme Court and major High Courts of India.",
+      description: "सुप्रीम कोर्ट और उच्च न्यायालयों के हालिया फैसलों से अपडेट रहें।",
       iconName: "BookOpen",
-      highlights: ["Supreme Court", "High Courts", "Recent Rulings", "Summarized View"]
+      highlights: ["सुप्रीम कोर्ट", "उच्च न्यायालय", "हालिया फैसले", "संक्षिप्त विवरण"]
     },
     {
       id: "f11-landmark-citations",
-      title: "Landmark Citations",
+      title: "लैंडमार्क साइटेशन (Landmark Citations)",
       category: "Learning & Reference",
-      description: "A curated library of landmark constitutional and criminal citations that shape Indian jurisprudence.",
+      description: "भारतीय न्यायशास्त्र को आकार देने वाले ऐतिहासिक संवैधानिक और आपराधिक साइटेशन का संग्रह।",
       iconName: "BookMarked",
-      highlights: ["Constitutional Law", "Criminal Law", "Curated Library", "Key Rulings"]
+      highlights: ["संवैधानिक कानून", "आपराधिक कानून", "क्यूरेटेड लाइब्रेरी", "प्रमुख फैसले"]
     },
     {
       id: "f12-jurisdiction-finder",
-      title: "Jurisdiction Finder",
+      title: "क्षेत्राधिकार खोजक (Jurisdiction Finder)",
       category: "Legal Utilities",
-      description: "Informational utilities to reference territorial, pecuniary, and subject-matter jurisdiction principles under procedural laws.",
+      description: "प्रक्रियात्मक कानूनों के तहत क्षेत्रीय, आर्थिक और विषय-वस्तु क्षेत्राधिकार को समझने के लिए गाइड।",
       iconName: "MapPin",
-      highlights: ["Territorial", "Pecuniary", "Subject-Matter", "Quick Reference"]
+      highlights: ["क्षेत्रीय", "आर्थिक", "विषय-वस्तु", "त्वरित संदर्भ"]
     },
     {
       id: "f13-direct-whatsapp",
-      title: "Direct WhatsApp",
+      title: "डायरेक्ट व्हाट्सएप (Direct WhatsApp)",
       category: "Legal Utilities",
-      description: "Initiate WhatsApp conversations with clients or colleagues instantly without saving their number to your contacts.",
+      description: "संपर्क नंबर सहेजे बिना तुरंत क्लाइंट या सहयोगियों के साथ व्हाट्सएप चैट शुरू करें।",
       iconName: "MessageCircle",
-      highlights: ["No Contact Save", "Instant Messaging", "Client Communication", "Fast Access"]
+      highlights: ["नंबर सेव करना ज़रूरी नहीं", "तत्काल संदेश", "क्लाइंट संचार", "तेज़ पहुँच"]
     },
     {
       id: "f14-qr-barcode",
-      title: "QR Barcode Center",
+      title: "क्यूआर बारकोड सेंटर (QR Barcode Center)",
       category: "Legal Utilities",
-      description: "Scan, generate, and process QR codes and barcodes for quick document verification and digital payments.",
+      description: "दस्तावेज़ सत्यापन और डिजिटल भुगतान के लिए क्यूआर कोड स्कैन और जनरेट करें।",
       iconName: "QrCode",
-      highlights: ["Scan Documents", "Generate Codes", "Verify Files", "Payment Ready"]
+      highlights: ["दस्तावेज़ स्कैन करें", "कोड जनरेट करें", "फ़ाइलें सत्यापित करें", "भुगतान के लिए तैयार"]
     },
     {
       id: "f15-calculator-hub",
-      title: "Calculator Hub",
+      title: "कैलकुलेटर हब (Calculator Hub)",
       category: "Calculators & Converters",
-      description: "An integrated suite of daily financial tools including interest calculations, stamp duty estimates, and percentage formulas.",
+      description: "ब्याज गणना, स्टाम्प शुल्क अनुमान और प्रतिशत गणना के लिए वित्तीय उपकरणों का सूट।",
       iconName: "Calculator",
-      highlights: ["Simple Interest", "EMI Calculation", "Percentage & Ratio", "Multi-mode"]
+      highlights: ["साधारण ब्याज", "ईएमआई गणना", "प्रतिशत और अनुपात", "मल्टी-मोड"]
     },
     {
       id: "f16-consultation-timer",
-      title: "Consultation Timer",
+      title: "परामर्श टाइमर (Consultation Timer)",
       category: "Legal Utilities",
-      description: "Track billable time during client consultations, mediations, and drafting sessions with a professional timer tool.",
+      description: "क्लाइंट परामर्श और ड्राफ्टिंग सत्रों के दौरान बिल योग्य समय को ट्रैक करें।",
       iconName: "Clock",
-      highlights: ["Track Billable Hours", "Session Logging", "Pause/Resume", "Client Records"]
+      highlights: ["बिल योग्य घंटे", "सत्र लॉगिंग", "रोकें/फिर से शुरू करें", "क्लाइंट रिकॉर्ड"]
     },
     {
       id: "f17-invoice-billing",
-      title: "Invoice Billing",
+      title: "इनवॉइस बिलिंग (Invoice Billing)",
       category: "Legal Utilities",
-      description: "Generate professional legal invoices, track outstanding payments, and manage your financial practice seamlessly.",
+      description: "पेशेवर कानूनी इनवॉइस जनरेट करें और भुगतान ट्रैक करें।",
       iconName: "Receipt",
-      highlights: ["Professional Invoices", "Payment Tracking", "Practice Management", "Easy Export"]
+      highlights: ["पेशेवर इनवॉइस", "भुगतान ट्रैकिंग", "प्रैक्टिस प्रबंधन", "आसान निर्यात"]
     },
     {
       id: "f18-legal-glossary",
-      title: "Legal Glossary",
+      title: "कानूनी शब्दावली (Legal Glossary)",
       category: "Learning & Reference",
-      description: "A comprehensive reference dictionary containing Latin maxims, legal terms, and statutory terminology explained simply.",
+      description: "लैटिन सूत्रों, कानूनी शब्दों और वैधानिक शब्दावली का एक व्यापक शब्दकोश।",
       iconName: "BookMarked",
-      highlights: ["Latin Maxims", "Statutory Definitions", "A-Z Search", "Plain Language"]
+      highlights: ["लैटिन सूत्र", "वैधानिक परिभाषाएँ", "A-Z खोज", "सरल भाषा"]
     },
     {
       id: "f19-legal-articles",
-      title: "Legal Articles",
+      title: "कानूनी लेख (Legal Articles)",
       category: "Learning & Reference",
-      description: "Read insightful articles, essays, and opinion pieces on contemporary legal issues and legislative changes.",
+      description: "समकालीन कानूनी मुद्दों और विधायी परिवर्तनों पर व्यावहारिक लेख और राय पढ़ें।",
       iconName: "FileText",
-      highlights: ["Contemporary Issues", "Legislative Changes", "Opinion Pieces", "Insightful Essays"]
+      highlights: ["समकालीन मुद्दे", "विधायी परिवर्तन", "राय लेख", "व्यावहारिक लेख"]
     },
     {
       id: "f20-how-to-guides",
-      title: "How To Guides",
+      title: "कैसे करें गाइड (How To Guides)",
       category: "Learning & Reference",
-      description: "Step-by-step practical guides on everyday legal procedures, court filings, and dispute resolution methods.",
+      description: "दैनिक कानूनी प्रक्रियाओं, कोर्ट फाइलिंग और विवाद समाधान के व्यावहारिक गाइड।",
       iconName: "HelpCircle",
-      highlights: ["Practical Procedures", "Court Filings", "Dispute Resolution", "Step-by-Step"]
+      highlights: ["व्यावहारिक प्रक्रियाएं", "कोर्ट फाइलिंग", "विवाद समाधान", "स्टेप-बाय-स्टेप"]
     },
     {
       id: "f21-traffic-rules",
-      title: "Traffic Rules",
+      title: "यातायात नियम (Traffic Rules)",
       category: "Learning & Reference",
-      description: "Quick reference for Motor Vehicles Act fines, traffic violations, and transport regulations across states.",
+      description: "मोटर वाहन अधिनियम के जुर्माने, यातायात उल्लंघन और नियमों का त्वरित संदर्भ।",
       iconName: "AlertTriangle",
-      highlights: ["Challan Fines", "Motor Vehicles Act", "Traffic Violations", "State Rules"]
+      highlights: ["चालान जुर्माना", "मोटर वाहन अधिनियम", "यातायात उल्लंघन", "राज्य नियम"]
     },
     {
       id: "f22-bare-acts",
-      title: "Bare Acts",
+      title: "बेयर एक्ट्स (Bare Acts)",
       category: "Learning & Reference",
-      description: "Quick-access reference library of essential Indian statutory Bare Acts, organized chapter-wise for fast and easy reading.",
+      description: "महत्वपूर्ण भारतीय कानूनों की त्वरित संदर्भ लाइब्रेरी, अध्याय-वार व्यवस्थित।",
       iconName: "Scale",
-      highlights: ["Section-wise", "Key Statutes", "Quick Access", "Bookmarks"]
+      highlights: ["धारा-वार", "प्रमुख कानून", "त्वरित पहुँच", "बुकमार्क्स"]
     },
     {
       id: "f23-know-your-rights",
-      title: "Know Your Rights",
+      title: "अपने अधिकारों को जानें (Know Your Rights)",
       category: "Learning & Reference",
-      description: "Simplified explanations of fundamental rights, consumer protections, and citizen privileges under Indian law.",
+      description: "मौलिक अधिकारों, उपभोक्ता संरक्षण और नागरिक विशेषाधिकारों की सरल व्याख्या।",
       iconName: "ShieldCheck",
-      highlights: ["Fundamental Rights", "Consumer Protections", "Citizen Privileges", "Simplified Law"]
+      highlights: ["मौलिक अधिकार", "उपभोक्ता संरक्षण", "नागरिक विशेषाधिकार", "सरल कानून"]
     },
     {
       id: "f24-cyber-crime",
-      title: "Cyber Crime Guide",
+      title: "साइबर अपराध गाइड (Cyber Crime Guide)",
       category: "Learning & Reference",
-      description: "Actionable guidelines on how to report cyber frauds, understand IT Act provisions, and protect digital privacy.",
+      description: "साइबर धोखाधड़ी की रिपोर्ट करने और आईटी अधिनियम के प्रावधानों को समझने के लिए गाइड।",
       iconName: "Monitor",
-      highlights: ["Report Frauds", "IT Act Provisions", "Digital Privacy", "Actionable Guides"]
+      highlights: ["धोखाधड़ी रिपोर्ट", "आईटी अधिनियम", "डिजिटल गोपनीयता", "एक्शन योग्य गाइड"]
     },
     {
       id: "f25-unit-converter",
-      title: "Unit Converter",
+      title: "यूनिट कनवर्टर (Unit Converter)",
       category: "Calculators & Converters",
-      description: "A universal converter for weights, lengths, temperatures, and other common metric/imperial measurements.",
+      description: "वजन, लंबाई, तापमान और अन्य सामान्य माप इकाइयों के लिए एक सार्वभौमिक कनवर्टर।",
       iconName: "Compass",
-      highlights: ["Weights & Lengths", "Temperatures", "Metric/Imperial", "Universal Utility"]
+      highlights: ["वजन और लंबाई", "तापमान", "मीट्रिक/इंपीरियल", "सार्वभौमिक उपयोगिता"]
     },
     {
       id: "f26-lawyer-desk",
-      title: "Lawyer Desk",
+      title: "वकील डेस्क (Lawyer Desk)",
       category: "Legal Utilities",
-      description: "A centralized dashboard for advocates to view today's hearings, pending tasks, and recent client notes at a glance.",
+      description: "अधिवक्ताओं के लिए आज की सुनवाई, लंबित कार्यों और क्लाइंट नोट्स देखने के लिए डैशबोर्ड।",
       iconName: "Briefcase",
-      highlights: ["Today's Hearings", "Pending Tasks", "Recent Notes", "Advocate Dashboard"]
+      highlights: ["आज की सुनवाई", "लंबित कार्य", "हालिया नोट्स", "वकील डैशबोर्ड"]
     },
     {
       id: "f27-quick-notes",
-      title: "Quick Notes",
+      title: "त्वरित नोट्स (Quick Notes)",
       category: "PDF & Files",
-      description: "A fast, streamlined digital notepad to draft case notes, checklist items, and day-to-day reminders with auto-save.",
+      description: "केस नोट्स, चेकलिस्ट और अनुस्मारक ड्राफ्ट करने के लिए एक तेज़ डिजिटल नोटपैड।",
       iconName: "Edit3",
-      highlights: ["Auto-Save", "Categorized Tags", "Searchable", "Fast Export"]
+      highlights: ["ऑटो-सेव", "श्रेणीबद्ध टैग", "खोजने योग्य", "तेज़ निर्यात"]
     },
     {
       id: "f28-legal-drafts",
-      title: "Legal Drafts",
+      title: "कानूनी ड्राफ्ट (Legal Drafts)",
       category: "Learning & Reference",
-      description: "Access an extensive library of standard legal draft templates including notices, agreements, and plaints.",
+      description: "नोटिस, समझौते और वाद पत्रों सहित कानूनी ड्राफ्ट टेम्पलेट्स की लाइब्रेरी।",
       iconName: "FileText",
-      highlights: ["Notices & Agreements", "Plaints & Petitions", "Standard Templates", "Ready to Use"]
+      highlights: ["नोटिस और समझौते", "वाद और याचिकाएं", "मानक टेम्पलेट्स", "उपयोग के लिए तैयार"]
     },
     {
       id: "f29-poster-hub",
-      title: "Poster Hub",
+      title: "पोस्टर हब (Poster Hub)",
       category: "Learning & Reference",
-      description: "Curated collection of informative legal awareness posters and visual graphics designed for simple comprehension.",
+      description: "कानूनी जागरूकता पोस्टरों और विजुअल ग्राफिक्स का क्यूरेटेड संग्रह।",
       iconName: "Image",
-      highlights: ["Citizen Rights", "Visual Summaries", "High-Res Graphics", "Informative Layouts"]
+      highlights: ["नागरिक अधिकार", "दृश्य सारांश", "उच्च-गुणवत्ता ग्राफिक्स", "सूचनात्मक लेआउट"]
     },
     {
       id: "f30-quick-scan",
-      title: "Quick Scan Billing (QR/Barcode)",
+      title: "त्वरित स्कैन बिलिंग (Quick Scan Billing)",
       category: "Legal Utilities",
-      description: "Generate bills instantly by scanning products or documents, ideal for chambers managing inventory or paid physical copies.",
+      description: "उत्पादों या दस्तावेज़ों को स्कैन करके तुरंत बिल जनरेट करें।",
       iconName: "QrCode",
-      highlights: ["Instant Billing", "Scan Products", "Inventory Support", "Fast Checkout"]
+      highlights: ["तत्काल बिलिंग", "उत्पाद स्कैन", "इन्वेंट्री सहायता", "तेज़ चेकआउट"]
     },
     {
       id: "f31-jobs-internships",
-      title: "Jobs & Internships",
+      title: "नौकरी और इंटर्नशिप (Jobs & Internships)",
       category: "Legal Utilities",
-      description: "Curated directory of opportunities, research assistantships, and chamber vacancies for students and practitioners.",
+      description: "छात्रों और अधिवक्ताओं के लिए इंटर्नशिप, शोध सहायक और चैंबर रिक्तियों की निर्देशिका।",
       iconName: "Briefcase",
-      highlights: ["Internship Directory", "Career Opportunities", "Eligibility Insights", "Application Portals"]
+      highlights: ["इंटर्नशिप निर्देशिका", "कैरियर के अवसर", "पात्रता जानकारी", "आवेदन पोर्टल"]
     },
     {
       id: "f32-court-finder",
-      title: "Court Finder",
+      title: "कोर्ट खोजक (Court Finder)",
       category: "Legal Utilities",
-      description: "Locate nearby district courts, high courts, and tribunals with integrated map navigation and contact details.",
+      description: "मानचित्र नेविगेशन और संपर्क विवरण के साथ पास के जिला अदालतों, उच्च न्यायालयों और न्यायाधिकरणों का पता लगाएं।",
       iconName: "MapPin",
-      highlights: ["Nearby Courts", "Tribunals", "Map Navigation", "Contact Details"]
+      highlights: ["पास के न्यायालय", "न्यायाधिकरण", "मानचित्र नेविगेशन", "संपर्क विवरण"]
     },
     {
       id: "f33-appearance",
-      title: "Appearance (Light/Dark Theme)",
+      title: "दिखावट (Light/Dark Theme)",
       category: "Legal Utilities",
-      description: "Toggle between bright light mode and eye-soothing dark mode for comfortable reading during late-night drafting.",
+      description: "देर रात काम करने के लिए उज्ज्वल लाइट मोड और आरामदायक डार्क मोड के बीच स्विच करें।",
       iconName: "Moon",
-      highlights: ["Dark Mode", "Light Mode", "Eye-Soothing", "System Default"]
+      highlights: ["डार्क मोड", "लाइट मोड", "आंखों के लिए आरामदायक", "सिस्टम डिफॉल्ट"]
     },
     {
       id: "f34-language",
-      title: "Change Language (English/Hindi)",
+      title: "भाषा बदलें (English/Hindi)",
       category: "Legal Utilities",
-      description: "Switch the application interface and core reference materials between English and Hindi for regional comfort.",
+      description: "क्षेत्रीय सुविधा के लिए एप्लिकेशन इंटरफ़ेस और संदर्भ सामग्री को अंग्रेजी और हिंदी के बीच बदलें।",
       iconName: "Globe",
-      highlights: ["English Support", "Hindi Support", "Regional Comfort", "Bilingual Interface"]
+      highlights: ["अंग्रेजी समर्थन", "हिंदी समर्थन", "क्षेत्रीय सुविधा", "द्विभाषी इंटरफ़ेस"]
     },
     {
       id: "f35-website",
-      title: "Visit Our Website",
+      title: "हमारी वेबसाइट देखें (Visit Our Website)",
       category: "Legal Utilities",
-      description: "Quickly access the official Less Legal web portal for desktop tools, account management, and extended resources.",
+      description: "डेस्कटॉप टूल, खाता प्रबंधन और विस्तारित संसाधनों के लिए आधिकारिक Less Legal वेब पोर्टल देखें।",
       iconName: "ExternalLink",
-      highlights: ["Desktop Tools", "Account Management", "Web Portal", "Extended Resources"]
+      highlights: ["डेस्कटॉप टूल्स", "खाता प्रबंधन", "वेब पोर्टल", "विस्तारित संसाधन"]
     },
     {
       id: "f36-privacy",
-      title: "Privacy Policy",
+      title: "गोपनीयता नीति (Privacy Policy)",
       category: "Legal Utilities",
-      description: "Read our transparent data handling guidelines, ensuring your local files and client data remain private and secure.",
+      description: "हमारे पारदर्शी डेटा हैंडलिंग दिशानिर्देश पढ़ें, यह सुनिश्चित करते हुए कि आपके स्थानीय फाइल और क्लाइंट डेटा निजी रहें।",
       iconName: "ShieldCheck",
-      highlights: ["Data Handling", "Local Processing", "Secure Files", "Transparent Policy"]
+      highlights: ["डेटा हैंडलिंग", "स्थानीय प्रोसेसिंग", "सुरक्षित फाइलें", "पारदर्शी नीति"]
     },
     {
       id: "f37-help-start",
-      title: "Help & Quick Start",
+      title: "सहायता और त्वरित शुरुआत (Help & Quick Start)",
       category: "Legal Utilities",
-      description: "Onboarding guides and tutorials explaining how to maximize the utility of the Less Legal application suite.",
+      description: "एप्लिकेशन का अधिकतम लाभ उठाने के लिए ऑनबोर्डिंग गाइड और ट्यूटोरियल।",
       iconName: "HelpCircle",
-      highlights: ["Onboarding Guides", "Tutorials", "Maximize Utility", "Quick Start"]
+      highlights: ["ऑनबोर्डिंग गाइड", "ट्यूटोरियल", "अधिकतम उपयोग", "त्वरित शुरुआत"]
     },
     {
       id: "f38-report-bug",
-      title: "Report a Bug / Feedback",
+      title: "बग रिपोर्ट / फीडबैक (Report a Bug / Feedback)",
       category: "Legal Utilities",
-      description: "Direct channel to our development team to report technical issues, suggest features, or provide app feedback.",
+      description: "तकनीकी समस्याओं की रिपोर्ट करने, सुविधाओं का सुझाव देने या ऐप फीडबैक प्रदान करने के लिए सीधा चैनल।",
       iconName: "Bug",
-      highlights: ["Report Issues", "Suggest Features", "App Feedback", "Direct Channel"]
+      highlights: ["समस्या रिपोर्ट करें", "सुविधाओं का सुझाव", "ऐप फीडबैक", "सीधा चैनल"]
     },
     {
       id: "f39-ai-chat",
-      title: "Free AI Support Chat",
+      title: "मुफ्त एआई सहायता चैट (Free AI Support Chat)",
       category: "Legal Utilities",
-      description: "Interact with our AI assistant for basic navigational help, feature discovery, and general app-related queries.",
+      description: "बुनियादी नेविगेशन सहायता, फीचर खोज और सामान्य ऐप-संबंधित प्रश्नों के लिए हमारे एआई सहायक से बात करें।",
       iconName: "MessageSquare",
-      highlights: ["AI Assistant", "Navigational Help", "Feature Discovery", "24/7 Support"]
+      highlights: ["एआई सहायक", "नेविगेशन सहायता", "फीचर खोज", "24/7 सहायता"]
     },
     {
       id: "f40-age-calculator",
-      title: "Age Calculator",
+      title: "आयु कैलकुलेटर (Age Calculator)",
       category: "Calculators & Converters",
-      description: "Calculate exact age down to the day, or determine date differences for determining limitation periods.",
+      description: "दिनों तक सटीक आयु की गणना करें, या परिसीमा अवधि (limitation periods) निर्धारित करने के लिए तिथियों के बीच अंतर निकालें।",
       iconName: "Calculator",
-      highlights: ["Exact Age", "Date Differences", "Limitation Periods", "Quick Compute"]
+      highlights: ["सटीक आयु", "तिथियों में अंतर", "परिसीमा अवधि", "त्वरित गणना"]
     },
     {
       id: "f41-legal-calculator",
-      title: "Legal Calculator",
+      title: "कानूनी कैलकुलेटर (Legal Calculator)",
       category: "Calculators & Converters",
-      description: "Specialized computation tools for court fees, litigation costs, and statutory compensatory formulas.",
+      description: "कोर्ट फीस, मुकदमेबाजी की लागत और वैधानिक क्षतिपूर्ति गणना के लिए विशेष उपकरण।",
       iconName: "Calculator",
-      highlights: ["Court Fees", "Litigation Costs", "Compensatory Formulas", "Statutory Math"]
+      highlights: ["कोर्ट फीस", "मुकदमेबाजी की लागत", "क्षतिपूर्ति सूत्र", "वैधानिक गणित"]
     },
     {
       id: "f42-land-converter",
-      title: "Land/Area Converter",
+      title: "भूमि/क्षेत्रफल कनवर्टर (Land/Area Converter)",
       category: "Calculators & Converters",
-      description: "Convert regional and standard land measurement units including Bigha, Acre, Guntha, Kanal, and Marla.",
+      description: "बीघा, एकड़, गुंठा, कनाल और मरला सहित क्षेत्रीय और मानक भूमि माप इकाइयों को बदलें।",
       iconName: "Compass",
-      highlights: ["Bigha, Guntha", "Acre, Kanal", "State Variations", "Area Calculation"]
+      highlights: ["बीघा, गुंठा", "एकड़, कनाल", "राज्यवार भिन्नताएं", "क्षेत्रफल गणना"]
     },
     {
       id: "f43-less-share",
-      title: "File Transfer (LessShare)",
+      title: "फ़ाइल ट्रांसफर (Less Share)",
       category: "PDF & Files",
-      description: "Direct device-to-device local file transfer utility for sharing PDFs securely over Wi-Fi without cloud uploads.",
+      description: "बिना क्लाउड अपलोड के वाई-फाई पर सुरक्षित रूप से पीडीएफ साझा करने के लिए सीधा डिवाइस-टू-डिवाइस ट्रांसफर टूल।",
       iconName: "Share2",
-      highlights: ["Local Transfer", "No Cloud Upload", "Secure Sharing", "Direct Pairing"]
+      highlights: ["स्थानीय ट्रांसफर", "कोई क्लाउड अपलोड नहीं", "सुरक्षित शेयरिंग", "डायरेक्ट पेयरिंग"]
     },
     {
       id: "f44-weekly-chart",
-      title: "Active Cases & Weekly Chart",
+      title: "सक्रिय केस और साप्ताहिक चार्ट (Active Cases & Weekly Chart)",
       category: "Legal Utilities",
-      description: "Visual dashboard summarizing your active litigation workload and upcoming weekly hearing distribution.",
+      description: "आपकी सक्रिय मुकदमेबाजी और आने वाली साप्ताहिक सुनवाई वितरण का विजुअल डैशबोर्ड।",
       iconName: "BarChart",
-      highlights: ["Visual Dashboard", "Workload Summary", "Weekly Distribution", "Hearing Analytics"]
+      highlights: ["विजुअल डैशबोर्ड", "कार्यभार सारांश", "साप्ताहिक वितरण", "सुनवाई एनालिटिक्स"]
     },
     {
       id: "f45-pdf-reader",
-      title: "PDF Reader",
+      title: "पीडीएफ रीडर (PDF Reader)",
       category: "PDF & Files",
-      description: "Lightweight on-device PDF document viewer with smooth scrolling, page navigation, and night reading mode.",
+      description: "सहज स्क्रॉलिंग, पेज नेविगेशन और नाइट रीडिंग मोड के साथ हल्का ऑन-डिवाइस पीडीएफ दस्तावेज़ व्यूअर।",
       iconName: "BookOpen",
-      highlights: ["Smooth Scrolling", "Page Navigation", "Night Mode", "Fast Rendering"]
+      highlights: ["सहज स्क्रॉलिंग", "पेज नेविगेशन", "नाइट मोड", "तेज़ रेंडरिंग"]
     },
     {
       id: "f46-legal-accounts",
-      title: "Legal Accounts Pro",
+      title: "लीगल एकाउंट्स प्रो (Legal Accounts Pro)",
       category: "Legal Utilities",
-      description: "Advanced ledger management to track chamber expenses, client retainers, and professional fee realizations.",
+      description: "चैंबर के खर्चों, क्लाइंट रिटेनर्स और फीस का ट्रैक रखने के लिए उन्नत लेजर प्रबंधन।",
       iconName: "Receipt",
-      highlights: ["Ledger Management", "Chamber Expenses", "Client Retainers", "Fee Realization"]
+      highlights: ["लेजर प्रबंधन", "चैंबर खर्च", "क्लाइंट रिटेनर", "फीस प्राप्ति"]
     }
   ] as FeatureItem[],
 
   // Verified Legal Disclaimer Text
   disclaimer: {
-    title: "Legal Disclaimer",
-    statement: "Less Legal is an independent software application. It is not affiliated with, sponsored by, endorsed by, or operated by the Government of India, any State Government, court, tribunal, judicial department, statutory authority or other government body.\n\nInformation and legal reference materials provided through the application are intended for general informational and educational purposes only and should not be treated as legal advice, legal representation or a substitute for consultation with a qualified legal professional.\n\nUsers should independently verify current laws, rules, notifications, judgments and other legal information from authoritative sources before relying upon them."
+    title: "कानूनी अस्वीकरण (Legal Disclaimer)",
+    statement: "Less Legal एक स्वतंत्र सॉफ्टवेयर एप्लिकेशन है। यह भारत सरकार, किसी भी राज्य सरकार, न्यायालय, न्यायाधिकरण, न्यायिक विभाग, वैधानिक प्राधिकरण या अन्य किसी सरकारी निकाय से संबद्ध, समर्थित, स्वीकृत या संचालित नहीं है।\n\nएप्लिकेशन के माध्यम से प्रदान की जाने वाली जानकारी और कानूनी संदर्भ सामग्री केवल सामान्य सूचनात्मक और शैक्षिक उद्देश्यों के लिए है और इसे कानूनी सलाह, कानूनी प्रतिनिधित्व या किसी योग्य कानूनी पेशेवर के परामर्श के विकल्प के रूप में नहीं माना जाना चाहिए।\n\nउपयोगकर्ताओं को सलाह दी जाती है कि वे किसी भी वैधानिक प्रावधान, नियम, अधिसूचना या निर्णय पर भरोसा करने से पहले आधिकारिक स्रोतों से स्वतंत्र रूप से पुष्टि अवश्य करें।"
   }
 };

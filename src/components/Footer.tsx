@@ -138,7 +138,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 3: Website Legal Policies */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-[#D8BD82]">
-              {language === 'hi' ? 'वेबसाइट नीतियां' : 'Website Legal'}
+              {t.footer.websiteLegalHeader}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -147,7 +147,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('privacy')}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline">{language === 'hi' ? 'वेबसाइट गोपनीयता नीति' : 'Website Privacy Policy'}</span>
+                  <span className="group-hover:underline">{t.footer.websitePrivacyPolicy}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -187,7 +187,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Column 4: Less Legal App Policies */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
-              LESS LEGAL APP
+              {t.footer.appLegalHeader}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -196,7 +196,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('app-privacy')}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline">{language === 'hi' ? 'ऐप गोपनीयता नीति' : 'Privacy Policy'}</span>
+                  <span className="group-hover:underline">{t.footer.appPrivacyPolicy}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -206,7 +206,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('app-delete-account')}
                   className="hover:text-red-700 dark:hover:text-red-400 transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
-                  <span className="group-hover:underline text-[#C21F2F] dark:text-[#E03A3E] font-bold">{language === 'hi' ? 'खाता एवं डेटा हटाएं' : 'Delete Account & Data'}</span>
+                  <span className="group-hover:underline text-[#C21F2F] dark:text-[#E03A3E] font-bold">{t.footer.deleteAccount}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
               </li>
@@ -293,14 +293,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           {/* Verified Legal Reference Badge */}
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300/80 dark:border-white/10 text-[11px] text-slate-700 dark:text-[#B8B3AF] font-medium whitespace-nowrap badge-one-line">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300/80 dark:border-white/10 text-[11px] text-slate-700 dark:text-[#B8B3AF] font-medium whitespace-nowrap badge-one-line shrink-0">
             <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
             <span>
-              {language === 'hi' 
-                ? 'प्रत्येक भारतीय के लिए विश्वसनीय लीगल एवं यूटिलिटीज टूल' 
-                : 'Trusted Legal & Utilities Tool For Every Indian'}
+              {t.footer.trustedTool}
             </span>
           </div>
+        </div>
+
+        {/* Strict Liability Disclaimer */}
+        <div className="mt-8 pt-4 border-t border-slate-200 dark:border-white/10 text-[10px] text-slate-500/90 dark:text-[#77736F]/90 text-center md:text-justify leading-relaxed max-w-5xl mx-auto">
+          {t.footer.strictLiabilityDisclaimer}
         </div>
       </div>
       

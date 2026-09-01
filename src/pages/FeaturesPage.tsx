@@ -274,10 +274,10 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
         <div className="glass-panel p-6 rounded-3xl border border-slate-200 dark:border-white/10 shadow-lg space-y-3 bg-slate-100/80 dark:bg-white/[0.03]">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-white/10">
             <div className="space-y-0.5">
-              <div className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] uppercase tracking-wider">Less Legal App Compliance & Policy Center</div>
-              <div className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">Official App Policies & Data Management</div>
+              <div className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] uppercase tracking-wider">Less Legal {language === 'hi' ? 'ऐप अनुपालन और नीति केंद्र' : 'Less Legal App Compliance & Policy Center'}</div>
+              <div className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">{language === 'hi' ? 'आधिकारिक ऐप नीतियां और डेटा प्रबंधन' : 'Official App Policies & Data Management'}</div>
             </div>
-            <span className="text-[11px] font-mono text-slate-500 dark:text-[#77736F]">Package: com.lesslegal.app</span>
+            <span className="text-[11px] font-mono text-slate-500 dark:text-[#77736F]">{language === 'hi' ? 'पैकेज' : 'Package'}: com.lesslegal.app</span>
           </div>
           
           <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold text-slate-700 dark:text-[#B8B3AF]">
@@ -285,33 +285,33 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('app-privacy')}
               className="hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors cursor-pointer flex items-center gap-1"
             >
-              <span>Privacy Policy</span>
+              <span>{language === 'hi' ? 'गोपनीयता नीति' : 'Privacy Policy'}</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82]" />
             </button>
             <button
               onClick={() => onNavigate('app-delete-account')}
               className="text-[#C21F2F] dark:text-[#E03A3E] hover:underline cursor-pointer flex items-center gap-1 font-bold"
             >
-              <span>Delete Account & Data</span>
+              <span>{language === 'hi' ? 'खाता और डेटा हटाएं' : 'Delete Account & Data'}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => onNavigate('terms')}
               className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
             >
-              Terms & Conditions
+              {language === 'hi' ? 'नियम और शर्तें' : 'Terms & Conditions'}
             </button>
             <button
               onClick={() => onNavigate('refund')}
               className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
             >
-              Refund & Cancellation
+              {language === 'hi' ? 'धनवापसी और रद्दीकरण' : 'Refund & Cancellation'}
             </button>
             <button
               onClick={() => onNavigate('disclaimer')}
               className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
             >
-              Legal Disclaimer
+              {language === 'hi' ? 'कानूनी अस्वीकरण' : 'Legal Disclaimer'}
             </button>
           </div>
         </div>

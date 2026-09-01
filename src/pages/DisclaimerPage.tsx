@@ -9,7 +9,7 @@ interface DisclaimerPageProps {
 }
 
 export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-12 sm:pb-16 space-y-8 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
@@ -125,11 +125,11 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
             <Scale className="w-7 h-7 text-red-100 drop-shadow-sm" />
             <div className="space-y-3 max-w-3xl mx-auto">
               <p className="text-sm sm:text-base font-bold text-white tracking-wide leading-relaxed drop-shadow-sm">
-                JURISDICTION: All disputes shall be subject to the exclusive jurisdiction of the Hon'ble High Court of Judicature at Allahabad.
+                {language === 'hi' ? 'अधिकार क्षेत्र: सभी विवाद माननीय उच्च न्यायालय इलाहाबाद के अनन्य क्षेत्राधिकार के अधीन होंगे।' : "JURISDICTION: All disputes shall be subject to the exclusive jurisdiction of the Hon'ble High Court of Judicature at Allahabad."}
               </p>
               <div className="w-16 h-px bg-red-400/60 mx-auto"></div>
               <p className="text-sm sm:text-base font-bold text-white tracking-wide leading-relaxed drop-shadow-sm">
-                अधिकार क्षेत्र: सभी विवाद माननीय उच्च न्यायालय इलाहाबाद के अनन्य क्षेत्राधिकार के अधीन होंगे।
+                {language === 'hi' ? "JURISDICTION: All disputes shall be subject to the exclusive jurisdiction of the Hon'ble High Court of Judicature at Allahabad." : 'अधिकार क्षेत्र: सभी विवाद माननीय उच्च न्यायालय इलाहाबाद के अनन्य क्षेत्राधिकार के अधीन होंगे।'}
               </p>
             </div>
           </div>

@@ -23,7 +23,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-      if (saved === 'en' || saved === 'hi') {
+      if (saved === 'hi' || saved === 'en') {
         return saved;
       }
     }
