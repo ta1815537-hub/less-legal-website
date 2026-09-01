@@ -14,7 +14,8 @@ import {
   sendPasswordResetEmail,
   User as FirebaseUser 
 } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { auth, db } from '../lib/firebase';
 import { HeroAmbientGlow } from '../components/MotionWrappers';
 import { useLanguage } from '../context/LanguageContext';
 import { adminStorage, ContactSubmission, DeletionRequest } from '../utils/adminStorage';
@@ -46,6 +47,10 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   // Data State
   const [deletions, setDeletions] = useState<DeletionRequest[]>([]);
   const [contacts, setContacts] = useState<ContactSubmission[]>([]);
+
+  // Refresh & Toast State
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [refreshToast, setRefreshToast] = useState<string | null>(null);
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
@@ -98,8 +103,14 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
   // Load Data on Mount & Refresh
   const loadData = async () => {
-    setDeletions(adminStorage.getDeletionRequests());
-    setContacts(adminStorage.getContactSubmissions());
+    const localDeletions = adminStorage.getDeletionRequests();
+    const localContacts = adminStorage.getContactSubmissions();
+    setDeletions(localDeletions);
+    setContacts(localContacts);
+
+    if (localContacts.length > 0 && localDeletions.length === 0) {
+      setActiveTab('contacts');
+    }
 
     // Sync cloud records asynchronously
     try {
@@ -109,15 +120,109 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       ]);
       setDeletions(cloudDeletions);
       setContacts(cloudContacts);
+
+      if (cloudContacts.length > 0 && cloudDeletions.length === 0) {
+        setActiveTab('contacts');
+      }
     } catch {
       // Fallback to local items if offline
     }
   };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadData();
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    setRefreshToast(null);
+    try {
+      await loadData();
+      await new Promise(res => setTimeout(res, 500));
+      setRefreshToast(isHindi ? 'डेटा सफलतापूर्वक अपडेट हो गया!' : 'Data refreshed successfully!');
+      setTimeout(() => setRefreshToast(null), 3000);
+    } catch (err) {
+      console.error('Refresh error:', err);
+    } finally {
+      setIsRefreshing(false);
     }
+  };
+
+  // Real-time Firestore sync listeners
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    loadData();
+
+    // Listen to contact_submissions real-time
+    const unsubContacts = onSnapshot(collection(db, 'contact_submissions'), (snapshot) => {
+      const cloudItems: ContactSubmission[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        cloudItems.push({
+          id: data.id || docSnap.id,
+          firestoreDocId: docSnap.id,
+          name: data.name || '',
+          email: data.email || '',
+          subject: data.subject || '',
+          transactionId: data.transactionId || undefined,
+          message: data.message || '',
+          timestamp: data.timestamp || new Date().toISOString(),
+          status: data.status || 'Pending',
+          adminNotes: data.adminNotes || ''
+        });
+      });
+
+      const localItems = adminStorage.getContactSubmissions();
+      const itemMap = new Map<string, ContactSubmission>();
+      localItems.forEach(item => itemMap.set(item.id, item));
+      cloudItems.forEach(item => itemMap.set(item.id, item));
+
+      const merged = Array.from(itemMap.values()).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      setContacts(merged);
+      try {
+        localStorage.setItem('less_legal_contact_submissions', JSON.stringify(merged));
+      } catch {}
+
+      if (merged.length > 0) {
+        setActiveTab(prev => (prev === 'deletions' ? 'contacts' : prev));
+      }
+    }, (err) => {
+      console.warn('Realtime contacts listener warning:', err);
+    });
+
+    // Listen to account_deletion_requests real-time
+    const unsubDeletions = onSnapshot(collection(db, 'account_deletion_requests'), (snapshot) => {
+      const cloudItems: DeletionRequest[] = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        cloudItems.push({
+          id: data.id || docSnap.id,
+          firestoreDocId: docSnap.id,
+          ticketId: data.ticketId || '',
+          email: data.email || '',
+          userId: data.userId || undefined,
+          reason: data.reason || undefined,
+          timestamp: data.timestamp || new Date().toISOString(),
+          status: data.status || 'Pending',
+          adminNotes: data.adminNotes || ''
+        });
+      });
+
+      const localItems = adminStorage.getDeletionRequests();
+      const itemMap = new Map<string, DeletionRequest>();
+      localItems.forEach(item => itemMap.set(item.id, item));
+      cloudItems.forEach(item => itemMap.set(item.id, item));
+
+      const merged = Array.from(itemMap.values()).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      setDeletions(merged);
+      try {
+        localStorage.setItem('less_legal_deletion_requests', JSON.stringify(merged));
+      } catch {}
+    }, (err) => {
+      console.warn('Realtime deletions listener warning:', err);
+    });
+
+    return () => {
+      unsubContacts();
+      unsubDeletions();
+    };
   }, [isAuthenticated]);
 
   // Auth Handlers
@@ -300,7 +405,18 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       d.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (d.userId && d.userId.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (d.reason && d.reason.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesStatus = statusFilter === 'ALL' || d.status.toUpperCase() === statusFilter.toUpperCase();
+    
+    let matchesStatus = true;
+    if (statusFilter !== 'ALL') {
+      const sf = statusFilter.toUpperCase();
+      if (sf === 'PENDING') {
+        matchesStatus = d.status.toUpperCase() === 'PENDING';
+      } else if (sf === 'PROCESSING') {
+        matchesStatus = d.status.toUpperCase() === 'PROCESSING' || d.status.toUpperCase() === 'IN PROGRESS';
+      } else if (sf === 'COMPLETED') {
+        matchesStatus = d.status.toUpperCase() === 'COMPLETED' || d.status.toUpperCase() === 'RESOLVED';
+      }
+    }
     return matchesSearch && matchesStatus;
   });
 
@@ -311,7 +427,18 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       c.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (c.transactionId && c.transactionId.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesStatus = statusFilter === 'ALL' || c.status.toUpperCase() === statusFilter.toUpperCase();
+    
+    let matchesStatus = true;
+    if (statusFilter !== 'ALL') {
+      const sf = statusFilter.toUpperCase();
+      if (sf === 'PENDING') {
+        matchesStatus = c.status.toUpperCase() === 'PENDING';
+      } else if (sf === 'PROCESSING') {
+        matchesStatus = c.status.toUpperCase() === 'IN PROGRESS' || c.status.toUpperCase() === 'PROCESSING';
+      } else if (sf === 'COMPLETED') {
+        matchesStatus = c.status.toUpperCase() === 'RESOLVED' || c.status.toUpperCase() === 'COMPLETED';
+      }
+    }
     return matchesSearch && matchesStatus;
   });
 
@@ -544,11 +671,12 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
         <div className="flex items-center gap-3">
           <button
-            onClick={loadData}
-            className="px-4 py-2.5 rounded-xl bg-slate-200/70 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-300/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-2"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="px-4 py-2.5 rounded-xl bg-slate-200/70 dark:bg-white/5 hover:bg-slate-300 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-300/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>{isHindi ? "रिफ्रेश" : "Refresh Data"}</span>
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#C21F2F]' : ''}`} />
+            <span>{isRefreshing ? (isHindi ? "अपडेट हो रहा है..." : "Refreshing...") : (isHindi ? "रिफ्रेश" : "Refresh Data")}</span>
           </button>
 
           <button
@@ -560,6 +688,13 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           </button>
         </div>
       </div>
+
+      {refreshToast && (
+        <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-2 animate-in fade-in relative z-10 shadow-sm">
+          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+          <span>{refreshToast}</span>
+        </div>
+      )}
 
       {/* Metrics Cards Overview */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">

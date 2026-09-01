@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
 import { 
   Mail, Phone, MapPin, Send, MessageSquare, 
   ShieldCheck, CheckCircle2, Clock, 
-  Smartphone, ArrowLeft
+  Smartphone, ArrowLeft, Search, RefreshCw, FileSearch, AlertCircle, Tag
 } from 'lucide-react';
 import { 
   ScrollReveal, StaggerContainer, StaggerItem, 
@@ -13,7 +13,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { sanitizeText, isRateLimited } from '../utils/security';
-import { adminStorage } from '../utils/adminStorage';
+import { adminStorage, ContactSubmission } from '../utils/adminStorage';
 
 interface ContactPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -21,6 +21,10 @@ interface ContactPageProps {
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
+  const isHindi = language === 'hi';
+
+  const [activeTab, setActiveTab] = useState<'submit' | 'check-status'>('submit');
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -30,16 +34,60 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastSubmittedTicket, setLastSubmittedTicket] = useState<ContactSubmission | null>(null);
+
+  // Status Search State
+  const [searchEmail, setSearchEmail] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchFinished, setSearchFinished] = useState(false);
+  const [ticketResults, setTicketResults] = useState<ContactSubmission[]>([]);
+
+  // Rate Limit & Live Timer State (Max 2 submissions per 12 hours per email)
+  const [rateLimitInfo, setRateLimitInfo] = useState<{ isLimited: boolean; remainingMs: number }>({
+    isLimited: false,
+    remainingMs: 0
+  });
+
+  // Check rate limit on email change or periodic 1s timer tick
+  useEffect(() => {
+    const cleanEmail = formData.email.trim().toLowerCase();
+    if (!cleanEmail) {
+      setRateLimitInfo({ isLimited: false, remainingMs: 0 });
+      return;
+    }
+
+    const checkLimit = () => {
+      const result = adminStorage.checkEmailSubmissionRateLimit(cleanEmail);
+      setRateLimitInfo({ isLimited: result.isLimited, remainingMs: result.remainingMs });
+    };
+
+    checkLimit();
+    const interval = setInterval(checkLimit, 1000);
+    return () => clearInterval(interval);
+  }, [formData.email]);
+
+  const formatCountdown = (ms: number) => {
+    if (ms <= 0) return '00:00:00';
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const pad = (n: number) => String(n).padStart(2, '0');
+    if (isHindi) {
+      return `${hours} घंटे ${pad(minutes)} मिनट ${pad(seconds)} सेकंड`;
+    }
+    return `${hours}h ${pad(minutes)}m ${pad(seconds)}s`;
+  };
 
   const hasEmail = Boolean(SITE_CONFIG.supportEmail && SITE_CONFIG.supportEmail.trim() !== "");
   const hasPhone = Boolean(SITE_CONFIG.supportPhone && SITE_CONFIG.supportPhone.trim() !== "");
   const hasAddress = Boolean(SITE_CONFIG.businessAddress && SITE_CONFIG.businessAddress.trim() !== "");
   const hasAnyDirectContact = hasEmail || hasPhone || hasAddress;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isRateLimited('contact_form_submit', 3000)) return;
-    
+
     const cleanName = sanitizeText(formData.name).trim();
     const cleanEmail = sanitizeText(formData.email).trim();
     const cleanSubject = sanitizeText(formData.subject).trim();
@@ -47,28 +95,56 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
     const cleanMessage = sanitizeText(formData.message).trim();
 
     if (!cleanName || !cleanEmail || !cleanMessage) return;
+
+    // Check 12-hour submission rate limit for this email address
+    const limitCheck = adminStorage.checkEmailSubmissionRateLimit(cleanEmail);
+    if (limitCheck.isLimited) {
+      setRateLimitInfo({ isLimited: true, remainingMs: limitCheck.remainingMs });
+      return;
+    }
+
+    if (isRateLimited('contact_form_submit', 2000)) return;
     
     setIsSubmitting(true);
 
-    // Persist to Admin Dashboard local storage
-    adminStorage.addContactSubmission({
-      name: cleanName,
-      email: cleanEmail,
-      subject: cleanSubject,
-      transactionId: cleanTxnId || undefined,
-      message: cleanMessage
-    });
+    try {
+      // Save directly to Firestore Cloud Database and Local Admin State
+      const savedTicket = await adminStorage.addContactSubmission({
+        name: cleanName,
+        email: cleanEmail,
+        subject: cleanSubject,
+        transactionId: cleanTxnId || undefined,
+        message: cleanMessage
+      });
 
-    setTimeout(() => {
-      if (hasEmail) {
-        const mailtoUrl = `mailto:${SITE_CONFIG.supportEmail}?subject=${encodeURIComponent(`[Less Legal Support] ${cleanSubject} - ${cleanName}`)}&body=${encodeURIComponent(
-          `Name: ${cleanName}\nEmail: ${cleanEmail}\n${cleanTxnId ? `Transaction ID: ${cleanTxnId}\n` : ''}\nMessage:\n${cleanMessage}`
-        )}`;
-        window.location.href = mailtoUrl;
-      }
+      setLastSubmittedTicket(savedTicket);
+      setSearchEmail(cleanEmail);
       setIsSubmitting(false);
       setSubmitted(true);
-    }, 400);
+    } catch (err) {
+      console.error('Failed to submit contact request:', err);
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSearchStatus = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const cleanEmail = searchEmail.trim().toLowerCase();
+    if (!cleanEmail) return;
+
+    setIsSearching(true);
+    setSearchFinished(false);
+    setTicketResults([]);
+
+    try {
+      const results = await adminStorage.getContactSubmissionsByEmail(cleanEmail);
+      setTicketResults(results);
+    } catch (err) {
+      console.error('Failed to search status:', err);
+    } finally {
+      setIsSearching(false);
+      setSearchFinished(true);
+    }
   };
 
   return (
@@ -206,161 +282,434 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
         </ScrollReveal>
 
-        {/* Right Column: Support Inquiry Form */}
+        {/* Right Column: Support Inquiry Form & Status Checker */}
         <ScrollReveal direction="up" delay={0.14} className="lg:col-span-7">
-          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl">
+          <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl space-y-6">
             
-            <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] mb-1">
-              {language === 'hi' ? 'सहायता अनुरोध भेजें' : 'Submit a Support Request'}
-            </h2>
-            <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-6">
-              {language === 'hi' ? 'विवरण भरें और अपना प्रश्न दर्ज करें। हम शीघ्र सहायता करेंगे।' : 'Fill in your details and describe your inquiry. We will assist you promptly.'}
-            </p>
+            {/* Top Switcher Tabs */}
+            <div className="flex rounded-2xl bg-slate-100 dark:bg-[#151518] p-1 border border-slate-200 dark:border-white/10 text-xs font-bold">
+              <button
+                type="button"
+                onClick={() => setActiveTab('submit')}
+                className={`flex-1 py-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  activeTab === 'submit'
+                    ? 'bg-white dark:bg-[#202025] text-slate-900 dark:text-white shadow-sm border border-slate-200/60 dark:border-white/10 font-extrabold'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Send className="w-3.5 h-3.5 text-[#C21F2F]" />
+                <span>{isHindi ? "सहायता अनुरोध भेजें" : "Submit Request"}</span>
+              </button>
 
-            <AnimatePresence mode="wait">
-              {submitted ? (
-                <motion.div 
-                  key="submitted-state"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.35, ease: EASING_SPRING }}
-                  className="p-6 glass-panel-crimson rounded-2xl border border-[#C21F2F]/40 text-center space-y-3"
-                >
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.1 }}
-                    className="w-12 h-12 rounded-full bg-[#C21F2F] text-white flex items-center justify-center mx-auto shadow-md"
-                  >
-                    <CheckCircle2 className="w-6 h-6" />
-                  </motion.div>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
-                    {language === 'hi' ? 'अनुरोध प्राप्त हुआ' : 'Inquiry Received'}
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] max-w-md mx-auto leading-relaxed">
-                    {language === 'hi' ? 'Less Legal सहायता टीम से संपर्क करने के लिए धन्यवाद। आपका संदेश तैयार कर लिया गया है।' : 'Thank you for reaching out to Less Legal Support. Your message has been prepared for our support team.'}
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setFormData({ name: '', email: '', subject: 'General Inquiry', transactionId: '', message: '' });
-                    }}
-                    className="mt-2 text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] underline cursor-pointer"
-                  >
-                    {language === 'hi' ? 'दूसरा प्रश्न भेजें' : 'Send another inquiry'}
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.form 
-                  key="form-state"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onSubmit={handleSubmit} 
-                  className="space-y-4 text-xs"
-                >
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="contact-name" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
-                        {t.contactPage.nameLabel} <span className="text-[#E03A3E]">*</span>
-                      </label>
-                      <input
-                        id="contact-name"
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder={language === 'hi' ? 'आपका पूरा नाम' : 'Your full name'}
-                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
-                      />
-                    </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('check-status');
+                  if (searchEmail.trim() && !searchFinished && !isSearching) {
+                    handleSearchStatus();
+                  }
+                }}
+                className={`flex-1 py-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  activeTab === 'check-status'
+                    ? 'bg-white dark:bg-[#202025] text-slate-900 dark:text-white shadow-sm border border-slate-200/60 dark:border-white/10 font-extrabold'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <FileSearch className="w-3.5 h-3.5 text-blue-500" />
+                <span>{isHindi ? "फॉर्म स्थिति जांचें" : "Check Form Status"}</span>
+              </button>
+            </div>
 
-                    <div className="space-y-1.5">
-                      <label htmlFor="contact-email" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
-                        {t.contactPage.emailLabel} <span className="text-[#E03A3E]">*</span>
-                      </label>
-                      <input
-                        id="contact-email"
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="name@example.com"
-                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
-                      />
-                    </div>
-                  </div>
+            {/* TAB 1: SUBMIT FORM */}
+            {activeTab === 'submit' && (
+              <div>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] mb-1">
+                  {isHindi ? 'सहायता अनुरोध फॉर्म' : 'Support Request Form'}
+                </h2>
+                <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-6">
+                  {isHindi ? 'विवरण भरें और अपना प्रश्न दर्ज करें। हम शीघ्र सहायता करेंगे।' : 'Fill in your details and describe your inquiry. We will assist you promptly.'}
+                </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="contact-subject" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
-                        {t.contactPage.subjectLabel}
-                      </label>
-                      <select
-                        id="contact-subject"
-                        value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-white/15 rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F]"
+                <AnimatePresence mode="wait">
+                  {submitted ? (
+                    <motion.div 
+                      key="submitted-state"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.35, ease: EASING_SPRING }}
+                      className="p-6 glass-panel-crimson rounded-2xl border border-[#C21F2F]/40 text-center space-y-4"
+                    >
+                      <motion.div 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.1 }}
+                        className="w-12 h-12 rounded-full bg-[#C21F2F] text-white flex items-center justify-center mx-auto shadow-md"
                       >
-                        <option value="General Inquiry">{language === 'hi' ? 'सामान्य प्रश्न' : 'General Inquiry'}</option>
-                        <option value="Technical Support">{language === 'hi' ? 'तकनीकी सहायता' : 'Technical Support'}</option>
-                        <option value="Payment Issue">{language === 'hi' ? 'भुगतान संबंधी समस्या' : 'Payment Issue'}</option>
-                        <option value="Premium Access">{language === 'hi' ? 'प्रीमियम एक्सेस' : 'Premium Access'}</option>
-                        <option value="Refund Request">{language === 'hi' ? 'रिफंड अनुरोध' : 'Refund Request'}</option>
-                        <option value="Privacy Request">{language === 'hi' ? 'गोपनीयता अनुरोध' : 'Privacy Request'}</option>
-                        <option value="Other">{language === 'hi' ? 'अन्य' : 'Other'}</option>
-                      </select>
-                    </div>
+                        <CheckCircle2 className="w-6 h-6" />
+                      </motion.div>
+                      <div className="space-y-1">
+                        <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
+                          {isHindi ? 'अनुरोध सफलतापूर्वक प्राप्त हुआ!' : 'Request Successfully Received!'}
+                        </h3>
+                        {lastSubmittedTicket && (
+                          <div className="inline-block px-3 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 font-mono text-xs font-bold">
+                            Ticket ID: {lastSubmittedTicket.id}
+                          </div>
+                        )}
+                      </div>
 
-                    <div className="space-y-1.5">
-                      <label htmlFor="contact-txnid" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
-                        {language === 'hi' ? 'ट्रांजेक्शन आई डी' : 'Transaction ID'} <span className="text-slate-400 dark:text-[#77736F] font-normal">({language === 'hi' ? 'वैकल्पिक' : 'Optional'})</span>
-                      </label>
-                      <input
-                        id="contact-txnid"
-                        type="text"
-                        value={formData.transactionId}
-                        onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
-                        placeholder="e.g. PayU / Google Play Order ID"
-                        className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
-                      />
-                    </div>
-                  </div>
+                      <p className="text-xs text-slate-600 dark:text-[#B8B3AF] max-w-md mx-auto leading-relaxed">
+                        {isHindi 
+                          ? 'आपका अनुरोध सुरक्षित रूप से एडमिन डैशबोर्ड एवं क्लाउड डेटाबेस में दर्ज हो गया है। एडमिन द्वारा अपडेट की गई रियल-टाइम स्थिति जांचने के लिए "फॉर्म स्थिति जांचें" विकल्प का उपयोग करें।' 
+                          : 'Your inquiry has been stored securely in the Cloud Database & Admin Portal. You can track real-time admin status anytime using your email.'}
+                      </p>
 
-                  <div className="space-y-1.5">
-                    <label htmlFor="contact-message" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
-                      {t.contactPage.messageLabel} <span className="text-[#E03A3E]">*</span>
-                    </label>
-                    <textarea
-                      id="contact-message"
-                      required
-                      rows={5}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder={language === 'hi' ? 'कृपया अपने प्रश्न के बारे में विवरण प्रदान करें...' : 'Please provide details regarding your query...'}
-                      className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE] resize-y"
-                    />
-                  </div>
+                      <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveTab('check-status');
+                            handleSearchStatus();
+                          }}
+                          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                        >
+                          <Search className="w-4 h-4" />
+                          <span>{isHindi ? 'लाइव स्टेटस चेक करें' : 'Check Live Status'}</span>
+                        </button>
 
-                  <GlowingButton
-                    type="submit"
-                    variant="primary"
-                    disabled={isSubmitting}
-                    className="w-full py-3.5 text-xs font-bold whitespace-nowrap"
-                  >
-                    <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
-                    <span className="whitespace-nowrap">{isSubmitting ? (language === 'hi' ? 'प्रसंस्करण...' : 'Processing...') : t.contactPage.sendButton}</span>
-                  </GlowingButton>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSubmitted(false);
+                            setFormData({ name: '', email: '', subject: 'General Inquiry', transactionId: '', message: '' });
+                          }}
+                          className="text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white underline cursor-pointer"
+                        >
+                          {isHindi ? 'दूसरा प्रश्न भेजें' : 'Send another inquiry'}
+                        </button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.form 
+                      key="form-state"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onSubmit={handleSubmit} 
+                      className="space-y-4 text-xs"
+                    >
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label htmlFor="contact-name" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                            {t.contactPage.nameLabel} <span className="text-[#E03A3E]">*</span>
+                          </label>
+                          <input
+                            id="contact-name"
+                            type="text"
+                            required
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            placeholder={isHindi ? 'आपका पूरा नाम' : 'Your full name'}
+                            className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
+                          />
+                        </div>
 
-                  <p className="text-[11px] text-slate-500 dark:text-[#77736F] text-center pt-1">
-                    {language === 'hi' ? 'पूछताछ हमारी गोपनीयता नीति के अनुसार संभाली जाती है।' : 'Inquiries are handled in accordance with our Privacy Policy.'}
+                        <div className="space-y-1.5">
+                          <label htmlFor="contact-email" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                            {t.contactPage.emailLabel} <span className="text-[#E03A3E]">*</span>
+                          </label>
+                          <input
+                            id="contact-email"
+                            type="email"
+                            required
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            placeholder="name@example.com"
+                            className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <label htmlFor="contact-subject" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                            {t.contactPage.subjectLabel}
+                          </label>
+                          <select
+                            id="contact-subject"
+                            value={formData.subject}
+                            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                            className="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-white/15 rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F]"
+                          >
+                            <option value="General Inquiry">{isHindi ? 'सामान्य प्रश्न' : 'General Inquiry'}</option>
+                            <option value="Technical Support">{isHindi ? 'तकनीकी सहायता' : 'Technical Support'}</option>
+                            <option value="Payment Issue">{isHindi ? 'भुगतान संबंधी समस्या' : 'Payment Issue'}</option>
+                            <option value="Premium Access">{isHindi ? 'प्रीमियम एक्सेस' : 'Premium Access'}</option>
+                            <option value="Refund Request">{isHindi ? 'रिफंड अनुरोध' : 'Refund Request'}</option>
+                            <option value="Privacy Request">{isHindi ? 'गोपनीयता अनुरोध' : 'Privacy Request'}</option>
+                            <option value="Other">{isHindi ? 'अन्य' : 'Other'}</option>
+                          </select>
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <label htmlFor="contact-txnid" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                            {isHindi ? 'ट्रांजेक्शन आई डी' : 'Transaction ID'} <span className="text-slate-400 dark:text-[#77736F] font-normal">({isHindi ? 'वैकल्पिक' : 'Optional'})</span>
+                          </label>
+                          <input
+                            id="contact-txnid"
+                            type="text"
+                            value={formData.transactionId}
+                            onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
+                            placeholder="e.g. PayU / Google Play Order ID"
+                            className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label htmlFor="contact-message" className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                          {t.contactPage.messageLabel} <span className="text-[#E03A3E]">*</span>
+                        </label>
+                        <textarea
+                          id="contact-message"
+                          required
+                          rows={4}
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          placeholder={isHindi ? 'कृपया अपने प्रश्न के बारे में विवरण प्रदान करें...' : 'Please provide details regarding your query...'}
+                          className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE] resize-y"
+                        />
+                      </div>
+
+                      {/* 12-Hour Quota Rate Limit Warning Banner with Live Countdown Clock */}
+                      {rateLimitInfo.isLimited && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="p-4 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-900 dark:text-amber-200 text-xs space-y-2.5"
+                        >
+                          <div className="flex items-center gap-2 font-extrabold text-amber-800 dark:text-amber-300">
+                            <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 animate-pulse" />
+                            <span>
+                              {isHindi 
+                                ? '12 घंटे की फॉर्म सबमिशन सीमा (Limit Reached)' 
+                                : '12-Hour Submission Limit Reached'}
+                            </span>
+                          </div>
+                          <p className="leading-relaxed text-[11px] text-amber-900/90 dark:text-amber-200/90">
+                            {isHindi 
+                              ? `ईमेल (${formData.email}) से पिछले 12 घंटों में 2 बार फॉर्म सबमिट किया जा चुका है। सर्वर लोड सुरक्षा एवं बोट रोकथाम के लिए, नया सबमिशन करने हेतु नीचे दिया गया टाइमर पूरा होने की प्रतीक्षा करें:`
+                              : `This email (${formData.email}) has reached the limit of 2 submissions per 12 hours to protect server resources. Please wait for the timer to reset:`}
+                          </p>
+                          <div className="flex items-center justify-between p-3 rounded-xl bg-amber-500/20 border border-amber-500/30 font-mono font-bold text-xs shadow-inner">
+                            <span className="text-amber-800 dark:text-amber-300">{isHindi ? 'पुनः प्रयास टाइमर (Timer):' : 'Reset Countdown:'}</span>
+                            <span className="text-amber-950 dark:text-amber-50 text-xs sm:text-sm tracking-wide bg-amber-500/30 px-3 py-1 rounded-lg border border-amber-500/40 font-black">
+                              ⏳ {formatCountdown(rateLimitInfo.remainingMs)}
+                            </span>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      <GlowingButton
+                        type="submit"
+                        variant="primary"
+                        disabled={isSubmitting || rateLimitInfo.isLimited}
+                        className={`w-full py-3.5 text-xs font-bold whitespace-nowrap cursor-pointer ${
+                          rateLimitInfo.isLimited ? 'opacity-60 cursor-not-allowed bg-slate-600 dark:bg-slate-700' : ''
+                        }`}
+                      >
+                        {isSubmitting ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>{isHindi ? 'सुरक्षित सहेजा जा रहा है...' : 'Saving to Database...'}</span>
+                          </div>
+                        ) : rateLimitInfo.isLimited ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <Clock className="w-4 h-4" />
+                            <span>
+                              {isHindi 
+                                ? `सीमा समाप्त (पुनः प्रयास ${formatCountdown(rateLimitInfo.remainingMs)} बाद)` 
+                                : `Limit Reached (${formatCountdown(rateLimitInfo.remainingMs)} remaining)`}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center gap-2">
+                            <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                            <span className="whitespace-nowrap">{t.contactPage.sendButton}</span>
+                          </div>
+                        )}
+                      </GlowingButton>
+
+                      <p className="text-[11px] text-slate-500 dark:text-[#77736F] text-center pt-1">
+                        {isHindi 
+                          ? '12 घंटे में अधिकतम 2 सबमिशन की अनुमति है। सभी संदेश एडमिन पोर्टल में सहेजे जाते हैं।' 
+                          : 'Max 2 submissions per 12 hours per email. Saved to Admin Portal.'}
+                      </p>
+
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* TAB 2: CHECK TICKET / FORM STATUS */}
+            {activeTab === 'check-status' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] mb-1 flex items-center gap-2">
+                    <FileSearch className="w-5 h-5 text-blue-500" />
+                    <span>{isHindi ? 'फॉर्म की रियल-टाइम स्थिति जांचें' : 'Check Form Status'}</span>
+                  </h2>
+                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF]">
+                    {isHindi 
+                      ? 'वह ईमेल आईडी दर्ज करें जो आपने फॉर्म सबमिट करते समय दर्ज की थी। एडमिन डैशबोर्ड से लाइव स्टेटस यहाँ दिखेगा।' 
+                      : 'Enter the email address you used when submitting the form to view real-time status from the Admin Dashboard.'}
                   </p>
+                </div>
 
-                </motion.form>
-              )}
-            </AnimatePresence>
+                <form onSubmit={handleSearchStatus} className="space-y-3">
+                  <div className="space-y-1 text-xs">
+                    <label className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                      {isHindi ? 'पंजीकृत ईमेल आईडी (Registered Email Address)' : 'Registered Email Address'}
+                    </label>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <div className="relative flex-1">
+                        <input
+                          type="email"
+                          required
+                          value={searchEmail}
+                          onChange={(e) => setSearchEmail(e.target.value)}
+                          placeholder="name@example.com"
+                          className="w-full pl-9 pr-4 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
+                        />
+                        <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={isSearching}
+                        className="px-5 py-2.5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                      >
+                        {isSearching ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>{isHindi ? 'खोजा जा रहा है...' : 'Searching...'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Search className="w-4 h-4" />
+                            <span>{isHindi ? 'स्थिति चेक करें' : 'Check Status'}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+                {/* RESULTS LIST */}
+                {searchFinished && (
+                  <div className="space-y-4 pt-2 border-t border-slate-200 dark:border-white/10">
+                    {ticketResults.length === 0 ? (
+                      <div className="p-6 rounded-2xl bg-slate-100/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-center space-y-2">
+                        <AlertCircle className="w-8 h-8 text-amber-500 mx-auto" />
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">
+                          {isHindi ? 'कोई अनुरोध नहीं मिला' : 'No Submissions Found'}
+                        </h4>
+                        <p className="text-xs text-slate-600 dark:text-[#B8B3AF] max-w-sm mx-auto">
+                          {isHindi 
+                            ? `ईमेल (${searchEmail}) से कोई फ़ॉर्म अनुरोध दर्ज नहीं है। कृपया सही ईमेल दर्ज करें।` 
+                            : `No form submission records were found for "${searchEmail}". Please verify the email address.`}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <div className="text-xs font-bold text-slate-600 dark:text-[#B8B3AF] flex items-center justify-between">
+                          <span>{isHindi ? `कुल दर्ज अनुरोध: ${ticketResults.length}` : `Total Submissions: ${ticketResults.length}`}</span>
+                          <button 
+                            onClick={() => handleSearchStatus()}
+                            className="text-[11px] text-[#C21F2F] hover:underline flex items-center gap-1 cursor-pointer"
+                          >
+                            <RefreshCw className="w-3 h-3" />
+                            <span>{isHindi ? 'रिफ्रेश करें' : 'Refresh'}</span>
+                          </button>
+                        </div>
+
+                        {ticketResults.map((ticket) => (
+                          <div 
+                            key={ticket.id}
+                            className="p-4 rounded-2xl bg-white dark:bg-[#121215] border border-slate-200 dark:border-white/10 shadow-sm space-y-3 text-xs"
+                          >
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-white/5 pb-2.5">
+                              <div className="space-y-0.5">
+                                <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+                                  Ticket #{ticket.id}
+                                </span>
+                                <h4 className="font-bold text-slate-900 dark:text-white text-sm">
+                                  {ticket.subject}
+                                </h4>
+                              </div>
+
+                              {/* Live Status Badge */}
+                              <div>
+                                {ticket.status === 'Resolved' && (
+                                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-bold text-xs flex items-center gap-1 border border-emerald-500/30">
+                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                    <span>{isHindi ? 'हल हो गया (Resolved)' : 'Resolved'}</span>
+                                  </span>
+                                )}
+                                {ticket.status === 'In Progress' && (
+                                  <span className="px-3 py-1 rounded-full bg-blue-500/15 text-blue-700 dark:text-blue-400 font-bold text-xs flex items-center gap-1 border border-blue-500/30">
+                                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                    <span>{isHindi ? 'प्रगति पर (In Progress)' : 'In Progress'}</span>
+                                  </span>
+                                )}
+                                {ticket.status === 'Pending' && (
+                                  <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold text-xs flex items-center gap-1 border border-amber-500/30">
+                                    <Clock className="w-3.5 h-3.5" />
+                                    <span>{isHindi ? 'लंबित (Pending)' : 'Pending'}</span>
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Ticket Details */}
+                            <div className="space-y-2 text-slate-600 dark:text-[#B8B3AF]">
+                              <p className="bg-slate-50 dark:bg-white/5 p-2.5 rounded-xl text-[11px] leading-relaxed italic border border-slate-200/50 dark:border-white/5">
+                                "{ticket.message}"
+                              </p>
+
+                              {ticket.transactionId && (
+                                <div className="text-[11px] flex items-center gap-1 text-slate-500">
+                                  <Tag className="w-3 h-3 text-slate-400" />
+                                  <span>Txn ID: <strong>{ticket.transactionId}</strong></span>
+                                </div>
+                              )}
+
+                              {/* Admin Notes / Update response if provided */}
+                              {ticket.adminNotes && (
+                                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 space-y-1">
+                                  <div className="font-bold text-[11px] flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
+                                    <ShieldCheck className="w-3.5 h-3.5 text-[#C21F2F]" />
+                                    <span>{isHindi ? 'एडमिन उत्तर / अपडेट टिप्पणी:' : 'Admin Reply / Update:'}</span>
+                                  </div>
+                                  <p className="text-xs leading-relaxed font-medium">{ticket.adminNotes}</p>
+                                </div>
+                              )}
+
+                              <div className="text-[10px] text-slate-400 pt-1 text-right">
+                                {isHindi ? 'दर्ज करने का समय:' : 'Submitted on:'} {new Date(ticket.timestamp).toLocaleString(isHindi ? 'hi-IN' : 'en-US')}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+              </div>
+            )}
 
           </div>
         </ScrollReveal>

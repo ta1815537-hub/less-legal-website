@@ -42,15 +42,14 @@ export const adminStorage = {
         return INITIAL_CONTACT_SUBMISSIONS;
       }
       const parsed: ContactSubmission[] = JSON.parse(data);
-      // Clean up old dummy items if any
-      const realOnly = parsed.filter(item => !item.id.startsWith('c-20'));
-      return realOnly;
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return INITIAL_CONTACT_SUBMISSIONS;
     }
   },
 
   fetchContactSubmissionsFromCloud: async (): Promise<ContactSubmission[]> => {
+    const localItems = adminStorage.getContactSubmissions();
     try {
       const q = query(collection(db, 'contact_submissions'));
       const querySnapshot = await getDocs(q);
@@ -72,16 +71,21 @@ export const adminStorage = {
         });
       });
 
-      cloudItems.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-      localStorage.setItem(STORAGE_KEY_CONTACTS, JSON.stringify(cloudItems));
-      return cloudItems;
+      // Merge local items with cloud items so no submissions are lost
+      const itemMap = new Map<string, ContactSubmission>();
+      localItems.forEach(item => itemMap.set(item.id, item));
+      cloudItems.forEach(item => itemMap.set(item.id, item));
+
+      const merged = Array.from(itemMap.values()).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      localStorage.setItem(STORAGE_KEY_CONTACTS, JSON.stringify(merged));
+      return merged;
     } catch (err) {
       console.warn('Could not sync contact submissions from cloud:', err);
     }
-    return adminStorage.getContactSubmissions();
+    return localItems;
   },
 
-  addContactSubmission: (submission: Omit<ContactSubmission, 'id' | 'timestamp' | 'status'>): ContactSubmission => {
+  addContactSubmission: async (submission: Omit<ContactSubmission, 'id' | 'timestamp' | 'status'>): Promise<ContactSubmission> => {
     const list = adminStorage.getContactSubmissions();
     const newEntry: ContactSubmission = {
       ...submission,
@@ -89,6 +93,32 @@ export const adminStorage = {
       timestamp: new Date().toISOString(),
       status: 'Pending'
     };
+    
+    // Construct clean payload without any undefined values for Firestore
+    const firestorePayload: Record<string, any> = {
+      id: newEntry.id,
+      name: newEntry.name || '',
+      email: newEntry.email || '',
+      subject: newEntry.subject || '',
+      message: newEntry.message || '',
+      timestamp: newEntry.timestamp,
+      status: newEntry.status
+    };
+    if (newEntry.transactionId) {
+      firestorePayload.transactionId = newEntry.transactionId;
+    }
+    if (newEntry.adminNotes) {
+      firestorePayload.adminNotes = newEntry.adminNotes;
+    }
+
+    // Sync to Firebase Cloud Firestore
+    try {
+      const docRef = await addDoc(collection(db, 'contact_submissions'), firestorePayload);
+      newEntry.firestoreDocId = docRef.id;
+    } catch (err) {
+      console.warn('Firestore addDoc error for contact submission:', err);
+    }
+
     const updated = [newEntry, ...list];
     try {
       localStorage.setItem(STORAGE_KEY_CONTACTS, JSON.stringify(updated));
@@ -96,14 +126,110 @@ export const adminStorage = {
       console.error('Failed to save submission:', e);
     }
 
-    // Sync to Firebase Cloud Firestore asynchronously
-    addDoc(collection(db, 'contact_submissions'), newEntry).then((docRef) => {
-      newEntry.firestoreDocId = docRef.id;
-    }).catch(err => {
-      console.warn('Firestore addDoc error for contact submission:', err);
-    });
+    // Record submission timestamp for 12-hour email rate limiting
+    adminStorage.recordEmailSubmission(newEntry.email);
 
     return newEntry;
+  },
+
+  checkEmailSubmissionRateLimit: (email: string): { isLimited: boolean; remainingMs: number; count: number } => {
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail) return { isLimited: false, remainingMs: 0, count: 0 };
+
+    const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    let emailLogs: Record<string, number[]> = {};
+    try {
+      const raw = localStorage.getItem('contact_form_email_submissions');
+      if (raw) emailLogs = JSON.parse(raw);
+    } catch (e) {
+      console.error('Failed to parse email logs:', e);
+    }
+
+    const allSubmissions = adminStorage.getContactSubmissions();
+    const subTimestamps = allSubmissions
+      .filter(s => s.email.trim().toLowerCase() === cleanEmail)
+      .map(s => new Date(s.timestamp).getTime());
+
+    const localTimestamps = emailLogs[cleanEmail] || [];
+    const combined = Array.from(new Set([...subTimestamps, ...localTimestamps])).sort((a, b) => a - b);
+
+    // Filter within last 12 hours
+    const recent = combined.filter(ts => (now - ts) < TWELVE_HOURS_MS);
+
+    if (recent.length >= 2) {
+      // The slot becomes available 12 hours after the oldest submission of the 2
+      const oldestInWindow = recent[recent.length - 2];
+      const resetTime = oldestInWindow + TWELVE_HOURS_MS;
+      const remainingMs = Math.max(0, resetTime - now);
+      if (remainingMs > 0) {
+        return { isLimited: true, remainingMs, count: recent.length };
+      }
+    }
+
+    return { isLimited: false, remainingMs: 0, count: recent.length };
+  },
+
+  recordEmailSubmission: (email: string) => {
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail) return;
+
+    const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000;
+    const now = Date.now();
+    let emailLogs: Record<string, number[]> = {};
+    try {
+      const raw = localStorage.getItem('contact_form_email_submissions');
+      if (raw) emailLogs = JSON.parse(raw);
+    } catch (e) {}
+
+    const current = (emailLogs[cleanEmail] || []).filter(ts => (now - ts) < TWELVE_HOURS_MS);
+    current.push(now);
+    emailLogs[cleanEmail] = current;
+
+    try {
+      localStorage.setItem('contact_form_email_submissions', JSON.stringify(emailLogs));
+    } catch (e) {}
+  },
+
+  getContactSubmissionsByEmail: async (email: string): Promise<ContactSubmission[]> => {
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail) return [];
+
+    try {
+      const q = query(collection(db, 'contact_submissions'));
+      const querySnapshot = await getDocs(q);
+      const cloudMatches: ContactSubmission[] = [];
+
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.email && String(data.email).trim().toLowerCase() === cleanEmail) {
+          cloudMatches.push({
+            id: data.id || docSnap.id,
+            firestoreDocId: docSnap.id,
+            name: data.name || '',
+            email: data.email || '',
+            subject: data.subject || '',
+            transactionId: data.transactionId || undefined,
+            message: data.message || '',
+            timestamp: data.timestamp || new Date().toISOString(),
+            status: data.status || 'Pending',
+            adminNotes: data.adminNotes || ''
+          });
+        }
+      });
+
+      if (cloudMatches.length > 0) {
+        cloudMatches.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        return cloudMatches;
+      }
+    } catch (err) {
+      console.warn('Firestore fetch by email failed:', err);
+    }
+
+    // Fallback to local storage if offline or error
+    const localItems = adminStorage.getContactSubmissions();
+    return localItems.filter(item => item.email.trim().toLowerCase() === cleanEmail);
   },
 
   updateContactStatus: (id: string, status: ContactSubmission['status'], adminNotes?: string): boolean => {
@@ -162,14 +288,14 @@ export const adminStorage = {
         return INITIAL_DELETION_REQUESTS;
       }
       const parsed: DeletionRequest[] = JSON.parse(data);
-      const realOnly = parsed.filter(item => !item.id.startsWith('del-10'));
-      return realOnly;
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return INITIAL_DELETION_REQUESTS;
     }
   },
 
   fetchDeletionRequestsFromCloud: async (): Promise<DeletionRequest[]> => {
+    const localItems = adminStorage.getDeletionRequests();
     try {
       const q = query(collection(db, 'account_deletion_requests'));
       const querySnapshot = await getDocs(q);
@@ -190,16 +316,20 @@ export const adminStorage = {
         });
       });
 
-      cloudItems.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-      localStorage.setItem(STORAGE_KEY_DELETIONS, JSON.stringify(cloudItems));
-      return cloudItems;
+      const itemMap = new Map<string, DeletionRequest>();
+      localItems.forEach(item => itemMap.set(item.id, item));
+      cloudItems.forEach(item => itemMap.set(item.id, item));
+
+      const merged = Array.from(itemMap.values()).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      localStorage.setItem(STORAGE_KEY_DELETIONS, JSON.stringify(merged));
+      return merged;
     } catch (err) {
       console.warn('Could not sync deletion requests from cloud:', err);
     }
-    return adminStorage.getDeletionRequests();
+    return localItems;
   },
 
-  addDeletionRequest: (req: { ticketId: string; email: string; userId?: string; reason?: string }): DeletionRequest => {
+  addDeletionRequest: async (req: { ticketId: string; email: string; userId?: string; reason?: string }): Promise<DeletionRequest> => {
     const list = adminStorage.getDeletionRequests();
     const newEntry: DeletionRequest = {
       ...req,
@@ -207,6 +337,18 @@ export const adminStorage = {
       timestamp: new Date().toISOString(),
       status: 'Pending'
     };
+
+    const firestorePayload: Record<string, any> = {
+      id: newEntry.id,
+      ticketId: newEntry.ticketId || '',
+      email: newEntry.email || '',
+      timestamp: newEntry.timestamp,
+      status: newEntry.status
+    };
+    if (newEntry.userId) firestorePayload.userId = newEntry.userId;
+    if (newEntry.reason) firestorePayload.reason = newEntry.reason;
+    if (newEntry.adminNotes) firestorePayload.adminNotes = newEntry.adminNotes;
+
     const updated = [newEntry, ...list];
     try {
       localStorage.setItem(STORAGE_KEY_DELETIONS, JSON.stringify(updated));
@@ -214,12 +356,13 @@ export const adminStorage = {
       console.error('Failed to save deletion request:', e);
     }
 
-    // Sync to Firebase Cloud Firestore asynchronously
-    addDoc(collection(db, 'account_deletion_requests'), newEntry).then((docRef) => {
+    // Sync to Firebase Cloud Firestore
+    try {
+      const docRef = await addDoc(collection(db, 'account_deletion_requests'), firestorePayload);
       newEntry.firestoreDocId = docRef.id;
-    }).catch(err => {
+    } catch (err) {
       console.warn('Firestore addDoc error for deletion request:', err);
-    });
+    }
 
     return newEntry;
   },
