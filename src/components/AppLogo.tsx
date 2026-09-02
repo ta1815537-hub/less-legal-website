@@ -11,6 +11,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
   size,
   showShadow = true 
 }) => {
+  const [imgErr, setImgErr] = React.useState(false);
   const style = size ? { width: size, height: size } : undefined;
 
   return (
@@ -18,12 +19,20 @@ export const AppLogo: React.FC<AppLogoProps> = ({
       className={`relative flex items-center justify-center shrink-0 rounded-2xl ${showShadow ? 'shadow-lg shadow-[#C21F2F]/20' : ''} ${className}`}
       style={style}
     >
-      <svg 
-        viewBox="0 0 512 512" 
-        className="w-full h-full rounded-2xl select-none"
-        fill="none" 
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      {!imgErr ? (
+        <img
+          src="/app_logo_512x512-3.png"
+          alt="Less Legal App Logo"
+          className="w-full h-full object-cover rounded-2xl select-none"
+          onError={() => setImgErr(true)}
+        />
+      ) : (
+        <svg 
+          viewBox="0 0 512 512" 
+          className="w-full h-full rounded-2xl select-none"
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
         <defs>
           {/* Main Crimson to Dark Red Gradient */}
           <linearGradient id="logoPrimaryGrad" x1="60" y1="60" x2="450" y2="450" gradientUnits="userSpaceOnUse">
@@ -140,6 +149,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           opacity="0.3"
         />
       </svg>
+      )}
     </div>
   );
 };
