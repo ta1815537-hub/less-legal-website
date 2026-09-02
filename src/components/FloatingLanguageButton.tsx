@@ -20,7 +20,7 @@ export const FloatingLanguageButton: React.FC = () => {
     >
       <div className="relative flex items-center justify-center">
         <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 dark:text-[#D8BD82] group-hover:rotate-45 transition-transform duration-500 shrink-0" />
-        <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#C21F2F] animate-ping" />
+        <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#C21F2F]" />
       </div>
       <div className="flex items-center gap-1.5 text-xs font-bold tracking-wide">
         <span className={language === 'en' ? 'text-amber-400 dark:text-[#D8BD82] font-black' : 'text-slate-400 dark:text-slate-400'}>

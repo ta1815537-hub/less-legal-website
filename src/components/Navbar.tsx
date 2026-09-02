@@ -140,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               whileTap={{ scale: 0.96 }}
               className="text-[11px] lg:text-xs font-bold px-2 lg:px-3 py-1.5 rounded-xl text-amber-900 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/10 hover:bg-amber-500/20 dark:hover:bg-[#D8BD82]/20 border border-amber-600/30 dark:border-[#D8BD82]/30 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer whitespace-nowrap shrink-0"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] animate-pulse shrink-0" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-[#D8BD82] shrink-0" />
               <span className="whitespace-nowrap">{t.nav.premium}</span>
             </motion.button>
 
