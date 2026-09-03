@@ -1,16 +1,14 @@
 const fs = require('fs');
-let file = fs.readFileSync('src/components/Footer.tsx', 'utf8');
+let content = fs.readFileSync('src/components/Footer.tsx', 'utf8');
 
-// Put overflow-hidden back
-file = file.replace(
-  /<footer className="bg-slate-50 dark:bg-\[#080808\] text-slate-600 dark:text-\[#B8B3AF\] pt-16 pb-12 border-t border-slate-200 dark:border-white\/10 relative mt-16 transition-colors duration-300">/g,
-  '<footer className="bg-slate-50 dark:bg-[#080808] text-slate-600 dark:text-[#B8B3AF] pt-16 pb-12 border-t border-slate-200 dark:border-white/10 relative overflow-hidden mt-16 transition-colors duration-300">'
+content = content.replace(
+  /<p className="whitespace-nowrap text-\[clamp\(7px,2\.4vw,12px\)\] text-center md:text-left">/,
+  '<p className="whitespace-nowrap text-[clamp(6px,2.2vw,12px)] sm:text-xs tracking-tight text-center md:text-left">'
 );
 
-// Remove the overscroll blocker div
-file = file.replace(
-  /\s*\{\/\* Overscroll blocker to hide fixed backgrounds when bouncing at the bottom \*\/\}\s*<div className="absolute top-full left-0 right-0 h-\[100vh\] bg-slate-50 dark:bg-\\[#080808\\] pointer-events-none" \/>/g,
-  ''
+content = content.replace(
+  /<p className="text-\[clamp\(9px,2\.8vw,12px\)\] font-bold text-amber-800/,
+  '<p className="text-[clamp(8px,2.5vw,12px)] sm:text-xs font-bold text-amber-800'
 );
 
-fs.writeFileSync('src/components/Footer.tsx', file, 'utf8');
+fs.writeFileSync('src/components/Footer.tsx', content);

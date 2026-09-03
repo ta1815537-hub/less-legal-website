@@ -301,14 +301,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         {/* Bottom copyright & details */}
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-[#77736F]">
-          <div className="space-y-1 text-center md:text-left">
-            <p className="whitespace-nowrap badge-one-line">
-              © {new Date().getFullYear()} {SITE_CONFIG.companyName || SITE_CONFIG.appName}. {t.footer.rightsReserved}
-            </p>
-            <p className="text-[10px] sm:text-xs font-bold text-amber-800 dark:text-[#D8BD82] tracking-wide whitespace-nowrap badge-one-line">
-              अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
-            </p>
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-[#77736F] overflow-hidden w-full">
+          <div className="space-y-1 text-center md:text-left w-full overflow-hidden flex flex-col items-center md:items-start">
+            <div className="w-full flex justify-center md:justify-start pb-1">
+              <p className="whitespace-nowrap text-[clamp(6px,2.2vw,12px)] sm:text-xs tracking-tight text-center md:text-left">
+                © 2026 Less Legal. All Rights Reserved. Founded &amp; Created by Anurag Tiwari {'{'}Gurauli{'}'}
+              </p>
+            </div>
+            <div className="w-full flex justify-center md:justify-start">
+              <p className="text-[clamp(8px,2.5vw,12px)] sm:text-xs font-bold text-amber-800 dark:text-[#D8BD82] tracking-wide whitespace-nowrap text-center md:text-left">
+                अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
+              </p>
+            </div>
           </div>
 
           {/* Verified Legal Reference Badge & Discreet Lock Icon below it */}
