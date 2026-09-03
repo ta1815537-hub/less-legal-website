@@ -69,6 +69,40 @@ function getRouteFromLocation(): PageRoute {
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>(getRouteFromLocation);
 
+  // Sync title and canonical link for SEO based on route
+  useEffect(() => {
+    let title = 'Less Legal (लेस लीगल) – लेस क्रिएशन द्वारा प्रोडक्ट स्टूडियो';
+    let path = '';
+
+    switch (currentRoute) {
+      case 'home': title = 'Less Legal (लेस लीगल) – लेस क्रिएशन द्वारा प्रोडक्ट स्टूडियो'; path = ''; break;
+      case 'about': title = 'About Less Legal | लेस लीगल के बारे में'; path = 'about'; break;
+      case 'features': title = 'Less Legal App Features | लेस लीगल की विशेषताएं'; path = 'features'; break;
+      case 'founder': title = 'Founder & Creator - Less Legal'; path = 'founder'; break;
+      case 'premium': title = 'Premium Plans - Less Legal'; path = 'premium'; break;
+      case 'contact': title = 'Contact Support - Less Legal'; path = 'contact'; break;
+      case 'privacy': title = 'Website Privacy Policy - Less Legal'; path = 'privacy-policy'; break;
+      case 'app-privacy': title = 'Less Legal App Privacy Policy'; path = 'less-legal/privacy-policy'; break;
+      case 'app-delete-account': title = 'Delete Account & Data - Less Legal App'; path = 'less-legal/delete-account'; break;
+      case 'terms': title = 'Terms of Service - Less Legal'; path = 'terms'; break;
+      case 'refund': title = 'Refund Policy - Less Legal'; path = 'refund'; break;
+      case 'disclaimer': title = 'Legal Disclaimer - Less Legal'; path = 'disclaimer'; break;
+      case 'download': title = 'Download Less Legal App'; path = 'download'; break;
+      case 'admin': title = 'Admin Dashboard - Less Legal'; path = 'admin'; break;
+    }
+
+    document.title = title;
+
+    // Update canonical link
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = `https://lesscreation.com/${path}`;
+  }, [currentRoute]);
+
   // Sync route on popstate and hashchange
   useEffect(() => {
     const handleLocationChange = () => {

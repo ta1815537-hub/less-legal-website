@@ -168,6 +168,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
               {/* Main Headline */}
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[1.1]">
+                <span className="sr-only">Less Legal - </span>
                 <span className="text-slate-900 dark:text-[#F5F2EE] block sm:inline sm:mr-2">
                   {t.home.heroTitlePart1}
                 </span>
