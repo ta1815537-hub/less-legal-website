@@ -59,8 +59,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       category: isHindi ? "भुगतान एवं लेनदेन विवरण (Payment Info)" : "Payment & Transaction Details",
       collected: isHindi ? "हाँ (ऑर्डर आईडी एवं पास प्रकार)" : "Yes (Order ID & Plan Status)",
       purpose: isHindi ? "विज्ञापन-मुक्त पास सक्रिय करना और ग्राहक सहायता" : "Activating ad-free Premium Passes & billing customer support",
-      storage: isHindi ? "PayU Payments / Google Play Billing एवं सुरक्षित सर्वर मैपिंग" : "PayU Payments / Google Play Billing & Secure Server pass status mapping",
-      shared: isHindi ? "पेमेंट गेटवे (PayU / Google Play)" : "Payment Gateway (PayU / Google Play)",
+      storage: isHindi ? "Razorpay Payments / Google Play Billing एवं सुरक्षित सर्वर मैपिंग" : "Razorpay Payments / Google Play Billing & Secure Server pass status mapping",
+      shared: isHindi ? "पेमेंट गेटवे (Razorpay / Google Play)" : "Payment Gateway (Razorpay / Google Play)",
       retention: isHindi ? "टैक्स और वित्तीय ऑडिट के लिए 7 साल तक सुरक्षित" : "Transaction receipts retained up to 7 years for tax compliance"
     }
   ];
@@ -103,8 +103,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </div>
         <p className="leading-relaxed text-sm">
           {isHindi
-            ? "Less Legal आपकी फ़ाइलों और दस्तावेज़ों की गोपनीयता को सर्वोच्च प्राथमिकता देता है। आपके पीडीएफ, नोट्स और लोकल रिकॉर्ड्स आपके एंड्रॉइड फोन पर स्थानीय रूप से प्रोसेस होते हैं। हम खाते के समन्वय के लिए सुरक्षित क्लाउड प्रमाणीकरण सर्वर, मुफ्त संस्करण में विज्ञापनों के लिए Google AdMob, वैकल्पिक बैकअप के लिए Google Drive और विज्ञापन-मुक्त पास के लिए PayU / Google Play का उपयोग करते हैं।"
-            : "Less Legal is built with privacy at its core. Your private legal files, PDFs, notes, and local documents are processed locally on your Android device. We use secure encrypted server authentication for account sync, Google AdMob for free-tier advertising, optional user-initiated Google Drive backups, and PayU / Google Play for ad-free Premium Pass subscriptions."}
+            ? "Less Legal आपकी फ़ाइलों और दस्तावेज़ों की गोपनीयता को सर्वोच्च प्राथमिकता देता है। आपके पीडीएफ, नोट्स और लोकल रिकॉर्ड्स आपके एंड्रॉइड फोन पर स्थानीय रूप से प्रोसेस होते हैं। हम खाते के समन्वय के लिए सुरक्षित क्लाउड प्रमाणीकरण सर्वर, मुफ्त संस्करण में विज्ञापनों के लिए Google AdMob, वैकल्पिक बैकअप के लिए Google Drive और विज्ञापन-मुक्त पास के लिए Razorpay / Google Play का उपयोग करते हैं।"
+            : "Less Legal is built with privacy at its core. Your private legal files, PDFs, notes, and local documents are processed locally on your Android device. We use secure encrypted server authentication for account sync, Google AdMob for free-tier advertising, optional user-initiated Google Drive backups, and Razorpay / Google Play for ad-free Premium Pass subscriptions."}
         </p>
       </div>
 
@@ -257,8 +257,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
           </h2>
           <p>
             {isHindi
-              ? "विज्ञापन-मुक्त पास (₹59 / 3 महीने या ₹179 / 1 वर्ष) के लिए वित्तीय लेनदेन PayU Payments Private Limited और/या Google Play Billing द्वारा सीधे संसाधित किए जाते हैं। Less Legal आपके डेबिट/क्रेडिट कार्ड विवरण, बैंक क्रेडेंशियल या यूपीआई पिन को कभी भी संग्रहीत नहीं करता है।"
-              : "Financial transactions for Premium Passes are processed directly by authorized payment intermediaries including PayU Payments Private Limited and/or Google Play Billing. Less Legal does not store sensitive cardholder data, bank credentials, or UPI PINs."}
+              ? "विज्ञापन-मुक्त पास (₹59 / 3 महीने या ₹179 / 1 वर्ष) के लिए वित्तीय लेनदेन Razorpay Software Private Limited और/या Google Play Billing द्वारा सीधे संसाधित किए जाते हैं। Less Legal आपके डेबिट/क्रेडिट कार्ड विवरण, बैंक क्रेडेंशियल या यूपीआई पिन को कभी भी संग्रहीत नहीं करता है।"
+              : "Financial transactions for Premium Passes are processed directly by authorized payment intermediaries including Razorpay Software Private Limited and/or Google Play Billing. Less Legal does not store sensitive cardholder data, bank credentials, or UPI PINs."}
           </p>
         </section>
 

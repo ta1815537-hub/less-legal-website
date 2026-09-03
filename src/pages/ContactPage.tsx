@@ -462,7 +462,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             type="text"
                             value={formData.transactionId}
                             onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
-                            placeholder="e.g. PayU / Google Play Order ID"
+                            placeholder="e.g. Razorpay / Google Play Order ID"
                             className="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
                           />
                         </div>

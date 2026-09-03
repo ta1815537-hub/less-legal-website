@@ -806,7 +806,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "No Lifetime Claims: Less Legal does not sell lifetime access passes. Validity is strictly tied to the purchased plan duration."
       ],
       sec4Title: "4. Payment Gateway & Transaction Processing",
-      sec4Text: "Payments are processed through authorized payment intermediaries including PayU and/or Google Play Billing. By completing a transaction, you agree to the payment provider's terms of service. Less Legal does not store sensitive cardholder data.",
+      sec4Text: "Payments are processed through authorized payment intermediaries including Razorpay and/or Google Play Billing. By completing a transaction, you agree to the payment provider's terms of service. Less Legal does not store sensitive cardholder data.",
       sec5Title: "5. Intellectual Property",
       sec5Text: "All application software code, user interface designs, logos, graphics, and compilation of tools are the intellectual property of Less Legal. Public statutory Bare Acts and official court links referenced within the app belong to their respective governmental and public domain repositories.",
       sec6Title: "6. Limitation of Liability",
@@ -830,7 +830,7 @@ export const translations: Record<Language, TranslationSchema> = {
       lastUpdated: "Last Updated: March 2025",
       appScope: "Application: Less Legal (Android)",
       summaryTitle: "Core Privacy Summary",
-      summaryText: "Less Legal is committed to transparent, minimal data practices. Your sensitive files (PDFs, case notes, diary records) are processed locally on your Android device. We do NOT sell your personal data. Payment transactions for ad-free passes are handled securely by certified payment processors (PayU / Google Play Billing).",
+      summaryText: "Less Legal is committed to transparent, minimal data practices. Your sensitive files (PDFs, case notes, diary records) are processed locally on your Android device. We do NOT sell your personal data. Payment transactions for ad-free passes are handled securely by certified payment processors (Razorpay / Google Play Billing).",
       sec1Title: "1. Introduction & Scope",
       sec1P1: "This Privacy Policy describes how Less Legal ('we', 'our', or 'the application') handles information when you install, access, or use our mobile application on the Android operating system and visit our official website.",
       sec1P2: "By downloading or using Less Legal, you agree to the collection and use of information in accordance with this policy. If you do not agree with any terms of this policy, please do not use the application.",
@@ -847,7 +847,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Title: "4. Less Share Local File Transfer",
       sec4Text: "The Less Share feature utilizes direct local connectivity (Wi-Fi hotspot / local network protocol) to transfer files directly between paired devices. Files transferred via Less Share do not pass through or get logged on remote servers.",
       sec5Title: "5. Payment & Transaction Information",
-      sec5Text: "When purchasing a Premium Pass (₹59 for 3 Months or ₹179 for 1 Year), financial transactions are processed by certified third-party payment gateways including PayU Payments Private Limited and/or Google Play Billing.",
+      sec5Text: "When purchasing a Premium Pass (₹59 for 3 Months or ₹179 for 1 Year), financial transactions are processed by certified third-party payment gateways including Razorpay Software Private Limited and/or Google Play Billing.",
       sec5Bullets: [
         "No Card Storage by Less Legal: Less Legal never collects, processes, or stores your credit/debit card numbers, UPI PINs, CVV codes, or net banking passwords. All payment authorization occurs on PCI-DSS certified gateway environments.",
         "Transaction Confirmation Records: We receive only non-sensitive order confirmation details (such as Transaction ID, timestamp, plan purchased, and payment status) to activate and verify your ad-free pass."
@@ -860,7 +860,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "Google Play Services: Core Android system integration & billing",
         "Secure Cloud Infrastructure: Authentication, database sync, and crash reporting",
         "Google AdMob: Banner and interstitial ad delivery (free tier only)",
-        "PayU Payments: Secure payment gateway processing"
+        "Razorpay Payments: Secure payment gateway processing"
       ],
       sec8Title: "8. Data Security & Storage",
       sec8Text: "We employ commercially reasonable technical and administrative safeguards to protect any data collected against unauthorized access, loss, or misuse. All network communications with authentication or verification servers utilize secure HTTPS / TLS encryption.",
@@ -878,7 +878,7 @@ export const translations: Record<Language, TranslationSchema> = {
       title: "Refund & Cancellation Policy",
       effectiveDate: "Effective Date: March 1, 2025",
       lastUpdated: "Last Updated: March 2025",
-      paymentGateways: "Payment Gateways: PayU / Google Play",
+      paymentGateways: "Payment Gateways: Razorpay / Google Play",
       summaryTitle: "Policy Summary for Premium Passes",
       summaryText: "Less Legal provides digital passes granting ad-free access for a specified validity period. Because digital pass activation delivers immediate value, refunds are governed by transparent technical eligibility criteria described below.",
       sec1Title: "1. Applicability to Premium Plans",
@@ -893,7 +893,7 @@ export const translations: Record<Language, TranslationSchema> = {
       cond1Title: "Duplicate / Multiple Charges:",
       cond1Text: "If your bank account or UPI was debited more than once for the same transaction due to a network glitch during checkout, the excess charge will be refunded.",
       cond2Title: "Payment Debited but Pass Not Activated:",
-      cond2Text: "If your payment was successfully processed by PayU / Google Play but the ad-free pass failed to activate within 24 hours and our technical team cannot manually provision it, a full refund will be initiated.",
+      cond2Text: "If your payment was successfully processed by Razorpay / Google Play but the ad-free pass failed to activate within 24 hours and our technical team cannot manually provision it, a full refund will be initiated.",
       sec3Title: "3. Cancellation Rules (No Auto-Debits)",
       sec3P1: "Because Less Legal passes are one-time fixed-duration purchases and NOT auto-renewing subscriptions, there is no recurring monthly or annual billing cycle that requires future cancellation.",
       sec3P2: "Once your validity period concludes (90 or 365 days), your account automatically returns to standard access without any cancellation action needed from you.",
@@ -901,13 +901,13 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Sub: "To initiate a refund request for an eligible transaction, please submit a request within 7 days of the transaction date with the following details:",
       sec4Bullets: [
         "Your registered account email address in Less Legal.",
-        "The payment gateway Transaction ID / Order ID (from PayU or Play Store receipt).",
+        "The payment gateway Transaction ID / Order ID (from Razorpay or Play Store receipt).",
         "Date and amount of the transaction (₹59 or ₹179).",
         "Brief explanation of the technical issue encountered."
       ],
       sec4Button: "Submit Refund Request via Support",
       sec5Title: "5. Refund Processing Timeline",
-      sec5Text: "Approved refunds are processed through the original payment method via the payment gateway (PayU / Google Play). Depending on your issuing bank or payment provider, the refunded amount typically reflects in your source account within 5 to 7 business days.",
+      sec5Text: "Approved refunds are processed through the original payment method via the payment gateway (Razorpay / Google Play). Depending on your issuing bank or payment provider, the refunded amount typically reflects in your source account within 5 to 7 business days.",
       readTerms: "← Read Terms & Conditions",
       contactSupport: "Contact Support Desk →"
     }

@@ -982,7 +982,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
           </div>
           <div className="pt-2 text-xs text-slate-500 dark:text-[#77736F]">
-            {language === 'hi' ? 'खरीदारी सीधे Less Legal एंड्रॉइड ऐप के भीतर प्रमाणित भुगतान गेटवे के माध्यम से की जाती है।' : 'Purchases are made securely inside the Android application via certified Play Store / PayU gateway.'}
+            {language === 'hi' ? 'खरीदारी सीधे Less Legal एंड्रॉइड ऐप के भीतर प्रमाणित भुगतान गेटवे के माध्यम से की जाती है।' : 'Purchases are made securely inside the Android application via certified Play Store / Razorpay gateway.'}
           </div>
 
         </div>

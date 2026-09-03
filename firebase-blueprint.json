@@ -4,27 +4,188 @@
       "title": "Account Deletion Requests",
       "description": "User account deletion requests for mobile app compliance",
       "properties": {
-        "ticketId": { "type": "string", "description": "Unique reference ticket ID" },
-        "email": { "type": "string", "description": "User email address" },
-        "userId": { "type": "string", "description": "App User ID or phone" },
-        "reason": { "type": "string", "description": "Reason for account deletion" },
-        "status": { "type": "string", "description": "Pending | Processing | Completed" },
-        "adminNotes": { "type": "string", "description": "Internal admin remarks" },
-        "timestamp": { "type": "string", "description": "ISO timestamp" }
+        "ticketId": {
+          "type": "string",
+          "description": "Unique reference ticket ID"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "userId": {
+          "type": "string",
+          "description": "App User ID or phone"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for account deletion"
+        },
+        "status": {
+          "type": "string",
+          "description": "Pending | Processing | Completed"
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Internal admin remarks"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO timestamp"
+        }
       }
     },
     "contact_submissions": {
       "title": "Contact & Support Submissions",
       "description": "Support tickets submitted via website contact form",
       "properties": {
-        "name": { "type": "string", "description": "User full name" },
-        "email": { "type": "string", "description": "User email address" },
-        "subject": { "type": "string", "description": "Support subject" },
-        "transactionId": { "type": "string", "description": "Transaction ID if applicable" },
-        "message": { "type": "string", "description": "Message content" },
-        "status": { "type": "string", "description": "Pending | In Progress | Resolved" },
-        "adminNotes": { "type": "string", "description": "Internal admin notes" },
-        "timestamp": { "type": "string", "description": "ISO timestamp" }
+        "name": {
+          "type": "string",
+          "description": "User full name"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Support subject"
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "Transaction ID if applicable"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message content"
+        },
+        "status": {
+          "type": "string",
+          "description": "Pending | In Progress | Resolved"
+        },
+        "adminNotes": {
+          "type": "string",
+          "description": "Internal admin notes"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO timestamp"
+        }
+      }
+    },
+    "memberships": {
+      "title": "Active Memberships & Passes",
+      "description": "Activated user memberships and ad-free passes from Razorpay purchases",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated User ID or mobile account ID"
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "User email"
+        },
+        "userContact": {
+          "type": "string",
+          "description": "User contact phone number"
+        },
+        "planId": {
+          "type": "string",
+          "description": "plan-3m | plan-1y"
+        },
+        "planCode": {
+          "type": "string",
+          "description": "NO_ADS_3_MONTHS | NO_ADS_1_YEAR"
+        },
+        "planName": {
+          "type": "string",
+          "description": "Plan display title"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Amount paid in paise"
+        },
+        "amountFormatted": {
+          "type": "string",
+          "description": "Formatted amount in INR"
+        },
+        "currency": {
+          "type": "string",
+          "description": "INR"
+        },
+        "validityDays": {
+          "type": "number",
+          "description": "90 or 365 days"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "ISO activation timestamp"
+        },
+        "expiryDate": {
+          "type": "string",
+          "description": "ISO expiration timestamp"
+        },
+        "status": {
+          "type": "string",
+          "description": "ACTIVE | EXPIRED | REFUNDED"
+        },
+        "razorpayOrderId": {
+          "type": "string",
+          "description": "Razorpay order ID"
+        },
+        "razorpayPaymentId": {
+          "type": "string",
+          "description": "Razorpay payment ID"
+        },
+        "verifiedAt": {
+          "type": "string",
+          "description": "Verification timestamp"
+        }
+      }
+    },
+    "payment_transactions": {
+      "title": "Payment Transactions",
+      "description": "Verified Razorpay payment transactions log",
+      "properties": {
+        "razorpayOrderId": {
+          "type": "string",
+          "description": "Razorpay order ID"
+        },
+        "razorpayPaymentId": {
+          "type": "string",
+          "description": "Razorpay payment ID"
+        },
+        "planId": {
+          "type": "string",
+          "description": "Plan ID"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Amount in paise"
+        },
+        "currency": {
+          "type": "string",
+          "description": "INR"
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Payer email"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Payer account ID"
+        },
+        "status": {
+          "type": "string",
+          "description": "SUCCESS | FAILED"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "UPI | Card | Netbanking | Wallet"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Transaction timestamp"
+        }
       }
     }
   }

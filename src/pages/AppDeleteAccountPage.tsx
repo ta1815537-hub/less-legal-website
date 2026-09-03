@@ -723,8 +723,8 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
         </div>
         <p className="leading-relaxed">
           {isHindi
-            ? "भारतीय टैक्स और वित्तीय नियमों के तहत, प्रीमियम पास खरीद के पेमेंट गेटवे लेनदेन रिकॉर्ड (PayU / Play Store ऑर्डर आईडी) को केवल कर लेखापरीक्षा अनुपालन के लिए 7 वर्षों तक सुरक्षित रखना आवश्यक है। ये रिकॉर्ड आपके हटाने के बाद किसी अन्य उद्देश्य के लिए उपयोग नहीं किए जाते हैं।"
-            : "Under Indian tax and accounting regulations, financial transaction receipts for Premium Pass purchases (PayU / Play Store order IDs) are retained for up to 7 years solely for tax compliance and audit requirements. These transaction receipts are never used for marketing or tracking after account deletion."}
+            ? "भारतीय टैक्स और वित्तीय नियमों के तहत, प्रीमियम पास खरीद के पेमेंट गेटवे लेनदेन रिकॉर्ड (Razorpay / Play Store ऑर्डर आईडी) को केवल कर लेखापरीक्षा अनुपालन के लिए 7 वर्षों तक सुरक्षित रखना आवश्यक है। ये रिकॉर्ड आपके हटाने के बाद किसी अन्य उद्देश्य के लिए उपयोग नहीं किए जाते हैं।"
+            : "Under Indian tax and accounting regulations, financial transaction receipts for Premium Pass purchases (Razorpay / Play Store order IDs) are retained for up to 7 years solely for tax compliance and audit requirements. These transaction receipts are never used for marketing or tracking after account deletion."}
         </p>
 
         {hasEmail && (
