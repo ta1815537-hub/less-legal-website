@@ -54,9 +54,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         <div className="h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Brand Logo & Studio Sub-label */}
-          <button 
+          <a 
             id="nav-brand-logo"
-            onClick={() => handleNavClick('home')}
+            href="/"
+            onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
             className="flex items-center gap-2.5 sm:gap-3 text-left group focus:outline-none cursor-pointer shrink-0"
           >
             <motion.div
@@ -77,17 +78,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
               </p>
             </div>
-          </button>
+          </a>
 
           {/* Desktop Integrated Navigation Bar */}
           <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 px-1.5 lg:px-3 py-1 lg:py-1.5 rounded-xl bg-slate-100/90 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 backdrop-blur-md shrink-0">
             {navLinks.map((item) => {
               const isActive = currentRoute === item.route;
               return (
-                <button
+                <a
                   key={item.route}
+                  href={`/${item.route === 'home' ? '' : item.route}`}
                   id={`nav-link-${item.route}`}
-                  onClick={() => handleNavClick(item.route)}
+                  onClick={(e) => { e.preventDefault(); handleNavClick(item.route); }}
                   className={`relative px-2 lg:px-3.5 py-1 lg:py-1.5 rounded-lg text-[11px] lg:text-xs xl:text-sm font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap single-line-fit ${
                     isActive
                       ? 'text-slate-900 dark:text-[#F5F2EE] font-bold'
@@ -102,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                     />
                   )}
                   <span>{item.label}</span>
-                </button>
+                </a>
               );
             })}
           </nav>

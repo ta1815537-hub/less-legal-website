@@ -1,6 +1,6 @@
 {
-  "name": "Less Legal (लेस लीगल)",
-  "description": "लेस लीगल कानूनी संसाधनों, पीडीएफ टूल्स, नोट्स, कैलकुलेटर और रोजमर्रा की डिजिटल उपयोगिताओं को एक एंड्रॉइड एप्लिकेशन में लाता है।",
+  "name": "Less Legal: All in One Smart App | Less Creation by Anurag Gurauli",
+  "description": "Download Less Legal, a trending new smart app by Less Creation founded by Anurag Gurauli. Enjoy legal tools, PDF app features, document scanner, Shareit app alternative, MS Word capabilities, poster maker, and reliable legal information all in one app.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

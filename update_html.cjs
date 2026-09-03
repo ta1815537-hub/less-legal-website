@@ -1,4 +1,6 @@
-<!doctype html>
+const fs = require('fs');
+
+const html = `<!doctype html>
 <html lang="en" class="bg-slate-50 dark:bg-[#080808]">
   <head>
     <meta charset="UTF-8" />
@@ -56,3 +58,5 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+`;
+fs.writeFileSync('index.html', html);

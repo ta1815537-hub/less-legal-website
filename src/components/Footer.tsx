@@ -50,18 +50,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           
           {/* Column 1: Brand & Tagline */}
           <div className="lg:col-span-2 space-y-4">
-            <motion.div 
+            <a 
               whileHover={{ x: 2 }}
               className="flex items-center gap-3 cursor-pointer inline-flex"
-              onClick={() => onNavigate('home')}
-            >
+              href="/" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
+             style={{ display: 'inline-flex' }}>
               <LTLogo className="w-10 h-10" />
               <div>
                 <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-[#F5F2EE]">
                   {SITE_CONFIG.companyName || SITE_CONFIG.appName}
                 </span>
               </div>
-            </motion.div>
+            </a>
 
             <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-sm">
               {SITE_CONFIG.companyTagline || SITE_CONFIG.tagline}
@@ -89,67 +89,67 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <button
+                <a
                   id="footer-nav-home"
-                  onClick={() => onNavigate('home')}
+                  href="/" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
                   <span>{t.nav.home}</span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-nav-about"
-                  onClick={() => onNavigate('about')}
+                  href="/about" onClick={(e) => { e.preventDefault(); onNavigate('about'); }}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
                   <span>{t.footer.aboutLessLegal}</span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-nav-founder"
-                  onClick={() => onNavigate('founder')}
+                  href="/founder" onClick={(e) => { e.preventDefault(); onNavigate('founder'); }}
                   className="text-amber-800 dark:text-[#D8BD82] hover:text-[#C21F2F] dark:hover:text-[#F5F2EE] font-semibold transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
                   <span>{t.footer.founderLabel}</span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-nav-features"
-                  onClick={() => onNavigate('features')}
+                  href="/features" onClick={(e) => { e.preventDefault(); onNavigate('features'); }}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
                   <span>{t.footer.appFeatures}</span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-nav-premium"
-                  onClick={() => onNavigate('premium')}
+                  href="/premium" onClick={(e) => { e.preventDefault(); onNavigate('premium'); }}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-amber-700 dark:hover:text-[#D8BD82] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
                   <span>{t.footer.premiumPlans}</span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-nav-download"
-                  onClick={() => onNavigate('download')}
+                  href="/download" onClick={(e) => { e.preventDefault(); onNavigate('download'); }}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
                   <span>{t.footer.downloadApp}</span>
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-nav-contact"
-                  onClick={() => onNavigate('contact')}
+                  href="/contact" onClick={(e) => { e.preventDefault(); onNavigate('contact'); }}
                   className="text-slate-600 dark:text-[#B8B3AF] hover:text-[#C21F2F] dark:hover:text-[#E03A3E] transition-colors flex items-center gap-1.5 cursor-pointer text-left"
                 >
                   <span>{t.footer.contactSupport}</span>
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -161,44 +161,44 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <button
+                <a
                   id="footer-link-privacy"
-                  onClick={() => onNavigate('privacy')}
+                  href="/privacy-policy" onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">{t.footer.websitePrivacyPolicy}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-link-terms"
-                  onClick={() => onNavigate('terms')}
+                  href="/terms" onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">{t.footer.termsConditions}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-link-refund"
-                  onClick={() => onNavigate('refund')}
+                  href="/refund" onClick={(e) => { e.preventDefault(); onNavigate('refund'); }}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">{t.footer.refundCancellation}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-link-disclaimer"
-                  onClick={() => onNavigate('disclaimer')}
+                  href="/disclaimer" onClick={(e) => { e.preventDefault(); onNavigate('disclaimer'); }}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">{t.footer.legalDisclaimer}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -210,24 +210,24 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <button
+                <a
                   id="footer-link-app-privacy"
-                  onClick={() => onNavigate('app-privacy')}
+                  href="/less-legal/privacy-policy" onClick={(e) => { e.preventDefault(); onNavigate('app-privacy'); }}
                   className="hover:text-slate-900 dark:hover:text-[#F5F2EE] transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline">{t.footer.appPrivacyPolicy}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 dark:text-[#77736F] group-hover:text-[#C21F2F] dark:group-hover:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
+                </a>
               </li>
               <li>
-                <button
+                <a
                   id="footer-link-app-delete-account"
-                  onClick={() => onNavigate('app-delete-account')}
+                  href="/less-legal/delete-account" onClick={(e) => { e.preventDefault(); onNavigate('app-delete-account'); }}
                   className="hover:text-red-700 dark:hover:text-red-400 transition-colors text-slate-600 dark:text-[#B8B3AF] font-medium flex items-center justify-between w-full group cursor-pointer"
                 >
                   <span className="group-hover:underline text-[#C21F2F] dark:text-[#E03A3E] font-bold">{t.footer.deleteAccount}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -268,14 +268,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               )}
 
               <div className="pt-1">
-                <button
+                <a
                   id="footer-link-contact-page"
-                  onClick={() => onNavigate('contact')}
+                  href="/contact" onClick={(e) => { e.preventDefault(); onNavigate('contact'); }}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-white/5 hover:bg-slate-200/60 dark:hover:bg-white/10 text-amber-800 dark:text-[#D8BD82] text-xs font-medium border border-amber-600/30 dark:border-[#D8BD82]/30 transition-colors cursor-pointer shadow-2xs"
                 >
                   <Mail className="w-3.5 h-3.5" />
                   <span>{t.footer.contactSupport}</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -291,12 +291,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <strong className="text-slate-900 dark:text-[#F5F2EE]">{t.footer.disclaimerTitle}</strong> {t.footer.disclaimerText}
               </div>
             </div>
-            <button
-              onClick={() => onNavigate('disclaimer')}
+            <a
+              href="/disclaimer" onClick={(e) => { e.preventDefault(); onNavigate('disclaimer'); }}
               className="text-[#C21F2F] dark:text-[#E03A3E] hover:text-slate-900 dark:hover:text-[#F5F2EE] whitespace-nowrap font-medium underline shrink-0 cursor-pointer"
             >
               {t.footer.readFullDisclaimer}
-            </button>
+            </a>
           </div>
         </ScrollReveal>
 

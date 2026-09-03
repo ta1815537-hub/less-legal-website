@@ -71,11 +71,11 @@ export default function App() {
 
   // Sync title and canonical link for SEO based on route
   useEffect(() => {
-    let title = 'Less Legal (लेस लीगल) – लेस क्रिएशन द्वारा प्रोडक्ट स्टूडियो';
+    let title = 'Less Legal: All in One Smart App | Less Creation by Anurag Gurauli';
     let path = '';
 
     switch (currentRoute) {
-      case 'home': title = 'Less Legal (लेस लीगल) – लेस क्रिएशन द्वारा प्रोडक्ट स्टूडियो'; path = ''; break;
+      case 'home': title = 'Less Legal: All in One Smart App | Less Creation by Anurag Gurauli'; path = ''; break;
       case 'about': title = 'About Less Legal | लेस लीगल के बारे में'; path = 'about'; break;
       case 'features': title = 'Less Legal App Features | लेस लीगल की विशेषताएं'; path = 'features'; break;
       case 'founder': title = 'Founder & Creator - Less Legal'; path = 'founder'; break;
