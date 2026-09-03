@@ -212,17 +212,17 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-red-500/30 dark:border-red-500/30 bg-red-500/[0.02] dark:bg-red-500/[0.04] space-y-6 relative z-10 shadow-xl">
         
         {/* Modern Switcher Tabs */}
-        <div className="flex rounded-2xl bg-slate-200/70 dark:bg-[#141418] p-1.5 border border-slate-300/80 dark:border-white/10 text-xs font-bold shadow-inner">
+        <div className="flex flex-col sm:flex-row rounded-2xl bg-slate-200/70 dark:bg-[#141418] p-1.5 border border-slate-300/80 dark:border-white/10 text-xs font-bold shadow-inner overflow-x-auto hide-scrollbar gap-1 sm:gap-0">
           <button
             type="button"
             onClick={() => setActiveTab('submit')}
-            className={`flex-1 py-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
+            className={`flex-1 py-3 px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap ${
               activeTab === 'submit'
                 ? 'bg-white dark:bg-[#222228] text-[#C21F2F] dark:text-[#FF5C5C] shadow-md border border-red-500/30 dark:border-white/10 font-extrabold scale-[1.01]'
                 : 'text-slate-600 dark:text-[#A09D99] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <ShieldAlert className="w-4 h-4 text-[#C21F2F]" />
+            <ShieldAlert className="w-4 h-4 text-[#C21F2F] shrink-0" />
             <span>{isHindi ? "विलोपन अनुरोध जमा करें" : "Request Account Deletion"}</span>
           </button>
 
@@ -234,13 +234,13 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                 handleSearchStatus();
               }
             }}
-            className={`flex-1 py-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
+            className={`flex-1 py-3 px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap ${
               activeTab === 'check-status'
                 ? 'bg-white dark:bg-[#222228] text-amber-700 dark:text-[#D8BD82] shadow-md border border-amber-500/30 dark:border-white/10 font-extrabold scale-[1.01]'
                 : 'text-slate-600 dark:text-[#A09D99] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
-            <FileSearch className="w-4 h-4 text-amber-600 dark:text-[#D8BD82]" />
+            <FileSearch className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] shrink-0" />
             <span>{isHindi ? "विलोपन स्थिति ट्रैक करें" : "Track Deletion Status"}</span>
           </button>
         </div>

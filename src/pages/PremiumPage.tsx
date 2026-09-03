@@ -81,7 +81,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
         
         {/* Plan 1: ₹59 / 3 Months */}
         <ScrollReveal direction="up" delay={0.1} className="h-full">
-          <div className="glass-panel shine-sweep-overlay p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/12 shadow-xl flex flex-col justify-between h-full">
+          <motion.div whileHover={{ y: -8, scale: 1.02 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="glass-panel shine-sweep-overlay p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/12 shadow-xl flex flex-col justify-between h-full">
             <div>
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F]">
@@ -139,13 +139,13 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 </GlowingButton>
               </a>
             </div>
-          </div>
+          </motion.div>
         </ScrollReveal>
 
         {/* Plan 2: ₹179 / 1 Year (Best Value) */}
         <ScrollReveal direction="up" delay={0.16} className="h-full">
           <div className="relative h-full">
-            <div className="glass-panel-crimson glow-crimson-gold shine-sweep-overlay p-6 sm:p-8 rounded-3xl border-2 flex flex-col justify-between h-full">
+            <motion.div whileHover={{ y: -10, scale: 1.03 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="glass-panel-crimson glow-crimson-gold shine-sweep-overlay p-6 sm:p-8 rounded-3xl border-2 flex flex-col justify-between h-full">
 
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -207,7 +207,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 </GlowingButton>
               </a>
             </div>
-          </div>
+          </motion.div>
             <motion.div 
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}

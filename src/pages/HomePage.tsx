@@ -236,22 +236,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="pt-6 sm:pt-8 border-t border-slate-200 dark:border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto text-xs text-slate-700 dark:text-[#B8B3AF]"
           >
-            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
+            <motion.div whileHover={{ y: -5, scale: 1.05 }} className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line cursor-default">
               <Zap className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span className="whitespace-nowrap badge-one-line">{t.home.trustFastEngine}</span>
-            </div>
-            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
+            </motion.div>
+            <motion.div whileHover={{ y: -5, scale: 1.05 }} className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line cursor-default">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span className="whitespace-nowrap badge-one-line">{t.home.trustPrivacy}</span>
-            </div>
-            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
+            </motion.div>
+            <motion.div whileHover={{ y: -5, scale: 1.05 }} className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line cursor-default">
               <LayoutGrid className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span className="whitespace-nowrap badge-one-line">{t.home.trustToolsCount}</span>
-            </div>
-            <div className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line">
+            </motion.div>
+            <motion.div whileHover={{ y: -5, scale: 1.05 }} className="flex items-center justify-center gap-1.5 p-2.5 sm:p-3 rounded-2xl glass-panel border border-slate-200 dark:border-white/10 whitespace-nowrap badge-one-line cursor-default">
               <Smartphone className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
               <span className="whitespace-nowrap badge-one-line">{t.home.trustAndroidReady}</span>
-            </div>
+            </motion.div>
           </motion.div>
 
         </div>
@@ -582,7 +582,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             if (product.iconName === 'Edit3') IconComp = Edit3;
 
             return (
-              <StaggerItem key={product.id}>
+              <StaggerItem key={product.id} interactive={true}>
                 <div className={`group relative p-6 rounded-3xl transition-all duration-300 h-full flex flex-col ${
                   isFlagship 
                     ? 'glass-panel-crimson text-slate-900 dark:text-[#F5F2EE]' 

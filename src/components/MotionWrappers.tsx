@@ -115,9 +115,10 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   );
 };
 
-export const StaggerItem: React.FC<{ children: ReactNode; className?: string }> = ({
+export const StaggerItem: React.FC<{ children: ReactNode; className?: string; interactive?: boolean }> = ({
   children,
   className = '',
+  interactive = false,
 }) => {
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.97 },
@@ -130,7 +131,11 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string }> 
   };
 
   return (
-    <motion.div variants={itemVariants} className={className}>
+    <motion.div 
+      variants={itemVariants} 
+      className={className}
+      whileHover={interactive ? { y: -6, scale: 1.015, transition: { duration: 0.3, ease: "easeOut" } } : undefined}
+    >
       {children}
     </motion.div>
   );
@@ -227,8 +232,9 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.15, ease: EASING_SPRING }}
+      whileHover={{ scale: 1.025 }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ duration: 0.2, ease: EASING_SPRING }}
       className={`relative group overflow-hidden transition-all rounded-xl font-semibold px-5 py-3 text-sm flex items-center justify-center gap-2 ${getVariantStyles()} ${className}`}
     >
       <span className="relative z-10 flex items-center justify-center gap-2">

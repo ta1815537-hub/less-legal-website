@@ -17,7 +17,7 @@ export const ThreeDDeviceShowcase: React.FC<ThreeDDeviceShowcaseProps> = ({
   const [imgError, setImgError] = useState(false);
 
   // Rotation angles stored in ref for zero-lag 60fps DOM updates
-  const rotXRef = useRef(12);
+  const rotXRef = useRef(0);
   const rotYRef = useRef(-18);
 
   // Update DOM transform directly without triggering React re-renders for buttery 60fps
@@ -42,10 +42,10 @@ export const ThreeDDeviceShowcase: React.FC<ThreeDDeviceShowcaseProps> = ({
       const delta = Math.min((now - lastTime) / 1000, 0.1); // Cap delta to avoid jumps
       lastTime = now;
 
-      // Continuous 360° rotation speed (20 deg/sec)
-      rotYRef.current = (rotYRef.current + delta * 22) % 360;
-      // Breathing pitch oscillation
-      rotXRef.current = 10 + Math.sin(now / 1000) * 5;
+      // Continuous 360° rotation speed (faster)
+      rotYRef.current = (rotYRef.current + delta * 75) % 360;
+      // Fixed perfectly straight rotation (0 degree tilt)
+      rotXRef.current = 0;
 
       applyTransform(rotXRef.current, rotYRef.current);
 

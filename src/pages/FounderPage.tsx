@@ -41,7 +41,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* HERO SECTION — Desktop Left: Photo, Right: Info    */}
       {/* ================================================== */}
       <ScrollReveal direction="up" className="relative z-10">
-        <div className="glass-panel p-6 sm:p-10 lg:p-12 rounded-3xl border border-slate-200 dark:border-white/12 shadow-2xl relative overflow-hidden">
+        <motion.div whileHover={{ scale: 1.01 }} transition={{ type: "spring", stiffness: 300 }} className="glass-panel p-6 sm:p-10 lg:p-12 rounded-3xl border border-slate-200 dark:border-white/12 shadow-2xl relative overflow-hidden">
           {/* Subtle Ambient Red/Gold Gradient Background */}
           <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-[#C21F2F]/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-[#D8BD82]/15 rounded-full blur-3xl pointer-events-none" />
@@ -155,7 +155,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             </div>
 
           </div>
-        </div>
+        </motion.div>
       </ScrollReveal>
 
       {/* ================================================== */}
@@ -188,7 +188,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* WHY I CREATED LESS LEGAL                          */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.1} className="relative z-10">
-        <div className="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-200 dark:border-white/12 space-y-6">
+        <motion.div whileHover={{ scale: 1.01, y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-200 dark:border-white/12 space-y-6">
           
           <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
             <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-600/30 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center shrink-0">
@@ -227,14 +227,14 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <p>{t.founder.disclaimerNote}</p>
           </div>
 
-        </div>
+        </motion.div>
       </ScrollReveal>
 
       {/* ================================================== */}
       {/* CONNECTED ECOSYSTEM FLOW — Visual Connection      */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.12} className="relative z-10">
-        <div className="p-6 sm:p-10 glass-panel-gradient rounded-3xl border border-slate-200 dark:border-white/15 space-y-8 text-center">
+        <motion.div whileHover={{ scale: 1.01 }} transition={{ type: "spring", stiffness: 300 }} className="p-6 sm:p-10 glass-panel-gradient rounded-3xl border border-slate-200 dark:border-white/15 space-y-8 text-center">
           
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
@@ -297,7 +297,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
           </div>
 
-        </div>
+        </motion.div>
       </ScrollReveal>
 
       {/* ================================================== */}

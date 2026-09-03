@@ -48,7 +48,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
       {/* Non-Governmental Affiliation Declaration */}
       <ScrollReveal direction="up" delay={0.06} className="relative z-10">
-        <div className="p-6 sm:p-8 glass-panel-crimson rounded-3xl border border-[#C21F2F]/40 shadow-xl space-y-3">
+        <motion.div whileHover={{ scale: 1.015, y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="p-6 sm:p-8 glass-panel-crimson rounded-3xl border border-[#C21F2F]/40 shadow-xl space-y-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#C21F2F] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
               <AlertTriangle className="w-5 h-5" />
@@ -63,7 +63,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
             {t.about.declarationP2}
           </p>
-        </div>
+        </motion.div>
       </ScrollReveal>
 
       {/* What Less Legal Does */}
@@ -174,7 +174,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Call to actions */}
-      <ScrollReveal direction="up" className="p-8 glass-panel-gradient rounded-3xl text-center space-y-4 relative z-10 border border-slate-200 dark:border-white/15">
+      <ScrollReveal direction="up" className="p-8 glass-panel-gradient rounded-3xl text-center space-y-4 relative z-10 border border-slate-200 dark:border-white/15"
+        whileHover={{ scale: 1.01 }} transition={{ type: "spring", stiffness: 300 }}>
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-[#F5F2EE]">{t.common.exploreFeatures}</h2>
         <p className="text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto">
           {language === 'hi' ? 'हमारे सत्यापित सुविधाओं के पूर्ण कैटलॉग की समीक्षा करें या एंड्रॉइड पर ऐप डाउनलोड करें।' : 'Review our complete catalog of verified features or download the app on Android.'}
