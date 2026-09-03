@@ -173,7 +173,7 @@ export default function App() {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', `https://lesscreation.com/${path}`);
+    canonical.setAttribute('href', `https://www.lesscreation.com/${path}`);
   }, [currentRoute]);
 
   // Sync route on popstate and hashchange

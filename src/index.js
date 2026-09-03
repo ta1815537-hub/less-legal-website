@@ -10,6 +10,12 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Redirect root domain (lesscreation.com) to www.lesscreation.com
+    if (url.hostname === 'lesscreation.com') {
+      url.hostname = 'www.lesscreation.com';
+      return Response.redirect(url.toString(), 301);
+    }
+
     // API Routes Handler
     if (url.pathname.startsWith('/api/')) {
       // CORS Preflight

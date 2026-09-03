@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://lesscreation.com/</loc>
+    <loc>https://www.lesscreation.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/download</loc>
+    <loc>https://www.lesscreation.com/download</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/premium</loc>
+    <loc>https://www.lesscreation.com/premium</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/features</loc>
+    <loc>https://www.lesscreation.com/features</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/about</loc>
+    <loc>https://www.lesscreation.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/founder</loc>
+    <loc>https://www.lesscreation.com/founder</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/contact</loc>
+    <loc>https://www.lesscreation.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/privacy-policy</loc>
+    <loc>https://www.lesscreation.com/privacy-policy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/less-legal/privacy-policy</loc>
+    <loc>https://www.lesscreation.com/less-legal/privacy-policy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/less-legal/delete-account</loc>
+    <loc>https://www.lesscreation.com/less-legal/delete-account</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/terms</loc>
+    <loc>https://www.lesscreation.com/terms</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/refund</loc>
+    <loc>https://www.lesscreation.com/refund</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://lesscreation.com/disclaimer</loc>
+    <loc>https://www.lesscreation.com/disclaimer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
