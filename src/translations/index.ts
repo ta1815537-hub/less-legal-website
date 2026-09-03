@@ -499,12 +499,12 @@ export const translations: Record<Language, TranslationSchema> = {
       strictLiabilityDisclaimer: "Disclaimer: Less Legal is an independent platform and is not affiliated with or endorsed by any government entity. User emails or login data are collected strictly for authentication and personal identification. We do not sell, misuse, or unlawfully distribute user data under any circumstances. The developer and owner assume no liability for false claims or malicious legal actions regarding data misuse. By using this service, you agree to these terms."
     },
     founder: {
-      badge: "FOUNDER & CREATOR",
-      name: "Anurag Tiwari",
+      badge: "FOUNDER OF LESS LEGAL & LESS CREATION",
+      name: "Anurag Gurauli",
       role: "Advocate",
       subtitle: "Advocate | Founder, Less Creation",
       practice: "Practicing as an Advocate before the Allahabad High Court.",
-      shortQuote: "“Less Creation is built around a simple idea: technology should make useful knowledge, tools and digital services easier to access.”",
+      shortQuote: "“Less Creation is built around a simple idea: technology should make useful knowledge, legal tools and digital services easier to access.”",
 
       storyTitle: "The Person Behind Less Creation",
       storyP1: "My name is Anurag Tiwari. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Creation.",
@@ -563,9 +563,9 @@ export const translations: Record<Language, TranslationSchema> = {
     home: {
       heroBadge: "Flagship Product Studio",
       heroTitle: "Legal Knowledge & Digital Utilities Suite",
-      heroTitlePart1: "Legal Knowledge & ",
-      heroTitlePart2: "Digital Utilities Suite",
-      heroSubtitle: "Bringing essential statutory reference, PDF workspace, calculators, and daily tools into one unified Android application.",
+      heroTitlePart1: "Less Legal: All in One Smart App & ",
+      heroTitlePart2: "Legal Tools Suite",
+      heroSubtitle: "Less Legal is a trending new smart app by Less Creation founded by Anurag Gurauli. Bring legal drafting, bare acts, PDF app features, document scanner, Share it app utility, and everyday tools into one Android application.",
       ctaDownload: "Download Less Legal",
       ctaDemo: "Try Live Interactive Demo",
       ctaFeatures: "Explore All Tools",
@@ -645,9 +645,9 @@ export const translations: Record<Language, TranslationSchema> = {
       ]
     },
     about: {
-      badge: "About Less Legal",
-      title: "Purpose, Utility & Philosophy",
-      subtitle: "Independent legal reference, local PDF tools, and court calculators designed for daily utility.",
+      badge: "ABOUT LESS LEGAL & LESS CREATION",
+      title: "Purpose, Utility & Philosophy of our All in One App",
+      subtitle: "Independent legal reference, bare acts, local PDF app tools, Share it app utilities, MS Word capabilities, and court calculators designed for daily utility.",
       declarationTitle: "Official Independence & Non-Government Declaration",
       declarationP1: "Less Legal is an independent software application developed to provide digital utilities, calculators, and educational legal reference materials.",
       declarationP2: "Less Legal is NOT affiliated with, associated with, authorized by, endorsed by, or in any way officially connected to the Government of India, the Supreme Court of India, any High Court, District Court, Bar Council, or any government ministry. All government portal links are public informational shortcuts.",
@@ -669,9 +669,9 @@ export const translations: Record<Language, TranslationSchema> = {
       p3Desc: "Less Legal provides informational tools and calculation utilities. Digital tools do not replace qualified legal counsel for active litigation."
     },
     featuresPage: {
-      badge: "FEATURE CATALOG",
-      title: "Tools & Utilities Built for Practice",
-      subtitle: "Explore the verified features available inside the Less Legal Android application.",
+      badge: "SMART APP FEATURE CATALOG",
+      title: "Legal Tools, Document Scanner & PDF App",
+      subtitle: "Explore 46+ verified legal tools available inside the Less Legal Android application. Master legal drafting, RTI drafts, and MS Word capabilities on the go.",
       searchPlaceholder: "Search features, calculators, PDF tools...",
       allCategories: "All Categories",
       categories: {
@@ -684,9 +684,9 @@ export const translations: Record<Language, TranslationSchema> = {
       noResults: "No features found matching your search. Try adjusting your query."
     },
     premiumPage: {
-      badge: "AD-FREE PASSES",
-      title: "Simple & Transparent Pricing",
-      subtitle: "Enjoy an uninterrupted, completely ad-free experience across all tools and calculators.",
+      badge: "PREMIUM LEGAL TOOLS & PASSES",
+      title: "Simple & Transparent Pricing for Less Legal App",
+      subtitle: "Enjoy an uninterrupted, ad-free experience across all law students tools, legal drafting features, document scanner, and calculators.",
       transparentNoticeTitle: "Transparent Billing Notice & Consumer Terms",
       notice1Title: "Fixed Validity Period",
       notice1Text: "Premium passes grant ad-free access strictly for the duration purchased (90 days for ₹59 or 365 days for ₹179).",
@@ -728,9 +728,9 @@ export const translations: Record<Language, TranslationSchema> = {
       ]
     },
     downloadPage: {
-      badge: "OFFICIAL ANDROID APP",
-      title: "Get Less Legal for Android",
-      subtitle: "Download directly from Google Play Store or get the verified APK file for manual installation.",
+      badge: "DOWNLOAD THE TRENDING SMART APP",
+      title: "Download Less Legal for Android",
+      subtitle: "Download the all in one app directly from Google Play Store or get the verified APK file for manual installation to access legal drafting and PDF app features.",
       directApk: "Direct APK Download",
       playStore: "Get it on Google Play",
       versionInfo: "Version 8.7.5 • Android 7.0+ Supported • Safe & Verified",
@@ -746,9 +746,9 @@ export const translations: Record<Language, TranslationSchema> = {
       ]
     },
     contactPage: {
-      badge: "REACH OUT TO US",
-      title: "Contact & Support",
-      subtitle: "Have a question, feedback, or need assistance with an ad-free pass purchase?",
+      badge: "CONTACT LESS LEGAL TEAM",
+      title: "Contact Less Creation & Less Legal Support",
+      subtitle: "Have a question, feedback on legal information, or need assistance with premium legal tools?",
       nameLabel: "Your Full Name",
       emailLabel: "Email Address",
       subjectLabel: "Subject / Inquiry Type",
