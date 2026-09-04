@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           
           {/* Column 1: Brand & Tagline */}
           <div className="lg:col-span-2 space-y-4">
-            <a 
+            <motion.a 
               whileHover={{ x: 2 }}
               className="flex items-center gap-3 cursor-pointer inline-flex"
               href="/" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
@@ -61,7 +61,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   {SITE_CONFIG.companyName || SITE_CONFIG.appName}
                 </span>
               </div>
-            </a>
+            </motion.a>
 
             <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-sm">
               {SITE_CONFIG.companyTagline || SITE_CONFIG.tagline}

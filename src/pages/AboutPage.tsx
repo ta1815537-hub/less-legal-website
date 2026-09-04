@@ -174,8 +174,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Call to actions */}
-      <ScrollReveal direction="up" className="p-8 glass-panel-gradient rounded-3xl text-center space-y-4 relative z-10 border border-slate-200 dark:border-white/15"
-        whileHover={{ scale: 1.01 }} transition={{ type: "spring", stiffness: 300 }}>
+      <ScrollReveal direction="up" className="p-8 glass-panel-gradient rounded-3xl text-center space-y-4 relative z-10 border border-slate-200 dark:border-white/15">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-[#F5F2EE]">{t.common.exploreFeatures}</h2>
         <p className="text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto">
           {language === 'hi' ? 'हमारे सत्यापित सुविधाओं के पूर्ण कैटलॉग की समीक्षा करें या एंड्रॉइड पर ऐप डाउनलोड करें।' : 'Review our complete catalog of verified features or download the app on Android.'}

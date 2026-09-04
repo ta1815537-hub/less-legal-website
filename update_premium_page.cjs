@@ -1,4 +1,6 @@
-import React from 'react';
+const fs = require('fs');
+
+const premiumPageContent = `import React from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
 import { 
@@ -130,17 +132,21 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 </div>
                 
                 {/* In-App Action Button */}
-                <GlowingButton
+                <button
                   id="btn-open-app-plan-lifetime"
                   onClick={handleOpenAppOrDownload}
-                  variant="primary"
-                  className="w-full py-3.5 text-xs font-bold whitespace-nowrap flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full block cursor-pointer"
                 >
-                  <Smartphone className="w-4 h-4 shrink-0" />
-                  <span className="whitespace-nowrap">
-                    {isHindi ? 'Less Legal ऐप में पास खरीदें (₹179)' : 'Get Pass in Less Legal App (₹179)'}
-                  </span>
-                </GlowingButton>
+                  <GlowingButton
+                    variant="primary"
+                    className="w-full py-3.5 text-xs font-bold whitespace-nowrap flex items-center justify-center gap-2"
+                  >
+                    <Smartphone className="w-4 h-4 shrink-0" />
+                    <span className="whitespace-nowrap">
+                      {isHindi ? 'Less Legal ऐप में पास खरीदें (₹179)' : 'Get Pass in Less Legal App (₹179)'}
+                    </span>
+                  </GlowingButton>
+                </button>
               </div>
             </motion.div>
             
@@ -323,3 +329,6 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+`;
+
+fs.writeFileSync('src/pages/PremiumPage.tsx', premiumPageContent, 'utf8');

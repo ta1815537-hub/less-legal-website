@@ -1,556 +1,368 @@
-/**
- * Cloudflare Worker Entry Point for Less Legal / Less Creation
- * 
- * Production Backend Service: less-legal-website
- * Production Domain: https://www.lesscreation.com
- * 
- * Endpoints:
- * - GET  /api/health
- * - POST /api/razorpay/create-order
- * - POST /api/razorpay/verify-payment
- * - POST /api/razorpay/webhook
- * - Static Assets: env.ASSETS.fetch(request)
- * - 301 Permanent Redirect: lesscreation.com -> https://www.lesscreation.com
- */
+import { timingSafeEqual } from 'crypto';
 
-// Authoritative Plans and Pricing (Paise & Days)
-// Never trust price, currency, or validity received from the client browser.
-const AUTHORITATIVE_PLANS = {
-  'plan-3m': {
-    id: 'plan-3m',
-    code: 'NO_ADS_3_MONTHS',
-    name: '3 महीने का पास (3 Months Pass - No Ads)',
-    amountInPaise: 5900, // ₹59.00
-    currency: 'INR',
-    validityDays: 90,
-    description: 'Less Legal 90 Days Ad-Free Premium Pass',
-  },
-  'NO_ADS_3_MONTHS': {
-    id: 'plan-3m',
-    code: 'NO_ADS_3_MONTHS',
-    name: '3 महीने का पास (3 Months Pass - No Ads)',
-    amountInPaise: 5900,
-    currency: 'INR',
-    validityDays: 90,
-    description: 'Less Legal 90 Days Ad-Free Premium Pass',
-  },
-  'plan-1y': {
-    id: 'plan-1y',
-    code: 'NO_ADS_1_YEAR',
-    name: '1 वर्ष का पास (1 Year Pass - No Ads)',
-    amountInPaise: 17900, // ₹179.00
-    currency: 'INR',
-    validityDays: 365,
-    description: 'Less Legal 365 Days Ad-Free Premium Pass',
-  },
-  'NO_ADS_1_YEAR': {
-    id: 'plan-1y',
-    code: 'NO_ADS_1_YEAR',
-    name: '1 वर्ष का पास (1 Year Pass - No Ads)',
-    amountInPaise: 17900,
-    currency: 'INR',
-    validityDays: 365,
-    description: 'Less Legal 365 Days Ad-Free Premium Pass',
-  },
+// --- Configuration & Constants ---
+const FIREBASE_API_KEY = "AIzaSyCfmeRhssHAjeGAqcyq6gCTxHAOYlpcUwo"; 
+const FIREBASE_PROJECT_ID = "secure-voyager-rtj8l";
+const FIREBASE_DB_ID = "ai-studio-lesslegalwebsite-6b6aefe1-c946-4631-8e11-4a38d4af5cec";
+
+const PLAN_PREMIUM_PERMANENT = {
+  id: 'PREMIUM_PERMANENT',
+  productId: 'lesslegal_premium_permanent',
+  amountInPaise: 17900,
+  currency: 'INR',
 };
 
-/**
- * CORS configuration for production & local development
- */
+// --- Utilities ---
+
 function getCorsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
   const allowedOrigins = [
-    'https://www.lesscreation.com',
-    'https://lesscreation.com',
     'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost:5173',
+    'https://www.lesscreation.com',
+    'https://lesscreation.com'
   ];
-
-  let matchedOrigin = 'https://www.lesscreation.com';
-  if (
-    allowedOrigins.includes(origin) ||
-    origin.endsWith('.lesscreation.com') ||
-    origin.includes('localhost:') ||
-    origin.includes('127.0.0.1:') ||
-    origin.includes('run.app') ||
-    origin.includes('aistudio.google.com')
-  ) {
-    matchedOrigin = origin;
+  let corsOrigin = '*';
+  if (allowedOrigins.includes(origin) || origin.endsWith('.run.app')) {
+    corsOrigin = origin;
   }
-
   return {
-    'Access-Control-Allow-Origin': matchedOrigin,
+    'Access-Control-Allow-Origin': corsOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Razorpay-Signature, X-Requested-With',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-razorpay-signature',
     'Access-Control-Max-Age': '86400',
-    'Vary': 'Origin',
   };
 }
 
-/**
- * Helper to generate JSON responses with appropriate headers
- */
-function jsonResponse(data, status = 200, corsHeaders = {}) {
+function jsonResponse(data, status = 200, headers = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'no-store, no-cache, must-revalidate',
-      ...corsHeaders,
-    },
+    headers: { 'Content-Type': 'application/json', ...headers },
   });
 }
 
-/**
- * Compute HMAC-SHA256 hex string using Web Crypto API
- */
-async function hmacSha256Hex(secret, message) {
+// WebCrypto HMAC SHA256 (for verifying Razorpay signatures)
+async function hmacSha256Hex(secret, data) {
   const encoder = new TextEncoder();
-  const keyData = encoder.encode(secret);
   const key = await crypto.subtle.importKey(
     'raw',
-    keyData,
+    encoder.encode(secret),
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign']
   );
-  const msgData = encoder.encode(message);
-  const signatureBuffer = await crypto.subtle.sign('HMAC', key, msgData);
-  return Array.from(new Uint8Array(signatureBuffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+  const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(data));
+  const hashArray = Array.from(new Uint8Array(signature));
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-/**
- * Timing-safe string comparison to prevent timing attacks
- */
-function timingSafeEqual(a, b) {
-  if (typeof a !== 'string' || typeof b !== 'string') return false;
+function timingSafeEqualStr(a, b) {
   if (a.length !== b.length) return false;
-  let result = 0;
+  let mismatch = 0;
   for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
   }
-  return result === 0;
+  return mismatch === 0;
 }
+
+// --- Firebase Authentication (Verify Client ID Token) ---
+async function verifyFirebaseIdToken(request) {
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    throw new Error('Missing or invalid Authorization header. A fresh Firebase ID token is required.');
+  }
+  const idToken = authHeader.split('Bearer ')[1];
+  
+  const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ idToken })
+  });
+  
+  if (!res.ok) {
+    throw new Error('Invalid Firebase ID token verification response.');
+  }
+  const data = await res.json();
+  if (!data.users || data.users.length === 0) {
+    throw new Error('Firebase ID token is invalid or user not found.');
+  }
+  return data.users[0].localId; // The verified Firebase UID
+}
+
+// --- Firestore Admin REST API (Service Account required) ---
+async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
+  if (!env.FIREBASE_SERVICE_ACCOUNT) {
+    console.error("FIREBASE_SERVICE_ACCOUNT is not set. Cannot write to Firestore.");
+    throw new Error("Server configuration error: Firebase Service Account missing.");
+  }
+  
+  let sa;
+  try {
+    sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+  } catch (e) {
+    throw new Error("FIREBASE_SERVICE_ACCOUNT is not valid JSON.");
+  }
+  
+  // Generate JWT for Google OAuth2
+  const jwtHeader = { alg: 'RS256', typ: 'JWT' };
+  const now = Math.floor(Date.now() / 1000);
+  const jwtClaim = {
+    iss: sa.client_email,
+    scope: 'https://www.googleapis.com/auth/datastore',
+    aud: 'https://oauth2.googleapis.com/token',
+    exp: now + 3600,
+    iat: now
+  };
+  
+  const base64url = (str) => btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const unsignedJwt = base64url(JSON.stringify(jwtHeader)) + '.' + base64url(JSON.stringify(jwtClaim));
+  
+  const pemHeader = "-----BEGIN PRIVATE KEY-----";
+  const pemFooter = "-----END PRIVATE KEY-----";
+  const pemContents = sa.private_key.substring(
+    sa.private_key.indexOf(pemHeader) + pemHeader.length,
+    sa.private_key.indexOf(pemFooter)
+  ).replace(/\s/g, '');
+  const binaryDerString = atob(pemContents);
+  const binaryDer = new Uint8Array(binaryDerString.length);
+  for (let i = 0; i < binaryDerString.length; i++) {
+    binaryDer[i] = binaryDerString.charCodeAt(i);
+  }
+  
+  const key = await crypto.subtle.importKey(
+    "pkcs8",
+    binaryDer.buffer,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  
+  const encoder = new TextEncoder();
+  const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, encoder.encode(unsignedJwt));
+  const signatureBase64url = btoa(String.fromCharCode(...new Uint8Array(signature)))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    
+  const signedJwt = unsignedJwt + '.' + signatureBase64url;
+  
+  // Exchange JWT for Access Token
+  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${signedJwt}`
+  });
+  
+  if (!tokenRes.ok) throw new Error('Failed to get Firestore access token.');
+  const tokenData = await tokenRes.json();
+  const accessToken = tokenData.access_token;
+  
+  // Prepare Firestore Document Data for user_subscriptions
+  const activatedAt = new Date().toISOString();
+  const subFields = {
+    uid: { stringValue: uid },
+    premium: { booleanValue: true },
+    status: { stringValue: 'active' },
+    entitlementType: { stringValue: 'PERMANENT' },
+    source: { stringValue: 'razorpay' },
+    productId: { stringValue: PLAN_PREMIUM_PERMANENT.productId },
+    paymentId: { stringValue: paymentId },
+    orderId: { stringValue: orderId },
+    activatedAt: { stringValue: activatedAt }
+  };
+  
+  const subUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${FIREBASE_DB_ID}/documents/user_subscriptions/${uid}`;
+  const subWriteRes = await fetch(subUrl, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name: `projects/${FIREBASE_PROJECT_ID}/databases/${FIREBASE_DB_ID}/documents/user_subscriptions/${uid}`, fields: subFields })
+  });
+  if (!subWriteRes.ok) throw new Error('Failed to write user_subscriptions');
+
+  // Prepare Firestore Document Data for razorpay_payments
+  const paymentFields = {
+    uid: { stringValue: uid },
+    paymentId: { stringValue: paymentId },
+    orderId: { stringValue: orderId },
+    amount: { integerValue: String(PLAN_PREMIUM_PERMANENT.amountInPaise) },
+    productId: { stringValue: PLAN_PREMIUM_PERMANENT.productId },
+    status: { stringValue: 'SUCCESS' },
+    timestamp: { stringValue: activatedAt }
+  };
+  
+  const payUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${FIREBASE_DB_ID}/documents/razorpay_payments?documentId=${paymentId}`;
+  const payWriteRes = await fetch(payUrl, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ fields: paymentFields })
+  });
+  if (!payWriteRes.ok) throw new Error('Failed to write razorpay_payments');
+  
+  return true;
+}
+
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    const corsHeaders = getCorsHeaders(request);
 
-    // 1. API Routes FIRST (Ensures Android App calling either lesscreation.com/api/... or www.lesscreation.com/api/... works flawlessly without POST body drop on 301)
+    // Handle Preflight OPTIONS
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { status: 204, headers: corsHeaders });
+    }
+
     if (url.pathname.startsWith('/api/')) {
-      const corsHeaders = getCorsHeaders(request);
 
-      // Handle CORS Preflight
-      if (request.method === 'OPTIONS') {
-        return new Response(null, {
-          status: 204,
-          headers: corsHeaders,
-        });
-      }
-
-      // GET /api/health
-      if (url.pathname === '/api/health' && request.method === 'GET') {
-        return jsonResponse(
-          {
-            ok: true,
-            service: 'less-legal-website',
-            timestamp: new Date().toISOString(),
-            environment: 'production',
-            razorpayConfigured: Boolean(env.RAZORPAY_KEY_ID && env.RAZORPAY_KEY_SECRET),
-          },
-          200,
-          corsHeaders
-        );
-      }
-
-      // POST /api/razorpay/create-order
+      // --- CREATE ORDER ---
       if (url.pathname === '/api/razorpay/create-order' && request.method === 'POST') {
-        const keyId = env.RAZORPAY_KEY_ID;
-        const keySecret = env.RAZORPAY_KEY_SECRET;
-
-        if (!keyId || !keySecret) {
-          return jsonResponse(
-            {
-              ok: false,
-              error: 'Razorpay payment gateway is not yet configured in server environment. Please configure RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.',
-            },
-            500,
-            corsHeaders
-          );
-        }
-
         try {
-          const body = await request.json().catch(() => ({}));
-          const { planId, userId, userEmail, userPhone } = body;
-
-          if (!planId || !AUTHORITATIVE_PLANS[planId]) {
-            return jsonResponse(
-              {
-                ok: false,
-                error: 'Invalid or missing plan ID. Please select a valid plan (NO_ADS_3_MONTHS or NO_ADS_1_YEAR).',
-              },
-              400,
-              corsHeaders
-            );
+          const verifiedUid = await verifyFirebaseIdToken(request);
+          
+          const keyId = env.RAZORPAY_KEY_ID;
+          const keySecret = env.RAZORPAY_KEY_SECRET;
+          if (!keyId || !keySecret) {
+            return jsonResponse({ ok: false, error: 'Razorpay keys not configured on server.' }, 500, corsHeaders);
           }
 
-          const plan = AUTHORITATIVE_PLANS[planId];
-          const receiptId = ('rcpt_ll_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7)).slice(0, 40);
-
-          const orderPayload = {
-            amount: plan.amountInPaise,
-            currency: 'INR',
-            receipt: receiptId,
-            notes: {
-              app_name: 'Less Legal',
-              plan_id: plan.id,
-              plan_code: plan.code,
-              validity_days: String(plan.validityDays),
-              user_id: String(userId || '').slice(0, 100),
-              user_email: String(userEmail || '').slice(0, 100),
-            },
-          };
-
-          const basicAuth = btoa(keyId + ':' + keySecret);
-          const rzpResponse = await fetch('https://api.razorpay.com/v1/orders', {
+          const basicAuth = btoa(`${keyId}:${keySecret}`);
+          const razorpayResponse = await fetch('https://api.razorpay.com/v1/orders', {
             method: 'POST',
             headers: {
-              'Authorization': 'Basic ' + basicAuth,
+              'Authorization': `Basic ${basicAuth}`,
               'Content-Type': 'application/json',
-              'User-Agent': 'LessCreation-RazorpayWorker/1.0',
             },
-            body: JSON.stringify(orderPayload),
+            body: JSON.stringify({
+              amount: PLAN_PREMIUM_PERMANENT.amountInPaise,
+              currency: PLAN_PREMIUM_PERMANENT.currency,
+              receipt: `rcpt_${verifiedUid.substring(0,8)}_${Date.now()}`,
+              notes: {
+                firebase_uid: verifiedUid,
+                plan: PLAN_PREMIUM_PERMANENT.id,
+                productId: PLAN_PREMIUM_PERMANENT.productId
+              },
+            }),
           });
 
-          if (!rzpResponse.ok) {
-            const errorText = await rzpResponse.text().catch(() => '');
-            let parsedError = 'Failed to create Razorpay order.';
-            try {
-              const errObj = JSON.parse(errorText);
-              if (errObj.error && errObj.error.description) {
-                parsedError = errObj.error.description;
-              }
-            } catch {}
-
-            return jsonResponse(
-              {
-                ok: false,
-                error: parsedError,
-              },
-              502,
-              corsHeaders
-            );
+          const razorpayData = await razorpayResponse.json();
+          if (!razorpayResponse.ok) {
+            return jsonResponse({ ok: false, error: 'Failed to create order with Razorpay.' }, 502, corsHeaders);
           }
 
-          const rzpOrder = await rzpResponse.json();
+          return jsonResponse({
+            ok: true,
+            order_id: razorpayData.id,
+            amount: razorpayData.amount,
+            currency: razorpayData.currency,
+            keyId: keyId,
+          }, 200, corsHeaders);
 
-          // Return only what client strictly needs (Never return Key Secret)
-          return jsonResponse(
-            {
-              ok: true,
-              order_id: rzpOrder.id,
-              amount: rzpOrder.amount,
-              currency: rzpOrder.currency,
-              key_id: keyId,
-              plan_id: plan.id,
-              plan_code: plan.code,
-              plan_name: plan.name,
-              validity_days: plan.validityDays,
-              receipt: rzpOrder.receipt,
-            },
-            200,
-            corsHeaders
-          );
         } catch (err) {
-          return jsonResponse(
-            {
-              ok: false,
-              error: 'An unexpected error occurred while creating order.',
-            },
-            500,
-            corsHeaders
-          );
+          return jsonResponse({ ok: false, error: err.message }, 401, corsHeaders);
         }
       }
 
-      // POST /api/razorpay/verify-payment
+      // --- VERIFY PAYMENT ---
       if (url.pathname === '/api/razorpay/verify-payment' && request.method === 'POST') {
-        const keyId = env.RAZORPAY_KEY_ID;
-        const keySecret = env.RAZORPAY_KEY_SECRET;
-
-        if (!keyId || !keySecret) {
-          return jsonResponse(
-            {
-              ok: false,
-              error: 'Razorpay payment gateway is not yet configured in server environment.',
-            },
-            500,
-            corsHeaders
-          );
-        }
-
         try {
+          // Require authenticated user
+          await verifyFirebaseIdToken(request);
+
           const body = await request.json().catch(() => ({}));
-          const {
-            razorpay_payment_id,
-            razorpay_order_id,
-            razorpay_signature,
-            planId,
-            userId,
-            userEmail,
-          } = body;
+          const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = body;
 
           if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
-            return jsonResponse(
-              {
-                ok: false,
-                error: 'Missing required Razorpay payment verification parameters.',
-              },
-              400,
-              corsHeaders
-            );
+            return jsonResponse({ ok: false, error: 'Missing parameters.' }, 400, corsHeaders);
           }
 
-          // 1. Verify HMAC-SHA256 signature server-side
+          const keySecret = env.RAZORPAY_KEY_SECRET;
           const payloadToSign = razorpay_order_id + '|' + razorpay_payment_id;
           const expectedSignature = await hmacSha256Hex(keySecret, payloadToSign);
+          const isSignatureValid = timingSafeEqualStr(expectedSignature, razorpay_signature);
 
-          const isSignatureValid = timingSafeEqual(expectedSignature, razorpay_signature);
           if (!isSignatureValid) {
-            return jsonResponse(
-              {
-                ok: false,
-                error: 'Invalid payment signature. Verification failed.',
-              },
-              400,
-              corsHeaders
-            );
+            return jsonResponse({ ok: false, error: 'Invalid signature.' }, 400, corsHeaders);
           }
 
-          // 2. Authoritative Verification via Razorpay REST API
-          const basicAuth = btoa(keyId + ':' + keySecret);
-          const paymentFetch = await fetch(
-            'https://api.razorpay.com/v1/payments/' + encodeURIComponent(razorpay_payment_id),
-            {
-              method: 'GET',
-              headers: {
-                'Authorization': 'Basic ' + basicAuth,
-                'User-Agent': 'LessCreation-RazorpayWorker/1.0',
-              },
-            }
-          );
+          // Payment is cryptographically valid. Real fulfillment occurs in the webhook,
+          // but we return success here so the client can update UI (optimistically or fetch status).
+          return jsonResponse({
+            ok: true,
+            verified: true,
+            message: 'Payment verified securely. Entitlement will be granted via webhook.',
+          }, 200, corsHeaders);
 
-          if (!paymentFetch.ok) {
-            return jsonResponse(
-              {
-                ok: false,
-                error: 'Unable to verify payment status with payment gateway.',
-              },
-              502,
-              corsHeaders
-            );
-          }
-
-          const paymentData = await paymentFetch.json();
-
-          // Verify order ID match
-          if (paymentData.order_id !== razorpay_order_id) {
-            return jsonResponse(
-              {
-                ok: false,
-                error: 'Order ID mismatch during payment verification.',
-              },
-              400,
-              corsHeaders
-            );
-          }
-
-          // If payment is authorized but not captured, auto-capture it
-          if (paymentData.status === 'authorized') {
-            const captureRes = await fetch(
-              'https://api.razorpay.com/v1/payments/' + encodeURIComponent(razorpay_payment_id) + '/capture',
-              {
-                method: 'POST',
-                headers: {
-                  'Authorization': 'Basic ' + basicAuth,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  amount: paymentData.amount,
-                  currency: paymentData.currency || 'INR',
-                }),
-              }
-            );
-            if (captureRes.ok) {
-              paymentData.status = 'captured';
-            }
-          }
-
-          if (paymentData.status !== 'captured') {
-            return jsonResponse(
-              {
-                ok: false,
-                error: 'Payment was not captured successfully. Status: ' + paymentData.status,
-              },
-              400,
-              corsHeaders
-            );
-          }
-
-          // 3. Determine authoritative plan and price
-          const expectedPlan = AUTHORITATIVE_PLANS[planId];
-          const verifiedAmount = Number(paymentData.amount);
-
-          if (expectedPlan && verifiedAmount !== expectedPlan.amountInPaise) {
-            return jsonResponse(
-              {
-                ok: false,
-                error: 'Payment amount mismatch for the selected plan.',
-              },
-              400,
-              corsHeaders
-            );
-          }
-
-          const planCode = verifiedAmount === 17900 ? 'NO_ADS_1_YEAR' : 'NO_ADS_3_MONTHS';
-          const finalPlan = expectedPlan || AUTHORITATIVE_PLANS[planCode];
-          const validityDays = finalPlan.validityDays;
-          const startDate = new Date();
-          const expiryDate = new Date(startDate.getTime() + validityDays * 24 * 60 * 60 * 1000);
-
-          // 4. Construct Activated Membership record
-          const membership = {
-            status: 'ACTIVE',
-            planId: finalPlan.id,
-            planCode: finalPlan.code,
-            planName: finalPlan.name,
-            amount: verifiedAmount,
-            amountFormatted: '₹' + (verifiedAmount / 100).toFixed(0),
-            currency: paymentData.currency || 'INR',
-            validityDays,
-            startDate: startDate.toISOString(),
-            expiryDate: expiryDate.toISOString(),
-            userId: userId || paymentData.notes?.user_id || 'web_user',
-            userEmail: userEmail || paymentData.email || paymentData.notes?.user_email || '',
-            userContact: paymentData.contact || '',
-            paymentMethod: paymentData.method || 'online',
-            razorpayOrderId: razorpay_order_id,
-            razorpayPaymentId: razorpay_payment_id,
-            verifiedAt: new Date().toISOString(),
-          };
-
-          return jsonResponse(
-            {
-              ok: true,
-              verified: true,
-              membership,
-              message: 'Payment successfully verified. ' + finalPlan.name + ' activated.',
-            },
-            200,
-            corsHeaders
-          );
         } catch (err) {
-          return jsonResponse(
-            {
-              ok: false,
-              error: 'An unexpected error occurred during payment verification.',
-            },
-            500,
-            corsHeaders
-          );
+          return jsonResponse({ ok: false, error: err.message }, 401, corsHeaders);
         }
       }
 
-      // POST /api/razorpay/webhook
+      // --- WEBHOOK ---
       if (url.pathname === '/api/razorpay/webhook' && request.method === 'POST') {
         const webhookSecret = env.RAZORPAY_WEBHOOK_SECRET;
-
         if (!webhookSecret) {
-          return jsonResponse(
-            {
-              status: 'error',
-              message: 'RAZORPAY_WEBHOOK_SECRET is not configured on server.',
-            },
-            500,
-            corsHeaders
-          );
+          return jsonResponse({ status: 'error', message: 'RAZORPAY_WEBHOOK_SECRET not set.' }, 500, corsHeaders);
         }
 
         try {
           const rawBody = await request.text();
           const signature = request.headers.get('x-razorpay-signature') || '';
-
           if (!signature) {
-            return jsonResponse(
-              {
-                status: 'error',
-                message: 'Missing x-razorpay-signature header.',
-              },
-              400,
-              corsHeaders
-            );
+            return jsonResponse({ status: 'error', message: 'Missing signature.' }, 400, corsHeaders);
           }
 
           const expectedSignature = await hmacSha256Hex(webhookSecret, rawBody);
-          const isSignatureValid = timingSafeEqual(expectedSignature, signature);
+          const isSignatureValid = timingSafeEqualStr(expectedSignature, signature);
 
           if (!isSignatureValid) {
-            return jsonResponse(
-              {
-                status: 'error',
-                message: 'Invalid webhook signature.',
-              },
-              400,
-              corsHeaders
-            );
+            return jsonResponse({ status: 'error', message: 'Invalid signature.' }, 400, corsHeaders);
           }
 
-          // Process verified event idempotently
           const event = JSON.parse(rawBody);
           const eventType = event.event;
 
-          // Handled event types: payment.captured, payment.failed, order.paid
-          return jsonResponse(
-            {
-              status: 'ok',
-              event: eventType,
-              received: true,
-            },
-            200,
-            corsHeaders
-          );
+          if (eventType === 'payment.captured' || eventType === 'order.paid') {
+            const paymentEntity = event.payload.payment.entity;
+            const orderNotes = paymentEntity.notes || {};
+            
+            const uid = orderNotes.firebase_uid;
+            const plan = orderNotes.plan;
+            
+            if (!uid) {
+              // Cannot fulfill without verified UID injected by our server during order creation
+              return jsonResponse({ status: 'ignored', message: 'No firebase_uid in notes' }, 200, corsHeaders);
+            }
+            
+            if (paymentEntity.amount !== PLAN_PREMIUM_PERMANENT.amountInPaise) {
+              return jsonResponse({ status: 'ignored', message: 'Amount mismatch' }, 200, corsHeaders);
+            }
+
+            // Write entitlement to Firestore idempotently
+            await writeEntitlementToFirestore(env, uid, paymentEntity.id, paymentEntity.order_id);
+          }
+
+          return jsonResponse({ status: 'ok', event: eventType, received: true }, 200, corsHeaders);
         } catch (err) {
-          return jsonResponse(
-            {
-              status: 'error',
-              message: 'Failed to process webhook payload.',
-            },
-            400,
-            corsHeaders
-          );
+          console.error("Webhook Error:", err);
+          return jsonResponse({ status: 'error', message: err.message }, 400, corsHeaders);
         }
       }
 
       // 404 for unmatched API routes
-      return jsonResponse(
-        {
-          ok: false,
-          error: 'API endpoint not found',
-        },
-        404,
-        corsHeaders
-      );
+      return jsonResponse({ ok: false, error: 'API endpoint not found' }, 404, corsHeaders);
     }
 
-    // 2. Permanent 301 Redirect for non-API web traffic: lesscreation.com -> https://www.lesscreation.com
+    // Permanent 301 Redirect for non-API web traffic
     if (url.hostname === 'lesscreation.com') {
       url.hostname = 'www.lesscreation.com';
       return Response.redirect(url.toString(), 301);
     }
 
-    // 3. Static Assets Handler via Cloudflare Workers Static Assets binding
+    // Static Assets Handler
     if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
       return env.ASSETS.fetch(request);
     }

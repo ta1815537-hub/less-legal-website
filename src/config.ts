@@ -112,50 +112,29 @@ export const SITE_CONFIG = {
   // Premium Plans (Strictly 100% compliant with actual pricing)
   premiumPlans: [
     {
-      id: "plan-3m",
-      name: "3 महीने का पास (3 Months Pass)",
-      price: "₹59",
-      rawPrice: 59,
-      duration: "3 महीने",
-      validityDays: 90,
-      billingType: "एक बार का भुगतान (गैर-नवीकरणीय)",
-      tagline: "सभी टूल्स पर 90 दिनों के लिए विज्ञापन-मुक्त अनुभव",
-      isPopular: false,
-      features: [
-        "90 निरंतर दिनों के लिए विज्ञापन-मुक्त इंटरफ़ेस",
-        "पीडीएफ टूल्स (मर्ज, स्प्लिट, कनवर्ट, लॉक)",
-        "लोकल पीडीएफ रीडर एवं बुकमार्किंग",
-        "केस डायरी एवं सुनवाई तिथि ट्रैकर",
-        "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर",
-        "कोर्ट फीस कैलकुलेटर एवं लीगल शब्दावली",
-        "क्विक नोट्स एवं Less Share स्थानीय फ़ाइल स्थानांतरण",
-        "बेयर एक्ट्स रेफरेंस लाइब्रेरी एवं लीगल क्विज़",
-        "कोई स्वचालित नवीनीकरण नहीं — ऐप में पूरा किया गया एक बार का भुगतान"
-      ]
-    },
-    {
-      id: "plan-1y",
-      name: "1 वर्ष का पास (1 Year Pass)",
+      id: "PREMIUM_PERMANENT",
+      productId: "lesslegal_premium_permanent",
+      name: "आजीवन प्रीमियम पास (Lifetime Premium Pass)",
       price: "₹179",
       rawPrice: 179,
-      duration: "1 वर्ष",
-      validityDays: 365,
-      billingType: "एक बार का भुगतान (गैर-नवीकरणीय)",
-      tagline: "365 पूर्ण दिनों के लिए सर्वश्रेष्ठ मूल्य विज्ञापन-मुक्त अनुभव",
+      duration: "आजीवन",
+      validityDays: -1,
+      billingType: "एक बार का भुगतान (One-time payment)",
+      tagline: "विज्ञापन-मुक्त अनुभव और सभी सुविधाएँ हमेशा के लिए",
       isPopular: true,
       features: [
-        "365 निरंतर दिनों के लिए विज्ञापन-मुक्त इंटरफ़ेस",
-        "पीडीएफ टूल्स (मर्ज, स्प्लिट, कनवर्ट, लॉक)",
-        "लोकल पीडीएफ रीडर एवं बुकमार्किंग",
-        "केस डायरी एवं सुनवाई तिथि ट्रैकर",
-        "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर",
-        "कोर्ट फीस कैलकुलेटर एवं लीगल शब्दावली",
-        "क्विक नोट्स एवं Less Share स्थानीय फ़ाइल स्थानांतरण",
-        "बेयर एक्ट्स रेफरेंस लाइब्रेरी एवं लीगल क्विज़",
-        "कोई स्वचालित नवीनीकरण नहीं — ऐप में पूरा किया गया एक बार का भुगतान"
+        "हमेशा के लिए विज्ञापन-मुक्त इंटरफ़ेस (Ad-free interface forever)",
+        "उन्नत पीडीएफ टूल्स (Advanced PDF tools)",
+        "लोकल पीडीएफ रीडर एवं बुकमार्किंग (PDF Reader & Bookmarking)",
+        "केस डायरी एवं सुनवाई तिथि ट्रैकर (Case Diary & Hearing Tracker)",
+        "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर (Calculators & Converters)",
+        "कोर्ट फीस कैलकुलेटर एवं लीगल शब्दावली (Court Fees & Legal Vocabulary)",
+        "क्विक नोट्स एवं Less Share फ़ाइल ट्रांसफर (Quick Notes & Less Share)",
+        "बेयर एक्ट्स रेफरेंस लाइब्रेरी (Bare Acts Reference)",
+        "कोई आवर्ती शुल्क नहीं (No recurring charges)"
       ]
     }
-  ] as PremiumPlan[],
+  ],
 
   // Verified Actual Live Features in Less Legal
   features: [
