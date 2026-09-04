@@ -498,7 +498,7 @@ export default {
       const isStaticFile = /\.[a-zA-Z0-9]+$/.test(url.pathname);
       if (!isStaticFile && request.method === 'GET') {
         const newUrl = new URL(request.url);
-        newUrl.pathname = '/index.html';
+        newUrl.pathname = '/';
         const rewrittenRequest = new Request(newUrl.toString(), request);
         return env.ASSETS.fetch(rewrittenRequest);
       }
