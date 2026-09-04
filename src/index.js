@@ -495,6 +495,13 @@ export default {
 
     // Static Assets Handler
     if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
+      const isStaticFile = /\.[a-zA-Z0-9]+$/.test(url.pathname);
+      if (!isStaticFile && request.method === 'GET') {
+        const newUrl = new URL(request.url);
+        newUrl.pathname = '/index.html';
+        const rewrittenRequest = new Request(newUrl.toString(), request);
+        return env.ASSETS.fetch(rewrittenRequest);
+      }
       return env.ASSETS.fetch(request);
     }
 
