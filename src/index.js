@@ -268,6 +268,11 @@ export default {
 
     if (url.pathname.startsWith('/api/')) {
 
+      // --- HEALTH CHECK ---
+      if (url.pathname === '/api/health' && request.method === 'GET') {
+        return jsonResponse({ ok: true, status: 'healthy', project: FIREBASE_PROJECT_ID }, 200, corsHeaders);
+      }
+
       // --- CREATE ORDER ---
       if (url.pathname === '/api/razorpay/create-order' && request.method === 'POST') {
         try {
