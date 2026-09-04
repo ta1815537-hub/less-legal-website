@@ -44,7 +44,7 @@ function getCorsHeaders(request) {
   return {
     'Access-Control-Allow-Origin': corsOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-razorpay-signature',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-razorpay-signature, x-razorpay-event-id',
     'Access-Control-Max-Age': '86400',
   };
 }
@@ -125,8 +125,8 @@ async function verifyFirebaseIdToken(request, env) {
   return verifiedUid; // Derived UID from verified token
 }
 
-// --- Firestore Admin REST API (Service Account required) ---
-async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
+// --- Firestore Admin Auth & REST API Utilities ---
+async function getFirestoreAccessToken(env) {
   if (!env.FIREBASE_SERVICE_ACCOUNT) {
     console.error("FIREBASE_SERVICE_ACCOUNT is not set. Cannot write to Firestore.");
     throw new Error("Server configuration error: Firebase Service Account missing.");
@@ -197,7 +197,58 @@ async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
   
   if (!tokenRes.ok) throw new Error('Failed to get Firestore access token from Google OAuth2.');
   const tokenData = await tokenRes.json();
-  const accessToken = tokenData.access_token;
+  return { accessToken: tokenData.access_token, dbId };
+}
+
+// Atomic event idempotency check via Firestore REST API (using document creation)
+async function checkAndRecordWebhookEvent(env, eventId, eventType, paymentId, accessToken, dbId) {
+  const processedAt = new Date().toISOString();
+  const eventFields = {
+    eventId: { stringValue: eventId },
+    eventType: { stringValue: eventType || '' },
+    paymentId: { stringValue: paymentId || '' },
+    processedAt: { stringValue: processedAt }
+  };
+
+  // Atomic creation: POST with documentId parameter.
+  // Firestore REST API returns HTTP 409 Conflict if documentId already exists in razorpay_webhook_events.
+  const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${dbId}/documents/razorpay_webhook_events?documentId=${encodeURIComponent(eventId)}`;
+  
+  const createRes = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ fields: eventFields })
+  });
+
+  if (createRes.status === 409) {
+    // Document already exists => duplicate webhook event!
+    return { isDuplicate: true };
+  }
+
+  if (!createRes.ok) {
+    const errText = await createRes.text();
+    if (createRes.status === 400 && errText.includes('ALREADY_EXISTS')) {
+      return { isDuplicate: true };
+    }
+    throw new Error(`Failed to record webhook event idempotency in Firestore: ${errText}`);
+  }
+
+  return { isDuplicate: false };
+}
+
+// Firestore Entitlement & Payment Audit Writer
+async function writeEntitlementToFirestore(env, uid, paymentId, orderId, existingToken, existingDbId) {
+  let accessToken = existingToken;
+  let dbId = existingDbId;
+
+  if (!accessToken || !dbId) {
+    const auth = await getFirestoreAccessToken(env);
+    accessToken = auth.accessToken;
+    dbId = auth.dbId;
+  }
   
   // Prepare Firestore Document Data for user_subscriptions
   const activatedAt = new Date().toISOString();
@@ -370,6 +421,7 @@ export default {
             return jsonResponse({ status: 'error', message: 'Missing signature.' }, 400, corsHeaders);
           }
 
+          // 1. Verify Razorpay webhook signature FIRST
           const expectedSignature = await hmacSha256Hex(webhookSecret, rawBody);
           const isSignatureValid = timingSafeEqualStr(expectedSignature, signature);
 
@@ -380,8 +432,33 @@ export default {
           const event = JSON.parse(rawBody);
           const eventType = event.event;
 
+          // 2. Read x-razorpay-event-id header AFTER signature verification
+          const headerEventId = request.headers.get('x-razorpay-event-id');
+          const eventId = headerEventId || event.event_id || (event.payload?.payment?.entity?.id ? `${event.payload.payment.entity.id}_${eventType}` : null);
+
+          if (!eventId) {
+            return jsonResponse({ status: 'error', message: 'Missing event ID.' }, 400, corsHeaders);
+          }
+
+          // 3. Atomically claim event ID in Firestore AFTER signature verification
+          const { accessToken, dbId } = await getFirestoreAccessToken(env);
+          const paymentEntity = event.payload?.payment?.entity || {};
+          const paymentId = paymentEntity.id || '';
+
+          const idempotency = await checkAndRecordWebhookEvent(env, eventId, eventType, paymentId, accessToken, dbId);
+
+          if (idempotency.isDuplicate) {
+            // Already processed this event -> return HTTP 200 safely without re-granting entitlement
+            return jsonResponse({
+              status: 'ok',
+              event: eventType,
+              duplicate: true,
+              message: `Webhook event ${eventId} already processed.`,
+              received: true
+            }, 200, corsHeaders);
+          }
+
           if (eventType === 'payment.captured' || eventType === 'order.paid') {
-            const paymentEntity = event.payload.payment.entity;
             const orderNotes = paymentEntity.notes || {};
             
             const uid = orderNotes.firebase_uid;
@@ -396,7 +473,7 @@ export default {
             }
 
             // Write entitlement to Firestore idempotently
-            await writeEntitlementToFirestore(env, uid, paymentEntity.id, paymentEntity.order_id);
+            await writeEntitlementToFirestore(env, uid, paymentEntity.id, paymentEntity.order_id, accessToken, dbId);
           }
 
           return jsonResponse({ status: 'ok', event: eventType, received: true }, 200, corsHeaders);
