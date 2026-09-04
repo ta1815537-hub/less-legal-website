@@ -1,12 +1,12 @@
 {
-  "projectId": "secure-voyager-rtj8l",
+  "projectId": "less-legal",
   "appId": "1:871873467075:web:2b896d7d17bc746e544876",
   "apiKey": "AIzaSyCfmeRhssHAjeGAqcyq6gCTxHAOYlpcUwo",
-  "authDomain": "voyager-rtj8l.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-lesslegalwebsite-6b6aefe1-c946-4631-8e11-4a38d4af5cec",
-  "storageBucket": "secure-voyager-rtj8l.firebasestorage.app",
+  "authDomain": "less-legal.firebaseapp.com",
+  "firestoreDatabaseId": "",
+  "storageBucket": "less-legal.appspot.com",
   "messagingSenderId": "871873467075",
   "measurementId": "",
-  "oAuthClientId": "871873467075-fkcchjope1j6tj0kp7kj3mueovjrv6gc.apps.googleusercontent.com",
+  "oAuthClientId": "",
   "recaptchaSiteKey": ""
 }

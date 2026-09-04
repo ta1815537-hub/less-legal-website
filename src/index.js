@@ -1,9 +1,8 @@
 import { timingSafeEqual } from 'crypto';
 
 // --- Configuration & Constants ---
+const FIREBASE_PROJECT_ID = "less-legal";
 const FIREBASE_API_KEY = "AIzaSyCfmeRhssHAjeGAqcyq6gCTxHAOYlpcUwo"; 
-const FIREBASE_PROJECT_ID = "secure-voyager-rtj8l";
-const FIREBASE_DB_ID = "ai-studio-lesslegalwebsite-6b6aefe1-c946-4631-8e11-4a38d4af5cec";
 
 const PLAN_PREMIUM_PERMANENT = {
   id: 'PREMIUM_PERMANENT',
@@ -13,6 +12,22 @@ const PLAN_PREMIUM_PERMANENT = {
 };
 
 // --- Utilities ---
+
+function parseJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
 
 function getCorsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
@@ -65,15 +80,30 @@ function timingSafeEqualStr(a, b) {
   return mismatch === 0;
 }
 
-// --- Firebase Authentication (Verify Client ID Token) ---
-async function verifyFirebaseIdToken(request) {
+// --- Firebase Authentication (Verify Client ID Token for less-legal) ---
+async function verifyFirebaseIdToken(request, env) {
   const authHeader = request.headers.get('Authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw new Error('Missing or invalid Authorization header. A fresh Firebase ID token is required.');
   }
   const idToken = authHeader.split('Bearer ')[1];
   
-  const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`, {
+  // 1. Decode & verify JWT structure and audience / issuer for less-legal project
+  const payload = parseJwt(idToken);
+  if (!payload) {
+    throw new Error('Firebase ID token format is invalid.');
+  }
+  
+  const expectedAudience = FIREBASE_PROJECT_ID;
+  const expectedIssuer = `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
+  
+  if (payload.aud !== expectedAudience || payload.iss !== expectedIssuer) {
+    throw new Error(`Firebase ID token was not issued for project '${FIREBASE_PROJECT_ID}'.`);
+  }
+
+  // 2. Lookup account via Google Identity Toolkit REST API
+  const apiKey = (env && env.FIREBASE_API_KEY) ? env.FIREBASE_API_KEY : FIREBASE_API_KEY;
+  const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ idToken })
@@ -86,7 +116,13 @@ async function verifyFirebaseIdToken(request) {
   if (!data.users || data.users.length === 0) {
     throw new Error('Firebase ID token is invalid or user not found.');
   }
-  return data.users[0].localId; // The verified Firebase UID
+  
+  const verifiedUid = data.users[0].localId;
+  if (verifiedUid !== payload.sub) {
+    throw new Error('Mismatch between token payload UID and verified account UID.');
+  }
+
+  return verifiedUid; // Derived UID from verified token
 }
 
 // --- Firestore Admin REST API (Service Account required) ---
@@ -102,7 +138,15 @@ async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
   } catch (e) {
     throw new Error("FIREBASE_SERVICE_ACCOUNT is not valid JSON.");
   }
+
+  // Authoritative Firebase Project ID verification
+  const saProjectId = sa.project_id || sa.projectId;
+  if (saProjectId && saProjectId !== FIREBASE_PROJECT_ID) {
+    throw new Error(`FIREBASE_SERVICE_ACCOUNT project_id ('${saProjectId}') does not match expected project_id ('${FIREBASE_PROJECT_ID}').`);
+  }
   
+  const dbId = (env && env.FIREBASE_DATABASE_ID) ? env.FIREBASE_DATABASE_ID : "(default)";
+
   // Generate JWT for Google OAuth2
   const jwtHeader = { alg: 'RS256', typ: 'JWT' };
   const now = Math.floor(Date.now() / 1000);
@@ -151,7 +195,7 @@ async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
     body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${signedJwt}`
   });
   
-  if (!tokenRes.ok) throw new Error('Failed to get Firestore access token.');
+  if (!tokenRes.ok) throw new Error('Failed to get Firestore access token from Google OAuth2.');
   const tokenData = await tokenRes.json();
   const accessToken = tokenData.access_token;
   
@@ -169,16 +213,19 @@ async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
     activatedAt: { stringValue: activatedAt }
   };
   
-  const subUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${FIREBASE_DB_ID}/documents/user_subscriptions/${uid}`;
+  const subUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${dbId}/documents/user_subscriptions/${uid}`;
   const subWriteRes = await fetch(subUrl, {
     method: 'PATCH',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ name: `projects/${FIREBASE_PROJECT_ID}/databases/${FIREBASE_DB_ID}/documents/user_subscriptions/${uid}`, fields: subFields })
+    body: JSON.stringify({ name: `projects/${FIREBASE_PROJECT_ID}/databases/${dbId}/documents/user_subscriptions/${uid}`, fields: subFields })
   });
-  if (!subWriteRes.ok) throw new Error('Failed to write user_subscriptions');
+  if (!subWriteRes.ok) {
+    const errText = await subWriteRes.text();
+    throw new Error(`Failed to write user_subscriptions: ${errText}`);
+  }
 
   // Prepare Firestore Document Data for razorpay_payments
   const paymentFields = {
@@ -191,7 +238,7 @@ async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
     timestamp: { stringValue: activatedAt }
   };
   
-  const payUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${FIREBASE_DB_ID}/documents/razorpay_payments?documentId=${paymentId}`;
+  const payUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/${dbId}/documents/razorpay_payments?documentId=${paymentId}`;
   const payWriteRes = await fetch(payUrl, {
     method: 'PATCH',
     headers: {
@@ -200,7 +247,10 @@ async function writeEntitlementToFirestore(env, uid, paymentId, orderId) {
     },
     body: JSON.stringify({ fields: paymentFields })
   });
-  if (!payWriteRes.ok) throw new Error('Failed to write razorpay_payments');
+  if (!payWriteRes.ok) {
+    const errText = await payWriteRes.text();
+    throw new Error(`Failed to write razorpay_payments: ${errText}`);
+  }
   
   return true;
 }
@@ -221,7 +271,7 @@ export default {
       // --- CREATE ORDER ---
       if (url.pathname === '/api/razorpay/create-order' && request.method === 'POST') {
         try {
-          const verifiedUid = await verifyFirebaseIdToken(request);
+          const verifiedUid = await verifyFirebaseIdToken(request, env);
           
           const keyId = env.RAZORPAY_KEY_ID;
           const keySecret = env.RAZORPAY_KEY_SECRET;
@@ -270,7 +320,7 @@ export default {
       if (url.pathname === '/api/razorpay/verify-payment' && request.method === 'POST') {
         try {
           // Require authenticated user
-          await verifyFirebaseIdToken(request);
+          await verifyFirebaseIdToken(request, env);
 
           const body = await request.json().catch(() => ({}));
           const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = body;
@@ -330,7 +380,6 @@ export default {
             const orderNotes = paymentEntity.notes || {};
             
             const uid = orderNotes.firebase_uid;
-            const plan = orderNotes.plan;
             
             if (!uid) {
               // Cannot fulfill without verified UID injected by our server during order creation
