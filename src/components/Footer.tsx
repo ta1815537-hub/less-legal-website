@@ -305,7 +305,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="space-y-1 text-center md:text-left w-full overflow-hidden flex flex-col items-center md:items-start">
             <div className="w-full flex justify-center md:justify-start pb-1">
               <p className="whitespace-nowrap text-[clamp(6px,2.2vw,12px)] sm:text-xs tracking-tight text-center md:text-left">
-                © 2026 Less Legal. All Rights Reserved. Founded &amp; Created by Anurag Tiwari {'{'}Gurauli{'}'}
+                © 2026 Less Legal. All Rights Reserved. Founded &amp; Created by Anurag Gurauli
               </p>
             </div>
             <div className="w-full flex justify-center md:justify-start">

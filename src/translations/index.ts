@@ -480,7 +480,7 @@ export const translations: Record<Language, TranslationSchema> = {
       trustedTool: "Trusted Legal & Utilities Tool For Every Indian",
       supportHeader: "Support & Contact",
       aboutLessLegal: "About Less Legal",
-      founderLabel: "Founder (Anurag Tiwari)",
+      founderLabel: "Founder (Anurag Gurauli)",
       appFeatures: "App Features",
       premiumPlans: "Premium Plans",
       downloadApp: "Download App",
@@ -507,7 +507,7 @@ export const translations: Record<Language, TranslationSchema> = {
       shortQuote: "“Less Creation is built around a simple idea: technology should make useful knowledge, legal tools and digital services easier to access.”",
 
       storyTitle: "The Person Behind Less Creation",
-      storyP1: "My name is Anurag Tiwari. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Creation.",
+      storyP1: "My name is Anurag Gurauli. I am an Advocate practicing before the Allahabad High Court and the founder and creator behind Less Creation.",
       storyP2: "My professional journey in law has given me a close understanding of the practical challenges faced by advocates, law students and ordinary citizens while accessing legal information and everyday digital tools.",
       storyP3: "Less Creation is my effort to bring practical technology into that space — creating simple, useful and accessible digital products that solve real-world problems.",
       storyP4: "Less Legal is the first major product in this vision.",
@@ -543,7 +543,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       messageTitle: "A Message From The Founder",
       messageQuote: "I believe technology becomes meaningful when it makes something genuinely useful simpler and more accessible. Less Creation is being built with that belief.",
-      messageAuthor: "Anurag Tiwari • Founder, Less Creation",
+      messageAuthor: "Anurag Gurauli • Founder, Less Creation",
 
       timelineTitle: "From Legal Practice to Digital Innovation",
       timelineItems: [
@@ -562,9 +562,9 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     home: {
       heroBadge: "Flagship Product Studio",
-      heroTitle: "Legal Knowledge & Digital Utilities Suite",
-      heroTitlePart1: "Less Legal: All in One Smart App & ",
-      heroTitlePart2: "Legal Tools Suite",
+      heroTitle: "Less Legal : All in One Smart App | Powerful Digital Tools : Made Simple",
+      heroTitlePart1: "Less Legal : All in One Smart App",
+      heroTitlePart2: "Powerful Digital Tools : Made Simple",
       heroSubtitle: "Less Legal is a trending new smart app by Less Creation founded by Anurag Gurauli. Bring legal drafting, bare acts, PDF app features, document scanner, Share it app utility, and everyday tools into one Android application.",
       ctaDownload: "Download Less Legal",
       ctaDemo: "Try Live Interactive Demo",
@@ -616,7 +616,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       founderPreviewBadge: "MEET THE FOUNDER",
       founderPreviewTitle: "Created by an Advocate for Real-World Utility",
-      founderPreviewText: "Anurag Tiwari, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.",
+      founderPreviewText: "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.",
 
       faqBadge: "FREQUENTLY ASKED QUESTIONS",
       faqTitle: "Got Questions? We Have Factual Answers",
@@ -636,7 +636,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "Are the Premium Passes auto-renewing subscriptions?",
-          a: "Never. All Premium Passes (3 Months for ₹59 or 1 Year for ₹179) are strict one-time purchases with fixed validity days. We never auto-debit your bank account or store your credit card details."
+          a: "Never. Less Legal offers a single ₹179 Lifetime Pass that permanently upgrades your registered Email ID to Premium status forever. It is a strict one-time purchase with no auto-debits, recurring fees, or hidden charges."
         },
         {
           q: "What devices are supported by Less Legal?",
@@ -957,7 +957,7 @@ export const translations: Record<Language, TranslationSchema> = {
       trustedTool: "प्रत्येक भारतीय के लिए विश्वसनीय लीगल एवं यूटिलिटीज टूल",
       supportHeader: "सहायता एवं संपर्क",
       aboutLessLegal: "लेस लीगल के बारे में",
-      founderLabel: "संस्थापक (अनुराग तिवारी)",
+      founderLabel: "संस्थापक (अनुराग गुरौली)",
       appFeatures: "ऐप सुविधाएँ",
       premiumPlans: "प्रीमियम प्लान्स",
       downloadApp: "ऐप डाउनलोड करें",
@@ -977,14 +977,14 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     founder: {
       badge: "संस्थापक एवं निर्माता",
-      name: "अनुराग तिवारी",
+      name: "अनुराग गुरौली",
       role: "अधिवक्ता",
       subtitle: "अधिवक्ता | संस्थापक, लेस क्रिएशन",
       practice: "इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिसरत।",
       shortQuote: "“लेस क्रिएशन इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।”",
 
       storyTitle: "लेस क्रिएशन के पीछे व्यक्ति",
-      storyP1: "मेरा नाम अनुराग तिवारी है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और लेस क्रिएशन तथा लेस लीगल की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
+      storyP1: "मेरा नाम अनुराग गुरौली है। मैं इलाहाबाद उच्च न्यायालय में अधिवक्ता के रूप में प्रैक्टिस कर रहा हूँ और लेस क्रिएशन तथा लेस लीगल की परिकल्पना और निर्माण के पीछे संस्थापक एवं निर्माता के रूप में कार्य कर रहा हूँ।",
       storyP2: "कानून के क्षेत्र में कार्य करते हुए मुझे यह समझने का अवसर मिला कि अधिवक्ताओं, विधि छात्रों और आम नागरिकों के लिए कानूनी जानकारी तथा रोज़मर्रा के उपयोगी डिजिटल टूल्स तक आसान पहुँच कितनी महत्वपूर्ण है।",
       storyP3: "लेस क्रिएशन इसी सोच का एक प्रयास है—ऐसे सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाना जो वास्तविक समस्याओं को हल करने में मदद करें।",
       storyP4: "लेस लीगल इसी दृष्टिकोण का पहला प्रमुख उत्पाद है।",
@@ -1020,7 +1020,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       messageTitle: "संस्थापक की ओर से",
       messageQuote: "मेरा मानना है कि तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। लेस क्रिएशन इसी विचार के साथ बनाया जा रहा है।",
-      messageAuthor: "अनुराग तिवारी • संस्थापक, लेस क्रिएशन",
+      messageAuthor: "अनुराग गुरौली • संस्थापक, लेस क्रिएशन",
 
       timelineTitle: "कानूनी प्रैक्टिस से डिजिटल नवाचार तक",
       timelineItems: [
@@ -1039,9 +1039,9 @@ export const translations: Record<Language, TranslationSchema> = {
     },
     home: {
       heroBadge: "फ्लैगशिप प्रोडक्ट स्टूडियो",
-      heroTitle: "कानूनी ज्ञान एवं डिजिटल यूटिलिटीज सूट",
-      heroTitlePart1: "कानूनी ज्ञान एवं ",
-      heroTitlePart2: "डिजिटल यूटिलिटीज सूट",
+      heroTitle: "लेस लीगल : ऑल इन वन स्मार्ट ऐप | पावरफुल डिजिटल टूल्स : मेड सिंपल",
+      heroTitlePart1: "लेस लीगल : ऑल इन वन स्मार्ट ऐप",
+      heroTitlePart2: "पावरफुल डिजिटल टूल्स : मेड सिंपल",
       heroSubtitle: "कानूनी संदर्भ, पीडीएफ वर्कस्पेस, कैलकुलेटर और दैनिक टूल्स को एक सहज एंड्रॉइड ऐप में उपलब्ध कराना।",
       ctaDownload: "डाउनलोड लेस लीगल",
       ctaDemo: "लाइव डेमो देखें",
@@ -1093,7 +1093,7 @@ export const translations: Record<Language, TranslationSchema> = {
 
       founderPreviewBadge: "संस्थापक से मिलें",
       founderPreviewTitle: "व्यावहारिक उपयोगिता के लिए एक अधिवक्ता द्वारा निर्मित",
-      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग तिवारी ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए लेस क्रिएशन की स्थापना की।",
+      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए लेस क्रिएशन की स्थापना की।",
 
       faqBadge: "अक्सर पूछे जाने वाले प्रश्न",
       faqTitle: "क्या आपके पास प्रश्न हैं? हमारे पास सटीक उत्तर हैं",
@@ -1113,7 +1113,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "क्या प्रीमियम पास स्वचालित रूप से नवीनीकृत होने वाले सब्सक्रिप्शन हैं?",
-          a: "कभी नहीं। सभी प्रीमियम पास (₹59 में 3 महीने या ₹179 में 1 वर्ष) निश्चित वैधता दिनों के साथ एक बार की जाने वाली खरीदारी हैं। हम आपके बैंक खाते से कभी भी ऑटो-डेबिट नहीं करते हैं।"
+          a: "कभी नहीं। लेस लीगल ₹179 का सिंगल लाइफटाइम पास प्रदान करता है जो आपकी पंजीकृत ईमेल आईडी को हमेशा के लिए प्रीमियम बनाता है। यह एकमुश्त भुगतान है, इसमें कोई ऑटो-डेबिट या आवर्ती शुल्क नहीं है।"
         },
         {
           q: "लेस लीगल किन उपकरणों द्वारा समर्थित है?",

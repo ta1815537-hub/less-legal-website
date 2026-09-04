@@ -5,7 +5,7 @@ import {
   Sparkles, CheckCircle2, ShieldCheck, 
   FileText, ArrowUpRight, ArrowLeft,
   Smartphone, Lock, Download, Check,
-  Zap, HelpCircle, ShieldAlert, Award
+  Zap, HelpCircle, ShieldAlert, Award, Mail
 } from 'lucide-react';
 import { 
   ScrollReveal, StaggerContainer, StaggerItem, 
@@ -13,6 +13,7 @@ import {
 } from '../components/MotionWrappers';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { launchLessLegalApp } from '../utils/deepLink';
 
 interface PremiumPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -22,14 +23,21 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
   const isHindi = language === 'hi';
 
-  const featuresPermanent = t.premiumPage.features1Year || SITE_CONFIG.premiumPlans[1].features;
+  const featuresPermanent = t.premiumPage?.features1Year || SITE_CONFIG.premiumPlans[0]?.features || [
+    "Permanently binds Lifetime Premium access to your registered Email ID",
+    "100% ad-free interface forever on any Android device",
+    "Full PDF Tools Suite (Merge, Split, Compress, Encrypt)",
+    "Case Diary & Hearing Date Tracker",
+    "Complete Calculator Hub & Regional Land Unit Converter",
+    "Court Fee Calculator & Legal Vocabulary Reference",
+    "Quick Notes & Less Share Direct Local File Transfer",
+    "Bare Acts Reference Library & Legal Quiz",
+    "No auto-debit, no recurring fees, no expiration ever"
+  ];
 
   const handleOpenAppOrDownload = () => {
-    if (SITE_CONFIG.playStoreUrl) {
-      window.open(SITE_CONFIG.playStoreUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      onNavigate('download');
-    }
+    // Attempt launching installed app to /premium directly, with fallback to Play Store
+    launchLessLegalApp('premium');
   };
 
   return (
@@ -82,7 +90,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             <motion.div 
               whileHover={{ y: -6, scale: 1.015 }} 
               transition={{ type: "spring", stiffness: 300, damping: 20 }} 
-              className="glass-panel shine-sweep-overlay p-6 sm:p-8 rounded-3xl border-2 border-amber-600/40 dark:border-[#D8BD82]/40 shadow-2xl flex flex-col justify-between relative bg-gradient-to-b from-amber-500/[0.06] via-white/90 to-white/80 dark:via-[#121212]/90 dark:to-[#121212] h-full"
+              className="glass-panel flash-card-animation shine-sweep-overlay p-6 sm:p-8 rounded-3xl border-2 border-amber-600/40 dark:border-[#D8BD82]/40 shadow-2xl flex flex-col justify-between relative bg-gradient-to-b from-amber-500/[0.06] via-white/90 to-white/80 dark:via-[#121212]/90 dark:to-[#121212] h-full"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -101,12 +109,22 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 <div className="flex items-baseline gap-2 my-4">
                   <span className="text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">₹179</span>
                   <span className="text-xs font-semibold text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap">
-                    {isHindi ? 'एक बार का भुगतान' : 'One-time payment'}
+                    {isHindi ? 'एक बार का स्थायी भुगतान' : 'One-time permanent payment'}
                   </span>
                 </div>
 
+                <div className="p-3 my-3 rounded-xl bg-amber-500/10 dark:bg-[#D8BD82]/15 border border-amber-600/30 dark:border-[#D8BD82]/30 flex items-start gap-2.5 text-xs text-amber-900 dark:text-[#D8BD82]">
+                  <Mail className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="block font-bold mb-0.5">{isHindi ? 'ईमेल आईडी स्थायी बाइंडिंग:' : 'Permanent Email Pass:'}</strong>
+                    {isHindi 
+                      ? '179 रुपये का सिंगल भुगतान आपके पंजीकृत ईमेल आईडी (Registered Email) को स्थायी (Permanently) रूप से प्रीमियम घोषित कर देता है।' 
+                      : 'Single ₹179 purchase permanently links Lifetime Premium status to your registered Email ID.'}
+                  </div>
+                </div>
+
                 <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed mb-6">
-                  {isHindi ? 'कोई आवर्ती शुल्क नहीं। बस एक बार भुगतान करें और जीवन भर के लिए लाभों का आनंद लें।' : 'No recurring charges. Just pay once and enjoy the benefits forever.'}
+                  {isHindi ? 'कोई आवर्ती शुल्क नहीं। बस एक बार भुगतान करें और अपनी ईमेल आईडी पर हमेशा के लिए प्रीमियम का आनंद लें।' : 'No recurring charges. Just pay once and enjoy lifetime premium on your registered email.'}
                 </p>
 
                 <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-white/10">

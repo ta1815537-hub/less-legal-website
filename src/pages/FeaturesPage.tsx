@@ -192,7 +192,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
               {filteredFeatures.map((feature) => (
                 <div
                   key={feature.id}
-                  className="glass-card p-6 flex flex-col justify-between"
+                  className="glass-card flash-card-animation p-6 flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">

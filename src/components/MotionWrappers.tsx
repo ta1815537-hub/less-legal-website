@@ -15,10 +15,10 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeK
   return (
     <motion.div
       key={routeKey}
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -6 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 15, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -10, scale: 0.98 }}
+      transition={{ duration: 0.6, ease: EASING_SMOOTH }}
       className="w-full flex-1"
       style={{ willChange: "opacity, transform" }}
     >
@@ -30,12 +30,15 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeK
 // 2. GLOBAL ANIMATED SMOKE BACKGROUND COMPONENT
 export const SmokeBackground: React.FC = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none hidden dark:block">
+    <div 
+      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none hidden dark:block"
+      style={{ contain: 'strict' }}
+    >
       {/* Smoke Cloud 1 - Crimson / Ruby Ambient Vapor (Dark mode only) */}
-      <div className="smoke-cloud-1 absolute -top-40 -left-40 w-[45rem] h-[45rem] bg-gradient-to-br from-[#8B0000]/20 via-[#C21F2F]/15 to-transparent rounded-full blur-[130px] opacity-50" />
+      <div className="vapor-orb-1 absolute -top-40 -left-40 w-[35rem] sm:w-[45rem] h-[35rem] sm:h-[45rem] bg-gradient-to-br from-[#8B0000]/20 via-[#C21F2F]/15 to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-50" />
 
       {/* Smoke Cloud 2 - Subtle Crimson Vapor (Dark mode only) */}
-      <div className="smoke-cloud-2 absolute top-1/4 -right-40 w-[40rem] h-[40rem] bg-gradient-to-bl from-[#C21F2F]/15 via-[#8B0000]/10 to-transparent rounded-full blur-[120px] opacity-40" />
+      <div className="vapor-orb-2 absolute top-1/4 -right-40 w-[30rem] sm:w-[40rem] h-[30rem] sm:h-[40rem] bg-gradient-to-bl from-[#C21F2F]/15 via-[#8B0000]/10 to-transparent rounded-full blur-[50px] sm:blur-[90px] opacity-40" />
     </div>
   );
 };
@@ -68,10 +71,10 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.98, ...getInitialPosition() }}
+      initial={{ opacity: 0, scale: 0.92, ...getInitialPosition() }}
       whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.6, delay, ease: EASING_SMOOTH }}
+      viewport={{ once: true, margin: '-20%' }}
+      transition={{ duration: 0.9, delay, ease: EASING_SMOOTH }}
       className={className}
     >
       {children}
@@ -89,7 +92,7 @@ interface StaggerContainerProps {
 export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   children,
   className = '',
-  staggerDelay = 0.08,
+  staggerDelay = 0.12,
 }) => {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -97,7 +100,7 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
       opacity: 1,
       transition: {
         staggerChildren: staggerDelay,
-        delayChildren: 0.05,
+        delayChildren: 0.1,
       },
     },
   };
@@ -107,7 +110,7 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-40px' }}
+      viewport={{ once: true, margin: '-15%' }}
       className={className}
     >
       {children}
@@ -121,12 +124,12 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string; in
   interactive = false,
 }) => {
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20, scale: 0.97 },
+    hidden: { opacity: 0, y: 30, scale: 0.92 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.5, ease: EASING_SMOOTH },
+      transition: { duration: 0.8, ease: EASING_SMOOTH },
     },
   };
 
@@ -144,38 +147,18 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string; in
 // 5. HERO AMBIENT BACKGROUND GLOW (Crimson & Champagne Gold Orbs)
 export const HeroAmbientGlow: React.FC = () => {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10 select-none">
+    <div 
+      className="absolute inset-0 pointer-events-none overflow-hidden -z-10 select-none"
+      style={{ contain: 'strict' }}
+    >
       {/* Deep Crimson Radial Light Orb 1 */}
-      <motion.div
-        animate={{
-          scale: [1, 1.15, 1],
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-        style={{ willChange: "transform" }}
-        className="absolute -top-32 left-1/4 w-[36rem] h-[36rem] bg-gradient-to-tr from-[#8B0000]/30 to-[#C21F2F]/20 rounded-full blur-[120px]"
+      <div 
+        className="vapor-orb-1 absolute -top-32 left-1/4 w-[28rem] sm:w-[36rem] h-[28rem] sm:h-[36rem] bg-gradient-to-tr from-[#8B0000]/30 to-[#C21F2F]/20 rounded-full blur-[60px] sm:blur-[100px]"
       />
 
       {/* Champagne Gold Warm Ambient Orb 2 */}
-      <motion.div
-        animate={{
-          scale: [1, 1.18, 1],
-          x: [0, -35, 0],
-          y: [0, 25, 0],
-        }}
-        transition={{
-          duration: 14,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 1.5,
-        }}
-        style={{ willChange: "transform" }}
-        className="absolute top-1/3 right-12 w-[32rem] h-[32rem] bg-gradient-to-br from-[#D8BD82]/15 to-[#C7A96B]/10 rounded-full blur-[110px]"
+      <div 
+        className="vapor-orb-2 absolute top-1/3 right-8 sm:right-12 w-[24rem] sm:w-[32rem] h-[24rem] sm:h-[32rem] bg-gradient-to-br from-[#D8BD82]/15 to-[#C7A96B]/10 rounded-full blur-[50px] sm:blur-[90px]"
       />
 
       {/* Architectural Smoked Grid Overlay */}

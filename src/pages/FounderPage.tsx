@@ -57,15 +57,15 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 className="relative group w-full max-w-sm"
               >
                 {/* Outer Flowing Animated Rotating Gradient Border */}
-                <div className="animated-founder-border shadow-2xl rounded-[24px] overflow-hidden p-1" style={{ transform: 'translateZ(0)' }}>
+                <div className="animated-founder-border shadow-2xl rounded-[1.5rem] overflow-hidden p-1" style={{ transform: 'translateZ(0)' }}>
                   
-                  <div className="relative rounded-[20px] overflow-hidden bg-white dark:bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl" style={{ transform: 'translateZ(0)' }}>
+                  <div className="relative rounded-[calc(1.5rem-4px)] overflow-hidden bg-white dark:bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl isolate" style={{ transform: 'translateZ(0)' }}>
                     
                     {!imgError ? (
-                      <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center">
+                      <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center rounded-t-[calc(1.5rem-4px)]">
                         <img 
                           src="/images/anurag_tiwari.jpg" 
-                          alt="Anurag Tiwari — Founder of Less Creation" 
+                          alt="Anurag Gurauli — Founder of Less Creation" 
                           onError={() => setImgError(true)}
                           loading="eager"
                           className="w-full h-auto max-h-[480px] object-cover object-top transform group-hover:scale-[1.02] transition-transform duration-500 ease-out"
@@ -75,7 +75,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                       </div>
                     ) : (
                       /* Styled Fallback */
-                      <div className="aspect-[4/5] bg-gradient-to-b from-slate-100 via-white to-amber-50 dark:from-[#0F172A] dark:via-[#080808] dark:to-[#1A0A0D] flex flex-col items-center justify-center p-6 text-center space-y-4">
+                      <div className="aspect-[4/5] bg-gradient-to-b from-slate-100 via-white to-amber-50 dark:from-[#0F172A] dark:via-[#080808] dark:to-[#1A0A0D] flex flex-col items-center justify-center p-6 text-center space-y-4 rounded-t-[calc(1.5rem-4px)]">
                         <div className="w-20 h-20 rounded-full bg-amber-500/10 dark:bg-[#C21F2F]/20 border-2 border-amber-600 dark:border-[#D8BD82] flex items-center justify-center shadow-lg">
                           <Scale className="w-10 h-10 text-[#C21F2F] dark:text-[#E03A3E]" />
                         </div>
@@ -91,9 +91,11 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                     )}
 
                     {/* Caption Bar */}
-                    <div className="p-3.5 bg-slate-100/95 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs">
-                      <span className="font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.founder.name}</span>
-                      <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-[#D8BD82] font-extrabold text-[11px] whitespace-nowrap badge-one-line border border-amber-600/20 dark:border-[#D8BD82]/30">{t.founder.role}</span>
+                    <div className="p-3 bg-slate-100/95 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-200 dark:border-white/10 flex flex-col items-center justify-center text-center space-y-1 rounded-b-[calc(1.5rem-4px)] w-full">
+                      <span className="font-extrabold text-slate-900 dark:text-[#F5F2EE] text-xs sm:text-sm tracking-tight whitespace-nowrap">{t.founder.name}</span>
+                      <span className="px-2.5 py-0.5 rounded-xl sm:rounded-full bg-amber-500/15 text-amber-800 dark:text-[#D8BD82] font-extrabold text-[8.5px] sm:text-[10px] uppercase tracking-wider border border-amber-600/25 dark:border-[#D8BD82]/30 max-w-full leading-[1.3]">
+                        Founder of Less Legal & Less Creation
+                      </span>
                     </div>
 
                   </div>

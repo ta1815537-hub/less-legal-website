@@ -143,44 +143,50 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="col-span-1 sm:col-span-7 md:col-span-7 lg:col-span-7 space-y-4 sm:space-y-6 text-center sm:text-left flex flex-col items-center sm:items-start"
+              className="col-span-1 sm:col-span-7 md:col-span-7 lg:col-span-7 space-y-6 sm:space-y-8 text-center sm:text-left flex flex-col items-center sm:items-start"
             >
-              {/* Orbital Brand Logo & App Name Header */}
-              <div className="flex items-center gap-3.5 sm:gap-4 p-2.5 sm:p-3 pr-5 sm:pr-6 rounded-full bg-white/90 dark:bg-[#0D0D0F]/90 border border-slate-200 dark:border-white/15 shadow-xl dark:shadow-[0_0_40px_rgba(194,31,47,0.3)] backdrop-blur-3xl transition-transform hover:scale-105 duration-300">
-                <div className="p-1.5 sm:p-2 rounded-2xl bg-black/80 border border-amber-500/30 shrink-0 shadow-lg">
-                  <img src="/app_logo_512x512-3.png" alt="Less Legal App Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-cover" />
+              <div className="flex flex-col gap-4 sm:gap-5 items-center sm:items-start w-full">
+                
+                {/* Hero Status Badge */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100/80 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#B8B3AF] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest shadow-sm backdrop-blur-md">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C21F2F] dark:bg-[#E03A3E] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#C21F2F] dark:bg-[#E03A3E]"></span>
+                  </span>
+                  {t.home.heroBadge}
                 </div>
-                <div className="text-left">
-                  <div className="text-base sm:text-xl font-black text-slate-900 dark:text-white tracking-wider uppercase leading-none">
-                    LESS LEGAL
+
+                {/* Sleek App Branding */}
+                <div className="flex items-center gap-3.5 sm:gap-4 p-2 sm:p-2.5 pr-5 sm:pr-6 rounded-2xl sm:rounded-[1.25rem] bg-white/80 dark:bg-[#0D0D0F]/80 border border-slate-200/80 dark:border-white/10 shadow-lg dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)] backdrop-blur-2xl transition-transform hover:scale-[1.02] duration-300">
+                  <div className="p-1.5 sm:p-2 rounded-xl bg-black/90 border border-slate-800 shrink-0 shadow-md">
+                    <img src="/app_logo_512x512-3.png" alt="Less Legal App Logo" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover" />
                   </div>
-                  <div className="text-[10px] sm:text-xs font-bold text-[#C21F2F] dark:text-amber-400 tracking-widest uppercase mt-0.5">
-                    {language === 'hi' ? 'लीगल टूलकिट एंड केस डायरी' : 'Legal Toolkit & Case Diary'}
+                  <div className="text-left">
+                    <div className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-wider uppercase leading-none">
+                      LESS LEGAL
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] font-bold text-slate-500 dark:text-[#B8B3AF] tracking-widest uppercase mt-1">
+                      {language === 'hi' ? 'लीगल टूलकिट एंड केस डायरी' : 'Legal Toolkit & Case Diary'}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Hero Status Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-[#B8B3AF] text-xs font-bold uppercase tracking-widest shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-[#C21F2F]"></span>
-                {t.home.heroBadge}
+                {/* Main Headline */}
+                <h1 className="text-[2.2rem] sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.8rem] font-black tracking-tight leading-[1.1] w-full flex flex-col gap-2 sm:gap-3 mt-1">
+                  <span className="sr-only">Download Less Legal : All in one app - Less Creation</span>
+                  <span className="text-slate-900 dark:text-[#F5F2EE] block">
+                    {t.home.heroTitlePart1}
+                  </span>
+                  <span className="text-[1.35rem] sm:text-2xl lg:text-[1.85rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#C21F2F] to-[#FF6B35] dark:from-[#D8BD82] dark:to-[#E03A3E] animate-bg-shift">
+                    {t.home.heroTitlePart2}
+                  </span>
+                </h1>
+                
+                {/* Subtitle Paragraph */}
+                <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-[#B8B3AF] font-medium max-w-xl leading-relaxed">
+                  {t.home.heroSubtitle}
+                </p>
               </div>
-
-              {/* Main Headline */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight leading-[1.1]">
-                <span className="sr-only">Download Less Legal : All in one app - Less Creation</span>
-                <span className="text-slate-900 dark:text-[#F5F2EE] block sm:inline sm:mr-2">
-                  {t.home.heroTitlePart1}
-                </span>
-                <span className="text-gradient-crimson-gold block sm:inline">
-                  {t.home.heroTitlePart2}
-                </span>
-              </h1>
-              
-              {/* Subtitle Paragraph */}
-              <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-[#B8B3AF] font-medium max-w-xl leading-relaxed">
-                {t.home.heroSubtitle}
-              </p>
 
               {/* Action CTAs Row */}
               <div className="flex flex-col sm:flex-row flex-wrap items-center sm:items-start justify-center sm:justify-start gap-3.5 pt-2 w-full">
@@ -583,7 +589,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
             return (
               <StaggerItem key={product.id} interactive={true}>
-                <div className={`group relative p-6 rounded-3xl transition-all duration-300 h-full flex flex-col ${
+                <div className={`group relative p-6 rounded-3xl transition-all duration-300 h-full flex flex-col flash-card-animation ${
                   isFlagship 
                     ? 'glass-panel-crimson text-slate-900 dark:text-[#F5F2EE]' 
                     : 'glass-card text-slate-900 dark:text-[#F5F2EE]'
@@ -649,23 +655,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               
               {/* Founder Image Thumbnail */}
               <div className="md:col-span-4 flex justify-center">
-                <div className="relative w-48 sm:w-56 aspect-[4/5] rounded-2xl overflow-hidden border-2 border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl bg-[#0D131F]">
-                  {!founderImgErr ? (
-                    <img 
-                      src="/images/anurag_tiwari.jpg" 
-                      alt="Anurag Tiwari — Founder of Less Creation"
-                      onError={() => setFounderImgErr(true)}
-                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-b from-[#0F172A] to-[#1A0A0D] flex flex-col items-center justify-center p-4 text-center">
-                      <Scale className="w-10 h-10 text-[#D8BD82] mb-2" />
-                      <div className="text-sm font-bold text-[#F5F2EE]">{t.founder.name}</div>
-                      <div className="text-[10px] text-[#D8BD82]">{t.founder.role}</div>
+                <div className="animated-founder-border shadow-2xl rounded-[1.5rem] p-1 overflow-hidden">
+                  <div className="relative w-48 sm:w-56 aspect-[4/5] rounded-[calc(1.5rem-4px)] overflow-hidden bg-[#0D131F] isolate">
+                    {!founderImgErr ? (
+                      <img 
+                        src="/images/anurag_tiwari.jpg" 
+                        alt="Anurag Gurauli — Founder of Less Creation"
+                        onError={() => setFounderImgErr(true)}
+                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500 rounded-[calc(1.5rem-4px)]"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-b from-[#0F172A] to-[#1A0A0D] flex flex-col items-center justify-center p-4 text-center rounded-[calc(1.5rem-4px)]">
+                        <Scale className="w-10 h-10 text-[#D8BD82] mb-2" />
+                        <div className="text-sm font-bold text-[#F5F2EE]">{t.founder.name}</div>
+                        <div className="text-[10px] text-[#D8BD82]">{t.founder.role}</div>
+                      </div>
+                    )}
+                    <div className="absolute bottom-0 inset-x-0 p-2 sm:p-2.5 bg-black/85 backdrop-blur-md text-center rounded-b-[calc(1.5rem-4px)] border-t border-white/10 flex items-center justify-center min-h-[44px]">
+                      <span className="text-[8.5px] sm:text-[10px] font-bold text-[#D8BD82] tracking-widest uppercase leading-[1.2]">{t.founder.badge}</span>
                     </div>
-                  )}
-                  <div className="absolute bottom-0 inset-x-0 p-2 bg-black/80 backdrop-blur-xs text-center">
-                    <span className="text-[10px] font-bold text-[#D8BD82] tracking-wider uppercase">{t.founder.badge}</span>
                   </div>
                 </div>
               </div>
@@ -769,7 +777,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
               {filteredFeatures.slice(0, 12).map((item) => (
-                <div key={item.id} className="glass-card p-5 flex flex-col justify-between h-full space-y-4">
+                <div key={item.id} className="glass-card flash-card-animation p-5 flex flex-col justify-between h-full space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
@@ -841,7 +849,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="glass-card p-6 space-y-3">
+          <div className="glass-card flash-card-animation p-6 space-y-3">
             <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/40 flex items-center justify-center font-bold">
               <ShieldCheck className="w-5 h-5" />
             </div>
@@ -851,7 +859,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="glass-card p-6 space-y-3">
+          <div className="glass-card flash-card-animation p-6 space-y-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
               <Zap className="w-5 h-5" />
             </div>
@@ -861,7 +869,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="glass-card p-6 space-y-3">
+          <div className="glass-card flash-card-animation p-6 space-y-3">
             <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/40 flex items-center justify-center font-bold">
               <FileText className="w-5 h-5" />
             </div>
@@ -871,7 +879,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="glass-card p-6 space-y-3">
+          <div className="glass-card flash-card-animation p-6 space-y-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
               <Lock className="w-5 h-5" />
             </div>
@@ -903,81 +911,58 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </p>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-3xl mx-auto">
-            
-            {/* 3 Months Pass */}
-            <div className="glass-panel rounded-2xl p-6 border border-slate-200 dark:border-white/12 flex flex-col justify-between space-y-6">
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">{t.premiumPage.plan90DaysTitle}</span>
-                  <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
-                    {t.premiumPage.plan90DaysValidity}
-                  </span>
-                </div>
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">{t.premiumPage.plan90DaysPrice}</span>
-                  <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">{t.premiumPage.oneTimePaymentLabel}</span>
-                </div>
-                <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4">
-                  {t.premiumPage.plan90DaysTagline}
-                </p>
-                <ul className="space-y-2 text-xs text-slate-700 dark:text-[#B8B3AF]">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                    <span>{t.premiumPage.features90Days[0]}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                    <span>{t.premiumPage.features90Days[8]}</span>
-                  </li>
-                </ul>
-              </div>
-
-              <button
-                onClick={() => onNavigate('premium')}
-                className="w-full py-3 rounded-xl btn-glass font-bold text-xs cursor-pointer"
-              >
-                {language === 'hi' ? 'पास की शर्तें देखें' : 'View Pass Terms'}
-              </button>
-            </div>
-
-            {/* 1 Year Pass (Best Value) */}
-            <div className="relative h-full">
-              <div className="glass-panel-crimson glow-crimson-gold rounded-2xl p-6 border-2 flex flex-col justify-between space-y-6 h-full">
+          <div className="max-w-xl mx-auto text-left">
+            <div className="relative">
+              <div className="glass-panel-crimson flash-card-animation glow-crimson-gold rounded-3xl p-6 sm:p-8 border-2 border-amber-600/40 dark:border-[#D8BD82]/40 flex flex-col justify-between space-y-6">
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-bold text-[#C21F2F] dark:text-[#E03A3E]">{t.premiumPage.plan1YearTitle}</span>
-                    <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/20 dark:bg-[#D8BD82]/20 px-2.5 py-0.5 rounded-full border border-amber-600/40 dark:border-[#D8BD82]/40">
-                      {t.premiumPage.plan1YearValidity}
+                    <span className="text-sm font-bold text-[#C21F2F] dark:text-[#E03A3E]">
+                      {language === 'hi' ? 'स्थायी लाइफटाइम पास' : 'Lifetime Premium Pass'}
+                    </span>
+                    <span className="text-[10px] font-bold text-amber-800 dark:text-[#080808] bg-amber-500/20 dark:bg-[#D8BD82] px-3 py-1 rounded-full border border-amber-600/40 dark:border-transparent whitespace-nowrap">
+                      {language === 'hi' ? 'आजीवन पहुँच' : 'Lifetime Permanent'}
                     </span>
                   </div>
-                  <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-4xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">{t.premiumPage.plan1YearPrice}</span>
-                    <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">{t.premiumPage.oneTimePaymentLabel}</span>
+                  
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-5xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">₹179</span>
+                    <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">
+                      {language === 'hi' ? '/ एकमुश्त स्थायी भुगतान' : '/ one-time lifetime payment'}
+                    </span>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4">
-                    {t.premiumPage.plan1YearTagline}
+
+                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4 leading-relaxed">
+                    {language === 'hi' 
+                      ? '179 रुपये का सिंगल भुगतान आपके पंजीकृत ईमेल आईडी (Registered Email) को स्थायी (Permanently) रूप से प्रीमियम घोषित कर देता है।' 
+                      : 'Single ₹179 purchase permanently links Lifetime Premium status to your registered Email ID.'}
                   </p>
-                  <ul className="space-y-2 text-xs text-slate-700 dark:text-[#B8B3AF]">
+
+                  <ul className="space-y-2.5 text-xs text-slate-700 dark:text-[#B8B3AF]">
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                      <span>{t.premiumPage.features1Year[0]}</span>
+                      <span>{language === 'hi' ? 'आपकी पंजीकृत ईमेल आईडी पर हमेशा के लिए विज्ञापन-मुक्त अनुभव' : '100% ad-free experience bound to your Email ID forever'}</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                      <span>{t.premiumPage.features1Year[8]}</span>
+                      <span>{language === 'hi' ? 'सभी 46+ टूल्स, केस डायरी एवं पीडीएफ वर्कस्पेस की अनलॉक्ड पहुँच' : 'Unlocked access to all 46+ tools, case diary & PDF workspace'}</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
+                      <span>{language === 'hi' ? 'कोई आवर्ती शुल्क नहीं, कोई ऑटो-डेबिट नहीं' : 'Strictly one-time payment with zero recurring auto-debit'}</span>
                     </li>
                   </ul>
                 </div>
+
                 <button 
                   onClick={() => onNavigate('premium')}
-                  className="w-full py-3 rounded-xl btn-crimson font-bold text-xs cursor-pointer text-white shadow-lg"
+                  className="w-full py-3.5 rounded-xl btn-crimson font-bold text-xs cursor-pointer text-white shadow-lg flex items-center justify-center gap-2"
                 >
-                  {language === 'hi' ? '1 वर्ष का पास प्राप्त करें' : 'Get 1 Year Pass'}
+                  <span>{language === 'hi' ? 'लाइफटाइम पास विवरण एवं खरीद (₹179)' : 'Get Lifetime Pass (₹179)'}</span>
                 </button>
               </div>
+
               <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-[#D8BD82] to-[#C7A96B] text-[#080808] text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-lg z-10">
-                {t.premiumPage.bestValueBadge}
+                {language === 'hi' ? 'स्थायी पास' : 'PERMANENT PASS'}
               </div>
             </div>
           </div>
