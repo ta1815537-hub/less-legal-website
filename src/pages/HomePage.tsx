@@ -917,24 +917,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm font-bold text-[#C21F2F] dark:text-[#E03A3E]">
-                      {language === 'hi' ? 'स्थायी लाइफटाइम पास' : 'Lifetime Premium Pass'}
+                      {language === 'hi' ? 'स्थायी लाइफटाइम पास (स्पेशल ऑफर)' : 'Lifetime Premium Pass (Special Offer)'}
                     </span>
-                    <span className="text-[10px] font-bold text-amber-800 dark:text-[#080808] bg-amber-500/20 dark:bg-[#D8BD82] px-3 py-1 rounded-full border border-amber-600/40 dark:border-transparent whitespace-nowrap">
-                      {language === 'hi' ? 'आजीवन पहुँच' : 'Lifetime Permanent'}
+                    <span className="text-[10px] font-bold text-amber-800 dark:text-[#080808] bg-amber-500/20 dark:bg-[#D8BD82] px-3 py-1 rounded-full border border-amber-600/40 dark:border-transparent whitespace-nowrap animate-pulse">
+                      {language === 'hi' ? 'सीमित समय ऑफर' : 'Limited Time Offer'}
                     </span>
                   </div>
                   
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">₹179</span>
+                    <span className="text-5xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">₹99</span>
+                    <span className="text-xs text-slate-500 dark:text-[#B8B3AF] line-through">₹179</span>
                     <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">
                       {language === 'hi' ? '/ एकमुश्त स्थायी भुगतान' : '/ one-time lifetime payment'}
                     </span>
                   </div>
 
-                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4 leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4 leading-relaxed font-semibold">
                     {language === 'hi' 
-                      ? '179 रुपये का सिंगल भुगतान आपके पंजीकृत ईमेल आईडी (Registered Email) को स्थायी (Permanently) रूप से प्रीमियम घोषित कर देता है।' 
-                      : 'Single ₹179 purchase permanently links Lifetime Premium status to your registered Email ID.'}
+                      ? 'स्पेशल ऑफर! अब सिर्फ ₹99 के एकमुश्त भुगतान में आपकी पंजीकृत ईमेल आईडी (Registered Email) को स्थायी (Permanently) रूप से लाइफटाइम प्रीमियम बना दिया जाएगा।' 
+                      : 'Special Offer! Single ₹99 purchase permanently links Lifetime Premium status to your registered Email ID forever.'}
                   </p>
 
                   <ul className="space-y-2.5 text-xs text-slate-700 dark:text-[#B8B3AF]">
@@ -957,7 +958,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('premium')}
                   className="w-full py-3.5 rounded-xl btn-crimson font-bold text-xs cursor-pointer text-white shadow-lg flex items-center justify-center gap-2"
                 >
-                  <span>{language === 'hi' ? 'लाइफटाइम पास विवरण एवं खरीद (₹179)' : 'Get Lifetime Pass (₹179)'}</span>
+                  <span>{language === 'hi' ? 'लाइफटाइम पास विवरण एवं खरीद (₹99)' : 'Get Lifetime Pass (₹99)'}</span>
                 </button>
               </div>
 

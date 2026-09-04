@@ -95,10 +95,10 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-[#D8BD82]">
-                    {isHindi ? 'आजीवन प्रीमियम पास' : 'Lifetime Premium Pass'}
+                    {isHindi ? 'आजीवन प्रीमियम पास (स्पेशल ऑफर)' : 'Lifetime Premium Pass (Special Offer)'}
                   </span>
-                  <span className="text-xs font-bold text-amber-800 dark:text-[#080808] bg-amber-500/20 dark:bg-[#D8BD82] px-3 py-1 rounded-full border border-amber-600/40 dark:border-transparent whitespace-nowrap">
-                    {isHindi ? 'कोई समाप्ति नहीं' : 'No Expiry'}
+                  <span className="text-xs font-bold text-amber-800 dark:text-[#080808] bg-amber-500/20 dark:bg-[#D8BD82] px-3 py-1 rounded-full border border-amber-600/40 dark:border-transparent whitespace-nowrap animate-pulse">
+                    {isHindi ? 'स्पेशल डिस्काउंट' : 'Special Discount'}
                   </span>
                 </div>
 
@@ -107,7 +107,8 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 </h2>
                 
                 <div className="flex items-baseline gap-2 my-4">
-                  <span className="text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">₹179</span>
+                  <span className="text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">₹99</span>
+                  <span className="text-sm font-semibold text-slate-400 dark:text-[#77736F] line-through">₹179</span>
                   <span className="text-xs font-semibold text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap">
                     {isHindi ? 'एक बार का स्थायी भुगतान' : 'One-time permanent payment'}
                   </span>
@@ -118,13 +119,13 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                   <div>
                     <strong className="block font-bold mb-0.5">{isHindi ? 'ईमेल आईडी स्थायी बाइंडिंग:' : 'Permanent Email Pass:'}</strong>
                     {isHindi 
-                      ? '179 रुपये का सिंगल भुगतान आपके पंजीकृत ईमेल आईडी (Registered Email) को स्थायी (Permanently) रूप से प्रीमियम घोषित कर देता है।' 
-                      : 'Single ₹179 purchase permanently links Lifetime Premium status to your registered Email ID.'}
+                      ? 'स्पेशल ऑफर! सिर्फ 99 रुपये का सिंगल भुगतान आपके पंजीकृत ईमेल आईडी (Registered Email) को स्थायी (Permanently) रूप से प्रीमियम घोषित कर देता है।' 
+                      : 'Special Offer! Single ₹99 purchase permanently links Lifetime Premium status to your registered Email ID.'}
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed mb-6">
-                  {isHindi ? 'कोई आवर्ती शुल्क नहीं। बस एक बार भुगतान करें और अपनी ईमेल आईडी पर हमेशा के लिए प्रीमियम का आनंद लें।' : 'No recurring charges. Just pay once and enjoy lifetime premium on your registered email.'}
+                <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed mb-6 font-semibold">
+                  {isHindi ? 'कोई आवर्ती शुल्क नहीं। बस एक बार सिर्फ ₹99 भुगतान करें और अपनी ईमेल आईडी पर हमेशा के लिए प्रीमियम का आनंद लें।' : 'No recurring charges. Just pay once ₹99 and enjoy lifetime premium on your registered email.'}
                 </p>
 
                 <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-white/10">
@@ -156,7 +157,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 >
                   <Smartphone className="w-4 h-4 shrink-0" />
                   <span className="whitespace-nowrap">
-                    {isHindi ? 'Less Legal ऐप में पास खरीदें (₹179)' : 'Get Pass in Less Legal App (₹179)'}
+                    {isHindi ? 'Less Legal ऐप में पास खरीदें (₹99)' : 'Get Pass in Less Legal App (₹99)'}
                   </span>
                 </GlowingButton>
               </div>
@@ -226,8 +227,8 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               </h4>
               <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
                 {isHindi 
-                  ? 'ऐप के होम या मेनू से "विज्ञापन हटाएं" या "प्रीमियम" पर टैप करें और आजीवन योजना (₹179) चुनें।' 
-                  : 'Tap "Remove Ads" / "Premium" from app menu and select the Lifetime plan (₹179).'}
+                  ? 'ऐप के होम या मेनू से "विज्ञापन हटाएं" या "प्रीमियम" पर टैप करें और आजीवन योजना (₹99) चुनें।' 
+                  : 'Tap "Remove Ads" / "Premium" from app menu and select the Lifetime plan (₹99).'}
               </p>
             </div>
 
@@ -259,7 +260,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600 dark:text-[#B8B3AF]">
             <div className="p-4 bg-slate-100/80 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 space-y-1.5">
               <strong className="text-slate-900 dark:text-[#F5F2EE] block">{isHindi ? 'एकमुश्त शुल्क' : 'One-Time Charge'}</strong>
-              <p className="leading-relaxed">{isHindi ? 'यह 179 रुपये का सिंगल पेमेंट है। भविष्य में कभी भी आपके बैंक या कार्ड से कोई स्वचालित कटौती (auto-debit) नहीं होगी।' : 'This is a single ₹179 payment. There are no automatic deductions or recurring charges in the future.'}</p>
+              <p className="leading-relaxed">{isHindi ? 'यह 99 रुपये का सिंगल पेमेंट है। भविष्य में कभी भी आपके बैंक या कार्ड से कोई स्वचालित कटौती (auto-debit) नहीं होगी।' : 'This is a single ₹99 payment. There are no automatic deductions or recurring charges in the future.'}</p>
             </div>
             <div className="p-4 bg-slate-100/80 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 space-y-1.5">
               <strong className="text-slate-900 dark:text-[#F5F2EE] block">{isHindi ? 'आजीवन पहुँच' : 'Lifetime Access'}</strong>

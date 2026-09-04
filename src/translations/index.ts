@@ -636,7 +636,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "Are the Premium Passes auto-renewing subscriptions?",
-          a: "Never. Less Legal offers a single ₹179 Lifetime Pass that permanently upgrades your registered Email ID to Premium status forever. It is a strict one-time purchase with no auto-debits, recurring fees, or hidden charges."
+          a: "Never. Less Legal offers a single ₹99 Lifetime Pass (Special Offer) that permanently upgrades your registered Email ID to Premium status forever. It is a strict one-time purchase with no auto-debits, recurring fees, or hidden charges."
         },
         {
           q: "What devices are supported by Less Legal?",
@@ -664,7 +664,7 @@ export const translations: Record<Language, TranslationSchema> = {
       p1Title: "Factual Transparency",
       p1Desc: "We present factual statutory references, exact formulas for calculations, and straightforward descriptions of what each feature can and cannot do.",
       p2Title: "Honest Pricing",
-      p2Desc: "Ad-free access is offered through transparent one-time passes (₹59 for 3 Months or ₹179 for 1 Year). We never perform hidden recurring subscription debits.",
+      p2Desc: "Ad-free access is offered through transparent one-time passes (₹59 for 3 Months or ₹99 for Lifetime Special Offer). We never perform hidden recurring subscription debits.",
       p3Title: "No Advisory Substitution",
       p3Desc: "Less Legal provides informational tools and calculation utilities. Digital tools do not replace qualified legal counsel for active litigation."
     },
@@ -689,7 +689,7 @@ export const translations: Record<Language, TranslationSchema> = {
       subtitle: "Enjoy an uninterrupted, ad-free experience across all law students tools, legal drafting features, document scanner, and calculators.",
       transparentNoticeTitle: "Transparent Billing Notice & Consumer Terms",
       notice1Title: "Fixed Validity Period",
-      notice1Text: "Premium passes grant ad-free access strictly for the duration purchased (90 days for ₹59 or 365 days for ₹179).",
+      notice1Text: "Premium passes grant ad-free access strictly for the duration purchased (90 days for ₹59 or Lifetime Permanent Access for ₹99).",
       notice2Title: "No Auto-Renewals",
       notice2Text: "We do NOT store payment cards or initiate auto-debit subscriptions. When your pass expires, it reverts to standard ad-supported access.",
       notice3Title: "In-App Activation",
@@ -698,11 +698,11 @@ export const translations: Record<Language, TranslationSchema> = {
       plan90DaysPrice: "₹59",
       plan90DaysValidity: "90 Days Validity",
       plan90DaysTagline: "Ad-free experience for 90 days across all utility tools",
-      plan1YearTitle: "1 Year Plan",
-      plan1YearPrice: "₹179",
-      plan1YearValidity: "365 Days Validity",
-      plan1YearTagline: "Best value ad-free experience for 365 full days",
-      bestValueBadge: "BEST VALUE (365 DAYS)",
+      plan1YearTitle: "Lifetime Special Offer",
+      plan1YearPrice: "₹99",
+      plan1YearValidity: "Forever / No Expiry",
+      plan1YearTagline: "Special Offer: Best value lifetime ad-free experience bound to your Email ID forever",
+      bestValueBadge: "LIFETIME SPECIAL OFFER",
       oneTimePaymentLabel: "/ one-time payment",
       features90Days: [
         "Ad-free interface for 90 continuous days",
@@ -800,10 +800,10 @@ export const translations: Record<Language, TranslationSchema> = {
       sec3Title: "3. Premium Passes & Billing Terms",
       sec3Text: "Less Legal offers optional paid Premium Passes providing an ad-free interface and full utility access:",
       sec3Bullets: [
-        "Available Passes: ₹59 for 3 Months (90 days validity) and ₹179 for 1 Year (365 days validity).",
+        "Available Passes: ₹59 for 3 Months (90 days validity) and ₹99 for Lifetime Pass (Special Offer).",
         "One-Time, Non-Recurring Purchases: Passes are one-time payments for a fixed validity duration. They are NOT automatically renewing subscriptions. We do not store payment instruments or perform recurring debits.",
         "Expiration & Reversion: Upon expiration of the validity period, the account automatically reverts to standard ad-supported access unless a new pass is manually purchased by the user.",
-        "No Lifetime Claims: Less Legal does not sell lifetime access passes. Validity is strictly tied to the purchased plan duration."
+        "Lifetime Pass Option: Less Legal provides a Lifetime Premium Pass (₹99 Special Offer) that permanently links Premium status to your registered Email ID without expiration."
       ],
       sec4Title: "4. Payment Gateway & Transaction Processing",
       sec4Text: "Payments are processed through authorized payment intermediaries including Razorpay and/or Google Play Billing. By completing a transaction, you agree to the payment provider's terms of service. Less Legal does not store sensitive cardholder data.",
@@ -847,7 +847,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Title: "4. Less Share Local File Transfer",
       sec4Text: "The Less Share feature utilizes direct local connectivity (Wi-Fi hotspot / local network protocol) to transfer files directly between paired devices. Files transferred via Less Share do not pass through or get logged on remote servers.",
       sec5Title: "5. Payment & Transaction Information",
-      sec5Text: "When purchasing a Premium Pass (₹59 for 3 Months or ₹179 for 1 Year), financial transactions are processed by certified third-party payment gateways including Razorpay Software Private Limited and/or Google Play Billing.",
+      sec5Text: "When purchasing a Premium Pass (₹59 for 3 Months or ₹99 for Lifetime Pass), financial transactions are processed by certified third-party payment gateways including Razorpay Software Private Limited and/or Google Play Billing.",
       sec5Bullets: [
         "No Card Storage by Less Legal: Less Legal never collects, processes, or stores your credit/debit card numbers, UPI PINs, CVV codes, or net banking passwords. All payment authorization occurs on PCI-DSS certified gateway environments.",
         "Transaction Confirmation Records: We receive only non-sensitive order confirmation details (such as Transaction ID, timestamp, plan purchased, and payment status) to activate and verify your ad-free pass."
@@ -885,9 +885,9 @@ export const translations: Record<Language, TranslationSchema> = {
       plan3mTitle: "3 Months Pass (₹59)",
       plan3mDuration: "90 Days",
       plan3mText: "One-time non-recurring purchase. Non-refundable once successfully activated on the user's account and used without verified technical disruption.",
-      plan1yTitle: "1 Year Pass (₹179)",
-      plan1yDuration: "365 Days",
-      plan1yText: "One-time non-recurring purchase. Non-refundable once activated, except in verified cases of duplicate billing or non-activation.",
+      plan1yTitle: "Lifetime Pass (₹99)",
+      plan1yDuration: "Lifetime / No Expiry",
+      plan1yText: "One-time non-recurring purchase. Non-refundable once successfully activated on the user's account and permanently linked to the email ID.",
       sec2Title: "2. Eligible Refund Conditions",
       sec2Sub: "You may request a full refund or pass restoration under the following verified technical conditions:",
       cond1Title: "Duplicate / Multiple Charges:",
@@ -902,7 +902,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Bullets: [
         "Your registered account email address in Less Legal.",
         "The payment gateway Transaction ID / Order ID (from Razorpay or Play Store receipt).",
-        "Date and amount of the transaction (₹59 or ₹179).",
+        "Date and amount of the transaction (₹59 or ₹99).",
         "Brief explanation of the technical issue encountered."
       ],
       sec4Button: "Submit Refund Request via Support",
@@ -1113,7 +1113,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "क्या प्रीमियम पास स्वचालित रूप से नवीनीकृत होने वाले सब्सक्रिप्शन हैं?",
-          a: "कभी नहीं। लेस लीगल ₹179 का सिंगल लाइफटाइम पास प्रदान करता है जो आपकी पंजीकृत ईमेल आईडी को हमेशा के लिए प्रीमियम बनाता है। यह एकमुश्त भुगतान है, इसमें कोई ऑटो-डेबिट या आवर्ती शुल्क नहीं है।"
+          a: "कभी नहीं। लेस लीगल ₹99 का सिंगल लाइफटाइम पास (स्पेशल ऑफर) प्रदान करता है जो आपकी पंजीकृत ईमेल आईडी को हमेशा के लिए प्रीमियम बनाता है। यह एकमुश्त भुगतान है, इसमें कोई ऑटो-डेबिट या आवर्ती शुल्क नहीं है।"
         },
         {
           q: "लेस लीगल किन उपकरणों द्वारा समर्थित है?",
@@ -1166,7 +1166,7 @@ export const translations: Record<Language, TranslationSchema> = {
       subtitle: "सभी टूल्स और कैलकुलेटर पर पूरी तरह से विज्ञापन-मुक्त अनुभव का आनंद लें।",
       transparentNoticeTitle: "पारदर्शी बिलिंग सूचना एवं उपभोक्ता शर्तें",
       notice1Title: "निश्चित वैधता अवधि",
-      notice1Text: "प्रीमियम पास खरीदी गई अवधि के लिए विज्ञापन-मुक्त पहुंच प्रदान करते हैं (₹59 में 90 दिन या ₹179 में 365 दिन)।",
+      notice1Text: "प्रीमियम पास खरीदी गई अवधि के लिए विज्ञापन-मुक्त पहुंच प्रदान करते हैं (₹59 में 90 दिन या ₹99 में लाइफटाइम विशेष ऑफर)।",
       notice2Title: "कोई स्वचालित नवीनीकरण नहीं",
       notice2Text: "हम भुगतान कार्ड स्टोर नहीं करते हैं और न ही ऑटो-डेबिट शुरू करते हैं। जब आपका पास समाप्त हो जाता है, तो यह मानक विज्ञापन-समर्थित पहुंच पर वापस आ जाता है।",
       notice3Title: "इन-ऐप सक्रियण",
@@ -1175,11 +1175,11 @@ export const translations: Record<Language, TranslationSchema> = {
       plan90DaysPrice: "₹59",
       plan90DaysValidity: "90 दिनों की वैधता",
       plan90DaysTagline: "सभी टूल्स पर 90 दिनों के लिए विज्ञापन-मुक्त अनुभव",
-      plan1YearTitle: "1 वर्ष का प्लान",
-      plan1YearPrice: "₹179",
-      plan1YearValidity: "365 दिनों की वैधता",
-      plan1YearTagline: "365 दिनों के लिए सर्वश्रेष्ठ मूल्य विज्ञापन-मुक्त अनुभव",
-      bestValueBadge: "सर्वश्रेष्ठ मूल्य (365 दिन)",
+      plan1YearTitle: "लाइफटाइम प्लान (स्पेशल ऑफर)",
+      plan1YearPrice: "₹99",
+      plan1YearValidity: "आजीवन पहुँच / कोई समाप्ति नहीं",
+      plan1YearTagline: "विशेष ऑफर: हमेशा के लिए विज्ञापन-मुक्त अनुभव आपकी पंजीकृत ईमेल आईडी पर बाइंडेड",
+      bestValueBadge: "सर्वश्रेष्ठ मूल्य (लाइफटाइम)",
       oneTimePaymentLabel: "/ एक बार का भुगतान",
       features90Days: [
         "90 निरंतर दिनों के लिए विज्ञापन-मुक्त इंटरफ़ेस",
@@ -1277,10 +1277,10 @@ export const translations: Record<Language, TranslationSchema> = {
       sec3Title: "3. प्रीमियम पास एवं बिलिंग शर्तें",
       sec3Text: "लेस लीगल विज्ञापन-मुक्त इंटरफ़ेस और पूर्ण उपयोगिता पहुंच प्रदान करने वाले वैकल्पिक सशुल्क प्रीमियम पास प्रदान करता है:",
       sec3Bullets: [
-        "उपलब्ध पास: ₹59 में 3 महीने (90 दिन की वैधता) और ₹179 में 1 वर्ष (365 दिन की वैधता)।",
+        "उपलब्ध पास: ₹59 में 3 महीने (90 दिन की वैधता) और ₹99 में लाइफटाइम पास (स्पेशल ऑफर)।",
         "एक बार की, गैर-आवर्ती खरीदारी: पास निश्चित वैधता अवधि के लिए एक बार का भुगतान है। वे स्वचालित रूप से नवीनीकृत होने वाले सब्सक्रिप्शन नहीं हैं। हम भुगतान उपकरण संग्रहीत नहीं करते हैं और न ही आवर्ती कटौती करते हैं।",
         "समाप्ति एवं सामान्य स्थिति: वैधता अवधि समाप्त होने पर, खाता स्वचालित रूप से मानक विज्ञापन-समर्थित पहुंच पर वापस आ जाता है, जब तक कि उपयोगकर्ता द्वारा मैन्युअल रूप से नया पास नहीं खरीदा जाता।",
-        "कोई लाइफटाइम दावा नहीं: लेस लीगल आजीवन एक्सेस पास नहीं बेचता है। वैधता केवल खरीदे गए प्लान की अवधि तक ही सीमित है।"
+        "लाइफटाइम पास का विकल्प: लेस लीगल एक लाइफटाइम प्रीमियम पास (₹99 स्पेशल ऑफर) प्रदान करता है जो बिना किसी समाप्ति के आपकी पंजीकृत ईमेल आईडी पर प्रीमियम स्थिति को स्थायी रूप से लिंक करता है।"
       ],
       sec4Title: "4. पेमेंट गेटवे एवं लेनदेन प्रोसेसिंग",
       sec4Text: "भुगतान अधिकृत पेमेंट मध्यस्थों जैसे पेयू और/या गूगल प्ले Billing के माध्यम से संसाधित किए जाते हैं। लेनदेन पूरा करके, आप भुगतान प्रदाता की सेवा की शर्तों से सहमत होते हैं। लेस लीगल संवेदनशील कार्डधारक डेटा संग्रहीत नहीं करता है।",
@@ -1324,7 +1324,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Title: "4. Less Share लोकल फाइल ट्रांसफर",
       sec4Text: "Less Share सुविधा पेयर किए गए उपकरणों के बीच सीधे फ़ाइलों को स्थानांतरित करने के लिए प्रत्यक्ष स्थानीय कनेक्टिविटी (वाई-फाई हॉटस्पॉट / स्थानीय नेटवर्क प्रोटोकॉल) का उपयोग करती है। Less Share के माध्यम से स्थानांतरित की गई फाइलें दूरस्थ सर्वर से होकर नहीं गुजरती हैं और न ही उन पर लॉग की जाती हैं।",
       sec5Title: "5. भुगतान एवं लेनदेन की जानकारी",
-      sec5Text: "प्रीमियम पास (₹59 में 3 महीने या ₹179 में 1 वर्ष) खरीदते समय, वित्तीय लेनदेन पेयू Payments Private Limited और/या गूगल प्ले Billing सहित प्रमाणित तृतीय-पक्ष भुगतान गेटवे द्वारा संसाधित किए जाते हैं।",
+      sec5Text: "प्रीमियम पास (₹59 में 3 महीने या ₹99 में लाइफटाइम पास) खरीदते समय, वित्तीय लेनदेन पेयू Payments Private Limited और/या गूगल प्ले Billing सहित प्रमाणित तृतीय-पक्ष भुगतान गेटवे द्वारा संसाधित किए जाते हैं।",
       sec5Bullets: [
         "लेस लीगल द्वारा कोई कार्ड विवरण संग्रहीत नहीं: लेस लीगल आपके क्रेडिट/डेबिट कार्ड नंबर, यूपीआई पिन, सीवीवी कोड या नेट बैंकिंग पासवर्ड कभी एकत्र या संग्रहीत नहीं करता है। सभी भुगतान प्राधिकरण पीसीआई-डीएसएस (PCI-DSS) प्रमाणित गेटवे परिवेश पर होते हैं।",
         "लेनदेन पुष्टि रिकॉर्ड: हम आपके विज्ञापन-मुक्त पास को सक्रिय और सत्यापित करने के लिए केवल गैर-संवेदनशील ऑर्डर पुष्टि विवरण (जैसे लेनदेन आईडी, टाइमस्टैम्प, खरीदा गया प्लान और भुगतान स्थिति) प्राप्त करते हैं।",
@@ -1362,9 +1362,9 @@ export const translations: Record<Language, TranslationSchema> = {
       plan3mTitle: "3 महीने का पास (₹59)",
       plan3mDuration: "90 दिन",
       plan3mText: "एक बार की गैर-आवर्ती खरीदारी। उपयोगकर्ता के खाते पर सफलतापूर्वक सक्रिय होने और बिना किसी तकनीकी बाधा के उपयोग किए जाने के बाद गैर-वापसीयोग्य।",
-      plan1yTitle: "1 वर्ष का पास (₹179)",
-      plan1yDuration: "365 दिन",
-      plan1yText: "एक बार की गैर-आवर्ती खरीदारी। एक बार सक्रिय होने के बाद गैर-वापसीयोग्य, सिवाय डुप्लिकेट बिलिंग या गैर-सक्रियण के सत्यापित मामलों के।",
+      plan1yTitle: "लाइफटाइम पास (₹99)",
+      plan1yDuration: "आजीवन / कोई समाप्ति नहीं",
+      plan1yText: "एक बार की गैर-आवर्ती खरीदारी। आपके खाते पर सफलतापूर्वक सक्रिय होने और आपकी ईमेल आईडी से स्थायी रूप से लिंक होने के बाद यह गैर-वापसीयोग्य है।",
       sec2Title: "2. पात्र रिफंड शर्तें",
       sec2Sub: "आप निम्नलिखित सत्यापित तकनीकी स्थितियों के तहत पूर्ण रिफंड या पास बहाली का अनुरोध कर सकते हैं:",
       cond1Title: "डुप्लिकेट / एकाधिक शुल्क:",
@@ -1379,7 +1379,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Bullets: [
         "लेस लीगल में आपका पंजीकृत खाता ईमेल पता।",
         "पेमेंट गेटवे ट्रांजैक्शन आईडी / ऑर्डर आईडी (पेयू या प्ले स्टोर रसीद से)।",
-        "लेनदेन की तारीख और राशि (₹59 या ₹179)।",
+        "लेनदेन की तारीख और राशि (₹59 या ₹99)।",
         "सामना की गई तकनीकी समस्या का संक्षिप्त विवरण।"
       ],
       sec4Button: "सहायता डेस्क के माध्यम से रिफंड अनुरोध भेजें",

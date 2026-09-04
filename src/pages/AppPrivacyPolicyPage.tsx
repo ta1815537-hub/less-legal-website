@@ -210,8 +210,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
             <strong className="text-slate-900 dark:text-[#F5F2EE]">{isHindi ? "विज्ञापन-मुक्त प्रीमियम पास:" : "Ad-Free Premium Pass Upgrade:"}</strong>
             <p className="text-xs">
               {isHindi
-                ? "जो उपयोगकर्ता सक्रिय प्रीमियम पास (₹59 / 3 महीने या ₹179 / 1 वर्ष) खरीदते हैं, वे 100% विज्ञापन-मुक्त अनुभव का आनंद लेते हैं। प्रीमियम उपयोगकर्ताओं के लिए AdMob विज्ञापन अनुरोध पूरी तरह से बंद हो जाते हैं।"
-                : "Users purchasing an active Premium Pass (₹59 for 3 Months or ₹179 for 1 Year) enjoy a 100% ad-free experience with zero AdMob ad network requests during their pass validity."}
+                ? "जो उपयोगकर्ता सक्रिय प्रीमियम पास (₹59 / 3 महीने या ₹99 / लाइफटाइम विशेष ऑफर) खरीदते हैं, वे 100% विज्ञापन-मुक्त अनुभव का आनंद लेते हैं। प्रीमियम उपयोगकर्ताओं के लिए AdMob विज्ञापन अनुरोध पूरी तरह से बंद हो जाते हैं।"
+                : "Users purchasing an active Premium Pass (₹59 for 3 Months or ₹99 for Lifetime Special Offer) enjoy a 100% ad-free experience with zero AdMob ad network requests during their pass validity."}
             </p>
           </div>
         </section>
@@ -257,8 +257,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
           </h2>
           <p>
             {isHindi
-              ? "विज्ञापन-मुक्त पास (₹59 / 3 महीने या ₹179 / 1 वर्ष) के लिए वित्तीय लेनदेन Razorpay Software Private Limited और/या Google Play Billing द्वारा सीधे संसाधित किए जाते हैं। Less Legal आपके डेबिट/क्रेडिट कार्ड विवरण, बैंक क्रेडेंशियल या यूपीआई पिन को कभी भी संग्रहीत नहीं करता है।"
-              : "Financial transactions for Premium Passes are processed directly by authorized payment intermediaries including Razorpay Software Private Limited and/or Google Play Billing. Less Legal does not store sensitive cardholder data, bank credentials, or UPI PINs."}
+              ? "विज्ञापन-मुक्त पास (₹59 / 3 महीने या ₹99 / लाइफटाइम विशेष ऑफर) के लिए वित्तीय लेनदेन Razorpay Software Private Limited और/या Google Play Billing द्वारा सीधे संसाधित किए जाते हैं। Less Legal आपके डेबिट/क्रेडिट कार्ड विवरण, बैंक क्रेडेंशियल या यूपीआई पिन को कभी भी संग्रहीत नहीं करता है।"
+              : "Financial transactions for Premium Passes (₹59 / 3 Months or ₹99 / Lifetime Special Offer) are processed directly by authorized payment intermediaries including Razorpay Software Private Limited and/or Google Play Billing. Less Legal does not store sensitive cardholder data, bank credentials, or UPI PINs."}
           </p>
         </section>
 

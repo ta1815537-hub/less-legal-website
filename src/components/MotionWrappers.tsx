@@ -71,10 +71,10 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.92, ...getInitialPosition() }}
+      initial={{ opacity: 0, scale: 0.93, ...getInitialPosition() }}
       whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: '-20%' }}
-      transition={{ duration: 0.9, delay, ease: EASING_SMOOTH }}
+      viewport={{ once: false, margin: '-10% 0px -10% 0px' }}
+      transition={{ duration: 1.0, delay, ease: EASING_SMOOTH }}
       className={className}
     >
       {children}
@@ -110,7 +110,7 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-15%' }}
+      viewport={{ once: false, margin: '-8% 0px -8% 0px' }}
       className={className}
     >
       {children}

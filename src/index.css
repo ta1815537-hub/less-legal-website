@@ -79,11 +79,13 @@
 
 /* Glass Panels */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  /* Highly elevated (ubhra hua) deep black shadow */
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.18), 
+              0 8px 16px -4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -96,12 +98,14 @@
 }
 
 .glass-panel-gradient {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.85) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.99) 0%, rgba(245, 247, 250, 0.96) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(15, 23, 42, 0.09);
-  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.06);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  /* Pronounced floating depth */
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.2), 
+              0 8px 24px -8px rgba(0, 0, 0, 0.12);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dark .glass-panel-gradient {
@@ -113,12 +117,14 @@
 }
 
 .glass-panel-crimson {
-  background: linear-gradient(135deg, rgba(194, 31, 47, 0.06) 0%, rgba(255, 255, 255, 0.92) 100%);
+  background: linear-gradient(135deg, rgba(194, 31, 47, 0.05) 0%, rgba(255, 255, 255, 0.98) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(194, 31, 47, 0.22);
-  box-shadow: 0 12px 32px -8px rgba(194, 31, 47, 0.12);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(194, 31, 47, 0.28);
+  /* Strong pop with dark shadow */
+  box-shadow: 0 22px 44px -10px rgba(0, 0, 0, 0.18), 
+              0 6px 16px -4px rgba(194, 31, 47, 0.15);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dark .glass-panel-crimson {
@@ -134,10 +140,13 @@
   background: #FFFFFF;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: 1.25rem;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+  /* Deep, clear multi-layered black shadow for floating effect */
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.18), 
+              0 4px 12px -2px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s ease,
               background-color 0.3s ease;
   position: relative;
@@ -145,10 +154,12 @@
 }
 
 .glass-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
   background: #FFFFFF;
-  border-color: rgba(194, 31, 47, 0.4);
-  box-shadow: 0 16px 36px -8px rgba(194, 31, 47, 0.18), 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: rgba(194, 31, 47, 0.5);
+  /* Maximized floating elevation with intense black hover shadow */
+  box-shadow: 0 28px 56px -12px rgba(0, 0, 0, 0.26), 
+              0 12px 24px -6px rgba(0, 0, 0, 0.14);
 }
 
 .dark .glass-card {
