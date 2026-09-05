@@ -1,12 +1,12 @@
 {
   "projectId": "less-legal",
-  "appId": "1:871873467075:web:2b896d7d17bc746e544876",
-  "apiKey": "AIzaSyCfmeRhssHAjeGAqcyq6gCTxHAOYlpcUwo",
+  "appId": "1:637430694547:web:07c096e5191c398b8f0366",
+  "apiKey": "AIzaSyCyeHAOyVCDbFuImu2MLrFt72esbT-sqTE",
   "authDomain": "less-legal.firebaseapp.com",
   "firestoreDatabaseId": "",
-  "storageBucket": "less-legal.appspot.com",
-  "messagingSenderId": "871873467075",
-  "measurementId": "",
+  "storageBucket": "less-legal.firebasestorage.app",
+  "messagingSenderId": "637430694547",
+  "measurementId": "G-JSNV686RWB",
   "oAuthClientId": "",
   "recaptchaSiteKey": ""
 }
