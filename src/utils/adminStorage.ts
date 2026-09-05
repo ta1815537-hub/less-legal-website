@@ -526,142 +526,16 @@ export const adminStorage = {
     return true;
   },
 
-  // Secure Firestore Admin Authorization Checks
-  verifyAdminUserInFirestore: async (user: FirebaseUser): Promise<boolean> => {
+  // Authoritative Firebase Auth Custom Claim (admin: true) Check
+  verifyAdminCustomClaim: async (user: FirebaseUser): Promise<boolean> => {
     if (!user) return false;
 
-    // Primary Admin UID explicitly granted admin claims/access
-    const PRIMARY_ADMIN_UID = 'RGZJHff9IVSXUtj28cOQmuFws613';
-
-    if (user.uid === PRIMARY_ADMIN_UID) {
-      // Background sync to Firestore admin_config
-      try {
-        const q = query(collection(db, 'admin_config'));
-        const snap = await getDocs(q);
-        let exists = false;
-        snap.forEach((docSnap) => {
-          const data = docSnap.data();
-          if (data.uid === PRIMARY_ADMIN_UID || (data.email && user.email && data.email.toLowerCase() === user.email.toLowerCase())) {
-            exists = true;
-          }
-        });
-        if (!exists) {
-          await addDoc(collection(db, 'admin_config'), {
-            type: 'admin_auth',
-            uid: PRIMARY_ADMIN_UID,
-            email: user.email ? user.email.toLowerCase() : 'admin@lesscreation.com',
-            role: 'admin',
-            admin: true,
-            authorized: true,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          });
-        }
-      } catch (err) {
-        console.warn('Background admin_config sync for primary UID:', err);
-      }
-      return true;
-    }
-
-    if (!user.email) return false;
     try {
-      const q = query(collection(db, 'admin_config'));
-      const snap = await getDocs(q);
-
-      if (snap.empty) {
-        // Initial setup: authorize the first Firebase authenticated admin user
-        await addDoc(collection(db, 'admin_config'), {
-          type: 'admin_auth',
-          uid: user.uid,
-          email: user.email.toLowerCase(),
-          role: 'admin',
-          admin: true,
-          authorized: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        });
-        return true;
-      }
-
-      let isAuthorized = false;
-      let matchedDocId: string | null = null;
-      let matchedHasUid = false;
-
-      snap.forEach((docSnap) => {
-        const data = docSnap.data();
-        if (
-          data.type === 'admin_auth' ||
-          data.type === 'admin_role' ||
-          data.role === 'admin' ||
-          data.admin === true
-        ) {
-          const emailMatch = data.email && data.email.toLowerCase() === user.email?.toLowerCase();
-          const uidMatch = data.uid && data.uid === user.uid;
-
-          if (uidMatch || emailMatch) {
-            isAuthorized = true;
-            matchedDocId = docSnap.id;
-            matchedHasUid = !!data.uid;
-          }
-        }
-      });
-
-      // Attach UID to existing admin document if missing
-      if (isAuthorized && matchedDocId && !matchedHasUid) {
-        try {
-          await updateDoc(doc(db, 'admin_config', matchedDocId), {
-            uid: user.uid,
-            admin: true,
-            updatedAt: new Date().toISOString()
-          });
-        } catch {
-          // ignore background update error
-        }
-      }
-
-      return isAuthorized;
+      // Force refresh ID token to get latest claims from Firebase Authentication
+      const tokenResult = await user.getIdTokenResult(true);
+      return Boolean(tokenResult.claims && tokenResult.claims.admin === true);
     } catch (err) {
-      console.error('Error verifying admin authorization in Firestore:', err);
-      return false;
-    }
-  },
-
-  registerAdminUserInFirestore: async (user: FirebaseUser): Promise<boolean> => {
-    if (!user || !user.email) return false;
-    try {
-      const payload = {
-        type: 'admin_auth',
-        uid: user.uid,
-        email: user.email.toLowerCase(),
-        role: 'admin',
-        authorized: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-
-      const q = query(collection(db, 'admin_config'));
-      const snap = await getDocs(q);
-      let existingDocId: string | null = null;
-
-      snap.forEach((docSnap) => {
-        const data = docSnap.data();
-        if (
-          data.email &&
-          data.email.toLowerCase() === user.email?.toLowerCase() &&
-          (data.type === 'admin_auth' || data.role === 'admin')
-        ) {
-          existingDocId = docSnap.id;
-        }
-      });
-
-      if (existingDocId) {
-        await updateDoc(doc(db, 'admin_config', existingDocId), payload);
-      } else {
-        await addDoc(collection(db, 'admin_config'), payload);
-      }
-      return true;
-    } catch (err) {
-      console.error('Error registering admin authorization in Firestore:', err);
+      console.warn('Firebase Auth custom claim verification failed:', err);
       return false;
     }
   }
