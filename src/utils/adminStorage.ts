@@ -533,9 +533,10 @@ export const adminStorage = {
     try {
       // Force refresh ID token to get latest claims from Firebase Authentication
       const tokenResult = await user.getIdTokenResult(true);
+      console.log('[DEBUG Admin Claim] UID:', user.uid, 'Claims:', tokenResult.claims);
       return Boolean(tokenResult.claims && tokenResult.claims.admin === true);
     } catch (err) {
-      console.warn('Firebase Auth custom claim verification failed:', err);
+      console.warn('Firebase Auth custom claim verification failed for UID:', user.uid, 'Error:', err);
       return false;
     }
   }
