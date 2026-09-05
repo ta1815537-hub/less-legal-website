@@ -338,11 +338,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     } catch (err: any) {
       console.error("Google sign-in error:", err);
       if (err.code !== 'auth/popup-closed-by-user') {
-        setAuthError(
-          isHindi
-            ? "गूगल प्रमाणीकरण विफल! कृपया पुनः प्रयास करें।"
-            : "Google authentication failed! Please try again."
-        );
+        const errorDetails = `[DEBUG] Code: ${err.code} | Msg: ${err.message} | Email: ${err.customData?.email || 'N/A'}`;
+        setAuthError(errorDetails);
       }
       setAdminUser(null);
       setIsAuthenticated(false);
