@@ -7,7 +7,7 @@ import {
   Smartphone, Check, Layers, LayoutGrid, Music, Edit3,
   Search, Zap, Share2, MessageSquare, ChevronRight,
   Copy, Play, ChevronDown, UserCheck, Gavel, BookOpen, Scan, Calculator, Grid,
-  Rocket, Star, Users, Clock
+  Rocket, Star, Users, Clock, User, Quote, Lightbulb, Target, Landmark
 } from 'lucide-react';
 import { LTLogo } from '../components/LTLogo';
 import { ThreeDDeviceShowcase } from '../components/ThreeDDeviceShowcase';
@@ -36,6 +36,7 @@ const SQFT_RATES: Record<string, { label: string; rate: number; region: string }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
+  const isHindi = language === 'hi';
   const [founderImgErr, setFounderImgErr] = useState(false);
 
   // Auto-scroll refs
@@ -730,67 +731,173 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* FOUNDER PREVIEW SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up" className="relative z-10">
-          <div className="p-6 sm:p-10 rounded-3xl glass-panel-gradient border border-slate-200 dark:border-white/15 shadow-2xl overflow-hidden relative">
+          <div className="p-6 sm:p-10 rounded-[28px] bg-white/95 dark:bg-[#121622]/95 border border-slate-200/80 dark:border-white/10 shadow-xl overflow-hidden relative backdrop-blur-xl">
             
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            {/* Background glowing effects for the section */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/10 dark:bg-red-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative z-10">
               
-              {/* Founder Image Thumbnail */}
-              <div className="md:col-span-4 flex justify-center">
-                <div className="animated-founder-border shadow-2xl rounded-[1.5rem] p-1 overflow-hidden">
-                  <div className="relative w-48 sm:w-56 aspect-[4/5] rounded-[calc(1.5rem-4px)] overflow-hidden bg-[#0D131F] isolate">
+              {/* Left Column: Image & Quote */}
+              <div className="lg:col-span-4 flex flex-col gap-5">
+                {/* Image Card */}
+                <div className="relative rounded-[24px] p-2 bg-gradient-to-b from-slate-100 to-white dark:from-white/10 dark:to-white/5 border border-slate-200 dark:border-white/10 shadow-lg group">
+                  <div className="relative w-full aspect-[4/5] rounded-[18px] overflow-hidden bg-slate-900 isolate">
                     {!founderImgErr ? (
                       <img 
                         src="/images/anurag_tiwari.jpg" 
                         alt="Anurag Gurauli — Founder of Less Creation"
                         onError={() => setFounderImgErr(true)}
-                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500 rounded-[calc(1.5rem-4px)]"
+                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 rounded-[18px]"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-b from-[#0F172A] to-[#1A0A0D] flex flex-col items-center justify-center p-4 text-center rounded-[calc(1.5rem-4px)]">
-                        <Scale className="w-10 h-10 text-[#D8BD82] mb-2" />
-                        <div className="text-sm font-bold text-[#F5F2EE]">{t.founder.name}</div>
-                        <div className="text-[10px] text-[#D8BD82]">{t.founder.role}</div>
+                      <div className="w-full h-full bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col items-center justify-center p-4 text-center rounded-[18px]">
+                        <Scale className="w-10 h-10 text-amber-500 mb-2" />
+                        <div className="text-sm font-bold text-white">{t.founder.name}</div>
+                        <div className="text-[10px] text-amber-400">{t.founder.role}</div>
                       </div>
                     )}
-                    <div className="absolute bottom-0 inset-x-0 p-2 sm:p-2.5 bg-black/85 backdrop-blur-md text-center rounded-b-[calc(1.5rem-4px)] border-t border-white/10 flex items-center justify-center min-h-[44px]">
-                      <span className="text-[8.5px] sm:text-[10px] font-bold text-[#D8BD82] tracking-widest uppercase leading-[1.2]">{t.founder.badge}</span>
+                    
+                    {/* Professional Name Plate (Patti) Overlay */}
+                    <div className="absolute bottom-3 inset-x-3 p-3 rounded-xl bg-black/60 dark:bg-black/80 backdrop-blur-md border border-white/20 text-center shadow-[0_8px_30px_rgb(0,0,0,0.4)]">
+                      <h4 className="text-[15px] font-extrabold text-white tracking-wide uppercase">Anurag Gurauli</h4>
+                      <div className="w-8 h-[2px] bg-[#D8BD82] mx-auto my-1.5 rounded-full" />
+                      <p className="text-[10px] text-[#F5F2EE] font-medium leading-snug">Founder, Less Creation</p>
+                      <p className="text-[9px] text-[#B8B3AF] mt-0.5">Advocate, Allahabad High Court</p>
                     </div>
+                  </div>
+                </div>
+
+                {/* Quote Card */}
+                <div className="rounded-[20px] bg-red-50/50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 p-5 relative">
+                  <Quote className="w-6 h-6 text-red-500/40 absolute top-4 left-4" />
+                  <div className="pl-8">
+                    <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium italic leading-relaxed">
+                      {isHindi 
+                        ? 'प्रौद्योगिकी को उपयोगी ज्ञान, कानूनी उपकरण और डिजिटल सेवाओं को सभी के लिए आसान बनाना चाहिए।'
+                        : 'Technology should make useful knowledge, legal tools and digital services easier to access.'}
+                    </p>
+                    <p className="text-[11px] font-bold text-[#C21F2F] mt-3">
+                      — Anurag Gurauli
+                    </p>
                   </div>
                 </div>
               </div>
 
-              {/* Founder Info & CTA */}
-              <div className="md:col-span-8 space-y-4 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold">
-                  <UserCheck className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
-                  <span>{t.home.founderPreviewBadge}</span>
+              {/* Middle Column: Text & Features */}
+              <div className="lg:col-span-5 flex flex-col justify-center space-y-6">
+                <div className="space-y-3">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 dark:bg-red-950/30 text-[#C21F2F] dark:text-red-400 text-[10px] font-bold uppercase tracking-wider border border-red-100 dark:border-red-900/30">
+                    <User className="w-3.5 h-3.5" />
+                    <span>{isHindi ? 'संस्थापक से मिलें' : 'MEET THE FOUNDER'}</span>
+                  </div>
+
+                  <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
+                    {isHindi ? 'वास्तविक उपयोगिता के लिए एक' : 'Created by an Advocate for'}{' '}
+                    <span className="text-[#C21F2F]">{isHindi ? 'अधिवक्ता द्वारा निर्मित' : 'Real-World Utility'}</span>
+                  </h3>
+
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    {isHindi 
+                      ? 'अनुराग गुरौली, इलाहाबाद उच्च न्यायालय में कार्यरत अधिवक्ता ने, कानूनी पहुंच और रोजमर्रा के डिजिटल कार्यों को आसान बनाने के लिए Less Creation की स्थापना की।' 
+                      : 'Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.'}
+                  </p>
                 </div>
 
-                <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">
-                  {t.home.founderPreviewTitle}
-                </h3>
+                {/* 4 Feature Cards Grid */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  {/* Card 1 */}
+                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-[#C21F2F] dark:text-red-400 shrink-0">
+                      <Gavel className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
+                      {isHindi ? 'कानूनी पृष्ठभूमि' : 'Legal Background'}
+                    </span>
+                  </div>
+                  {/* Card 2 */}
+                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+                      <Lightbulb className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
+                      {isHindi ? 'समस्या केंद्रित' : 'Problem Focused'}
+                    </span>
+                  </div>
+                  {/* Card 3 */}
+                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
+                      <Users className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
+                      {isHindi ? 'उपयोगकर्ता दृष्टिकोण' : 'User First Approach'}
+                    </span>
+                  </div>
+                  {/* Card 4 */}
+                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+                      <Target className="w-5 h-5" />
+                    </div>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
+                      {isHindi ? 'व्यावहारिक समाधान' : 'Practical Solutions'}
+                    </span>
+                  </div>
+                </div>
 
-                <p className="text-sm sm:text-base text-slate-700 dark:text-[#B8B3AF] leading-relaxed">
-                  {t.home.founderPreviewText}
-                </p>
-
-                <p className="text-xs text-[#C21F2F] dark:text-[#E03A3E] font-semibold italic">
-                  {t.founder.shortQuote}
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {isHindi 
+                    ? 'Less Creation एक सरल विचार पर बना है: प्रौद्योगिकी को उपयोगी ज्ञान, कानूनी उपकरण और डिजिटल सेवाओं को सभी के लिए आसान बनाना चाहिए।' 
+                    : 'Less Creation is built around a simple idea: technology should make useful knowledge, legal tools and digital services easier to access for everyone.'}
                 </p>
 
                 <div className="pt-2">
-                  <GlowingButton
-                    variant="primary"
+                  <button
                     onClick={() => onNavigate('founder')}
-                    className="px-6 py-3 text-xs font-bold"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#C21F2F] hover:bg-[#A61825] text-white text-xs font-bold rounded-xl shadow-lg transition-colors cursor-pointer w-full sm:w-auto"
                   >
-                    <span>{t.common.meetFounder}</span>
-                  </GlowingButton>
+                    <User className="w-4 h-4" />
+                    <span>{isHindi ? 'संस्थापक के बारे में अधिक जानें' : 'Know More About Founder'}</span>
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </button>
                 </div>
               </div>
 
-            </div>
+              {/* Right Column: Graphic & Sidebar Card */}
+              <div className="lg:col-span-3 flex flex-col justify-center items-center lg:items-end space-y-8 mt-6 lg:mt-0 relative">
+                
+                {/* Handwriting Graphic Text */}
+                <div className="text-center lg:text-right relative mt-4 lg:mt-0">
+                  <p className="font-serif italic text-2xl sm:text-3xl text-slate-800 dark:text-slate-200 leading-tight">
+                    {isHindi ? 'लोगों के लिए' : 'Law'}<br />
+                    {isHindi ? 'कानूनी तकनीक' : 'Technology'}<br />
+                    {isHindi ? '' : 'For People'}
+                  </p>
+                  <svg className="absolute -bottom-4 right-0 w-32 h-4 text-[#C21F2F]" viewBox="0 0 100 10" preserveAspectRatio="none">
+                    <path d="M0 5 Q 50 10 100 0" stroke="currentColor" strokeWidth="2" fill="none" />
+                  </svg>
+                </div>
 
+                {/* Built with Real Experience Card */}
+                <div className="w-full lg:max-w-[220px] xl:max-w-[240px] bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-3xl p-6 flex flex-col items-center text-center space-y-4">
+                  <div className="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-700 dark:text-blue-400">
+                    <Landmark className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-2">
+                      {isHindi ? 'वास्तविक अनुभव से निर्मित' : 'Built with Real Experience'}
+                    </h4>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {isHindi 
+                        ? 'वास्तविक उपयोग के लिए डिज़ाइन किए गए व्यावहारिक कानूनी इनसाइट्स।' 
+                        : 'Practical legal insights designed for real-world use cases.'}
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
           </div>
         </ScrollReveal>
       </section>
@@ -818,7 +925,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               placeholder={language === 'hi' ? 'सुविधाएं खोजें (जैसे Bare Acts, Bigha)...' : 'Search features (e.g. Bare Acts, Bigha)...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-[#0D0D0F]/90 border border-slate-300 dark:border-white/15 text-xs text-slate-900 dark:text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F] shadow-xs"
+              className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/95 dark:bg-[#121622]/95 backdrop-blur-md border border-slate-200/80 dark:border-white/10 text-xs text-slate-900 dark:text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F] shadow-sm transition-all"
             />
           </div>
         </ScrollReveal>
@@ -835,7 +942,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer ${
                       selectedCategory === cat.key
                         ? 'btn-crimson font-bold text-white shadow-md'
-                        : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
+                        : 'bg-white/95 dark:bg-[#121622]/95 backdrop-blur-md text-slate-700 dark:text-[#B8B3AF] border border-slate-200/80 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-sm'
                     }`}
                   >
                     {cat.label}
