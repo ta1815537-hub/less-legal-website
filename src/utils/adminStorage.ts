@@ -528,7 +528,42 @@ export const adminStorage = {
 
   // Secure Firestore Admin Authorization Checks
   verifyAdminUserInFirestore: async (user: FirebaseUser): Promise<boolean> => {
-    if (!user || !user.email) return false;
+    if (!user) return false;
+
+    // Primary Admin UID explicitly granted admin claims/access
+    const PRIMARY_ADMIN_UID = 'RGZJHff9IVSXUtj28cOQmuFws613';
+
+    if (user.uid === PRIMARY_ADMIN_UID) {
+      // Background sync to Firestore admin_config
+      try {
+        const q = query(collection(db, 'admin_config'));
+        const snap = await getDocs(q);
+        let exists = false;
+        snap.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (data.uid === PRIMARY_ADMIN_UID || (data.email && user.email && data.email.toLowerCase() === user.email.toLowerCase())) {
+            exists = true;
+          }
+        });
+        if (!exists) {
+          await addDoc(collection(db, 'admin_config'), {
+            type: 'admin_auth',
+            uid: PRIMARY_ADMIN_UID,
+            email: user.email ? user.email.toLowerCase() : 'admin@lesscreation.com',
+            role: 'admin',
+            admin: true,
+            authorized: true,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          });
+        }
+      } catch (err) {
+        console.warn('Background admin_config sync for primary UID:', err);
+      }
+      return true;
+    }
+
+    if (!user.email) return false;
     try {
       const q = query(collection(db, 'admin_config'));
       const snap = await getDocs(q);
@@ -540,6 +575,7 @@ export const adminStorage = {
           uid: user.uid,
           email: user.email.toLowerCase(),
           role: 'admin',
+          admin: true,
           authorized: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -556,7 +592,8 @@ export const adminStorage = {
         if (
           data.type === 'admin_auth' ||
           data.type === 'admin_role' ||
-          data.role === 'admin'
+          data.role === 'admin' ||
+          data.admin === true
         ) {
           const emailMatch = data.email && data.email.toLowerCase() === user.email?.toLowerCase();
           const uidMatch = data.uid && data.uid === user.uid;
@@ -574,6 +611,7 @@ export const adminStorage = {
         try {
           await updateDoc(doc(db, 'admin_config', matchedDocId), {
             uid: user.uid,
+            admin: true,
             updatedAt: new Date().toISOString()
           });
         } catch {

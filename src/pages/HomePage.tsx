@@ -759,16 +759,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       </div>
                     )}
                     
-                    {/* Professional Name Plate (Patti) Overlay */}
-                    <div className="absolute bottom-3 inset-x-3 p-3.5 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-amber-500/30 text-center shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+                    {/* Compact Professional Name Plate (Patti) Overlay */}
+                    <div className="absolute bottom-2 inset-x-2.5 p-2 sm:p-2.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-amber-500/30 text-center shadow-md">
                       {/* Golden Accent Patti Header */}
-                      <div className="inline-block px-3 py-0.5 mb-1 rounded-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-slate-950 font-black text-[11px] uppercase tracking-wider shadow-sm">
+                      <div className="inline-block px-2 py-0.5 rounded bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow-xs leading-none">
                         FOUNDER & ADVOCATE
                       </div>
-                      <h4 className="text-base font-black text-white tracking-wide uppercase mt-0.5">Anurag Gurauli</h4>
-                      <div className="w-12 h-[2px] bg-gradient-to-r from-transparent via-[#D8BD82] to-transparent mx-auto my-1 rounded-full" />
-                      <p className="text-[11px] text-[#F5F2EE] font-bold leading-snug">Founder, Less Creation</p>
-                      <p className="text-[10px] text-amber-200/90 font-semibold mt-0.5">Advocate, Allahabad High Court</p>
+                      <h4 className="text-xs sm:text-sm font-black text-white tracking-wide uppercase mt-0.5 leading-tight">Anurag Gurauli</h4>
+                      <p className="text-[10px] text-amber-200/90 font-semibold leading-tight mt-0.5">
+                        Founder, Less Creation • Advocate, High Court
+                      </p>
                     </div>
                   </div>
                 </div>
