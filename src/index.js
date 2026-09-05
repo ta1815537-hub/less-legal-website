@@ -497,10 +497,48 @@ export default {
     if (env.ASSETS && typeof env.ASSETS.fetch === 'function') {
       const isStaticFile = /\.[a-zA-Z0-9]+$/.test(url.pathname);
       if (!isStaticFile && request.method === 'GET') {
-        const newUrl = new URL(request.url);
-        newUrl.pathname = '/';
-        const rewrittenRequest = new Request(newUrl.toString(), request);
-        return env.ASSETS.fetch(rewrittenRequest);
+        const indexUrl = new URL('/', request.url);
+        const rewrittenRequest = new Request(indexUrl.toString(), request);
+        
+        try {
+          const response = await env.ASSETS.fetch(rewrittenRequest);
+          
+          // Intercept 3xx redirects and serve index content with HTTP 200 directly
+          if (response.status >= 300 && response.status < 400) {
+            const redirectTarget = response.headers.get('Location');
+            if (redirectTarget) {
+              const redirectUrl = new URL(redirectTarget, request.url);
+              const targetResponse = await env.ASSETS.fetch(new Request(redirectUrl.toString(), request));
+              return new Response(targetResponse.body, {
+                status: 200,
+                headers: {
+                  ...targetResponse.headers,
+                  'Content-Type': 'text/html; charset=utf-8'
+                }
+              });
+            }
+          }
+          
+          if (response.status === 200) {
+            return response;
+          }
+        } catch (e) {
+          console.error("Asset fetch error:", e);
+        }
+        
+        // Fallback: fetch the root '/' directly and serve with HTTP 200
+        try {
+          const fallbackResponse = await env.ASSETS.fetch(new Request(new URL('/', request.url).toString(), request));
+          return new Response(fallbackResponse.body, {
+            status: 200,
+            headers: {
+              ...fallbackResponse.headers,
+              'Content-Type': 'text/html; charset=utf-8'
+            }
+          });
+        } catch (err) {
+          console.error("Fallback asset fetch error:", err);
+        }
       }
       return env.ASSETS.fetch(request);
     }

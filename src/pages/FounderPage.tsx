@@ -22,7 +22,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
   const [isHoveredLessLegal, setIsHoveredLessLegal] = useState(false);
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-12 sm:pb-16 space-y-10 overflow-hidden bg-slate-50 dark:bg-[#080808] transition-colors duration-300">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-16 space-y-10 overflow-hidden">
       <HeroAmbientGlow />
 
       {/* Back Button */}
@@ -30,9 +30,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <motion.button
           whileHover={{ x: -3 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-amber-700 dark:text-[#D8BD82] hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 px-3.5 py-1.5 rounded-full shadow-xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-[#C21F2F] dark:text-[#E03A3E]" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-[#E02636]" />
           <span>{t.common.backToHome}</span>
         </motion.button>
       </div>
@@ -41,10 +41,10 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* HERO SECTION — Desktop Left: Photo, Right: Info    */}
       {/* ================================================== */}
       <ScrollReveal direction="up" className="relative z-10">
-        <motion.div whileHover={{ scale: 1.01 }} transition={{ type: "spring", stiffness: 300 }} className="glass-panel p-6 sm:p-10 lg:p-12 rounded-3xl border border-slate-200 dark:border-white/12 shadow-2xl relative overflow-hidden">
-          {/* Subtle Ambient Red/Gold Gradient Background */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-[#C21F2F]/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-[#D8BD82]/15 rounded-full blur-3xl pointer-events-none" />
+        <motion.div whileHover={{ y: -3 }} transition={{ type: "spring", stiffness: 300 }} className="p-6 sm:p-10 lg:p-12 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/12 shadow-xl relative overflow-hidden backdrop-blur-xl">
+          {/* Subtle Ambient Red/Blue Gradient Background */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-red-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
             
@@ -57,12 +57,12 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 className="relative group w-full max-w-sm"
               >
                 {/* Outer Flowing Animated Rotating Gradient Border */}
-                <div className="animated-founder-border shadow-2xl rounded-[1.5rem] overflow-hidden p-1" style={{ transform: 'translateZ(0)' }}>
+                <div className="animated-founder-border shadow-2xl rounded-[1.8rem] overflow-hidden p-1" style={{ transform: 'translateZ(0)' }}>
                   
-                  <div className="relative rounded-[calc(1.5rem-4px)] overflow-hidden bg-white dark:bg-[#0D131F] border border-amber-600/30 dark:border-[#D8BD82]/40 shadow-xl isolate" style={{ transform: 'translateZ(0)' }}>
+                  <div className="relative rounded-[calc(1.8rem-4px)] overflow-hidden bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/15 shadow-xl isolate" style={{ transform: 'translateZ(0)' }}>
                     
                     {!imgError ? (
-                      <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center rounded-t-[calc(1.5rem-4px)]">
+                      <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center rounded-t-[calc(1.8rem-4px)]">
                         <img 
                           src="/images/anurag_tiwari.jpg" 
                           alt="Anurag Gurauli — Founder of Less Creation" 
@@ -75,13 +75,13 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                       </div>
                     ) : (
                       /* Styled Fallback */
-                      <div className="aspect-[4/5] bg-gradient-to-b from-slate-100 via-white to-amber-50 dark:from-[#0F172A] dark:via-[#080808] dark:to-[#1A0A0D] flex flex-col items-center justify-center p-6 text-center space-y-4 rounded-t-[calc(1.5rem-4px)]">
-                        <div className="w-20 h-20 rounded-full bg-amber-500/10 dark:bg-[#C21F2F]/20 border-2 border-amber-600 dark:border-[#D8BD82] flex items-center justify-center shadow-lg">
-                          <Scale className="w-10 h-10 text-[#C21F2F] dark:text-[#E03A3E]" />
+                      <div className="aspect-[4/5] bg-gradient-to-b from-slate-100 via-white to-amber-50 dark:from-[#0F172A] dark:via-[#080808] dark:to-[#1A0A0D] flex flex-col items-center justify-center p-6 text-center space-y-4 rounded-t-[calc(1.8rem-4px)]">
+                        <div className="w-20 h-20 rounded-full bg-red-100 dark:bg-red-950/40 border-2 border-[#E02636] flex items-center justify-center shadow-lg">
+                          <Scale className="w-10 h-10 text-[#E02636]" />
                         </div>
                         <div>
                           <div className="text-xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-wide whitespace-nowrap badge-one-line">{t.founder.name}</div>
-                          <div className="text-xs font-semibold text-[#C21F2F] dark:text-[#E03A3E] uppercase tracking-wider mt-1 whitespace-nowrap badge-one-line">{t.founder.role}</div>
+                          <div className="text-xs font-semibold text-[#E02636] uppercase tracking-wider mt-1 whitespace-nowrap badge-one-line">{t.founder.role}</div>
                           <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] mt-1 whitespace-nowrap badge-one-line">Allahabad High Court</div>
                         </div>
                         <div className="px-3 py-1 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-[10px] text-amber-800 dark:text-[#B8BD82] whitespace-nowrap badge-one-line">
@@ -91,9 +91,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                     )}
 
                     {/* Caption Bar */}
-                    <div className="p-3 bg-slate-100/95 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-200 dark:border-white/10 flex flex-col items-center justify-center text-center space-y-1 rounded-b-[calc(1.5rem-4px)] w-full">
-                      <span className="font-extrabold text-slate-900 dark:text-[#F5F2EE] text-xs sm:text-sm tracking-tight whitespace-nowrap">{t.founder.name}</span>
-                      <span className="px-2.5 py-0.5 rounded-xl sm:rounded-full bg-amber-500/15 text-amber-800 dark:text-[#D8BD82] font-extrabold text-[8.5px] sm:text-[10px] uppercase tracking-wider border border-amber-600/25 dark:border-[#D8BD82]/30 max-w-full leading-[1.3]">
+                    <div className="p-3 bg-slate-100/95 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-200 dark:border-white/10 flex flex-col items-center justify-center text-center space-y-1 rounded-b-[calc(1.8rem-4px)] w-full">
+                      <span className="font-extrabold text-slate-900 dark:text-white text-xs sm:text-sm tracking-tight whitespace-nowrap">{t.founder.name}</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-red-100/80 text-[#E02636] dark:bg-red-950/40 dark:text-red-300 font-extrabold text-[8.5px] sm:text-[10px] uppercase tracking-wider border border-red-200 dark:border-red-900/40 max-w-full leading-[1.3]">
                         Founder of Less Legal & Less Creation
                       </span>
                     </div>
@@ -109,49 +109,47 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <div className="space-y-3">
                 <motion.div 
                   whileHover={{ scale: 1.03 }}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold shadow-xs cursor-default whitespace-nowrap"
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/40 text-[#E02636] dark:text-red-400 text-xs font-black tracking-wider uppercase shadow-2xs cursor-default whitespace-nowrap"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                  <Sparkles className="w-3.5 h-3.5 fill-current" />
                   <span className="whitespace-nowrap tracking-wider">{t.founder.badge}</span>
                 </motion.div>
 
-                <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+                <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                   {t.founder.name}
                 </h1>
                 
-                <p className="text-base sm:text-lg font-bold text-[#C21F2F] dark:text-[#E03A3E]">
+                <p className="text-base sm:text-lg font-black text-[#E02636]">
                   {t.founder.subtitle}
                 </p>
 
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                  <UserCheck className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                  <UserCheck className="w-4 h-4 text-[#E02636] shrink-0" />
                   <span>{t.founder.practice}</span>
                 </p>
               </div>
 
               {/* Short Quote Banner */}
-              <div className="p-4 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 italic text-sm text-slate-700 dark:text-[#B8B3AF] leading-relaxed relative">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 italic text-sm text-slate-700 dark:text-slate-300 leading-relaxed relative">
                 <p>{t.founder.shortQuote}</p>
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
-                <GlowingButton
-                  variant="primary"
+                <button
                   onClick={() => onNavigate('download')}
-                  className="px-5 py-2.5 text-xs font-bold"
+                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#E02636] to-[#C21F2F] text-white text-xs font-black shadow-md hover:from-[#C21F2F] hover:to-[#9B111E] cursor-pointer transition-all flex items-center gap-2"
                 >
                   <span>{t.nav.downloadApp}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </GlowingButton>
+                </button>
                 
-                <GlowingButton
-                  variant="outline"
+                <button
                   onClick={() => onNavigate('features')}
-                  className="px-5 py-2.5 text-xs font-bold"
+                  className="px-6 py-2.5 rounded-full bg-white/90 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-extrabold hover:bg-slate-100 dark:hover:bg-white/20 cursor-pointer transition-all shadow-xs"
                 >
                   <span>{t.common.exploreFeatures}</span>
-                </GlowingButton>
+                </button>
               </div>
 
             </div>

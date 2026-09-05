@@ -52,6 +52,8 @@ const html = `<!doctype html>
     
     <!-- Favicon / Vector Icon -->
     <link rel="icon" type="image/png" href="/images/lg.png" />
+    <link rel="shortcut icon" type="image/png" href="/images/lg.png" />
+    <link rel="apple-touch-icon" href="/images/lg.png" />
   </head>
   <body class="bg-slate-50 dark:bg-[#080808] text-slate-900 dark:text-[#F5F2EE] antialiased selection:bg-[#C21F2F] selection:text-white min-h-screen transition-colors duration-300">
     <div id="root"></div>
