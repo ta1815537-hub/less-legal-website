@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
         className="fixed top-0 left-0 right-0 h-1 sm:h-1.5 z-[60] bg-gradient-to-r from-amber-400 via-[#E03A3E] to-[#8B0000] dark:from-[#D8BD82] dark:via-[#E03A3E] dark:to-[#C21F2F]"
       />
-      <header className="fixed top-0 z-50 w-full bg-white/95 dark:bg-[#080808]/95 backdrop-blur-xl border-b border-slate-200/85 dark:border-white/10 shadow-xs dark:shadow-md transition-all duration-300">
+      <header className="fixed top-0 z-50 w-full bg-white/30 dark:bg-[#080808]/30 backdrop-blur-xl border-b border-slate-200/30 dark:border-white/10 shadow-sm transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
           
@@ -75,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 </span>
               </div>
               <p className="text-[10px] sm:text-[11px] font-semibold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">
-                अमायं नाम नेहास्ति वीरस्य व्यवसायिनः
+                अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
               </p>
             </div>
           </a>

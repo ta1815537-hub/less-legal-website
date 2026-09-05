@@ -88,7 +88,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     <span className="text-[#C21F2F]">Creation</span>
                   </h2>
                   <p className="text-xs sm:text-[13px] font-bold text-amber-600 dark:text-amber-400 mt-1">
-                    अमाप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
+                    अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
                   </p>
                 </div>
               </div>
@@ -101,8 +101,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 At Less Creation, we build independent digital applications like Less Legal to make legal knowledge, document tools and everyday utilities simple and accessible for everyone.
               </p>
 
-              {/* 3 Pills: Independent Digital Products | Privacy Conscious | User First Always */}
-              <div className="flex flex-wrap items-center gap-2 pt-1">
+              {/* 4 Pills: Independent Digital Products | Privacy Conscious | User First Always | Made For India */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
                   <div className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-[#C21F2F] shrink-0">
                     <Layers className="w-3.5 h-3.5" />
@@ -127,6 +127,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </div>
                   <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 leading-tight">
                     User First<br />Always
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
+                  <div className="w-6 h-6 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-600 shrink-0">
+                    <Crown className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 leading-tight">
+                    Proudly Made<br />For India
                   </span>
                 </div>
               </div>
@@ -371,26 +380,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           </div>
 
-          {/* Middle Full-Width Banner: Independent Application Disclaimer */}
-          <div className="rounded-2xl bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="flex items-start gap-3.5">
-              <div className="w-11 h-11 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-600 dark:text-amber-400 mt-0.5 shadow-2xs">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                <strong className="text-slate-900 dark:text-white font-bold">Independent Application Disclaimer:</strong> Less Legal is an independent software application and is not affiliated with, authorized, maintained, sponsored or endorsed by the Government of India, courts, or any state judicial department.
-              </p>
-            </div>
-
-            <button
-              onClick={() => onNavigate('disclaimer')}
-              className="px-5 py-2.5 rounded-full border border-blue-600/30 hover:border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-xs font-bold flex items-center gap-1.5 shrink-0 whitespace-nowrap transition-colors cursor-pointer self-start md:self-auto"
-            >
-              <span>Read Full Disclaimer</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
           {/* Bottom Bar inside the Card */}
           <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-center">
             
@@ -412,28 +401,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Founded & Created by Anurag Gurauli. | Less Creation
               </p>
-              <p 
-                onClick={handleSecretLockClick}
-                className="text-xs font-bold text-amber-600 dark:text-amber-400 pt-0.5 cursor-default select-none"
-              >
-                अमाप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
-              </p>
             </div>
 
             {/* 2. Follow Us Social Icons (Span 2) */}
             <div className="lg:col-span-2">
               <p className="text-xs font-bold text-slate-800 dark:text-white mb-2">Follow Us</p>
               <div className="flex items-center gap-2">
-                {/* YouTube */}
+                {/* Facebook */}
                 <a
-                  href="https://youtube.com"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="YouTube"
-                  className="w-8 h-8 rounded-full bg-[#FF0000] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-2xs"
+                  aria-label="Facebook"
+                  className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-2xs"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </a>
 
@@ -450,16 +433,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </svg>
                 </a>
 
-                {/* WhatsApp */}
+                {/* LinkedIn */}
                 <a
-                  href="https://whatsapp.com"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="WhatsApp"
-                  className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-2xs"
+                  aria-label="LinkedIn"
+                  className="w-8 h-8 rounded-full bg-[#0A66C2] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-2xs"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.214 8.214 0 012.41 5.82c0 4.54-3.7 8.24-8.24 8.24-1.45 0-2.87-.38-4.12-1.1l-.3-.17-3.12.82.83-3.04-.19-.31a8.19 8.19 0 01-1.26-4.44c0-4.54 3.69-8.24 8.24-8.24zm4.52 11.66c-.19-.09-1.11-.55-1.28-.61-.17-.07-.3-.09-.43.1-.12.19-.48.61-.59.73-.11.12-.22.14-.41.05-.19-.09-.81-.3-1.54-.95-.57-.51-.96-1.14-1.07-1.33-.11-.19-.01-.3.08-.39.09-.09.19-.22.28-.33.1-.11.13-.19.19-.31.06-.12.03-.23-.01-.33-.05-.09-.43-1.04-.59-1.43-.16-.38-.32-.33-.43-.33h-.37c-.12 0-.33.05-.51.24-.17.19-.66.65-.66 1.58 0 .93.68 1.83.77 1.96.1.12 1.34 2.05 3.25 2.87.45.2.81.31 1.09.4.46.15.88.13 1.21.08.37-.05 1.11-.45 1.27-.89.15-.43.15-.81.11-.89-.05-.08-.18-.13-.37-.22z"/>
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                   </svg>
                 </a>
 
@@ -495,91 +478,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* 4. Scales of Justice & Script (Span 3) */}
+            {/* 4. Scripts (Span 3) */}
             <div className="lg:col-span-3 flex items-center justify-start lg:justify-end gap-3">
               <div className="text-left lg:text-right">
-                <p className="font-serif italic text-blue-900/60 dark:text-blue-300/60 text-base sm:text-lg tracking-wide leading-tight select-none">
-                  Knowledge<br />Simplifies Life
+                <p className="font-serif italic text-blue-900/60 dark:text-blue-300/60 text-base sm:text-lg tracking-wide leading-tight select-none whitespace-nowrap">
+                  Knowledge Simplifies Life
                 </p>
-              </div>
-
-              {/* Scales of Justice balanced on Books ("LAW", "JUSTICE", "KNOWLEDGE") SVG */}
-              <div className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 relative select-none">
-                <svg viewBox="0 0 160 160" className="w-full h-full drop-shadow-sm" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="goldScales" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#E5C158" />
-                      <stop offset="50%" stopColor="#C59B27" />
-                      <stop offset="100%" stopColor="#8C6810" />
-                    </linearGradient>
-                    <linearGradient id="bookCover1" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#C29B7F" />
-                      <stop offset="100%" stopColor="#8C6647" />
-                    </linearGradient>
-                    <linearGradient id="bookCover2" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#D4B59D" />
-                      <stop offset="100%" stopColor="#9C7755" />
-                    </linearGradient>
-                    <linearGradient id="bookCover3" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#EAD8C7" />
-                      <stop offset="100%" stopColor="#B39373" />
-                    </linearGradient>
-                  </defs>
-
-                  {/* STACK OF 3 BOOKS */}
-                  {/* Book 3 (Bottom) - KNOWLEDGE */}
-                  <g transform="translate(18, 125)">
-                    <rect x="0" y="0" width="124" height="15" rx="3" fill="url(#bookCover1)" />
-                    <rect x="2" y="2" width="120" height="11" rx="2" fill="#FAF6F0" opacity="0.9" />
-                    <rect x="0" y="0" width="16" height="15" rx="3" fill="url(#bookCover1)" />
-                    <text x="60" y="10.5" fill="#4A3525" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif" letterSpacing="1.5" textAnchor="middle">KNOWLEDGE</text>
-                  </g>
-
-                  {/* Book 2 (Middle) - JUSTICE */}
-                  <g transform="translate(26, 108)">
-                    <rect x="0" y="0" width="108" height="15" rx="3" fill="url(#bookCover2)" />
-                    <rect x="2" y="2" width="104" height="11" rx="2" fill="#FAF6F0" opacity="0.9" />
-                    <rect x="0" y="0" width="15" height="15" rx="3" fill="url(#bookCover2)" />
-                    <text x="52" y="10.5" fill="#4A3525" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif" letterSpacing="1.5" textAnchor="middle">JUSTICE</text>
-                  </g>
-
-                  {/* Book 1 (Top) - LAW */}
-                  <g transform="translate(35, 91)">
-                    <rect x="0" y="0" width="90" height="15" rx="3" fill="url(#bookCover3)" />
-                    <rect x="2" y="2" width="86" height="11" rx="2" fill="#FAF6F0" opacity="0.9" />
-                    <rect x="0" y="0" width="14" height="15" rx="3" fill="url(#bookCover3)" />
-                    <text x="44" y="10.5" fill="#4A3525" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif" letterSpacing="1.5" textAnchor="middle">LAW</text>
-                  </g>
-
-                  {/* SCALES OF JUSTICE */}
-                  {/* Stand Base on Book */}
-                  <path d="M68 91 L92 91 L88 84 L72 84 Z" fill="url(#goldScales)" />
-                  <ellipse cx="80" cy="84" rx="9" ry="3" fill="url(#goldScales)" />
-
-                  {/* Vertical Column */}
-                  <rect x="78" y="24" width="4" height="60" rx="2" fill="url(#goldScales)" />
-                  {/* Ornaments on Column */}
-                  <circle cx="80" cy="40" r="3.5" fill="url(#goldScales)" />
-                  <circle cx="80" cy="20" r="4.5" fill="url(#goldScales)" />
-                  <polygon points="80,12 77,19 83,19" fill="url(#goldScales)" />
-
-                  {/* Horizontal Crossbar */}
-                  <path d="M32 28 C55 26, 105 26, 128 28 C128 30, 105 28, 80 28 C55 28, 32 30, 32 28 Z" fill="url(#goldScales)" />
-                  <circle cx="32" cy="28" r="2.5" fill="url(#goldScales)" />
-                  <circle cx="128" cy="28" r="2.5" fill="url(#goldScales)" />
-
-                  {/* Left Chains & Pan */}
-                  <line x1="32" y1="28" x2="20" y2="54" stroke="#C59B27" strokeWidth="1" strokeDasharray="2 1" />
-                  <line x1="32" y1="28" x2="44" y2="54" stroke="#C59B27" strokeWidth="1" strokeDasharray="2 1" />
-                  <path d="M16 54 C16 64, 48 64, 48 54 Z" fill="url(#goldScales)" />
-                  <ellipse cx="32" cy="54" rx="16" ry="3.5" fill="#FAF6F0" opacity="0.3" />
-
-                  {/* Right Chains & Pan */}
-                  <line x1="128" y1="28" x2="116" y2="54" stroke="#C59B27" strokeWidth="1" strokeDasharray="2 1" />
-                  <line x1="128" y1="28" x2="140" y2="54" stroke="#C59B27" strokeWidth="1" strokeDasharray="2 1" />
-                  <path d="M112 54 C112 64, 144 64, 144 54 Z" fill="url(#goldScales)" />
-                  <ellipse cx="128" cy="54" rx="16" ry="3.5" fill="#FAF6F0" opacity="0.3" />
-                </svg>
               </div>
             </div>
 
@@ -588,7 +492,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Bottom Centered Slogan & Safe Space for Mobile Devices */}
-        <div className="pt-6 pb-12 sm:pb-16 text-center flex items-center justify-center gap-2">
+        <div className="pt-6 pb-6 text-center flex items-center justify-center gap-2">
           <p className="text-[11px] sm:text-xs font-bold text-[#C21F2F]/80 dark:text-[#E03A3E]/80 tracking-[0.2em] sm:tracking-[0.25em] uppercase select-none">
             BUILDING A SIMPLER, SMARTER AND MORE INFORMED INDIA ❤️
           </p>
