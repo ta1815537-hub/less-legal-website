@@ -57,11 +57,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     <footer className="relative mt-20 overflow-hidden text-slate-600 dark:text-[#B8B3AF] transition-colors duration-300">
       {/* Ambient background glow & subtle wave curves */}
       <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-[#C21F2F]/5 via-amber-500/5 to-transparent rounded-full blur-3xl opacity-70" />
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-red-500/10 via-red-500/5 to-transparent blur-2xl pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-blue-600/5 via-cyan-500/5 to-transparent rounded-full blur-3xl opacity-70" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-blue-500/10 via-blue-500/5 to-transparent blur-2xl pointer-events-none" />
         {/* Soft SVG wave at bottom */}
         <svg 
-          className="absolute bottom-0 left-0 right-0 w-full h-32 text-red-500/[0.04] dark:text-red-500/[0.06] preserve-3d" 
+          className="absolute bottom-0 left-0 right-0 w-full h-32 text-blue-500/[0.04] dark:text-blue-500/[0.06] preserve-3d" 
           viewBox="0 0 1440 200" 
           fill="currentColor"
         >
@@ -314,7 +314,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div className="min-w-0">
                   <a 
                     href="mailto:lesslegalsupport@gmail.com" 
-                    className="text-xs font-bold text-slate-900 dark:text-white hover:text-[#C21F2F] transition-colors truncate block"
+                    className="text-xs font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
                   >
                     lesslegalsupport@gmail.com
                   </a>
@@ -327,7 +327,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               {/* Contact Support Button */}
               <button
                 onClick={() => onNavigate('contact')}
-                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#D92534] to-[#B81928] hover:from-[#C21F2F] hover:to-[#9E1220] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-red-500/20 transition-all cursor-pointer"
+                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:via-blue-600 hover:to-sky-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-blue-500/20 border border-white/10 hover:scale-[1.01] transition-all cursor-pointer"
               >
                 <Mail className="w-4 h-4" />
                 <span>Contact Support</span>

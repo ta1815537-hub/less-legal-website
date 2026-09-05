@@ -11,7 +11,8 @@ import {
   signInWithPopup, 
   signOut, 
   onAuthStateChanged, 
-  User as FirebaseUser 
+  User as FirebaseUser,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -338,8 +339,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     } catch (err: any) {
       console.error("Google sign-in error:", err);
       if (err.code !== 'auth/popup-closed-by-user') {
-        const errorDetails = `[DEBUG] Code: ${err.code} | Msg: ${err.message} | Email: ${err.customData?.email || 'N/A'}`;
-        setAuthError(errorDetails);
+        setAuthError(
+          isHindi
+            ? "गूगल प्रमाणीकरण विफल! कृपया पुनः प्रयास करें।"
+            : "Google authentication failed! Please try again."
+        );
       }
       setAdminUser(null);
       setIsAuthenticated(false);
@@ -505,7 +509,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       <div className="relative max-w-md mx-auto px-4 py-12 sm:py-16 space-y-6">
         <HeroAmbientGlow />
         
-        <div className="p-6 sm:p-8 rounded-[28px] border border-white/80 dark:border-white/10 space-y-6 relative z-10 shadow-[0_16px_40px_rgba(0,0,0,0.08)] bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl text-center">
+        <div className="p-6 sm:p-8 rounded-[28px] border border-blue-500/20 dark:border-blue-400/20 space-y-6 relative z-10 shadow-[0_16px_40px_rgba(59,130,246,0.12)] dark:shadow-[0_16px_40px_rgba(59,130,246,0.18)] bg-white/80 dark:bg-[#121622]/80 backdrop-blur-xl text-center">
           <div className="w-14 h-14 rounded-2xl bg-[#C21F2F]/10 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/20 flex items-center justify-center mx-auto shadow-sm">
             <Lock className="w-7 h-7" />
           </div>
@@ -549,12 +553,12 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           )}
 
           {/* GOOGLE SIGN IN BUTTON */}
-          <div className="space-y-4 pt-2">
+          <div className="pt-2">
             <button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={authLoading}
-              className="w-full py-3.5 px-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-white font-bold text-sm shadow-md hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer flex items-center justify-center gap-3 disabled:opacity-50"
+              className="w-full py-3.5 px-5 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-blue-500/30 dark:border-blue-400/30 text-slate-800 dark:text-white font-bold text-sm shadow-[0_4px_20px_rgba(59,130,246,0.12)] hover:shadow-[0_6px_25px_rgba(59,130,246,0.2)] hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer flex items-center justify-center gap-3 disabled:opacity-50"
             >
               <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                 <path
@@ -576,12 +580,6 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               </svg>
               <span>{authLoading ? (isHindi ? "प्रमाणीकरण हो रहा है..." : "Authenticating...") : (isHindi ? "गूगल से जारी रखें" : "Continue with Google")}</span>
             </button>
-
-            <div className="p-3 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[11px] text-slate-500 dark:text-[#B8B3AF] leading-relaxed text-center">
-              {isHindi
-                ? "नोट: केवल अधिकृत एडमिन गूगल खातों (admin: true) को ही एडमिन डैशबोर्ड का उपयोग करने की अनुमति है।"
-                : "Note: Only authorized Google Accounts with verified administrator claims (admin: true) are granted dashboard access."}
-            </div>
           </div>
 
           <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-center text-xs text-slate-500">

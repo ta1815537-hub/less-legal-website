@@ -33,6 +33,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeModalFeature, setActiveModalFeature] = useState<FeatureItemData | null>(null);
+  const [toggledFeatures, setToggledFeatures] = useState<Record<string, boolean>>({});
 
   // Categories matching the reference image exactly
   const filterCategories = [
@@ -319,14 +320,14 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           <div className="lg:col-span-7 space-y-5 text-center sm:text-left flex flex-col items-center sm:items-start">
             
             {/* Top Badge: Complete Utility Suite */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/40 text-[#E02636] dark:text-red-400 text-xs font-black tracking-wider uppercase shadow-2xs">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 fill-current" />
               <span>COMPLETE UTILITY SUITE</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-black text-slate-900 dark:text-white tracking-tight leading-[1.05]">
-              Explore <span className="text-[#E02636]">22+</span> Integrated <span className="text-[#2563EB] dark:text-[#3B82F6]">Utilities</span>
+              Explore <span className="text-blue-600 dark:text-blue-400">30+</span> Integrated <span className="text-[#2563EB] dark:text-[#3B82F6]">Utilities</span>
             </h1>
 
             {/* Subtitle */}
@@ -365,11 +366,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
               <span className="font-serif italic font-extrabold text-base sm:text-lg text-blue-900 dark:text-blue-300 block">
                 Your Complete
               </span>
-              <span className="font-serif italic font-extrabold text-lg sm:text-xl text-[#C21F2F] dark:text-[#E03A3E] block -mt-1">
+              <span className="font-serif italic font-extrabold text-lg sm:text-xl text-blue-600 dark:text-blue-400 block -mt-1">
                 Legal Companion
               </span>
-              {/* Curved Red Doodle Line */}
-              <svg className="w-28 h-5 text-[#C21F2F] dark:text-[#E03A3E]" viewBox="0 0 100 20" fill="none">
+              {/* Curved Blue Doodle Line */}
+              <svg className="w-28 h-5 text-blue-600 dark:text-blue-400" viewBox="0 0 100 20" fill="none">
                 <path d="M5 5 Q 50 18, 95 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
             </div>
@@ -437,9 +438,9 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                       <BookOpen className="w-4 h-4 text-emerald-400" />
                       <span className="text-[8px] font-bold text-emerald-200">Bare Acts</span>
                     </div>
-                    <div className="rounded-xl bg-red-950/50 border border-red-500/30 p-2 flex flex-col items-center gap-1">
-                      <FileText className="w-4 h-4 text-red-400" />
-                      <span className="text-[8px] font-bold text-red-200">PDF Tools</span>
+                    <div className="rounded-xl bg-blue-950/50 border border-blue-500/30 p-2 flex flex-col items-center gap-1">
+                      <FileText className="w-4 h-4 text-blue-400" />
+                      <span className="text-[8px] font-bold text-blue-200">PDF Tools</span>
                     </div>
                     <div className="rounded-xl bg-amber-950/50 border border-amber-500/30 p-2 flex flex-col items-center gap-1">
                       <Calculator className="w-4 h-4 text-amber-400" />
@@ -466,27 +467,49 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 2. CATEGORY PILLS BAR (SINGLE-LINE SCROLLABLE / WRAPPER) */}
-      <section className="relative z-10">
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-          {filterCategories.map((cat) => {
-            const isActive = selectedCategory === cat.key;
-            const Icon = cat.icon;
-            return (
-              <button
-                key={cat.key}
-                onClick={() => setSelectedCategory(cat.key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#E02636] to-[#C21F2F] text-white shadow-[0_4px_12px_rgba(224,38,54,0.35)] scale-[1.02]'
-                    : 'bg-white/90 dark:bg-white/10 hover:bg-white text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-white/10 shadow-2xs hover:scale-[1.01]'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{cat.label}</span>
-              </button>
-            );
-          })}
+      {/* 2. CATEGORY PILLS BAR (SINGLE-LINE INFINITE SMOOTH SCROLL MARQUEE) */}
+      <section className="relative z-10 w-full overflow-hidden py-1 sm:py-2 rounded-2xl bg-blue-500/5 dark:bg-blue-950/10 border border-blue-200/20 dark:border-blue-900/10">
+        <div className="relative w-full overflow-hidden select-none mask-edges-x">
+          <div className="flex animate-marquee-left pause-on-hover gap-3 whitespace-nowrap py-1">
+            {/* First Set of Categories */}
+            {filterCategories.map((cat, index) => {
+              const isActive = selectedCategory === cat.key;
+              const Icon = cat.icon;
+              return (
+                <button
+                  key={`${cat.key}-1-${index}`}
+                  onClick={() => setSelectedCategory(cat.key)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 border ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-400/30 shadow-[0_4px_16px_rgba(37,99,235,0.35)] scale-[1.02]'
+                      : 'bg-white/90 dark:bg-[#0B132B]/85 text-slate-700 dark:text-slate-300 border-blue-200/20 dark:border-blue-800/15 shadow-2xs hover:border-blue-400/30 hover:scale-[1.01] hover:bg-white dark:hover:bg-slate-800/90'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+            {/* Duplicated Set for Seamless Infinite Scrolling */}
+            {filterCategories.map((cat, index) => {
+              const isActive = selectedCategory === cat.key;
+              const Icon = cat.icon;
+              return (
+                <button
+                  key={`${cat.key}-2-${index}`}
+                  onClick={() => setSelectedCategory(cat.key)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 border ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-400/30 shadow-[0_4px_16px_rgba(37,99,235,0.35)] scale-[1.02]'
+                      : 'bg-white/90 dark:bg-[#0B132B]/85 text-slate-700 dark:text-slate-300 border-blue-200/20 dark:border-blue-800/15 shadow-2xs hover:border-blue-400/30 hover:scale-[1.01] hover:bg-white dark:hover:bg-slate-800/90'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -497,16 +520,31 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
             {filtered.map((item) => {
               const styles = getColorStyles(item.themeColor);
               const ItemIcon = item.icon;
+              const isLifted = !!toggledFeatures[item.id];
 
               return (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  animate={{ 
+                    opacity: 1, 
+                    y: isLifted ? -16 : 0,
+                    scale: isLifted ? 1.02 : 1,
+                  }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.25 }}
-                  whileHover={{ y: -4 }}
-                  className={`rounded-[24px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(0,0,0,0.08)] ${styles.hoverBorder} p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl`}
+                  whileHover={{ y: isLifted ? -20 : -4 }}
+                  onClick={() => {
+                    setToggledFeatures(prev => ({
+                      ...prev,
+                      [item.id]: !prev[item.id]
+                    }));
+                  }}
+                  className={`rounded-[24px] p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl cursor-pointer ${
+                    isLifted 
+                      ? 'border-blue-500/70 dark:border-blue-400/70 shadow-[0_24px_50px_rgba(59,130,246,0.25)] bg-gradient-to-br from-blue-50/90 via-indigo-50/40 to-white dark:from-[#1E293B] dark:via-[#182035] dark:to-[#121622]'
+                      : `bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(0,0,0,0.08)] ${styles.hoverBorder}`
+                  }`}
                 >
                   {/* Top Area: Icon + Badges */}
                   <div>
@@ -584,7 +622,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
             <p className="text-base font-bold text-slate-800 dark:text-white">कोई परिणाम नहीं मिला (No tools found)</p>
             <button
               onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
-              className="mt-3 px-4 py-2 rounded-full bg-[#E02636] text-white text-xs font-bold cursor-pointer hover:bg-[#C21F2F]"
+              className="mt-3 px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold cursor-pointer shadow-[0_4px_12px_rgba(37,99,235,0.3)] transition-all border border-white/10"
             >
               फ़िल्टर रीसेट करें (Reset filters)
             </button>
@@ -639,7 +677,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                     setActiveModalFeature(null);
                     onNavigate('download');
                   }}
-                  className="flex-1 py-3 px-4 rounded-xl bg-[#E02636] hover:bg-[#C21F2F] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer"
+                  className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(37,99,235,0.35)] cursor-pointer border border-white/10 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download App to Use</span>
@@ -661,11 +699,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
         <div className="rounded-3xl bg-white/90 dark:bg-white/5 backdrop-blur-xl border border-white/80 dark:border-white/10 p-6 shadow-sm space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-white/10">
             <div>
-              <div className="text-xs font-black text-[#E02636] uppercase tracking-wider">
+              <div className="text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
                 Less Legal Official Utility Suite
               </div>
               <div className="text-sm font-bold text-slate-800 dark:text-white">
-                All 22+ Tools Verified & Maintained by Less Creation
+                All 30+ Tools Verified & Maintained by Less Creation
               </div>
             </div>
             <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg">
@@ -676,17 +714,17 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-slate-700 dark:text-slate-300">
             <button
               onClick={() => onNavigate('app-privacy')}
-              className="hover:text-[#E02636] transition-colors cursor-pointer flex items-center gap-1"
+              className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1"
             >
               <span>गोपनीयता नीति (Privacy Policy)</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-blue-600" />
             </button>
             <button
               onClick={() => onNavigate('app-delete-account')}
-              className="text-[#E02636] hover:underline cursor-pointer flex items-center gap-1"
+              className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer flex items-center gap-1"
             >
               <span>खाता और डेटा हटाएं (Delete Account & Data)</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-blue-600" />
             </button>
             <button
               onClick={() => onNavigate('terms')}

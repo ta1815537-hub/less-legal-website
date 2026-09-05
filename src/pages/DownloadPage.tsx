@@ -35,14 +35,14 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           onClick={() => onNavigate('home')}
           className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-[#E02636]" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-500" />
           <span className="whitespace-nowrap">{t.common.backToHome}</span>
         </motion.button>
 
         <div>
           <motion.div 
             whileHover={{ scale: 1.05 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/40 text-[#E02636] dark:text-red-400 text-xs font-black tracking-wider uppercase shadow-2xs cursor-default whitespace-nowrap"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs cursor-default whitespace-nowrap"
           >
             <Smartphone className="w-3.5 h-3.5 fill-current shrink-0" />
             <span className="whitespace-nowrap">{t.downloadPage.badge}</span>
@@ -72,7 +72,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             }}
             className="w-24 h-24 mx-auto relative flex items-center justify-center"
           >
-            <div className="absolute inset-0 bg-red-500/15 rounded-3xl blur-md -z-10" />
+            <div className="absolute inset-0 bg-blue-500/15 rounded-3xl blur-md -z-10" />
             <AppLogo className="w-20 h-20 shadow-xl rounded-2xl" />
           </motion.div>
 
@@ -131,7 +131,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               </a>
             ) : (
               <div className="p-4 rounded-2xl bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 max-w-xs mx-auto text-center space-y-1 shadow-xs">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-[#E02636] font-bold text-xs border border-red-200 whitespace-nowrap">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs border border-blue-500/20 whitespace-nowrap">
                   <Clock className="w-3.5 h-3.5 shrink-0" />
                   <span className="whitespace-nowrap">{language === 'hi' ? 'Google Play पर जल्द ही आ रहा है' : 'Coming soon on Google Play'}</span>
                 </div>
@@ -170,7 +170,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             <div className="flex overflow-hidden">
               <div className="flex items-center gap-3 w-max animate-marquee-left pause-on-hover cursor-pointer">
                 {[...SITE_CONFIG.features.slice(0, 20), ...SITE_CONFIG.features.slice(0, 20)].map((feature, idx) => (
-                  <div key={`dl-top-${idx}`} className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-full whitespace-nowrap shadow-2xs hover:border-[#E02636]/40 transition-colors">
+                  <div key={`dl-top-${idx}`} className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-full whitespace-nowrap shadow-2xs hover:border-blue-500/40 transition-colors">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">{feature.title}</span>
                   </div>

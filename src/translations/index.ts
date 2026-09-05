@@ -571,7 +571,7 @@ export const translations: Record<Language, TranslationSchema> = {
       ctaFeatures: "Explore All Tools",
       trustFastEngine: "Fast On-Device Engine",
       trustPrivacy: "On-Device Privacy",
-      trustToolsCount: "22+ Integrated Tools",
+      trustToolsCount: "30+ Integrated Tools",
       trustAndroidReady: "Android 7.0 to 15 Ready",
       
       simBadge: "Interactive App Preview",
@@ -607,7 +607,7 @@ export const translations: Record<Language, TranslationSchema> = {
       simWhatsappBtn: "Chat Now",
 
       featureSectionBadge: "COMPLETE UTILITY SUITE",
-      featureSectionTitle: "Explore 22+ Integrated Utilities",
+      featureSectionTitle: "Explore 30+ Integrated Utilities",
       featureSectionSub: "From instant PDF merging to regional land converters, examine all tools available inside the app.",
 
       ecosystemBadge: "DIGITAL ECOSYSTEM",
@@ -628,7 +628,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "Does the app require internet to access Bare Acts and Calculators?",
-          a: "No! All core 22+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
+          a: "No! All core 30+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
         },
         {
           q: "How does the 'File Transfer (LessShare)' feature work?",
@@ -671,7 +671,7 @@ export const translations: Record<Language, TranslationSchema> = {
     featuresPage: {
       badge: "SMART APP FEATURE CATALOG",
       title: "Legal Tools, Document Scanner & PDF App",
-      subtitle: "Explore 22+ verified legal tools available inside the Less Legal Android application. Master RTI utilities, case diary, and document tools on the go.",
+      subtitle: "Explore 30+ verified legal tools available inside the Less Legal Android application. Master RTI utilities, case diary, and document tools on the go.",
       searchPlaceholder: "Search features, calculators, PDF tools...",
       allCategories: "All Categories",
       categories: {
@@ -1048,7 +1048,7 @@ export const translations: Record<Language, TranslationSchema> = {
       ctaFeatures: "सभी टूल्स देखें",
       trustFastEngine: "तेज़ ऑन-डिवाइस इंजन",
       trustPrivacy: "पूर्ण ऑन-डिवाइस गोपनीयता",
-      trustToolsCount: "22+ एकीकृत टूल्स",
+      trustToolsCount: "30+ एकीकृत टूल्स",
       trustAndroidReady: "एंड्रॉइड 7.0 से 15 तैयार",
 
       simBadge: "इंटरैक्टिव ऐप पूर्वावलोकन",
@@ -1084,7 +1084,7 @@ export const translations: Record<Language, TranslationSchema> = {
       simWhatsappBtn: "चैट शुरू करें",
 
       featureSectionBadge: "संपूर्ण उपयोगिता सूट",
-      featureSectionTitle: "22+ एकीकृत सुविधाओं का अन्वेषण करें",
+      featureSectionTitle: "30+ एकीकृत सुविधाओं का अन्वेषण करें",
       featureSectionSub: "पीडीएफ मर्जर से लेकर क्षेत्रीय भूमि कनवर्टर तक, ऐप में उपलब्ध सभी टूल्स देखें।",
 
       ecosystemBadge: "डिजिटल पारिस्थितिकी तंत्र",
@@ -1105,7 +1105,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "क्या बेयर एक्ट्स और कैलकुलेटर एक्सेस करने के लिए इंटरनेट की आवश्यकता है?",
-          a: "बिल्कुल नहीं! बेयर एक्ट्स संदर्भ लाइब्रेरी, भूमि क्षेत्रफल कनवर्टर, पीडीएफ मर्जर, केस डायरी और आयु कैलकुलेटर सहित सभी 22+ मुख्य टूल्स सीधे आपके फोन पर बिना इंटरनेट के चलते हैं।"
+          a: "बिल्कुल नहीं! बेयर एक्ट्स संदर्भ लाइब्रेरी, भूमि क्षेत्रफल कनवर्टर, पीडीएफ मर्जर, केस डायरी और आयु कैलकुलेटर सहित सभी 30+ मुख्य टूल्स सीधे आपके फोन पर बिना इंटरनेट के चलते हैं।"
         },
         {
           q: "लेस-शेयर फ़ाइल ट्रांसफर सुविधा कैसे काम करती है?",

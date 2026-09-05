@@ -88,7 +88,7 @@ export default function App() {
         break;
       case 'features': 
         title = 'Legal Tools & Features: PDF App, Document Scanner | Less Legal'; 
-        description = 'Explore 22+ smart app features of Less Legal. Use the document scanner, legal calculator, case diary, and access legal information.';
+        description = 'Explore 30+ smart app features of Less Legal. Use the document scanner, legal calculator, case diary, and access legal information.';
         path = 'features'; 
         break;
       case 'founder': 
@@ -226,7 +226,7 @@ export default function App() {
         <Navbar currentRoute={currentRoute} onNavigate={navigateTo} />
 
         {/* Main Page Route Content with Smooth Transitions */}
-        <main className="flex-1 flex flex-col pt-16 sm:pt-20">
+        <main className="flex-1 flex flex-col pt-[104px] sm:pt-[124px]">
           <AnimatePresence mode="wait">
             <PageTransition routeKey={currentRoute}>
               {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}

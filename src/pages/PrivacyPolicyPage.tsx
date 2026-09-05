@@ -23,12 +23,12 @@ export const PrivacyPolicyPage: React.FC<PrivacyPolicyPageProps> = ({ onNavigate
           onClick={() => onNavigate('home')}
           className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-[#E02636]" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-500" />
           <span>{t.common.backToHome}</span>
         </button>
 
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/40 text-[#E02636] dark:text-red-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
             <Shield className="w-3.5 h-3.5 fill-current" />
             <span>{t.privacyPolicyPage.badge}</span>
           </div>

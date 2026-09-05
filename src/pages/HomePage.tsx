@@ -38,6 +38,37 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
   const isHindi = language === 'hi';
   const [founderImgErr, setFounderImgErr] = useState(false);
+  const [liftedProducts, setLiftedProducts] = useState<Record<string, boolean>>({});
+  const [liftedFeatures, setLiftedFeatures] = useState<Record<string, boolean>>({});
+
+  // Sync countdown timer with the Navbar top banner
+  const [timeLeft, setTimeLeft] = useState({ hours: 38, minutes: 47, seconds: 12 });
+
+  React.useEffect(() => {
+    const STORAGE_KEY = 'less_legal_promo_target_v3_38h';
+    let targetTime = localStorage.getItem(STORAGE_KEY);
+    
+    if (!targetTime) {
+      const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
+      localStorage.setItem(STORAGE_KEY, newTarget.toString());
+      targetTime = newTarget.toString();
+    }
+
+    const interval = setInterval(() => {
+      const difference = parseInt(targetTime!) - Date.now();
+      if (difference <= 0) {
+        const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
+        localStorage.setItem(STORAGE_KEY, newTarget.toString());
+      } else {
+        const h = Math.floor(difference / (1000 * 60 * 60));
+        const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((difference % (1000 * 60)) / 1000);
+        setTimeLeft({ hours: h, minutes: m, seconds: s });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Auto-scroll refs
   const simTabRef = useAutoScroll(0.7);
@@ -129,7 +160,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const faqs = t.home.faqs;
 
   return (
-    <div className="space-y-12 sm:space-y-16 py-4 sm:py-8 overflow-hidden transition-colors duration-300">
+    <div className="space-y-8 sm:space-y-10 py-3 sm:py-4 overflow-hidden transition-colors duration-300">
       
       {/* 1. HERO SECTION WITH CINEMATIC GLASSMORPHISM & STUDIO FLOOR */}
       <section className="relative text-slate-900 dark:text-white pt-2 sm:pt-4 pb-8 sm:pb-12 overflow-hidden">
@@ -189,8 +220,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">Bare Acts</span>
                 </div>
                 <div className="flex flex-col items-center gap-1.5 group cursor-default">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-red-100/70 dark:bg-red-900/30 flex items-center justify-center shadow-xs border border-red-200/60 dark:border-red-800/40 group-hover:scale-105 transition-transform">
-                    <FileText className="w-6 h-6 text-red-600 dark:text-red-400" />
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-blue-100/70 dark:bg-blue-900/30 flex items-center justify-center shadow-xs border border-blue-200/60 dark:border-blue-800/40 group-hover:scale-105 transition-transform">
+                    <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">PDF Tools</span>
                 </div>
@@ -210,7 +241,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-purple-100/70 dark:bg-purple-900/30 flex items-center justify-center shadow-xs border border-purple-200/60 dark:border-purple-800/40 group-hover:scale-105 transition-transform">
                     <Grid className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">22+ Tools</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">30+ Tools</span>
                 </div>
               </div>
 
@@ -218,12 +249,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div className="flex flex-col sm:flex-row flex-wrap items-center sm:items-start justify-center sm:justify-start gap-4 pt-2 w-full">
                 <button
                   onClick={() => onNavigate('download')}
-                  className="flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl bg-[#E02636] hover:bg-[#C21F2F] text-white shadow-[0_10px_25px_rgba(224,38,54,0.35)] transition-all transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto shrink-0 group cursor-pointer"
+                  className="flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:via-blue-600 hover:to-sky-600 text-white shadow-[0_10px_25px_rgba(37,99,235,0.35)] hover:shadow-[0_12px_30px_rgba(37,99,235,0.45)] border border-white/20 transition-all transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto shrink-0 group cursor-pointer backdrop-blur-md"
                 >
                   <Download className="w-6 h-6 group-hover:translate-y-0.5 transition-transform shrink-0" />
                   <div className="text-left">
                     <div className="text-base sm:text-lg font-black leading-tight">Download Less Legal</div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-red-100 leading-tight mt-0.5">For Android (APK / Play Store)</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-blue-100 leading-tight mt-0.5">For Android (APK / Play Store)</div>
                   </div>
                 </button>
 
@@ -345,10 +376,118 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
+      {/* 1.5. PREMIUM GOLDEN FOMO BANNER CARD */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96, y: 15 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-slate-50 to-[#F1F5F9] dark:from-[#090D1A] dark:via-[#02040A] dark:to-[#0B0F19] text-slate-900 dark:text-white border-2 border-slate-200/90 dark:border-[#E5BA55]/40 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(229,186,85,0.12)] p-6 sm:p-8 lg:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10 select-none"
+        >
+          {/* Moving golden shine overlay in the card */}
+          <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_30%,rgba(229,186,85,0.04)_50%,transparent_70%)] bg-[length:200%_100%] animate-[gold-sweep_6s_linear_infinite] pointer-events-none" />
+          
+          {/* Left Column: Text & Badges */}
+          <div className="space-y-4 sm:space-y-5 flex-1 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 dark:border-[#E5BA55]/50 text-amber-700 dark:text-[#E5BA55] text-xs font-black uppercase tracking-wider animate-pulse">
+              <Sparkles className="w-4 h-4 fill-amber-500 dark:fill-[#E5BA55]" />
+              {language === 'hi' ? 'सीमित समय - लाइफटाइम धमाका ऑफर' : 'LIMITED TIME - LIFETIME SPECIAL OFFER'}
+            </div>
+            
+            <div className="space-y-2">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
+                {language === 'hi' 
+                  ? 'हमेशा के लिए लें (Permanent) प्रीमियम मेंबरशिप!' 
+                  : 'Claim Permanent Lifetime Premium Membership!'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl font-semibold leading-relaxed">
+                {language === 'hi'
+                  ? 'सभी 30+ प्रीमियम डिजिटल टूल्स, Case Diary, Bare Acts और फ़्यूचर अपडेट्स का असीमित लाभ उठाएं। कोई मासिक रिन्यूअल फीस नहीं, केवल एक बार भुगतान करें और हमेशा सुरक्षित रहें।'
+                  : 'Unlock unlimited access to all 30+ smart tools, case diaries, custom Bare Acts, & future upgrades. No monthly renewals, no hidden fees, pay once and keep it forever.'}
+              </p>
+            </div>
+
+            {/* Badges row */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-[10px] sm:text-xs font-bold text-slate-700 dark:text-amber-400/90">
+              <span className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-2.5 py-1 rounded-lg text-slate-700 dark:text-slate-200">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
+                {language === 'hi' ? 'कोई रिन्यूअल नहीं' : 'No Renewals Ever'}
+              </span>
+              <span className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-2.5 py-1 rounded-lg text-slate-700 dark:text-slate-200">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
+                {language === 'hi' ? 'निःशुल्क भविष्य के अपडेट' : 'Free Future Upgrades'}
+              </span>
+              <span className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-2.5 py-1 rounded-lg text-slate-700 dark:text-slate-200">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
+                {language === 'hi' ? '100% सुरक्षित भुगतान' : '100% Secure Checkout'}
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Pricing, Countdown Timer & Claim CTA */}
+          <div className="flex flex-col items-center justify-center bg-slate-100/90 dark:bg-black/40 border border-slate-200 dark:border-[#E5BA55]/20 rounded-2xl p-5 sm:p-6 w-full lg:w-80 shrink-0 relative overflow-hidden shadow-inner space-y-4">
+            
+            {/* Countdown Box */}
+            <div className="text-center w-full space-y-1.5">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                {language === 'hi' ? 'ऑफर समाप्त होने का समय:' : 'OFFER CLOSES IN:'}
+              </span>
+              
+              <div className="flex items-center justify-center gap-2">
+                <div className="flex flex-col items-center">
+                  <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-[#E5BA55]/20 text-slate-900 dark:text-[#E5BA55] w-12 h-12 flex items-center justify-center text-lg font-black rounded-lg shadow font-mono">
+                    {timeLeft.hours.toString().padStart(2, '0')}
+                  </div>
+                  <span className="text-[9px] text-slate-500 font-bold mt-1 uppercase">hrs</span>
+                </div>
+                <span className="text-amber-500 dark:text-[#E5BA55] font-black text-xl mb-6 animate-pulse">:</span>
+                <div className="flex flex-col items-center">
+                  <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-[#E5BA55]/20 text-slate-900 dark:text-[#E5BA55] w-12 h-12 flex items-center justify-center text-lg font-black rounded-lg shadow font-mono">
+                    {timeLeft.minutes.toString().padStart(2, '0')}
+                  </div>
+                  <span className="text-[9px] text-slate-500 font-bold mt-1 uppercase">mins</span>
+                </div>
+                <span className="text-amber-500 dark:text-[#E5BA55] font-black text-xl mb-6 animate-pulse">:</span>
+                <div className="flex flex-col items-center">
+                  <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-red-500/20 text-red-600 dark:text-[#E03A3E] w-12 h-12 flex items-center justify-center text-lg font-black rounded-lg shadow font-mono">
+                    {timeLeft.seconds.toString().padStart(2, '0')}
+                  </div>
+                  <span className="text-[9px] text-red-500 dark:text-red-400 font-bold mt-1 uppercase">secs</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Pricing Section with cross discount */}
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 line-through font-bold">
+                  ₹329
+                </span>
+                <span className="bg-red-500/10 dark:bg-red-500/15 border border-red-500/30 text-red-600 dark:text-red-400 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider animate-bounce">
+                  70% OFF
+                </span>
+              </div>
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">
+                ₹99 <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">/ {language === 'hi' ? 'एक बार' : 'One Time'}</span>
+              </div>
+            </div>
+
+            {/* Claim CTA Button with moving sweep */}
+            <button
+              onClick={() => onNavigate('premium')}
+              className="gold-shimmer-button w-full py-3 sm:py-3.5 rounded-xl uppercase tracking-wider text-xs font-black cursor-pointer transform transition-all duration-300 hover:scale-[1.03] active:scale-95 shadow-md flex items-center justify-center gap-1.5"
+            >
+              <Sparkles className="w-4 h-4 fill-amber-950 shrink-0" />
+              <span>{language === 'hi' ? 'परमानेंट प्रीमियम लें' : 'Claim Premium Now'}</span>
+            </button>
+          </div>
+        </motion.div>
+      </section>
+
       {/* 2. INTERACTIVE LIVE APP SIMULATOR SHOWCASE */}
       <section id="interactive-simulator" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto mb-6 space-y-3">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C21F2F]/15 border border-[#C21F2F]/30 text-[#C21F2F] dark:text-[#E03A3E] text-xs font-bold">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-bold">
             <Smartphone className="w-4 h-4" />
             {t.home.simBadge}
           </span>
@@ -366,9 +505,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {[...Array(4)].map((_, arrayIdx) => (
               <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
                 {[
-                  { id: 'diary', icon: Calendar, label: t.home.simDiary, iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
-                  { id: 'converter', icon: Compass, label: t.home.simConverter, iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
-                  { id: 'pdf', icon: FileText, label: t.home.simPdf, iconColor: 'text-[#C21F2F] dark:text-[#E03A3E]' },
+                  { id: 'diary', icon: Calendar, label: t.home.simDiary, iconColor: 'text-blue-600 dark:text-blue-400' },
+                  { id: 'converter', icon: Compass, label: t.home.simConverter, iconColor: 'text-blue-600 dark:text-blue-400' },
+                  { id: 'pdf', icon: FileText, label: t.home.simPdf, iconColor: 'text-blue-600 dark:text-blue-400' },
                   { id: 'whatsapp', icon: MessageSquare, label: t.home.simWhatsapp, iconColor: 'text-[#25D366]' }
                 ].map((tab) => (
                   <button
@@ -376,8 +515,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     onClick={() => setSimTab(tab.id as typeof simTab)}
                     className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
                       simTab === tab.id
-                        ? 'btn-crimson text-white border-[#C21F2F]'
-                        : 'bg-white dark:bg-white/5 text-slate-700 dark:text-[#B8B3AF] border-slate-200 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-xs'
+                        ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-500 shadow-[0_4px_15px_rgba(59,130,246,0.25)]'
+                        : 'bg-white/75 dark:bg-slate-900/40 backdrop-blur-md text-slate-700 dark:text-[#B8B3AF] border-blue-200/40 dark:border-blue-800/20 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/30 hover:bg-blue-500/5 shadow-xs'
                     }`}
                   >
                     <tab.icon className={`w-4 h-4 shrink-0 ${tab.iconColor}`} />
@@ -390,20 +529,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Simulator Frame Container */}
-        <div className="glass-panel-gradient rounded-3xl p-4 sm:p-8 border border-slate-200 dark:border-white/12 shadow-2xl max-w-4xl mx-auto relative overflow-hidden">
+        <div className="bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-400/20 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden">
           {/* Subtle Ambient Red Blur Inside Card */}
-          <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-[#8B0000]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Phone Header Mockup */}
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3.5 mb-5">
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#C21F2F]/20 border border-[#C21F2F]/40 flex items-center justify-center text-[#C21F2F] dark:text-[#E03A3E] shrink-0">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                 <Scale className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
               </div>
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2 whitespace-nowrap badge-one-line">
                   <span className="whitespace-nowrap badge-one-line">{t.home.simInterfaceLabel}</span>
-                  <span className="text-[10px] bg-amber-500/10 dark:bg-[#D8BD82]/20 text-amber-700 dark:text-[#D8BD82] px-2 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/40 font-semibold whitespace-nowrap badge-one-line">
+                  <span className="text-[10px] bg-blue-500/10 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/20 dark:border-blue-400/20 font-semibold whitespace-nowrap badge-one-line">
                     {t.home.simOnDeviceBadge}
                   </span>
                 </div>
@@ -412,7 +551,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-600 dark:text-[#B8B3AF] shrink-0">
-              <Lock className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+              <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap badge-one-line">{t.home.simEncryptedLabel}</span>
             </div>
           </div>
@@ -430,29 +569,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
+                <div className="bg-gradient-to-br from-blue-50/60 via-white/80 to-sky-50/40 dark:from-[#111827]/90 dark:via-[#0F172A]/85 dark:to-[#1E293B]/90 backdrop-blur-xl p-4 rounded-2xl border border-blue-400/35 dark:border-blue-500/25 shadow-sm space-y-3">
                   <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#B8B3AF] gap-2">
-                    <span className="font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">{t.home.simScheduleTitle}</span>
+                    <span className="font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap badge-one-line">{t.home.simScheduleTitle}</span>
                     <span className="whitespace-nowrap badge-one-line shrink-0">{t.home.simActiveCases}</span>
                   </div>
 
                   <div className="space-y-2.5">
-                    <div className="p-3 sm:p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
+                    <div className="p-3 sm:p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 flex items-center justify-between gap-2 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                       <div className="space-y-0.5 min-w-0">
                         <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Sharma vs. State of UP</div>
                         <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">Court No. 4 • Criminal Appeal • Item #12</div>
                       </div>
-                      <span className="text-[10px] font-bold bg-red-100 dark:bg-[#C21F2F]/20 text-red-700 dark:text-[#E03A3E] px-2.5 py-1 rounded-lg border border-red-200 dark:border-[#C21F2F]/40 whitespace-nowrap badge-one-line shrink-0">
+                      <span className="text-[10px] font-bold bg-blue-500/15 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-lg border border-blue-500/30 whitespace-nowrap badge-one-line shrink-0">
                         {t.home.simArgumentsStage}
                       </span>
                     </div>
 
-                    <div className="p-3 sm:p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
+                    <div className="p-3 sm:p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 flex items-center justify-between gap-2 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                       <div className="space-y-0.5 min-w-0">
                         <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Verma Infra vs. City Development</div>
                         <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">District Tribunal • Arbitration • Item #5</div>
                       </div>
-                      <span className="text-[10px] font-bold bg-amber-100 dark:bg-[#D8BD82]/20 text-amber-700 dark:text-[#D8BD82] px-2.5 py-1 rounded-lg border border-amber-200 dark:border-[#D8BD82]/40 whitespace-nowrap badge-one-line shrink-0">
+                      <span className="text-[10px] font-bold bg-sky-500/15 text-sky-700 dark:text-sky-300 px-2.5 py-1 rounded-lg border border-sky-500/30 whitespace-nowrap badge-one-line shrink-0">
                         {t.home.simEvidenceStage}
                       </span>
                     </div>
@@ -460,15 +599,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center">
-                    <div className="text-xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">24</div>
+                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <div className="text-xl font-extrabold text-blue-600 dark:text-blue-400">24</div>
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simPendingTasks}</div>
                   </div>
-                  <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center">
-                    <div className="text-xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">100%</div>
+                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <div className="text-xl font-extrabold text-blue-600 dark:text-blue-400">100%</div>
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simAutoSavedNotes}</div>
                   </div>
-                  <div className="p-3.5 bg-white dark:bg-[#0A0A0C]/90 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none text-center col-span-2 sm:col-span-1">
+                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center col-span-2 sm:col-span-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                     <div className="text-xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">Local</div>
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simOnDeviceDb}</div>
                   </div>
@@ -486,21 +625,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-4">
+                <div className="bg-gradient-to-br from-blue-50/60 via-white/80 to-sky-50/40 dark:from-[#111827]/90 dark:via-[#0F172A]/85 dark:to-[#1E293B]/90 backdrop-blur-xl p-4 rounded-2xl border border-blue-400/35 dark:border-blue-500/25 shadow-sm space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
-                      <label className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line block">{t.home.simTypeQuantity}</label>
+                      <label className="text-xs font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap badge-one-line block">{t.home.simTypeQuantity}</label>
                       <div className="flex items-center gap-2">
                         <input
                           type="number"
                           value={landValue}
                           onChange={(e) => setLandValue(parseFloat(e.target.value) || 0)}
-                          className="w-24 sm:w-28 px-3 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-xl text-slate-900 dark:text-[#F5F2EE] text-sm font-bold focus:outline-none focus:border-[#C21F2F]"
+                          className="w-24 sm:w-28 px-3 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/15 rounded-xl text-slate-900 dark:text-[#F5F2EE] text-sm font-bold focus:outline-none focus:border-blue-500"
                         />
                         <select
                           value={landUnit}
                           onChange={(e) => setLandUnit(e.target.value)}
-                          className="px-3 py-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#C21F2F]"
+                          className="px-3 py-2 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 rounded-xl text-xs font-semibold focus:outline-none focus:border-blue-500"
                         >
                           {Object.entries(SQFT_RATES).map(([key, u]) => (
                             <option key={key} value={key} className="bg-white dark:bg-[#0A0A0C] text-slate-900 dark:text-[#F5F2EE]">{u.label}</option>
@@ -511,7 +650,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                     <div className="text-left sm:text-right">
                       <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simBaseSqFt}</div>
-                      <div className="text-base font-extrabold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
+                      <div className="text-base font-extrabold text-blue-600 dark:text-blue-400 whitespace-nowrap badge-one-line">{baseSqFt.toLocaleString()} Sq. Ft.</div>
                     </div>
                   </div>
 
@@ -525,18 +664,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         <div 
                           key={key} 
                           onClick={() => handleCopyValue(key, convertedVal)}
-                          className={`p-3 rounded-xl border transition-all cursor-pointer ${
+                          className={`p-3 rounded-xl border transition-all cursor-pointer hover:-translate-y-1 hover:shadow-xs duration-300 ${
                             isSelected 
-                              ? 'bg-red-50 dark:bg-[#C21F2F]/20 border-red-300 dark:border-[#C21F2F]/60 text-red-900 dark:text-white shadow-sm dark:shadow-none' 
-                              : 'bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 text-slate-600 dark:text-[#B8B3AF]'
+                              ? 'bg-blue-500/10 dark:bg-blue-950/40 border-blue-300 dark:border-blue-800 text-blue-900 dark:text-blue-100 shadow-xs' 
+                              : 'bg-white/40 dark:bg-slate-900/30 border-blue-200/40 dark:border-blue-800/20 hover:border-blue-400/30 hover:bg-blue-500/5 text-slate-600 dark:text-[#B8B3AF]'
                           }`}
                         >
                           <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-[#B8B3AF] mb-1">
                             <span className="whitespace-nowrap badge-one-line">{u.label}</span>
-                            {copiedUnit === key ? <Check className="w-3 h-3 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" /> : <Copy className="w-3 h-3 text-slate-400 dark:text-[#77736F] shrink-0" />}
+                            {copiedUnit === key ? <Check className="w-3 h-3 text-blue-600 dark:text-blue-400 shrink-0" /> : <Copy className="w-3 h-3 text-slate-400 dark:text-[#77736F] shrink-0" />}
                           </div>
                           <div className="text-sm font-extrabold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{convertedVal}</div>
-                          <div className="text-[9px] text-[#C21F2F] dark:text-[#E03A3E]/80 mt-0.5 whitespace-nowrap badge-one-line">{u.region}</div>
+                          <div className="text-[9px] text-blue-600 dark:text-blue-400 mt-0.5 whitespace-nowrap badge-one-line">{u.region}</div>
                         </div>
                       );
                     })}
@@ -555,24 +694,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
-                  <div className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">{t.home.simPdfProcessingTitle}</div>
+                <div className="bg-gradient-to-br from-blue-50/60 via-white/80 to-sky-50/40 dark:from-[#111827]/90 dark:via-[#0F172A]/85 dark:to-[#1E293B]/90 backdrop-blur-xl p-4 rounded-2xl border border-blue-400/35 dark:border-blue-500/25 shadow-sm space-y-3">
+                  <div className="text-xs font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap badge-one-line">{t.home.simPdfProcessingTitle}</div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
-                      <FileText className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
+                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                      <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-1" />
                       <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfMergeTitle}</div>
                       <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfMergeDesc}</div>
                     </div>
 
-                    <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
-                      <Lock className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
+                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                      <Lock className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-1" />
                       <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfEncryptTitle}</div>
                       <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfEncryptDesc}</div>
                     </div>
 
-                    <div className="p-3.5 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-1">
-                      <Share2 className="w-5 h-5 text-[#C21F2F] dark:text-[#E03A3E] mb-1" />
+                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                      <Share2 className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-1" />
                       <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfTransferTitle}</div>
                       <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfTransferDesc}</div>
                     </div>
@@ -591,13 +730,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 transition={{ duration: 0.2 }}
                 className="space-y-4"
               >
-                <div className="bg-white dark:bg-[#0A0A0C]/90 p-4 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none space-y-3">
-                  <div className="flex items-center justify-between text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] whitespace-nowrap badge-one-line">
+                <div className="bg-gradient-to-br from-blue-50/60 via-white/80 to-sky-50/40 dark:from-[#111827]/90 dark:via-[#0F172A]/85 dark:to-[#1E293B]/90 backdrop-blur-xl p-4 rounded-2xl border border-blue-400/35 dark:border-blue-500/25 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap badge-one-line">
                     <span>{t.home.simWhatsappTitle}</span>
                     <span className="text-[10px] bg-green-100 dark:bg-[#25D366]/20 text-green-700 dark:text-[#25D366] px-2 py-0.5 rounded-md border border-green-200 dark:border-[#25D366]/40">{language === 'hi' ? 'वास्तविक टूल' : 'Real Working Tool'}</span>
                   </div>
                   
-                  <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 space-y-3 max-w-lg">
+                  <div className="p-4 bg-white/55 dark:bg-[#0F172A]/45 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-3 max-w-lg">
                     <div className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
                       {t.home.simWhatsappSub}
                     </div>
@@ -605,8 +744,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {/* Compact input & Left-aligned Chat Now Button */}
                     <div className="flex flex-wrap items-center justify-start gap-2.5 pt-1">
                       {/* Compact Number Input Box */}
-                      <div className="flex items-center gap-1.5 bg-white dark:bg-[#0A0A0C] border border-slate-200 dark:border-white/15 rounded-xl px-3 py-2 w-36 sm:w-44 focus-within:border-[#C21F2F] transition-colors">
-                        <span className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] shrink-0">+91</span>
+                      <div className="flex items-center gap-1.5 bg-white dark:bg-[#0A0A0C] border border-slate-200 dark:border-white/15 rounded-xl px-3 py-2 w-36 sm:w-44 focus-within:border-blue-500 transition-colors">
+                        <span className="text-xs font-bold text-blue-600 dark:text-blue-400 shrink-0">+91</span>
                         <input
                           type="tel"
                           value={waNumber}
@@ -623,7 +762,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       {/* Small Chat Now Button moved to Left Side */}
                       <button 
                         onClick={handleOpenWhatsApp}
-                        className="px-3 py-2 btn-crimson text-white font-bold text-xs rounded-xl flex items-center gap-1.5 whitespace-nowrap badge-one-line shrink-0 hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md"
+                        className="px-3 py-2 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 whitespace-nowrap badge-one-line shrink-0 hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md"
                         title={t.home.simWhatsappBtn}
                       >
                         <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#25D366]" />
@@ -632,7 +771,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     </div>
 
                     <div className="text-[10px] text-slate-500 dark:text-[#77736F] flex items-center gap-1 pt-0.5">
-                      <Lock className="w-3 h-3 text-[#C21F2F] dark:text-[#E03A3E] shrink-0" />
+                      <Lock className="w-3 h-3 text-blue-600 dark:text-blue-400 shrink-0" />
                       <span>{language === 'hi' ? 'व्हाट्सएप ऐप या वेब को सीधे आपके डिवाइस पर खोलता है। शून्य डेटा सहेजा गया।' : 'Opens WhatsApp app or web directly on your device. Zero data saved.'}</span>
                     </div>
                   </div>
@@ -646,7 +785,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* 3. PRODUCT ECOSYSTEM GRID */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+        <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-6 space-y-3">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold">
             <LayoutGrid className="w-3.5 h-3.5" />
             {t.home.ecosystemBadge || "Product Ecosystem"}
@@ -663,6 +802,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           {SITE_CONFIG.products.map((product) => {
             const isFlagship = product.category === 'Flagship Product';
             const isAvailable = product.status === 'Available';
+            const isLifted = !!liftedProducts[product.id];
 
             let IconComp = Scale;
             if (product.iconName === 'Calendar') IconComp = Calendar;
@@ -671,21 +811,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
             return (
               <StaggerItem key={product.id} interactive={true}>
-                <div className={`group relative p-6 rounded-3xl transition-all duration-300 h-full flex flex-col flash-card-animation ${
-                  isFlagship 
-                    ? 'glass-panel-crimson text-slate-900 dark:text-[#F5F2EE]' 
-                    : 'glass-card text-slate-900 dark:text-[#F5F2EE]'
-                }`}>
+                <div 
+                  onClick={() => {
+                    setLiftedProducts(prev => ({
+                      ...prev,
+                      [product.id]: !prev[product.id]
+                    }));
+                  }}
+                  className={`group relative p-6 rounded-3xl transition-all duration-300 h-full flex flex-col backdrop-blur-2xl border-2 space-y-4 overflow-hidden text-slate-900 dark:text-[#F5F2EE] cursor-pointer ${
+                    isLifted
+                      ? '-translate-y-4 border-blue-500/75 dark:border-blue-400/75 shadow-[0_24px_50px_rgba(59,130,246,0.3)] bg-gradient-to-br from-blue-50/90 via-indigo-50/50 to-white/90 dark:from-[#1E293B] dark:via-[#0F172A] dark:to-[#111827]'
+                      : 'border-blue-400/35 dark:border-blue-500/25 shadow-[0_12px_35px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-2.5 bg-gradient-to-br from-white/95 via-blue-50/50 to-indigo-50/30 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90'
+                  }`}
+                >
                   
                   {isFlagship && (
                     <div className="absolute top-0 right-0 -mt-3 mr-4">
-                      <span className="bg-gradient-to-r from-[#D8BD82] to-[#C7A96B] text-[#080808] text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-md">
+                      <span className="bg-gradient-to-r from-blue-600 to-sky-500 text-white text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-md border border-white/20">
                         {language === 'hi' ? 'प्रमुख ऐप (Flagship)' : 'Flagship App'}
                       </span>
                     </div>
                   )}
 
-                  <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center mb-5 transition-transform group-hover:scale-110">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-1 transition-transform group-hover:scale-110">
                     <IconComp className="w-6 h-6" />
                   </div>
 
@@ -695,7 +843,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         {product.name}
                       </h3>
                       {!isAvailable && (
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-500/30 whitespace-nowrap">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 dark:text-blue-300 bg-blue-500/10 dark:bg-blue-500/20 px-2 py-0.5 rounded-md border border-blue-500/30 whitespace-nowrap">
                           {language === 'hi' ? 'विकास में (In Development)' : 'In Development'}
                         </span>
                       )}
@@ -705,18 +853,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     </p>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-slate-200 dark:border-white/10">
+                  <div className="mt-6 pt-4 border-t border-blue-200/40 dark:border-blue-800/20">
                     {isAvailable ? (
                       <button
                         onClick={() => product.downloadUrl && onNavigate('download')}
-                        className="w-full py-2.5 rounded-xl text-xs font-bold btn-crimson flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-transform hover:scale-[1.02] active:scale-[0.98]"
                       >
                         <Download className="w-3.5 h-3.5" />
                         <span>{language === 'hi' ? 'ऐप प्राप्त करें' : 'Get App'}</span>
                       </button>
                     ) : (
                       <button disabled className="w-full py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-[#77736F] flex items-center justify-center gap-2 cursor-not-allowed">
-                        <Lock className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
+                        <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                         <span>{language === 'hi' ? 'विकास में (In Development)' : 'In Development'}</span>
                       </button>
                     )}
@@ -734,8 +882,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="p-6 sm:p-10 rounded-[28px] bg-white/95 dark:bg-[#121622]/95 border border-slate-200/80 dark:border-white/10 shadow-xl overflow-hidden relative backdrop-blur-xl">
             
             {/* Background glowing effects for the section */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/10 dark:bg-red-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 dark:bg-cyan-500/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative z-10">
               
@@ -774,15 +922,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
 
                 {/* Quote Card */}
-                <div className="rounded-[20px] bg-red-50/50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 p-5 relative">
-                  <Quote className="w-6 h-6 text-red-500/40 absolute top-4 left-4" />
+                <div className="rounded-[20px] bg-blue-500/5 dark:bg-blue-950/15 border border-blue-200/20 dark:border-blue-900/20 p-5 relative">
+                  <Quote className="w-6 h-6 text-blue-500/30 absolute top-4 left-4 animate-pulse" />
                   <div className="pl-8">
                     <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium italic leading-relaxed">
                       {isHindi 
                         ? 'प्रौद्योगिकी को उपयोगी ज्ञान, कानूनी उपकरण और डिजिटल सेवाओं को सभी के लिए आसान बनाना चाहिए।'
                         : 'Technology should make useful knowledge, legal tools and digital services easier to access.'}
                     </p>
-                    <p className="text-[11px] font-bold text-[#C21F2F] mt-3">
+                    <p className="text-[11px] font-bold text-blue-600 dark:text-blue-400 mt-3">
                       — Anurag Gurauli
                     </p>
                   </div>
@@ -792,14 +940,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               {/* Middle Column: Text & Features */}
               <div className="lg:col-span-5 flex flex-col justify-center space-y-6">
                 <div className="space-y-3">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 dark:bg-red-950/30 text-[#C21F2F] dark:text-red-400 text-[10px] font-bold uppercase tracking-wider border border-red-100 dark:border-red-900/30">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-wider border border-blue-500/20 dark:border-blue-500/30">
                     <User className="w-3.5 h-3.5" />
                     <span>{isHindi ? 'संस्थापक से मिलें' : 'MEET THE FOUNDER'}</span>
                   </div>
 
                   <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
                     {isHindi ? 'वास्तविक उपयोगिता के लिए एक' : 'Created by an Advocate for'}{' '}
-                    <span className="text-[#C21F2F]">{isHindi ? 'अधिवक्ता द्वारा निर्मित' : 'Real-World Utility'}</span>
+                    <span className="text-blue-600 dark:text-blue-400">{isHindi ? 'अधिवक्ता द्वारा निर्मित' : 'Real-World Utility'}</span>
                   </h3>
 
                   <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -813,7 +961,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                   {/* Card 1 */}
                   <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-[#C21F2F] dark:text-red-400 shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                       <Gavel className="w-5 h-5" />
                     </div>
                     <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
@@ -858,7 +1006,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="pt-2">
                   <button
                     onClick={() => onNavigate('founder')}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#C21F2F] hover:bg-[#A61825] text-white text-xs font-bold rounded-xl shadow-lg transition-colors cursor-pointer w-full sm:w-auto"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold rounded-xl shadow-md shadow-blue-500/20 border border-white/20 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer w-full sm:w-auto"
                   >
                     <User className="w-4 h-4" />
                     <span>{isHindi ? 'संस्थापक के बारे में अधिक जानें' : 'Know More About Founder'}</span>
@@ -877,7 +1025,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {isHindi ? 'कानूनी तकनीक' : 'Technology'}<br />
                     {isHindi ? '' : 'For People'}
                   </p>
-                  <svg className="absolute -bottom-4 right-0 w-32 h-4 text-[#C21F2F]" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <svg className="absolute -bottom-4 right-0 w-32 h-4 text-blue-600 dark:text-blue-400" viewBox="0 0 100 10" preserveAspectRatio="none">
                     <path d="M0 5 Q 50 10 100 0" stroke="currentColor" strokeWidth="2" fill="none" />
                   </svg>
                 </div>
@@ -910,7 +1058,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <ScrollReveal direction="up" className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               {t.home.featureSectionBadge}
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight mt-1">
@@ -971,7 +1119,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               {filteredFeatures.slice(0, 12).map((item, idx) => {
                 const colorThemes = [
                   { iconBg: 'bg-indigo-100 dark:bg-indigo-950/40 text-[#2563EB]', icon: Scale, catBg: 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300 border-indigo-200/70' },
-                  { iconBg: 'bg-red-100 dark:bg-red-950/40 text-[#E02636]', icon: FileText, catBg: 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 border-red-200/70' },
+                  { iconBg: 'bg-blue-100 dark:bg-blue-950/40 text-[#2563EB]', icon: FileText, catBg: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200/70' },
                   { iconBg: 'bg-emerald-100 dark:bg-emerald-950/40 text-[#059669]', icon: BookOpen, catBg: 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border-emerald-200/70' },
                   { iconBg: 'bg-amber-100 dark:bg-amber-950/40 text-[#D97706]', icon: Calculator, catBg: 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border-amber-200/70' },
                   { iconBg: 'bg-purple-100 dark:bg-purple-950/40 text-[#7C3AED]', icon: Calendar, catBg: 'bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300 border-purple-200/70' },
@@ -979,12 +1127,27 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 ];
                 const theme = colorThemes[idx % colorThemes.length];
                 const IconComp = theme.icon;
+                const isLifted = !!liftedFeatures[item.id];
 
                 return (
                   <motion.div 
                     key={item.id}
-                    whileHover={{ y: -4 }}
-                    className="rounded-[24px] bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 dark:from-[#121622] dark:via-[#182035] dark:to-[#121622] border border-blue-100/70 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(37,99,235,0.12)] hover:border-blue-300 dark:hover:border-blue-700/50 p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl"
+                    onClick={() => {
+                      setLiftedFeatures(prev => ({
+                        ...prev,
+                        [item.id]: !prev[item.id]
+                      }));
+                    }}
+                    animate={{ 
+                      y: isLifted ? -16 : 0,
+                      scale: isLifted ? 1.02 : 1,
+                    }}
+                    whileHover={{ y: isLifted ? -20 : -4 }}
+                    className={`rounded-[24px] p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl cursor-pointer ${
+                      isLifted
+                        ? 'border-blue-500/70 dark:border-blue-400/70 shadow-[0_24px_50px_rgba(59,130,246,0.25)] bg-gradient-to-br from-blue-50/90 via-indigo-50/40 to-white dark:from-[#1E293B] dark:via-[#182035] dark:to-[#121622]'
+                        : 'bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 dark:from-[#121622] dark:via-[#182035] dark:to-[#121622] border border-blue-100/70 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(37,99,235,0.12)] hover:border-blue-300 dark:hover:border-blue-700/50'
+                    }`}
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-4">
@@ -1054,7 +1217,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('features')}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl btn-glass font-bold text-xs"
             >
-              <span>View Remaining {filteredFeatures.length - 12} Features</span>
+              <span>{language === 'hi' ? 'शेष 17+ फीचर्स देखें' : 'View Remaining 17+ Features'}</span>
               <ArrowRight className="w-4 h-4 text-[#E03A3E]" />
             </button>
           </div>
@@ -1063,8 +1226,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* 5. FOUR PILLARS OF EXCELLENCE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
+        <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-6 space-y-3">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#2563EB] dark:text-blue-400">
             Engineered for Security & Speed
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
@@ -1076,58 +1239,62 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="glass-card flash-card-animation p-6 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/40 flex items-center justify-center font-bold">
+          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">100% On-Device Privacy</h3>
-            <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
               Your client notes, hearing schedules, and PDF documents stay strictly on your local Android device storage. Zero cloud telemetry.
             </p>
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
           </div>
 
-          <div className="glass-card flash-card-animation p-6 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
+          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
               <Zap className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">Lightning Fast Performance</h3>
-            <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
               Launch Bare Acts, perform land unit conversions, and draft legal memos instantly with smooth on-device processing.
             </p>
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
           </div>
 
-          <div className="glass-card flash-card-animation p-6 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/20 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/40 flex items-center justify-center font-bold">
+          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
               <FileText className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">All-in-One PDF Suite</h3>
-            <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
               Merge, split, protect, and compress legal filings effortlessly. Transfer heavy files directly device-to-device with LessShare.
             </p>
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
           </div>
 
-          <div className="glass-card flash-card-animation p-6 space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/40 dark:border-[#D8BD82]/40 flex items-center justify-center font-bold">
+          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
               <Lock className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">Fixed-Validity Passes</h3>
-            <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
               Transparent one-time purchases for ad-free access. Zero auto-renewing subscriptions or unexpected bank debits.
             </p>
+            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
           </div>
         </div>
       </section>
 
       {/* 6. TRANSPARENT PRICING & AD-FREE PASSES */}
-      <section className="glass-panel-gradient py-16 rounded-3xl mx-4 sm:mx-6 lg:mx-8 px-6 sm:px-12 relative overflow-hidden border border-slate-200 dark:border-white/15 shadow-2xl">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-[#8B0000]/25 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-80 h-80 bg-[#C21F2F]/10 rounded-full blur-3xl pointer-events-none" />
+      <section className="bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-2xl rounded-3xl mx-4 sm:mx-6 lg:mx-8 px-6 sm:px-12 py-16 relative overflow-hidden border border-blue-500/25 dark:border-blue-400/20 shadow-[0_20px_50px_rgba(59,130,246,0.15)]">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-80 h-80 bg-sky-400/20 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative max-w-5xl mx-auto text-center space-y-8">
           
           <ScrollReveal direction="up" className="space-y-3">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 dark:bg-[#D8BD82]/15 text-amber-700 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/30">
-              <Sparkles className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-500/30">
+              <Sparkles className="w-3.5 h-3.5 text-[#2563EB] dark:text-blue-400" />
               {t.premiumPage.badge}
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-[#F5F2EE]">
@@ -1140,19 +1307,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
           <div className="max-w-xl mx-auto text-left">
             <div className="relative">
-              <div className="glass-panel-crimson flash-card-animation glow-crimson-gold rounded-3xl p-6 sm:p-8 border-2 border-amber-600/40 dark:border-[#D8BD82]/40 flex flex-col justify-between space-y-6">
+              <div className="bg-gradient-to-br from-white/95 via-blue-50/80 to-sky-50/90 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 border-2 border-blue-500/40 dark:border-blue-400/40 shadow-[0_16px_45px_rgba(59,130,246,0.22)] hover:shadow-[0_24px_55px_rgba(59,130,246,0.32)] transition-all duration-300 relative overflow-hidden flex flex-col justify-between space-y-6">
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-bold text-[#C21F2F] dark:text-[#E03A3E]">
+                    <span className="text-sm font-bold text-[#2563EB] dark:text-blue-400">
                       {language === 'hi' ? 'स्थायी लाइफटाइम पास (स्पेशल ऑफर)' : 'Lifetime Premium Pass (Special Offer)'}
                     </span>
-                    <span className="text-[10px] font-bold text-amber-800 dark:text-[#080808] bg-amber-500/20 dark:bg-[#D8BD82] px-3 py-1 rounded-full border border-amber-600/40 dark:border-transparent whitespace-nowrap animate-pulse">
+                    <span className="text-[10px] font-bold text-blue-900 dark:text-blue-100 bg-blue-500/20 dark:bg-blue-600/40 px-3 py-1 rounded-full border border-blue-500/40 dark:border-blue-400/40 whitespace-nowrap animate-pulse">
                       {language === 'hi' ? 'सीमित समय ऑफर' : 'Limited Time Offer'}
                     </span>
                   </div>
                   
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">₹99</span>
+                    <span className="text-5xl font-extrabold text-[#2563EB] dark:text-blue-400">₹99</span>
                     <span className="text-xs text-slate-500 dark:text-[#B8B3AF] line-through">₹179</span>
                     <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">
                       {language === 'hi' ? '/ एकमुश्त स्थायी भुगतान' : '/ one-time lifetime payment'}
@@ -1167,15 +1334,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                   <ul className="space-y-2.5 text-xs text-slate-700 dark:text-[#B8B3AF]">
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                       <span>{language === 'hi' ? 'आपकी पंजीकृत ईमेल आईडी पर हमेशा के लिए विज्ञापन-मुक्त अनुभव' : '100% ad-free experience bound to your Email ID forever'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                       <span>{language === 'hi' ? 'सभी 46+ टूल्स, केस डायरी एवं पीडीएफ वर्कस्पेस की अनलॉक्ड पहुँच' : 'Unlocked access to all 46+ tools, case diary & PDF workspace'}</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                       <span>{language === 'hi' ? 'कोई आवर्ती शुल्क नहीं, कोई ऑटो-डेबिट नहीं' : 'Strictly one-time payment with zero recurring auto-debit'}</span>
                     </li>
                   </ul>
@@ -1183,13 +1350,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                 <button 
                   onClick={() => onNavigate('premium')}
-                  className="w-full py-3.5 rounded-xl btn-crimson font-bold text-xs cursor-pointer text-white shadow-lg flex items-center justify-center gap-2"
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-xs py-3.5 rounded-xl shadow-[0_8px_25px_rgba(37,99,235,0.35)] hover:shadow-[0_12px_30px_rgba(37,99,235,0.45)] transition-all cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>{language === 'hi' ? 'लाइफटाइम पास विवरण एवं खरीद (₹99)' : 'Get Lifetime Pass (₹99)'}</span>
                 </button>
               </div>
 
-              <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-[#D8BD82] to-[#C7A96B] text-[#080808] text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-lg z-10">
+              <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-blue-600 to-sky-500 text-white text-[10px] font-extrabold uppercase px-3.5 py-1 rounded-full shadow-lg z-10 border border-white/30">
                 {language === 'hi' ? 'स्थायी पास' : 'PERMANENT PASS'}
               </div>
             </div>
@@ -1204,7 +1371,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 7. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <ScrollReveal direction="up" className="text-center space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C21F2F] dark:text-[#E03A3E]">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {t.home.faqBadge}
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
@@ -1219,14 +1386,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             return (
               <div 
                 key={idx}
-                className="glass-panel rounded-2xl overflow-hidden transition-all border border-slate-200 dark:border-white/10"
+                className="bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-2xl overflow-hidden transition-all duration-300 border border-blue-200/40 dark:border-blue-500/20 shadow-[0_8px_30px_rgba(59,130,246,0.06)] hover:shadow-[0_16px_40px_rgba(59,130,246,0.15)] hover:-translate-y-1"
               >
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
                   className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-[#F5F2EE] focus:outline-none cursor-pointer select-none"
                 >
                   <span>{faq.q}</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-[#77736F] shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#C21F2F] dark:text-[#E03A3E]' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-[#77736F] shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : ''}`} />
                 </button>
 
                 <AnimatePresence initial={false}>
@@ -1238,7 +1405,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-700 dark:text-[#B8B3AF] leading-relaxed border-t border-slate-200 dark:border-white/10 pt-3">
+                      <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-700 dark:text-[#B8B3AF] leading-relaxed border-t border-blue-100 dark:border-blue-900/30 pt-3">
                         {faq.a}
                       </div>
                     </motion.div>
@@ -1253,8 +1420,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 8. FINAL CALL TO ACTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <ScrollReveal direction="up">
-          <div className="p-8 sm:p-14 glass-panel-gradient rounded-3xl border border-white/15 shadow-2xl max-w-4xl mx-auto space-y-6 relative overflow-hidden">
-            <div className="w-14 h-14 rounded-2xl bg-[#C21F2F] text-white flex items-center justify-center mx-auto shadow-xl shadow-[#C21F2F]/40 border border-white/20">
+          <div className="p-8 sm:p-14 bg-gradient-to-br from-white/95 via-blue-50/50 to-indigo-50/30 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90 backdrop-blur-2xl rounded-3xl border-2 border-blue-400/35 dark:border-blue-500/25 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto space-y-6 relative overflow-hidden">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-500 text-white flex items-center justify-center mx-auto shadow-xl shadow-blue-500/30 border border-white/20">
               <Smartphone className="w-7 h-7" />
             </div>
 
@@ -1263,7 +1430,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 {language === 'hi' ? 'अपने कानूनी वर्कफ़्लो को सरल बनाने के लिए तैयार हैं?' : 'Ready to Simplify Your Legal Workflow?'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto">
-                {language === 'hi' ? 'Bare Acts, PDF कन्वर्टर्स और केस डायरी एक्सेस करने के लिए आज ही अपने एंड्रॉइड स्मार्टफोन या टैबलेट पर Less Legal डाउनलोड करें।' : 'Download Less Legal today on your Android smartphone or tablet to access Bare Acts, PDF converters, and Case Diary.'}
+                {language === 'hi' ? 'Bare Acts, PDF कन्वर्टर्स और Case Diary एक्सेस करने के लिए आज ही अपने एंड्रॉइड स्मार्टफोन या टैबलेट पर Less Legal डाउनलोड करें।' : 'Download Less Legal today on your Android smartphone or tablet to access Bare Acts, PDF converters, and Case Diary.'}
               </p>
             </div>
 
@@ -1271,7 +1438,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <GlowingButton
                 onClick={() => onNavigate('download')}
                 variant="primary"
-                className="w-full sm:w-auto px-8 py-4 text-sm font-bold"
+                className="w-full sm:w-auto px-8 py-4 text-sm font-bold shadow-[0_12px_30px_rgba(37,99,235,0.35)]"
               >
                 <Download className="w-4 h-4" />
                 <span>{language === 'hi' ? 'एंड्रॉइड APK डाउनलोड करें' : 'Download Android APK'}</span>

@@ -206,7 +206,7 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
-        return 'btn-crimson shine-sweep-overlay';
+        return 'bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white shadow-[0_10px_28px_rgba(37,99,235,0.35)] border border-white/10 hover:shadow-[0_14px_36px_rgba(37,99,235,0.45)] shine-sweep-overlay';
       case 'secondary':
         return 'btn-glass shine-sweep-overlay';
       case 'gold':

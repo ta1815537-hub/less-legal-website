@@ -25,12 +25,12 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           onClick={() => onNavigate('home')}
           className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-[#E02636]" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-500" />
           <span>{t.common.backToHome}</span>
         </button>
 
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/40 text-[#E02636] dark:text-red-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
             <Globe className="w-3.5 h-3.5" />
             <span>{isHindi ? "Less Technologies — वेबसाइट गोपनीयता नीति" : "Less Technologies — Website Privacy Policy"}</span>
           </div>
@@ -52,10 +52,10 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
       </div>
 
       {/* Scope Clarification & Switch Banner */}
-      <div className="p-6 rounded-[28px] border border-red-200/80 dark:border-red-900/40 bg-red-50/70 dark:bg-red-950/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10 text-xs text-slate-600 dark:text-slate-300 shadow-lg backdrop-blur-xl">
+      <div className="p-6 rounded-[28px] border border-blue-500/20 dark:border-blue-500/30 bg-blue-500/5 dark:bg-blue-950/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10 text-xs text-slate-600 dark:text-slate-300 shadow-lg backdrop-blur-xl">
         <div className="space-y-1">
           <div className="font-black text-slate-900 dark:text-white flex items-center gap-2 text-sm sm:text-base">
-            <Shield className="w-4 h-4 text-[#E02636]" />
+            <Shield className="w-4 h-4 text-blue-500" />
             <span>{isHindi ? "Less Legal एंड्रॉइड ऐप यूज़र्स ध्यान दें:" : "Less Legal Android App Users Notice:"}</span>
           </div>
           <p className="leading-relaxed font-medium">
@@ -220,14 +220,14 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
       <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10">
         <button
           onClick={() => onNavigate('app-privacy')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors flex items-center gap-1 px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-500 cursor-pointer transition-colors flex items-center gap-1 px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           <span>{isHindi ? "Less Legal ऐप गोपनीयता नीति पढ़ें" : "Read Less Legal App Privacy Policy"}</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={() => onNavigate('app-delete-account')}
-          className="text-xs font-bold text-[#E02636] hover:underline cursor-pointer transition-colors px-4 py-2 rounded-full bg-red-50/70 dark:bg-red-950/20 border border-red-200/80 dark:border-red-900/40 shadow-2xs"
+          className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer transition-colors px-4 py-2 rounded-full bg-blue-500/10 dark:bg-blue-950/20 border border-blue-500/20 dark:border-blue-500/30 shadow-2xs"
         >
           {isHindi ? "खाता एवं डेटा विलोपन पृष्ठ" : "Account & Data Deletion Page"}
         </button>
