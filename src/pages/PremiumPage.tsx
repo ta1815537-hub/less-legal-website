@@ -215,7 +215,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                   </div>
                   <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>{isHindi ? 'सभी 46+ कानूनी टूल्स और पीडीएफ यूटिलिटीज का असीमित उपयोग' : 'Unlimited access to all 46+ Legal Utilities & PDF Workspace'}</span>
+                    <span>{isHindi ? 'सभी 22+ कानूनी टूल्स और पीडीएफ यूटिलिटीज का असीमित उपयोग' : 'Unlimited access to all 22+ Legal Utilities & PDF Workspace'}</span>
                   </div>
                   <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -351,8 +351,8 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                 {isHindi 
-                  ? 'सभी विज्ञापनों से मुक्त होकर 46+ उन्नत टूल्स और पीडीएफ सुविधाओं का आजीवन उपयोग करें।' 
-                  : 'Enjoy unlimited ad-free access to all 46+ tools and workspaces forever on your Android devices.'}
+                  ? 'सभी विज्ञापनों से मुक्त होकर 22+ उन्नत टूल्स और पीडीएफ सुविधाओं का आजीवन उपयोग करें।' 
+                  : 'Enjoy unlimited ad-free access to all 22+ tools and workspaces forever on your Android devices.'}
               </p>
             </div>
           </div>

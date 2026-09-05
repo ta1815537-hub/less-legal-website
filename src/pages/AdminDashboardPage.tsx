@@ -4,11 +4,10 @@ import {
   ShieldCheck, Lock, Unlock, Key, Trash2, Mail, User, 
   Search, Filter, CheckCircle2, Clock, AlertCircle, RefreshCw, 
   Download, ArrowLeft, LogOut, FileText, ChevronRight, MessageSquare, 
-  Sparkles, Check, X, Tag, Edit3, ShieldAlert, Phone, UserCheck, KeyRound, AlertTriangle
+  Sparkles, Check, X, Tag, Edit3, ShieldAlert, Phone, AlertTriangle
 } from 'lucide-react';
 import { 
   signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged, 
   sendPasswordResetEmail,
@@ -34,10 +33,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const [authLoading, setAuthLoading] = useState<boolean>(true);
 
   // Form State
-  const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot'>('login');
+  const [authMode, setAuthMode] = useState<'login' | 'forgot'>('login');
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
-  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
   const [authError, setAuthError] = useState<string | null>(null);
   const [authSuccessMsg, setAuthSuccessMsg] = useState<string | null>(null);
 
@@ -80,56 +78,56 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     };
   }, []);
 
-  // Monitor Secure Admin Session & enforce strict tab/inactivity boundaries
+  // Monitor Secure Admin Session & enforce strict Firebase Auth boundaries
   useEffect(() => {
-    // Purge any persistent localStorage to prevent direct unauthorized access
+    // Purge any legacy localStorage credentials or session flags
     localStorage.removeItem('less_legal_admin_session');
-
-    const sessStr = sessionStorage.getItem('less_legal_admin_session');
-    let validSession = false;
-    let sessionEmail = '';
-
-    if (sessStr) {
-      try {
-        const parsed = JSON.parse(sessStr);
-        const lastActive = parsed.lastActive || parsed.loggedInAt || 0;
-        const now = Date.now();
-        // Check 15 minutes limit (15 * 60 * 1000 = 900,000ms)
-        if (now - lastActive < 15 * 60 * 1000 && parsed.email) {
-          validSession = true;
-          sessionEmail = parsed.email;
-          const remaining = Math.max(0, Math.floor((15 * 60 * 1000 - (now - lastActive)) / 1000));
-          setRemainingSeconds(remaining);
-        } else {
-          sessionStorage.removeItem('less_legal_admin_session');
-          setSessionExpiredNotice(true);
-        }
-      } catch {
-        sessionStorage.removeItem('less_legal_admin_session');
-      }
-    }
+    localStorage.removeItem('less_legal_admin_creds');
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user && validSession) {
-        setAdminUser(user);
-        setIsAuthenticated(true);
-      } else if (validSession && sessionEmail) {
-        setAdminUser({ email: sessionEmail } as any);
-        setIsAuthenticated(true);
-      } else {
-        // Force cleanup if session is missing or expired
-        if (user) {
-          try {
+      if (user) {
+        setAuthLoading(true);
+        try {
+          const isAuthorized = await adminStorage.verifyAdminUserInFirestore(user);
+          if (isAuthorized) {
+            setAdminUser(user);
+            setIsAuthenticated(true);
+            const now = Date.now();
+            sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: user.email, loggedInAt: now, lastActive: now }));
+            setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
+          } else {
             await signOut(auth);
-          } catch {}
+            sessionStorage.removeItem('less_legal_admin_session');
+            setAdminUser(null);
+            setIsAuthenticated(false);
+            setAuthError(
+              isHindi
+                ? "पहुँच अस्वीकृत: आपका खाता अधिकृत एडमिन के रूप में पंजीकृत नहीं है।"
+                : "Access Denied: Your account is not authorized as an administrator."
+            );
+          }
+        } catch (err) {
+          console.error("Error checking admin authorization:", err);
+          await signOut(auth);
+          sessionStorage.removeItem('less_legal_admin_session');
+          setAdminUser(null);
+          setIsAuthenticated(false);
+          setAuthError(
+            isHindi
+              ? "सत्यापन विफल! कृपया पुनः प्रयास करें।"
+              : "Authorization verification failed! Please try again."
+          );
         }
+      } else {
+        sessionStorage.removeItem('less_legal_admin_session');
         setAdminUser(null);
         setIsAuthenticated(false);
       }
       setAuthLoading(false);
     });
+
     return () => unsubscribe();
-  }, []);
+  }, [isHindi]);
 
   // Real-time Inactivity Auto-Logout Timer (15 Minutes) & User Interaction Reset
   useEffect(() => {
@@ -313,93 +311,52 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     setSessionExpiredNotice(false);
     setAuthLoading(true);
 
+    const email = emailInput.trim();
+    const password = passwordInput;
+
     try {
-      await signInWithEmailAndPassword(auth, emailInput.trim(), passwordInput);
-      const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
-      sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
-      localStorage.removeItem('less_legal_admin_session');
-      setAdminUser({ email: emailInput.trim() } as any);
-      setIsAuthenticated(true);
-      setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
-      setEmailInput('');
-      setPasswordInput('');
-    } catch (err: any) {
-      console.error('Login error:', err);
-      // Fallback for custom configuration or direct verification
-      const verifyRes = await adminStorage.verifyFirestoreAdminDoc(emailInput.trim(), passwordInput);
-      if (verifyRes.success) {
-        const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
-        sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
-        localStorage.removeItem('less_legal_admin_session');
-        setAdminUser({ email: emailInput.trim() } as any);
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCred.user;
+
+      const isAuthorized = await adminStorage.verifyAdminUserInFirestore(user);
+      if (isAuthorized) {
+        setAdminUser(user);
         setIsAuthenticated(true);
+        const now = Date.now();
+        sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: user.email, loggedInAt: now, lastActive: now }));
         setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
         setEmailInput('');
         setPasswordInput('');
         setAuthError(null);
       } else {
-        let msg = isHindi ? 'लॉगिन विफल! अमान्य ईमेल या पासवर्ड।' : 'Login failed! Invalid credentials.';
-        if (err.code === 'auth/too-many-requests') {
-          msg = isHindi ? 'बहुत अधिक असफल प्रयास! कृपया थोड़ी देर बाद प्रयास करें।' : 'Too many attempts! Try again later.';
-        }
-        setAuthError(msg);
+        await signOut(auth);
+        sessionStorage.removeItem('less_legal_admin_session');
+        setAdminUser(null);
+        setIsAuthenticated(false);
+        setAuthError(
+          isHindi
+            ? 'पहुँच अस्वीकृत: यह खाता अधिकृत एडमिन नहीं है।'
+            : 'Access Denied: This account is not an authorized administrator.'
+        );
       }
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const handleFirebaseRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setAuthError(null);
-    setAuthSuccessMsg(null);
-    setSessionExpiredNotice(false);
-
-    if (passwordInput !== confirmPasswordInput) {
-      setAuthError(isHindi ? 'पासवर्ड मेल नहीं खाते हैं!' : 'Passwords do not match!');
-      return;
-    }
-    if (passwordInput.length < 6) {
-      setAuthError(isHindi ? 'पासवर्ड कम से कम 6 अक्षरों का होना चाहिए!' : 'Password must be at least 6 characters!');
-      return;
-    }
-
-    setAuthLoading(true);
-    try {
-      await createUserWithEmailAndPassword(auth, emailInput.trim(), passwordInput);
-      const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
-      sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
-      localStorage.removeItem('less_legal_admin_session');
-      setAdminUser({ email: emailInput.trim() } as any);
-      setIsAuthenticated(true);
-      setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
-      setAuthSuccessMsg(isHindi ? 'सुरक्षित एडमिन खाता सफलतापूर्वक बन गया!' : 'Admin account created successfully on Secure Server!');
-      setEmailInput('');
-      setPasswordInput('');
-      setConfirmPasswordInput('');
     } catch (err: any) {
-      console.error('Registration error:', err);
-      if (err.code === 'auth/operation-not-allowed' || err.code === 'auth/admin-restricted-operation' || err.message?.includes('operation-not-allowed')) {
-        await adminStorage.registerFirestoreAdminDoc(emailInput.trim(), passwordInput);
-        const sessionData = { email: emailInput.trim(), loggedInAt: Date.now(), lastActive: Date.now() };
-        sessionStorage.setItem('less_legal_admin_session', JSON.stringify(sessionData));
-        localStorage.removeItem('less_legal_admin_session');
-        setAdminUser({ email: emailInput.trim() } as any);
-        setIsAuthenticated(true);
-        setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
-        setAuthSuccessMsg(isHindi ? 'सुरक्षित एडमिन खाता सफलतापूर्वक बन गया!' : 'Admin account registered successfully!');
-        setEmailInput('');
-        setPasswordInput('');
-        setConfirmPasswordInput('');
-      } else {
-        let msg = err.message;
-        if (err.code === 'auth/email-already-in-use') {
-          msg = isHindi ? 'यह ईमेल पहले से पंजीकृत है! कृपया "लॉगिन करें" पर जाएं।' : 'This email is already registered! Please switch to Login.';
-        } else if (err.code === 'auth/weak-password') {
-          msg = isHindi ? 'पासवर्ड कमजोर है! कम से कम 6 अक्षर दर्ज करें।' : 'Password is weak! Enter at least 6 characters.';
-        }
-        setAuthError(msg);
+      console.error('Login error:', err);
+      let msg = isHindi ? 'लॉगिन विफल! अमान्य ईमेल या पासवर्ड।' : 'Login failed! Invalid email or password.';
+      if (
+        err.code === 'auth/invalid-credential' ||
+        err.code === 'auth/wrong-password' ||
+        err.code === 'auth/user-not-found' ||
+        err.code === 'auth/invalid-email'
+      ) {
+        msg = isHindi ? 'अमान्य ईमेल या पासवर्ड! कृपया सही विवरण दर्ज करें।' : 'Invalid email or password! Please check your credentials.';
+      } else if (err.code === 'auth/too-many-requests') {
+        msg = isHindi ? 'बहुत अधिक असफल प्रयास! कृपया थोड़ी देर बाद प्रयास करें।' : 'Too many failed attempts! Try again later.';
+      } else if (err.code === 'auth/user-disabled') {
+        msg = isHindi ? 'यह एडमिन खाता निष्क्रिय कर दिया गया है।' : 'This admin account has been disabled.';
       }
+      setAuthError(msg);
+      setAdminUser(null);
+      setIsAuthenticated(false);
     } finally {
       setAuthLoading(false);
     }
@@ -436,6 +393,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     }
     sessionStorage.removeItem('less_legal_admin_session');
     localStorage.removeItem('less_legal_admin_session');
+    localStorage.removeItem('less_legal_admin_creds');
     setAdminUser(null);
     setIsAuthenticated(false);
     if (dueToInactivity) {
@@ -606,30 +564,10 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             </div>
           )}
 
-          {/* Auth Switcher Tabs */}
-          <div className="flex rounded-2xl bg-slate-100 dark:bg-white/5 p-1 border border-slate-200/80 dark:border-white/10 text-xs font-bold">
-            <button
-              type="button"
-              onClick={() => { setAuthMode('login'); setAuthError(null); setAuthSuccessMsg(null); }}
-              className={`flex-1 py-2 rounded-xl transition-all cursor-pointer whitespace-nowrap ${
-                authMode === 'login' 
-                  ? 'bg-white dark:bg-[#1C2230] text-slate-900 dark:text-white shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              {isHindi ? "लॉगिन करें" : "Sign In"}
-            </button>
-            <button
-              type="button"
-              onClick={() => { setAuthMode('register'); setAuthError(null); setAuthSuccessMsg(null); }}
-              className={`flex-1 py-2 rounded-xl transition-all cursor-pointer whitespace-nowrap ${
-                authMode === 'register' 
-                  ? 'bg-white dark:bg-[#1C2230] text-slate-900 dark:text-white shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              {isHindi ? "नया खाता बनाएं" : "Create Account"}
-            </button>
+          {/* Secure Admin Badge */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[11px] font-bold text-slate-600 dark:text-[#B8B3AF] mx-auto">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#C21F2F]" />
+            <span>{isHindi ? "केवल अधिकृत एडमिन प्रवेश" : "Authorized Personnel Only"}</span>
           </div>
 
           {/* Error & Success Banners */}
@@ -668,9 +606,18 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700 dark:text-[#B8B3AF]">
-                  {isHindi ? "पासवर्ड" : "Password"}
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-700 dark:text-[#B8B3AF]">
+                    {isHindi ? "पासवर्ड" : "Password"}
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => { setAuthMode('forgot'); setAuthError(null); setAuthSuccessMsg(null); }}
+                    className="text-[11px] font-semibold text-[#C21F2F] hover:underline cursor-pointer"
+                  >
+                    {isHindi ? "पासवर्ड भूल गए?" : "Forgot password?"}
+                  </button>
+                </div>
                 <div className="relative">
                   <input
                     type="password"
@@ -686,20 +633,21 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
               <button
                 type="submit"
-                className="w-full py-3 px-5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                disabled={authLoading}
+                className="w-full py-3 px-5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <Unlock className="w-4 h-4" />
-                <span>{isHindi ? "लॉगिन करें" : "Sign In"}</span>
+                <span>{authLoading ? (isHindi ? "प्रमाणीकरण हो रहा है..." : "Authenticating...") : (isHindi ? "सुरक्षित लॉगिन" : "Sign In")}</span>
               </button>
             </form>
           )}
 
-          {/* MODE 2: REGISTER FORM */}
-          {authMode === 'register' && (
-            <form onSubmit={handleFirebaseRegister} className="space-y-4 text-left">
+          {/* MODE 2: FORGOT PASSWORD FORM */}
+          {authMode === 'forgot' && (
+            <form onSubmit={handleForgotPassword} className="space-y-4 text-left">
               <div className="space-y-1">
                 <label className="text-xs font-bold text-slate-700 dark:text-[#B8B3AF]">
-                  {isHindi ? "ईमेल आईडी" : "Email Address"}
+                  {isHindi ? "पंजीकृत ईमेल आईडी" : "Registered Email Address"}
                 </label>
                 <div className="relative">
                   <input
@@ -714,46 +662,21 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700 dark:text-[#B8B3AF]">
-                  {isHindi ? "पासवर्ड (कम से कम 6 अक्षर)" : "Password (Min 6 chars)"}
-                </label>
-                <div className="relative">
-                  <input
-                    type="password"
-                    value={passwordInput}
-                    onChange={(e) => setPasswordInput(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#C21F2F]"
-                  />
-                  <Key className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700 dark:text-[#B8B3AF]">
-                  {isHindi ? "पासवर्ड की पुष्टि करें" : "Confirm Password"}
-                </label>
-                <div className="relative">
-                  <input
-                    type="password"
-                    value={confirmPasswordInput}
-                    onChange={(e) => setConfirmPasswordInput(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#C21F2F]"
-                  />
-                  <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-              </div>
-
               <button
                 type="submit"
-                className="w-full py-3 px-5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                disabled={authLoading}
+                className="w-full py-3 px-5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                <UserCheck className="w-4 h-4" />
-                <span>{isHindi ? "खाता बनाएं" : "Create Account"}</span>
+                <Mail className="w-4 h-4" />
+                <span>{authLoading ? (isHindi ? "भेजा जा रहा है..." : "Sending...") : (isHindi ? "रीसेट लिंक भेजें" : "Send Reset Link")}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { setAuthMode('login'); setAuthError(null); setAuthSuccessMsg(null); }}
+                className="w-full text-center text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors cursor-pointer pt-1"
+              >
+                {isHindi ? "← वापस लॉगिन पर जाएं" : "← Back to Sign In"}
               </button>
             </form>
           )}

@@ -66,7 +66,7 @@ export const SITE_CONFIG = {
       platforms: ["Android"],
       downloadUrl: "/download",
       detailUrl: "/features",
-      features: ["PDF वर्कस्पेस", "केस डायरी", "कैलकुलेटर हब", "बेयर एक्ट्स", "कानूनी ड्राफ्ट"]
+      features: ["PDF वर्कस्पेस", "केस डायरी", "कैलकुलेटर हब", "बेयर एक्ट्स", "लीगल टूल्स"]
     },
     {
       id: "prod-faget-app",
@@ -355,12 +355,12 @@ export const SITE_CONFIG = {
       highlights: ["ऑटो-सेव", "श्रेणीबद्ध टैग", "खोजने योग्य", "तेज़ निर्यात"]
     },
     {
-      id: "f28-legal-drafts",
-      title: "कानूनी ड्राफ्ट (Legal Drafts)",
+      id: "f28-legal-guide",
+      title: "कानूनी गाइड (Legal Guide)",
       category: "Learning & Reference",
-      description: "नोटिस, समझौते और वाद पत्रों सहित कानूनी ड्राफ्ट टेम्पलेट्स की लाइब्रेरी।",
+      description: "महत्वपूर्ण कानूनी धाराओं, प्रक्रियात्मक चरणों और अधिकारों की व्यावहारिक जानकारी।",
       iconName: "FileText",
-      highlights: ["नोटिस और समझौते", "वाद और याचिकाएं", "मानक टेम्पलेट्स", "उपयोग के लिए तैयार"]
+      highlights: ["प्रक्रियात्मक चरण", "अधिकार एवं सुरक्षा", "मानक संदर्भ", "उपयोग के लिए तैयार"]
     },
     {
       id: "f29-poster-hub",

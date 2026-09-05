@@ -565,13 +565,13 @@ export const translations: Record<Language, TranslationSchema> = {
       heroTitle: "Less Legal : All in One Smart App | Powerful Digital Tools : Made Simple",
       heroTitlePart1: "Less Legal : All in One Smart App",
       heroTitlePart2: "Powerful Digital Tools : Made Simple",
-      heroSubtitle: "Less Legal is a trending new smart app by Less Creation founded by Anurag Gurauli. Bring legal drafting, bare acts, PDF app features, document scanner, Share it app utility, and everyday tools into one Android application.",
+      heroSubtitle: "Less Legal is a trending new smart app by Less Creation founded by Anurag Gurauli. Bring bare acts, PDF app features, document scanner, Share it app utility, case diary, and everyday tools into one Android application.",
       ctaDownload: "Download Less Legal",
       ctaDemo: "Try Live Interactive Demo",
       ctaFeatures: "Explore All Tools",
       trustFastEngine: "Fast On-Device Engine",
       trustPrivacy: "On-Device Privacy",
-      trustToolsCount: "46+ Integrated Tools",
+      trustToolsCount: "22+ Integrated Tools",
       trustAndroidReady: "Android 7.0 to 15 Ready",
       
       simBadge: "Interactive App Preview",
@@ -607,7 +607,7 @@ export const translations: Record<Language, TranslationSchema> = {
       simWhatsappBtn: "Chat Now",
 
       featureSectionBadge: "COMPLETE UTILITY SUITE",
-      featureSectionTitle: "Explore 46+ Integrated Utilities",
+      featureSectionTitle: "Explore 22+ Integrated Utilities",
       featureSectionSub: "From instant PDF merging to regional land converters, examine all tools available inside the app.",
 
       ecosystemBadge: "DIGITAL ECOSYSTEM",
@@ -628,7 +628,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "Does the app require internet to access Bare Acts and Calculators?",
-          a: "No! All core 46+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
+          a: "No! All core 22+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
         },
         {
           q: "How does the 'File Transfer (LessShare)' feature work?",
@@ -671,7 +671,7 @@ export const translations: Record<Language, TranslationSchema> = {
     featuresPage: {
       badge: "SMART APP FEATURE CATALOG",
       title: "Legal Tools, Document Scanner & PDF App",
-      subtitle: "Explore 46+ verified legal tools available inside the Less Legal Android application. Master legal drafting, RTI drafts, and MS Word capabilities on the go.",
+      subtitle: "Explore 22+ verified legal tools available inside the Less Legal Android application. Master RTI utilities, case diary, and document tools on the go.",
       searchPlaceholder: "Search features, calculators, PDF tools...",
       allCategories: "All Categories",
       categories: {
@@ -686,7 +686,7 @@ export const translations: Record<Language, TranslationSchema> = {
     premiumPage: {
       badge: "PREMIUM LEGAL TOOLS & PASSES",
       title: "Simple & Transparent Pricing for Less Legal App",
-      subtitle: "Enjoy an uninterrupted, ad-free experience across all law students tools, legal drafting features, document scanner, and calculators.",
+      subtitle: "Enjoy an uninterrupted, ad-free experience across all law students tools, case diary, document scanner, and calculators.",
       transparentNoticeTitle: "Transparent Billing Notice & Consumer Terms",
       notice1Title: "Fixed Validity Period",
       notice1Text: "Premium passes grant ad-free access strictly for the duration purchased (90 days for ₹59 or Lifetime Permanent Access for ₹99).",
@@ -730,7 +730,7 @@ export const translations: Record<Language, TranslationSchema> = {
     downloadPage: {
       badge: "DOWNLOAD THE TRENDING SMART APP",
       title: "Download Less Legal for Android",
-      subtitle: "Download the all in one app directly from Google Play Store or get the verified APK file for manual installation to access legal drafting and PDF app features.",
+      subtitle: "Download the all in one app directly from Google Play Store or get the verified APK file for manual installation to access legal utilities and PDF app features.",
       directApk: "Direct APK Download",
       playStore: "Get it on Google Play",
       versionInfo: "Version 8.7.5 • Android 7.0+ Supported • Safe & Verified",
@@ -1048,7 +1048,7 @@ export const translations: Record<Language, TranslationSchema> = {
       ctaFeatures: "सभी टूल्स देखें",
       trustFastEngine: "तेज़ ऑन-डिवाइस इंजन",
       trustPrivacy: "पूर्ण ऑन-डिवाइस गोपनीयता",
-      trustToolsCount: "46+ एकीकृत टूल्स",
+      trustToolsCount: "22+ एकीकृत टूल्स",
       trustAndroidReady: "एंड्रॉइड 7.0 से 15 तैयार",
 
       simBadge: "इंटरैक्टिव ऐप पूर्वावलोकन",
@@ -1084,7 +1084,7 @@ export const translations: Record<Language, TranslationSchema> = {
       simWhatsappBtn: "चैट शुरू करें",
 
       featureSectionBadge: "संपूर्ण उपयोगिता सूट",
-      featureSectionTitle: "46+ एकीकृत सुविधाओं का अन्वेषण करें",
+      featureSectionTitle: "22+ एकीकृत सुविधाओं का अन्वेषण करें",
       featureSectionSub: "पीडीएफ मर्जर से लेकर क्षेत्रीय भूमि कनवर्टर तक, ऐप में उपलब्ध सभी टूल्स देखें।",
 
       ecosystemBadge: "डिजिटल पारिस्थितिकी तंत्र",
@@ -1105,7 +1105,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "क्या बेयर एक्ट्स और कैलकुलेटर एक्सेस करने के लिए इंटरनेट की आवश्यकता है?",
-          a: "बिल्कुल नहीं! बेयर एक्ट्स संदर्भ लाइब्रेरी, भूमि क्षेत्रफल कनवर्टर, पीडीएफ मर्जर, केस डायरी और आयु कैलकुलेटर सहित सभी 46+ मुख्य टूल्स सीधे आपके फोन पर बिना इंटरनेट के चलते हैं।"
+          a: "बिल्कुल नहीं! बेयर एक्ट्स संदर्भ लाइब्रेरी, भूमि क्षेत्रफल कनवर्टर, पीडीएफ मर्जर, केस डायरी और आयु कैलकुलेटर सहित सभी 22+ मुख्य टूल्स सीधे आपके फोन पर बिना इंटरनेट के चलते हैं।"
         },
         {
           q: "लेस-शेयर फ़ाइल ट्रांसफर सुविधा कैसे काम करती है?",

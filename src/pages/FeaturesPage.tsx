@@ -46,7 +46,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
     { key: 'Government', label: 'Government', icon: Landmark },
   ];
 
-  // Comprehensive 46+ features dataset designed to match image
+  // Comprehensive 22+ features dataset designed to match image
   const featuresList: FeatureItemData[] = [
     {
       id: 'f-calendar',
@@ -326,7 +326,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-black text-slate-900 dark:text-white tracking-tight leading-[1.05]">
-              Explore <span className="text-[#E02636]">46+</span> Integrated <span className="text-[#2563EB] dark:text-[#3B82F6]">Utilities</span>
+              Explore <span className="text-[#E02636]">22+</span> Integrated <span className="text-[#2563EB] dark:text-[#3B82F6]">Utilities</span>
             </h1>
 
             {/* Subtitle */}
@@ -665,7 +665,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                 Less Legal Official Utility Suite
               </div>
               <div className="text-sm font-bold text-slate-800 dark:text-white">
-                All 46+ Tools Verified & Maintained by Less Creation
+                All 22+ Tools Verified & Maintained by Less Creation
               </div>
             </div>
             <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg">

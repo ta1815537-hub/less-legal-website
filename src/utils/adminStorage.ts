@@ -1,5 +1,6 @@
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import type { User as FirebaseUser } from 'firebase/auth';
 
 export interface ContactSubmission {
   id: string;
@@ -525,82 +526,105 @@ export const adminStorage = {
     return true;
   },
 
-  // Firestore Admin Auth fallback methods
-  registerFirestoreAdminDoc: async (email: string, pass: string): Promise<boolean> => {
+  // Secure Firestore Admin Authorization Checks
+  verifyAdminUserInFirestore: async (user: FirebaseUser): Promise<boolean> => {
+    if (!user || !user.email) return false;
     try {
       const q = query(collection(db, 'admin_config'));
       const snap = await getDocs(q);
-      let existingDocId: string | null = null;
-      snap.forEach(d => {
-        if (d.data().type === 'admin_auth') existingDocId = d.id;
+
+      if (snap.empty) {
+        // Initial setup: authorize the first Firebase authenticated admin user
+        await addDoc(collection(db, 'admin_config'), {
+          type: 'admin_auth',
+          uid: user.uid,
+          email: user.email.toLowerCase(),
+          role: 'admin',
+          authorized: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+        return true;
+      }
+
+      let isAuthorized = false;
+      let matchedDocId: string | null = null;
+      let matchedHasUid = false;
+
+      snap.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (
+          data.type === 'admin_auth' ||
+          data.type === 'admin_role' ||
+          data.role === 'admin'
+        ) {
+          const emailMatch = data.email && data.email.toLowerCase() === user.email?.toLowerCase();
+          const uidMatch = data.uid && data.uid === user.uid;
+
+          if (uidMatch || emailMatch) {
+            isAuthorized = true;
+            matchedDocId = docSnap.id;
+            matchedHasUid = !!data.uid;
+          }
+        }
       });
 
+      // Attach UID to existing admin document if missing
+      if (isAuthorized && matchedDocId && !matchedHasUid) {
+        try {
+          await updateDoc(doc(db, 'admin_config', matchedDocId), {
+            uid: user.uid,
+            updatedAt: new Date().toISOString()
+          });
+        } catch {
+          // ignore background update error
+        }
+      }
+
+      return isAuthorized;
+    } catch (err) {
+      console.error('Error verifying admin authorization in Firestore:', err);
+      return false;
+    }
+  },
+
+  registerAdminUserInFirestore: async (user: FirebaseUser): Promise<boolean> => {
+    if (!user || !user.email) return false;
+    try {
       const payload = {
         type: 'admin_auth',
-        email: email.trim().toLowerCase(),
-        password: btoa(pass),
+        uid: user.uid,
+        email: user.email.toLowerCase(),
+        role: 'admin',
+        authorized: true,
+        createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
+
+      const q = query(collection(db, 'admin_config'));
+      const snap = await getDocs(q);
+      let existingDocId: string | null = null;
+
+      snap.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (
+          data.email &&
+          data.email.toLowerCase() === user.email?.toLowerCase() &&
+          (data.type === 'admin_auth' || data.role === 'admin')
+        ) {
+          existingDocId = docSnap.id;
+        }
+      });
 
       if (existingDocId) {
         await updateDoc(doc(db, 'admin_config', existingDocId), payload);
       } else {
         await addDoc(collection(db, 'admin_config'), payload);
       }
-      sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
-      localStorage.removeItem('less_legal_admin_session');
       return true;
-    } catch (e) {
-      console.error('Firestore admin reg error:', e);
-      localStorage.setItem('less_legal_admin_creds', JSON.stringify({ email: email.trim().toLowerCase(), password: btoa(pass) }));
-      sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
-      localStorage.removeItem('less_legal_admin_session');
-      return true;
-    }
-  },
-
-  verifyFirestoreAdminDoc: async (email: string, pass: string): Promise<{ success: boolean; reason?: string }> => {
-    try {
-      const q = query(collection(db, 'admin_config'));
-      const snap = await getDocs(q);
-      let foundCred: { email: string; password: string } | null = null;
-      snap.forEach(d => {
-        if (d.data().type === 'admin_auth') {
-          foundCred = { email: d.data().email, password: d.data().password };
-        }
-      });
-
-      if (!foundCred) {
-        const localCred = localStorage.getItem('less_legal_admin_creds');
-        if (localCred) {
-          foundCred = JSON.parse(localCred);
-        }
-      }
-
-      if (!foundCred) {
-        await adminStorage.registerFirestoreAdminDoc(email, pass);
-        return { success: true };
-      }
-
-      if (foundCred.email.toLowerCase() === email.trim().toLowerCase() && foundCred.password === btoa(pass)) {
-        sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
-        localStorage.removeItem('less_legal_admin_session');
-        return { success: true };
-      } else {
-        return { success: false, reason: 'Invalid email or password' };
-      }
-    } catch {
-      const localCred = localStorage.getItem('less_legal_admin_creds');
-      if (localCred) {
-        const parsed = JSON.parse(localCred);
-        if (parsed.email === email.trim().toLowerCase() && parsed.password === btoa(pass)) {
-          sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: email.trim(), loggedInAt: Date.now(), lastActive: Date.now() }));
-          localStorage.removeItem('less_legal_admin_session');
-          return { success: true };
-        }
-      }
-      await adminStorage.registerFirestoreAdminDoc(email, pass);
-      return { success: true };
+    } catch (err) {
+      console.error('Error registering admin authorization in Firestore:', err);
+      return false;
     }
   }
 };

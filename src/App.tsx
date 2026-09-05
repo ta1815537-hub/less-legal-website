@@ -83,12 +83,12 @@ export default function App() {
         break;
       case 'about': 
         title = 'About Less Legal & Less Creation | The Ultimate Legal App'; 
-        description = 'Learn about Less Legal by Less Creation, a trending all in one app combining legal drafting, legal documents, law students tools, and everyday utilities.';
+        description = 'Learn about Less Legal by Less Creation, a trending all in one app combining legal utilities, case diary, law students tools, and everyday utilities.';
         path = 'about'; 
         break;
       case 'features': 
         title = 'Legal Tools & Features: PDF App, Document Scanner | Less Legal'; 
-        description = 'Explore 46+ smart app features of Less Legal. Use the document scanner, legal calculator, RTI draft maker, MS Word alternative, and access legal information.';
+        description = 'Explore 22+ smart app features of Less Legal. Use the document scanner, legal calculator, case diary, and access legal information.';
         path = 'features'; 
         break;
       case 'founder': 
@@ -98,7 +98,7 @@ export default function App() {
         break;
       case 'premium': 
         title = 'Premium Legal App Plans & Law Students Tools | Less Legal'; 
-        description = 'Upgrade to Less Legal Premium for advanced legal tools, unlimited document scanner, legal drafting features, and ad-free access to bare acts and legal calculators.';
+        description = 'Upgrade to Less Legal Premium for advanced legal tools, unlimited document scanner, case diary workspace, and ad-free access to bare acts and legal calculators.';
         path = 'premium'; 
         break;
       case 'contact': 

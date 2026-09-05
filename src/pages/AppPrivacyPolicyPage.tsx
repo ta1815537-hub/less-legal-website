@@ -247,8 +247,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
           </h2>
           <p className="font-medium">
             {isHindi
-              ? "सभी मुख्य पीडीएफ टूल्स (मर्ज, स्प्लिट, व्यू, कंप्रेस), पोस्टर्स क्रिएशन, नोट्स और कानूनी प्रारूप आपके एंड्रॉइड डिवाइस पर पूरी तरह से स्थानीय रूप से संसाधित होते हैं। आपकी संवेदनशील कानूनी फाइलें हमारे सर्वर पर स्वचालित रूप से अपलोड नहीं होती हैं।"
-              : "All core document utilities — including PDF merging, splitting, formatting, poster creation, local notes, and legal drafting — are processed 100% locally on your Android device. Your private legal files are never uploaded automatically to remote servers."}
+              ? "सभी मुख्य पीडीएफ टूल्स (मर्ज, स्प्लिट, व्यू, कंप्रेस), पोस्टर्स क्रिएशन, नोट्स और कानूनी टूल्स आपके एंड्रॉइड डिवाइस पर पूरी तरह से स्थानीय रूप से संसाधित होते हैं। आपकी संवेदनशील फाइलें हमारे सर्वर पर स्वचालित रूप से अपलोड नहीं होती हैं।"
+              : "All core document utilities — including PDF merging, splitting, formatting, poster creation, local notes, and legal calculators — are processed 100% locally on your Android device. Your private files are never uploaded automatically to remote servers."}
           </p>
         </section>
 

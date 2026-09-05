@@ -178,9 +178,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 w-full max-w-full sm:max-w-xl">
                 <div className="flex flex-col items-center gap-1.5 group cursor-default">
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-indigo-100/70 dark:bg-indigo-900/30 flex items-center justify-center shadow-xs border border-indigo-200/60 dark:border-indigo-800/40 group-hover:scale-105 transition-transform">
-                    <Gavel className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                    <Calendar className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">Legal Drafting</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">Case Diary</span>
                 </div>
                 <div className="flex flex-col items-center gap-1.5 group cursor-default">
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-emerald-100/70 dark:bg-emerald-900/30 flex items-center justify-center shadow-xs border border-emerald-200/60 dark:border-emerald-800/40 group-hover:scale-105 transition-transform">
@@ -210,7 +210,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-purple-100/70 dark:bg-purple-900/30 flex items-center justify-center shadow-xs border border-purple-200/60 dark:border-purple-800/40 group-hover:scale-105 transition-transform">
                     <Grid className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">27+ Tools</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">22+ Tools</span>
                 </div>
               </div>
 
@@ -760,11 +760,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     )}
                     
                     {/* Professional Name Plate (Patti) Overlay */}
-                    <div className="absolute bottom-3 inset-x-3 p-3 rounded-xl bg-black/60 dark:bg-black/80 backdrop-blur-md border border-white/20 text-center shadow-[0_8px_30px_rgb(0,0,0,0.4)]">
-                      <h4 className="text-[15px] font-extrabold text-white tracking-wide uppercase">Anurag Gurauli</h4>
-                      <div className="w-8 h-[2px] bg-[#D8BD82] mx-auto my-1.5 rounded-full" />
-                      <p className="text-[10px] text-[#F5F2EE] font-medium leading-snug">Founder, Less Creation</p>
-                      <p className="text-[9px] text-[#B8B3AF] mt-0.5">Advocate, Allahabad High Court</p>
+                    <div className="absolute bottom-3 inset-x-3 p-3.5 rounded-2xl bg-slate-950/85 backdrop-blur-md border border-amber-500/30 text-center shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+                      {/* Golden Accent Patti Header */}
+                      <div className="inline-block px-3 py-0.5 mb-1 rounded-md bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-slate-950 font-black text-[11px] uppercase tracking-wider shadow-sm">
+                        FOUNDER & ADVOCATE
+                      </div>
+                      <h4 className="text-base font-black text-white tracking-wide uppercase mt-0.5">Anurag Gurauli</h4>
+                      <div className="w-12 h-[2px] bg-gradient-to-r from-transparent via-[#D8BD82] to-transparent mx-auto my-1 rounded-full" />
+                      <p className="text-[11px] text-[#F5F2EE] font-bold leading-snug">Founder, Less Creation</p>
+                      <p className="text-[10px] text-amber-200/90 font-semibold mt-0.5">Advocate, Allahabad High Court</p>
                     </div>
                   </div>
                 </div>
@@ -964,34 +968,69 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               transition={{ duration: 0.2 }}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
-              {filteredFeatures.slice(0, 12).map((item) => (
-                <div key={item.id} className="glass-card flash-card-animation p-5 flex flex-col justify-between h-full space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-bold text-amber-700 dark:text-[#D8BD82] bg-amber-500/10 dark:bg-[#D8BD82]/15 px-2.5 py-0.5 rounded-full border border-amber-600/30 dark:border-[#D8BD82]/30">
-                        {getCategoryLabel(item.category)}
-                      </span>
-                      <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
+              {filteredFeatures.slice(0, 12).map((item, idx) => {
+                const colorThemes = [
+                  { iconBg: 'bg-indigo-100 dark:bg-indigo-950/40 text-[#2563EB]', icon: Scale, catBg: 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300 border-indigo-200/70' },
+                  { iconBg: 'bg-red-100 dark:bg-red-950/40 text-[#E02636]', icon: FileText, catBg: 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 border-red-200/70' },
+                  { iconBg: 'bg-emerald-100 dark:bg-emerald-950/40 text-[#059669]', icon: BookOpen, catBg: 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border-emerald-200/70' },
+                  { iconBg: 'bg-amber-100 dark:bg-amber-950/40 text-[#D97706]', icon: Calculator, catBg: 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border-amber-200/70' },
+                  { iconBg: 'bg-purple-100 dark:bg-purple-950/40 text-[#7C3AED]', icon: Calendar, catBg: 'bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300 border-purple-200/70' },
+                  { iconBg: 'bg-blue-100 dark:bg-blue-950/40 text-[#0284C7]', icon: Scan, catBg: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200/70' }
+                ];
+                const theme = colorThemes[idx % colorThemes.length];
+                const IconComp = theme.icon;
+
+                return (
+                  <motion.div 
+                    key={item.id}
+                    whileHover={{ y: -4 }}
+                    className="rounded-[24px] bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 dark:from-[#121622] dark:via-[#182035] dark:to-[#121622] border border-blue-100/70 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(37,99,235,0.12)] hover:border-blue-300 dark:hover:border-blue-700/50 p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl"
+                  >
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-4">
+                        <div className={`w-12 h-12 rounded-2xl ${theme.iconBg} flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}>
+                          <IconComp className="w-6 h-6" />
+                        </div>
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${theme.catBg} leading-tight whitespace-nowrap`}>
+                          {getCategoryLabel(item.category)}
+                        </span>
+                      </div>
+
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white mb-2 leading-snug">
+                        {item.title}
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-2">
+                        {item.description}
+                      </p>
                     </div>
 
-                    <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
-                      {item.title}
-                    </h3>
+                    <div className="space-y-4 pt-2">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {item.highlights.map((tag, hIdx) => (
+                          <span key={hIdx} className="px-2.5 py-1 rounded-full bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[10px] sm:text-[11px] font-semibold text-slate-600 dark:text-slate-300 leading-tight">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
 
-                    <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
+                      <div 
+                        onClick={() => onNavigate('features')}
+                        className="pt-3 border-t border-blue-100/80 dark:border-white/10 flex items-center justify-between cursor-pointer"
+                      >
+                        <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-[#2563EB] dark:group-hover:text-[#60A5FA] transition-colors flex items-center gap-1.5">
+                          <span>{language === 'hi' ? 'टूल खोलें' : 'Open Tool'}</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </span>
 
-                  <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex flex-wrap gap-1.5">
-                    {item.highlights.map((tag, hIdx) => (
-                      <span key={hIdx} className="text-[10px] font-medium text-slate-600 dark:text-[#B8B3AF] bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md border border-slate-200 dark:border-white/5">
-                        • {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 group-hover:bg-[#2563EB] group-hover:text-white flex items-center justify-center transition-all shadow-xs">
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -1004,7 +1043,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
               className="mt-3 text-xs font-semibold text-[#D8BD82] underline"
             >
-              Clear filters and view all 46 tools
+              Clear filters and view all 22 tools
             </button>
           </div>
         )}
