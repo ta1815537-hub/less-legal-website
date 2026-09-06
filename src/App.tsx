@@ -82,14 +82,14 @@ export default function App() {
 
   // Sync title, description, and canonical link for SEO based on route
   useEffect(() => {
-    let title = 'Less Creation | Technology that makes difficult things simple';
-    let description = 'Less Creation is an independent technology and software studio founded by Anurag Gurauli, creator of Less Legal and innovative digital tools.';
+    let title = 'Less Creation | Technology & Digital Product Studio';
+    let description = "Less Creation builds simple, useful and affordable digital products designed to solve real-world problems. Discover Less Legal, our flagship Android product, and explore what we're creating.";
     let path = '';
 
     switch (currentRoute) {
       case 'home': 
-        title = 'Less Creation | Technology that makes difficult things simple'; 
-        description = 'Less Creation is an independent technology and software studio founded by Anurag Gurauli, creator of Less Legal and innovative digital tools.';
+        title = 'Less Creation | Technology & Digital Product Studio'; 
+        description = "Less Creation builds simple, useful and affordable digital products designed to solve real-world problems. Discover Less Legal, our flagship Android product, and explore what we're creating.";
         path = ''; 
         break;
       case 'less-legal':
@@ -195,7 +195,7 @@ export default function App() {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', `https://www.lesscreation.com/${path}`);
+    canonical.setAttribute('href', path ? `https://lesscreation.com/${path}` : 'https://lesscreation.com/');
   }, [currentRoute]);
 
   // Sync route on popstate and hashchange
