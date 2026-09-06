@@ -207,7 +207,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
             <ShieldCheck className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-            <span>{isHindi ? 'क्लाउड डेटाबेस एन्क्रिप्टेड' : 'Cloud Database Encrypted'}</span>
+            <span>{isHindi ? 'गोपनीय व सुरक्षित सहायता' : 'Confidential & Safe Support'}</span>
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
             <Tag className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
@@ -458,8 +458,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                       <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed font-medium">
                         {isHindi 
-                          ? 'आपका अनुरोध सुरक्षित रूप से एडमिन डैशबोर्ड एवं क्लाउड डेटाबेस में दर्ज हो गया है। एडमिन द्वारा अपडेट की गई रियल-टाइम स्थिति जांचने के लिए "फॉर्म स्थिति जांचें" विकल्प का उपयोग करें।' 
-                          : 'Your inquiry has been stored securely in the Cloud Database & Admin Portal. You can track real-time admin status anytime using your email.'}
+                          ? 'आपका अनुरोध सफलतापूर्वक दर्ज कर लिया गया है। सहायता टीम द्वारा स्थिति की जांच करने के लिए आप "फॉर्म स्थिति जांचें" विकल्प का उपयोग कर सकते हैं।' 
+                          : 'Your inquiry has been submitted successfully. You can track updates and response status anytime using the "Check Form Status" tab.'}
                       </p>
 
                       <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -586,7 +586,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         />
                       </div>
 
-                      {/* 12-Hour Quota Rate Limit Warning Banner with Live Countdown Clock */}
+                      {/* Active Submission Wait Period Banner with Live Countdown Clock */}
                       {rateLimitInfo.isLimited && (
                         <motion.div 
                           initial={{ opacity: 0, y: 6 }}
@@ -597,17 +597,17 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 animate-pulse" />
                             <span>
                               {isHindi 
-                                ? '12 घंटे की फॉर्म सबमिशन सीमा (Quota Limit)' 
-                                : '12-Hour Submission Limit Reached'}
+                                ? 'अनुरोध प्राप्त हो चुका है (Recent Submission Received)' 
+                                : 'Recent Inquiry Received'}
                             </span>
                           </div>
                           <p className="leading-relaxed text-[11px] text-amber-900/90 dark:text-amber-200/90 font-medium">
                             {isHindi 
-                              ? `ईमेल (${formData.email}) से पिछले 12 घंटों में 2 बार फॉर्म सबमिट किया जा चुका है। सर्वर लोड सुरक्षा एवं बोट रोकथाम के लिए, नया सबमिशन करने हेतु नीचे दिया गया टाइमर पूरा होने की प्रतीक्षा करें:`
-                              : `This email (${formData.email}) has reached the limit of 2 submissions per 12 hours. Please wait for the timer to reset:`}
+                              ? `ईमेल (${formData.email}) से आपका संदेश प्राप्त हो चुका है और टीम द्वारा समीक्षाधीन है। नया संदेश भेजने के लिए कृपया कुछ समय प्रतीक्षा करें:`
+                              : `A message from (${formData.email}) was recently received and is under review. Please wait before submitting another message:`}
                           </p>
                           <div className="flex items-center justify-between p-3 rounded-xl bg-amber-100/80 dark:bg-amber-900/40 border border-amber-300/60 dark:border-amber-700/50 font-mono font-bold text-xs shadow-inner">
-                            <span className="text-amber-800 dark:text-amber-300">{isHindi ? 'पुनः प्रयास टाइमर (Timer):' : 'Reset Countdown:'}</span>
+                            <span className="text-amber-800 dark:text-amber-300">{isHindi ? 'प्रतीक्षा समय (Wait Timer):' : 'Wait Timer:'}</span>
                             <span className="text-amber-950 dark:text-amber-50 text-xs sm:text-sm tracking-wide bg-amber-200 dark:bg-amber-800 px-3 py-1 rounded-lg border border-amber-300 dark:border-amber-600 font-black">
                               ⏳ {formatCountdown(rateLimitInfo.remainingMs)}
                             </span>
@@ -627,15 +627,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         {isSubmitting ? (
                           <div className="flex items-center justify-center gap-2 whitespace-nowrap">
                             <RefreshCw className="w-4 h-4 animate-spin" />
-                            <span>{isHindi ? 'सुरक्षित सहेजा जा रहा है...' : 'Saving to Database...'}</span>
+                            <span>{isHindi ? 'भेजा जा रहा है...' : 'Sending Message...'}</span>
                           </div>
                         ) : rateLimitInfo.isLimited ? (
                           <div className="flex items-center justify-center gap-2 whitespace-nowrap">
                             <Clock className="w-4 h-4" />
                             <span>
                               {isHindi 
-                                ? `सीमा समाप्त (पुनः प्रयास ${formatCountdown(rateLimitInfo.remainingMs)} बाद)` 
-                                : `Limit Reached (${formatCountdown(rateLimitInfo.remainingMs)} remaining)`}
+                                ? `कृपया प्रतीक्षा करें (${formatCountdown(rateLimitInfo.remainingMs)})` 
+                                : `Please Wait (${formatCountdown(rateLimitInfo.remainingMs)})`}
                             </span>
                           </div>
                         ) : (
@@ -648,8 +648,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                       <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center pt-1 font-medium">
                         {isHindi 
-                          ? '12 घंटे में अधिकतम 2 सबमिशन की अनुमति है। सभी संदेश एडमिन पोर्टल में सुरक्षित सहेजे जाते हैं।' 
-                          : 'Max 2 submissions per 12 hours per email. Saved to Cloud Admin Portal.'}
+                          ? 'सभी पूछताछ संदेश हमारी सहायता टीम द्वारा समीक्षा किए जाते हैं।' 
+                          : 'All inquiries are reviewed directly by the Less Support team.'}
                       </p>
 
                     </motion.form>
@@ -664,12 +664,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 <div className="border-b border-slate-100 dark:border-white/10 pb-3">
                   <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
                     <FileSearch className="w-5 h-5 text-blue-500" />
-                    <span>{isHindi ? 'फॉर्म की रियल-टाइम स्थिति जांचें' : 'Check Form Status'}</span>
+                    <span>{isHindi ? 'फॉर्म की स्थिति जांचें' : 'Check Form Status'}</span>
                   </h2>
                   <p className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-0.5">
                     {isHindi 
-                      ? 'वह ईमेल आईडी दर्ज करें जो आपने फॉर्म सबमिट करते समय दर्ज की थी। एडमिन डैशबोर्ड से लाइव स्थिति यहाँ दिखेगी।' 
-                      : 'Enter the email address you used when submitting the form to view real-time status from the Admin Dashboard.'}
+                      ? 'वह ईमेल आईडी दर्ज करें जो आपने फॉर्म सबमिट करते समय दर्ज की थी ताकि स्थिति देखी जा सके।' 
+                      : 'Enter the email address you used when submitting the form to check ticket status.'}
                   </p>
                 </div>
 
@@ -805,7 +805,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                                 <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 space-y-1">
                                   <div className="font-bold text-xs flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
                                     <ShieldCheck className="w-4 h-4 text-[#E02636]" />
-                                    <span>{isHindi ? 'एडमिन उत्तर / अपडेट टिप्पणी:' : 'Official Admin Response:'}</span>
+                                    <span>{isHindi ? 'सहायता टीम का उत्तर:' : 'Support Team Response:'}</span>
                                   </div>
                                   <p className="text-xs leading-relaxed font-medium">{ticket.adminNotes}</p>
                                 </div>

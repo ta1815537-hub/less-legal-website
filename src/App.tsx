@@ -164,8 +164,8 @@ export default function App() {
         path = 'download'; 
         break;
       case 'admin': 
-        title = 'Admin Dashboard - Less Creation'; 
-        description = 'Admin portal for Less Creation.';
+        title = 'Less Creation'; 
+        description = 'Official website of Less Creation products and services.';
         path = 'admin'; 
         break;
     }

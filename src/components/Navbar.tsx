@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
-import { Layers, Sparkles, Moon, Sun, Globe, Search, Download } from 'lucide-react';
+import { 
+  Layers, Sparkles, Moon, Sun, Globe, Search, Download,
+  X, Home, Scale, BookOpen, Info, User, 
+  MessageSquare, ChevronRight, ArrowRight, Smartphone
+} from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
 import { EASING_SPRING } from './MotionWrappers';
@@ -275,221 +279,276 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile Polished Full-Width Navigation Panel */}
+      {/* Mobile Polished Navigation Panel (Restored & Ultra-Smooth) */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: -10 }}
-            transition={{ type: "spring", stiffness: 420, damping: 28 }}
-            style={{ willChange: "transform, opacity" }}
-            className="lg:hidden absolute top-full left-3 right-3 sm:left-4 sm:right-4 mt-2 p-4 rounded-[26px] bg-white/95 dark:bg-[#0C101A]/95 backdrop-blur-2xl border border-slate-200/80 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] space-y-3 z-50 overflow-hidden"
-          >
-            {/* Top subtle blue accent */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-500" />
+          <>
+            {/* Click-away backdrop overlay */}
+            <div
+              className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+            />
 
-            {/* Navigation List */}
-            <div className="flex flex-col divide-y divide-slate-100 dark:divide-white/5">
-              
-              {/* 1. Home */}
-              <button
-                id="mobile-nav-home"
-                onClick={() => handleNavClick('home')}
-                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
-                  currentRoute === 'home'
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <span>{isHindi ? 'होम' : 'Home'}</span>
-                <span className="text-slate-400 text-xs">→</span>
-              </button>
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.16, ease: "easeOut" }}
+              style={{ willChange: "transform, opacity" }}
+              className="lg:hidden absolute top-full left-3 right-3 sm:left-4 sm:right-4 mt-2 p-4 rounded-[24px] bg-white dark:bg-[#0C101A] border border-slate-200/80 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] space-y-3 z-50 overflow-hidden"
+            >
+              {/* Top brand gradient accent line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#C21F2F] via-[#E02636] to-amber-500" />
 
-              {/* 2. Products Accordion / Submenu */}
-              <div className="py-1">
+              {/* Navigation List */}
+              <div className="flex flex-col divide-y divide-slate-100 dark:divide-white/5">
+                
+                {/* 1. Home */}
                 <button
-                  id="mobile-nav-products-accordion"
-                  onClick={() => setProductsSubmenuOpen(!productsSubmenuOpen)}
-                  className="w-full py-2 px-3 rounded-xl text-left text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white flex items-center justify-between cursor-pointer"
+                  id="mobile-nav-home"
+                  onClick={() => handleNavClick('home')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'home'
+                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <span>{isHindi ? 'उत्पाद' : 'Products'}</span>
-                    <span className="text-[10px] font-black px-2 py-0.2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                      2
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <Home className="w-4 h-4 text-[#E02636] shrink-0" />
+                    <span className="whitespace-nowrap truncate">{isHindi ? 'होम' : 'Home'}</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                </button>
+
+                {/* 2. Less Legal Flagship */}
+                <button
+                  id="mobile-nav-less-legal"
+                  onClick={() => handleNavClick('less-legal')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'less-legal' || currentRoute === 'less-legal-features'
+                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Scale className="w-4 h-4 text-[#E02636] shrink-0" />
+                    <span className="whitespace-nowrap font-extrabold text-slate-900 dark:text-white">Less Legal</span>
+                    <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-full bg-[#E02636]/10 text-[#E02636] dark:text-rose-400 border border-[#E02636]/20 uppercase tracking-wide shrink-0">
+                      {isHindi ? 'फ्लैगशिप' : 'Flagship'}
                     </span>
                   </div>
-                  <span className={`text-slate-400 text-xs transition-transform duration-200 ${productsSubmenuOpen ? 'rotate-90' : ''}`}>
-                    ›
-                  </span>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 </button>
 
-                {/* Products Submenu Items */}
-                <AnimatePresence>
-                  {productsSubmenuOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.18 }}
-                      className="pl-3 pr-1 py-1 space-y-1 overflow-hidden"
-                    >
-                      {/* Less Legal Flagship */}
-                      <button
-                        id="mobile-nav-sub-less-legal"
-                        onClick={() => handleNavClick('less-legal')}
-                        className={`w-full py-2.5 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-colors border cursor-pointer ${
-                          currentRoute === 'less-legal' || currentRoute === 'less-legal-features'
-                            ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30 font-bold'
-                            : 'bg-blue-500/5 dark:bg-blue-500/10 text-slate-800 dark:text-slate-100 hover:bg-blue-500/10 border-blue-500/15'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
-                          <span className="font-bold text-slate-900 dark:text-white">Less Legal</span>
-                          <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-blue-500/20 text-blue-600 dark:text-blue-300 uppercase tracking-wide">
-                            {isHindi ? 'फ्लैगशिप' : 'Flagship'}
-                          </span>
-                        </div>
-                        <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold">{isHindi ? 'पेज देखें' : 'View Page'} →</span>
-                      </button>
+                {/* 3. Download App Direct Button */}
+                <button
+                  id="mobile-nav-download"
+                  onClick={() => handleNavClick('download')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'download'
+                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span className="whitespace-nowrap truncate">{isHindi ? 'ऐप डाउनलोड करें' : 'Download App'}</span>
+                    <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
+                      v8.7.5
+                    </span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                </button>
 
-                      {/* Future Products (In R&D) */}
-                      <button
-                        id="mobile-nav-sub-future-products"
-                        onClick={scrollToProducts}
-                        className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                {/* 4. Products Accordion / Submenu */}
+                <div className="py-1">
+                  <button
+                    id="mobile-nav-products-accordion"
+                    onClick={() => setProductsSubmenuOpen(!productsSubmenuOpen)}
+                    className="w-full py-2 px-3 rounded-xl text-left text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Layers className="w-4 h-4 text-blue-500 shrink-0" />
+                      <span className="whitespace-nowrap truncate">{isHindi ? 'उत्पाद व इकोसिस्टम' : 'All Products'}</span>
+                      <span className="text-[10px] font-black px-2 py-0.2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
+                        {SITE_CONFIG.products.length}
+                      </span>
+                    </div>
+                    <span className={`text-slate-400 text-xs transition-transform duration-200 ${productsSubmenuOpen ? 'rotate-90' : ''}`}>
+                      ›
+                    </span>
+                  </button>
+
+                  {/* Products Submenu Items */}
+                  <AnimatePresence>
+                    {productsSubmenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.16 }}
+                        className="pl-4 pr-1 py-1 space-y-1 overflow-hidden"
                       >
-                        <div className="flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-                          <span>{isHindi ? 'भविष्य के उत्पाद' : 'Future Products'}</span>
-                          <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400">
-                            {isHindi ? 'आर एंड डी' : 'In R&D'}
-                          </span>
-                        </div>
-                        <span className="text-[10px] text-slate-400 font-medium">→</span>
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                        {/* Less Legal Flagship */}
+                        <button
+                          id="mobile-nav-sub-less-legal"
+                          onClick={() => handleNavClick('less-legal')}
+                          className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-colors border cursor-pointer bg-red-500/5 dark:bg-red-500/10 text-slate-800 dark:text-slate-100 hover:bg-red-500/10 border-red-500/15"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="w-2 h-2 rounded-full bg-[#E02636] shrink-0" />
+                            <span className="font-bold text-slate-900 dark:text-white whitespace-nowrap">Less Legal App</span>
+                          </div>
+                          <span className="text-[10px] text-[#E02636] dark:text-rose-400 font-extrabold whitespace-nowrap">{isHindi ? 'पेज देखें' : 'View'} →</span>
+                        </button>
+
+                        {/* Future Products (In R&D) */}
+                        <button
+                          id="mobile-nav-sub-future-products"
+                          onClick={scrollToProducts}
+                          className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                            <span className="whitespace-nowrap">{isHindi ? 'भविष्य के उत्पाद' : 'Future Products'}</span>
+                            <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 shrink-0">
+                              {isHindi ? 'आर एंड डी' : 'In R&D'}
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-slate-400 font-medium">→</span>
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* 5. About Less Creation */}
+                <button
+                  id="mobile-nav-about"
+                  onClick={() => handleNavClick('about')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'about'
+                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <Info className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
+                    <span className="whitespace-nowrap truncate">{isHindi ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                </button>
+
+                {/* 6. Founder */}
+                <button
+                  id="mobile-nav-founder"
+                  onClick={() => handleNavClick('founder')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'founder'
+                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <User className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
+                    <span className="whitespace-nowrap truncate">{isHindi ? 'संस्थापक (अनुराग गुरौली)' : 'Founder (Anurag Gurauli)'}</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                </button>
+
+                {/* 7. Resources */}
+                <button
+                  id="mobile-nav-resources"
+                  onClick={() => handleNavClick('resources')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'resources'
+                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <BookOpen className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span className="whitespace-nowrap truncate">{isHindi ? 'संसाधन और टूल्स' : 'Resources & Tools'}</span>
+                    <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                      Hub
+                    </span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                </button>
+
+                {/* 8. Premium */}
+                <button
+                  id="mobile-nav-premium-link"
+                  onClick={() => handleNavClick('premium')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'premium'
+                      ? 'text-amber-600 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/30'
+                      : 'text-amber-700 dark:text-amber-300 hover:text-amber-800 hover:bg-amber-500/10'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
+                    <span className="whitespace-nowrap truncate">{isHindi ? 'प्रीमियम पास' : 'Premium Lifetime'}</span>
+                    <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-800 dark:text-amber-300 shrink-0">
+                      ₹99
+                    </span>
+                  </div>
+                  <span className="text-amber-600 dark:text-amber-400 text-xs font-bold">→</span>
+                </button>
+
+                {/* 9. Contact */}
+                <button
+                  id="mobile-nav-contact"
+                  onClick={() => handleNavClick('contact')}
+                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                    currentRoute === 'contact'
+                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <MessageSquare className="w-4 h-4 text-[#E02636] shrink-0" />
+                    <span className="whitespace-nowrap truncate">{isHindi ? 'संपर्क सहायता' : 'Contact Support'}</span>
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                </button>
               </div>
 
-              {/* 3. About Less Creation */}
-              <button
-                id="mobile-nav-about"
-                onClick={() => handleNavClick('about')}
-                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
-                  currentRoute === 'about'
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <span>{isHindi ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}</span>
-                <span className="text-slate-400 text-xs">→</span>
-              </button>
+              {/* Bottom Controls Row: Language, Theme, and Premium CTA */}
+              <div className="pt-2 border-t border-slate-100 dark:border-white/10 space-y-2">
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Language Switch */}
+                  <button
+                    onClick={toggleLanguage}
+                    className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors"
+                  >
+                    <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                    <span className="whitespace-nowrap">{language === 'hi' ? 'English' : 'हिन्दी'}</span>
+                  </button>
 
-              {/* 4. Founder */}
-              <button
-                id="mobile-nav-founder"
-                onClick={() => handleNavClick('founder')}
-                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
-                  currentRoute === 'founder'
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <span>{isHindi ? 'संस्थापक (अनुराग गुरौली)' : 'Founder (Anurag Gurauli)'}</span>
-                <span className="text-slate-400 text-xs">→</span>
-              </button>
-
-              {/* 5. Resources */}
-              <button
-                id="mobile-nav-resources"
-                onClick={() => handleNavClick('resources')}
-                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
-                  currentRoute === 'resources'
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span>{isHindi ? 'संसाधन और टूल्स' : 'Resources & Tools'}</span>
-                  <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                    {isHindi ? 'गाइड्स व टूल्स' : 'Hub'}
-                  </span>
+                  {/* Theme Toggle */}
+                  <button
+                    onClick={toggleTheme}
+                    className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors"
+                  >
+                    {globalIsDark ? <Sun className="w-3.5 h-3.5 text-amber-400 shrink-0" /> : <Moon className="w-3.5 h-3.5 text-slate-700 shrink-0" />}
+                    <span className="whitespace-nowrap">{globalIsDark ? 'Light' : 'Dark'}</span>
+                  </button>
                 </div>
-                <span className="text-slate-400 text-xs">→</span>
-              </button>
 
-              {/* 6. Premium */}
-              <button
-                id="mobile-nav-premium-link"
-                onClick={() => handleNavClick('premium')}
-                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
-                  currentRoute === 'premium'
-                    ? 'text-amber-600 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/30'
-                    : 'text-amber-700 dark:text-amber-300 hover:text-amber-800'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>{isHindi ? 'प्रीमियम पास' : 'Premium Lifetime'}</span>
-                  <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-800 dark:text-amber-300">
-                    ₹99
-                  </span>
-                </div>
-                <span className="text-amber-600 dark:text-amber-400 text-xs font-bold">→</span>
-              </button>
-
-              {/* 7. Contact */}
-              <button
-                id="mobile-nav-contact"
-                onClick={() => handleNavClick('contact')}
-                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
-                  currentRoute === 'contact'
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <span>{isHindi ? 'संपर्क करें' : 'Contact Support'}</span>
-                <span className="text-slate-400 text-xs">→</span>
-              </button>
-            </div>
-
-            {/* Bottom Controls Row: Language, Theme, and Premium CTA */}
-            <div className="pt-2 border-t border-slate-100 dark:border-white/10 space-y-2">
-              <div className="grid grid-cols-2 gap-2">
-                {/* Language Switch */}
+                {/* Full-width Premium CTA */}
                 <button
-                  onClick={toggleLanguage}
-                  className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
+                  id="mobile-premium-bottom-cta"
+                  onClick={() => handleNavClick('premium')}
+                  className="w-full py-2.5 px-4 rounded-xl text-xs font-black text-white bg-gradient-to-r from-[#C21F2F] via-[#E02636] to-amber-600 hover:brightness-110 shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-98"
                 >
-                  <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                  <span>{language === 'hi' ? 'English' : 'हिन्दी'}</span>
-                </button>
-
-                {/* Theme Toggle */}
-                <button
-                  onClick={toggleTheme}
-                  className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  {globalIsDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-slate-700" />}
-                  <span>{globalIsDark ? 'Light' : 'Dark'}</span>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
+                  <span className="whitespace-nowrap truncate">{isHindi ? 'लेस लीगल लाइफटाइम पास लें — ₹99' : 'Get Less Legal Lifetime Pass — ₹99'}</span>
                 </button>
               </div>
 
-              {/* Full-width Premium CTA */}
-              <button
-                id="mobile-premium-bottom-cta"
-                onClick={() => handleNavClick('premium')}
-                className="w-full py-2.5 px-4 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 shadow-md shadow-blue-500/25 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
-                <span>{isHindi ? 'लेस लीगल लाइफटाइम पास लें — ₹99' : 'Get Less Legal Lifetime Pass — ₹99'}</span>
-              </button>
-            </div>
-
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
       </header>

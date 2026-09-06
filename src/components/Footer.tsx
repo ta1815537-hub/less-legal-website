@@ -391,19 +391,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             
             {/* 1. Copyright & Sanskrit (Span 4) */}
             <div className="lg:col-span-4 space-y-1">
-              <div className="flex items-center gap-1.5">
-                <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  © 2026 Less Creation. All Rights Reserved.
-                </p>
-                <button
-                  id="admin-secret-lock-btn"
-                  onClick={handleSecretLockClick}
-                  className="opacity-20 hover:opacity-75 transition-opacity p-0.5 rounded text-slate-400 dark:text-slate-500 cursor-pointer focus:outline-none"
-                  aria-label="Security Verification"
-                >
-                  <Lock className="w-3 h-3" />
-                </button>
-              </div>
+              <p 
+                onClick={handleSecretLockClick}
+                className="text-xs text-slate-600 dark:text-slate-400 font-medium select-none cursor-default"
+              >
+                © 2026 Less Creation. All Rights Reserved.
+              </p>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Less Legal is the flagship digital product of Less Creation. Founded & created by Anurag Gurauli.
               </p>

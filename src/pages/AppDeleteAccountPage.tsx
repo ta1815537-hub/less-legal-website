@@ -226,7 +226,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
             <Database className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
-            <span>{isHindi ? "क्लाउड रिकॉर्ड्स का स्थायी विलोपन" : "Permanent Cloud Sync Removal"}</span>
+            <span>{isHindi ? "डेटा का स्थायी विलोपन" : "Permanent Data Removal"}</span>
           </span>
         </div>
       </ScrollReveal>
@@ -320,8 +320,8 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
 
                   <p className="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-medium">
                     {isHindi
-                      ? `आपका खाता विलोपन अनुरोध (${email}) सुरक्षित डेटाबेस एवं एडमिन पोर्टल में सुरक्षित रूप से दर्ज कर लिया गया है। स्वचालित सुरक्षा प्रक्रिया 7 व्यावसायिक दिनों के भीतर आपके खाता प्रोफ़ाइल, सुरक्षित सर्वर डेटा और क्लाउड रिकॉर्ड्स को स्थायी रूप से हटा देगी।`
-                      : `Your account deletion request for (${email}) has been logged in our secure database. Our security protocol will purge your account profile, server database, and cloud-synced records within 7 business days.`}
+                      ? `आपका खाता विलोपन अनुरोध (${email}) सफलतापूर्वक दर्ज कर लिया गया है। यह प्रक्रिया 7 व्यावसायिक दिनों के भीतर आपके खाता प्रोफ़ाइल एवं संबंधित रिकॉर्ड्स को स्थायी रूप से हटा देगी।`
+                      : `Your account deletion request for (${email}) has been successfully registered. Your account profile and associated records will be removed within 7 business days.`}
                   </p>
 
                   <div className="text-xs font-semibold pt-3 border-t border-emerald-500/20 flex flex-wrap items-center justify-between gap-3">
@@ -400,17 +400,17 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                         <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 animate-pulse" />
                         <span>
                           {isHindi 
-                            ? '24 घंटे की खाता विलोपन सुरक्षा सीमा (Security Cooldown)' 
-                            : '24-Hour Deletion Protection Active'}
+                            ? 'अनुरोध प्रक्रियाधीन है (Request Under Review)' 
+                            : 'Request In Progress'}
                         </span>
                       </div>
                       <p className="leading-relaxed text-[11px] text-amber-900/90 dark:text-amber-200/90 font-medium">
                         {isHindi 
-                          ? `ईमेल (${email}) के लिए हाल ही में एक विलोपन अनुरोध दर्ज किया जा चुका है। अनधिकृत विलोपन रोकथाम एवं सुरक्षा के लिए, आप 24 घंटे में अधिकतम 1 अनुरोध दर्ज कर सकते हैं। आप "विलोपन स्थिति ट्रैक करें" टैब में जाकर वर्तमान स्थिति देख सकते हैं:`
-                          : `An account deletion ticket is already active for (${email}). For security and spam protection, only 1 request is allowed every 24 hours. You can track your existing request or wait for the reset timer:`}
+                          ? `ईमेल (${email}) के लिए हाल ही में एक विलोपन अनुरोध दर्ज किया जा चुका है। नया अनुरोध भेजने के लिए कृपया नीचे दिए गए समय की प्रतीक्षा करें या "विलोपन स्थिति ट्रैक करें" टैब में वर्तमान स्थिति देखें:`
+                          : `An account deletion request is already under process for (${email}). Please wait before submitting another request, or track status below:`}
                       </p>
                       <div className="flex items-center justify-between p-3 rounded-xl bg-amber-100/80 dark:bg-amber-900/40 border border-amber-300/60 dark:border-amber-700/50 font-mono font-bold text-xs shadow-inner">
-                        <span className="text-amber-800 dark:text-amber-300">{isHindi ? 'पुनः अनुरोध टाइमर (Reset In):' : 'Cooldown Timer:'}</span>
+                        <span className="text-amber-800 dark:text-amber-300">{isHindi ? 'प्रतीक्षा समय (Wait Time):' : 'Wait Timer:'}</span>
                         <span className="text-amber-950 dark:text-amber-50 text-xs sm:text-sm tracking-wide bg-amber-200 dark:bg-amber-800 px-3 py-1 rounded-lg border border-amber-300 dark:border-amber-600 font-black">
                           ⏳ {formatCountdown(rateLimitInfo.remainingMs)}
                         </span>
@@ -431,15 +431,15 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                       {isSubmitting ? (
                         <>
                           <RefreshCw className="w-4 h-4 animate-spin" />
-                          <span className="whitespace-nowrap">{isHindi ? "सुरक्षित सहेजा जा रहा है..." : "Processing Request..."}</span>
+                          <span className="whitespace-nowrap">{isHindi ? "सहेजा जा रहा है..." : "Processing Request..."}</span>
                         </>
                       ) : rateLimitInfo.isLimited ? (
                         <>
-                          <Lock className="w-4 h-4" />
+                          <Clock className="w-4 h-4" />
                           <span className="whitespace-nowrap">
                             {isHindi 
-                              ? `सुरक्षा सीमा सक्रिय (${formatCountdown(rateLimitInfo.remainingMs)})` 
-                              : `Limit Active (${formatCountdown(rateLimitInfo.remainingMs)})`}
+                              ? `कृपया प्रतीक्षा करें (${formatCountdown(rateLimitInfo.remainingMs)})` 
+                              : `Please Wait (${formatCountdown(rateLimitInfo.remainingMs)})`}
                           </span>
                         </>
                       ) : (
@@ -468,8 +468,8 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
 
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 text-left pt-1 font-medium">
                     {isHindi 
-                      ? 'सुरक्षा नियम: 24 घंटे में अधिकतम 1 विलोपन अनुरोध की अनुमति है। सभी विलोपन रिकॉर्ड्स एडमिन पोर्टल में ऑडिट लॉग के साथ सुरक्षित सहेजे जाते हैं।' 
-                      : 'Security Rule: 1 deletion request per 24 hours per email. Monitored in Admin Cloud Portal.'}
+                      ? 'सभी विलोपन अनुरोध हमारी सहायता टीम द्वारा नियमानुसार संसाधित किए जाते हैं।' 
+                      : 'All deletion requests are processed in accordance with privacy guidelines.'}
                   </p>
                 </form>
               )}
@@ -601,25 +601,25 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                             </div>
                           </div>
 
-                          {/* Security Workflow Progress Bar */}
+                          {/* Workflow Progress Bar */}
                           <div className="p-4 rounded-xl bg-white dark:bg-black/30 border border-slate-200/80 dark:border-white/5 space-y-3">
                             <div className="font-bold text-[11px] text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                               <ShieldCheck className="w-3.5 h-3.5 text-[#E02636]" />
-                              <span>{isHindi ? "डेटा निष्कासन पाइपलाइन प्रगति (Security Pipeline)" : "Data Purge Pipeline Progress"}</span>
+                              <span>{isHindi ? "अनुरोध समाधान प्रगति (Status Progress)" : "Request Status Progress"}</span>
                             </div>
 
                             <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
                               {/* Step 1 */}
                               <div className="space-y-1">
                                 <div className="h-1.5 rounded-full bg-emerald-500" />
-                                <span className="text-emerald-700 dark:text-emerald-300 whitespace-nowrap">{isHindi ? "1. अनुरोध दर्ज" : "1. Request Logged"}</span>
+                                <span className="text-emerald-700 dark:text-emerald-300 whitespace-nowrap">{isHindi ? "1. अनुरोध प्राप्त" : "1. Request Received"}</span>
                               </div>
 
                               {/* Step 2 */}
                               <div className="space-y-1">
                                 <div className={`h-1.5 rounded-full ${isProcessing || isComplete ? 'bg-emerald-500' : 'bg-amber-400/80 animate-pulse'}`} />
                                 <span className={`${isProcessing || isComplete ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-800 dark:text-amber-300'} whitespace-nowrap`}>
-                                  {isHindi ? "2. सुरक्षा समीक्षा" : "2. Security Queue"}
+                                  {isHindi ? "2. सत्यापन व समीक्षा" : "2. In Review"}
                                 </span>
                               </div>
 
@@ -627,7 +627,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                               <div className="space-y-1">
                                 <div className={`h-1.5 rounded-full ${isComplete ? 'bg-emerald-500' : 'bg-slate-200 dark:bg-white/10'}`} />
                                 <span className={`${isComplete ? 'text-emerald-700 dark:text-emerald-300' : 'text-slate-400 dark:text-slate-500'} whitespace-nowrap`}>
-                                  {isHindi ? "3. डेटा हटाया गया" : "3. Cloud Purged"}
+                                  {isHindi ? "3. विलोपन पूर्ण" : "3. Completed"}
                                 </span>
                               </div>
                             </div>
@@ -655,12 +655,12 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                             )}
                           </div>
 
-                          {/* Official Admin Note Box */}
+                          {/* Official Support Note Box */}
                           {ticket.adminNotes && (
                             <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-amber-900 dark:text-amber-200 text-xs space-y-1">
                               <div className="font-bold flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
                                 <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                                <span>{isHindi ? "एडमिन एवं सुरक्षा टीम की आधिकारिक टिप्पणी:" : "Official Admin Verification Note:"}</span>
+                                <span>{isHindi ? "सपोर्ट टीम की आधिकारिक टिप्पणी:" : "Support Team Note:"}</span>
                               </div>
                               <p className="leading-relaxed text-[11px] font-mono bg-white/60 dark:bg-black/40 p-2.5 rounded-lg border border-amber-300/40 dark:border-amber-700/40">
                                 {ticket.adminNotes}
@@ -671,7 +671,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                           {isComplete && (
                             <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-2 font-bold">
                               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                              <span>{isHindi ? "प्रमाणीकरण: आपका खाता प्रोफ़ाइल और सुरक्षित सर्वर रिकॉर्ड्स पूरी तरह से हटाए जा चुके हैं।" : "Verified: Your account profile and cloud server database records have been successfully purged."}</span>
+                              <span>{isHindi ? "सत्यापन: आपका खाता और संबंधित डेटा सफलतापूर्वक हटाया जा चुका है।" : "Verified: Your account and associated records have been permanently removed."}</span>
                             </div>
                           )}
                         </div>

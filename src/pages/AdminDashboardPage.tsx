@@ -587,7 +587,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
           <div className="space-y-1">
             <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-              {isHindi ? "एडमिन पोर्टल" : "Admin Portal"}
+              {isHindi ? "आंतरिक पोर्टल" : "Portal"}
             </h1>
           </div>
 
@@ -597,15 +597,15 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               <Clock className="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
               <div>
                 <strong className="block font-bold">{isHindi ? "सत्र समाप्ति (Session Timeout)" : "Session Expired"}</strong>
-                <span>{isHindi ? "15 मिनट की निष्क्रियता या ब्राउज़र बंद होने के कारण सुरक्षा हेतु सत्र समाप्त कर दिया गया है। कृपया पुनः लॉगिन करें।" : "Your session was locked due to 15 minutes of inactivity or window close. Please log in again."}</span>
+                <span>{isHindi ? "15 मिनट की निष्क्रियता या ब्राउज़र बंद होने के कारण सत्र समाप्त कर दिया गया है। कृपया पुनः लॉगिन करें।" : "Your session was locked due to 15 minutes of inactivity or window close. Please sign in again."}</span>
               </div>
             </div>
           )}
 
-          {/* Secure Admin Badge */}
+          {/* Neutral Access Badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[11px] font-bold text-slate-600 dark:text-[#B8B3AF] mx-auto">
             <ShieldCheck className="w-3.5 h-3.5 text-[#C21F2F]" />
-            <span>{isHindi ? "केवल अधिकृत एडमिन प्रवेश" : "Authorized Personnel Only"}</span>
+            <span>{isHindi ? "अधिकृत पहुंच केवल" : "Authorized Access Only"}</span>
           </div>
 
           {/* Error & Success Banners */}
