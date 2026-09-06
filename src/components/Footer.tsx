@@ -71,9 +71,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Main Floating Glassmorphic Footer Card */}
-        <div className="bg-white/95 dark:bg-[#101420]/95 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-[32px] sm:rounded-[36px] p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.06)] space-y-8">
+        <div className="bg-white/95 dark:bg-[#101420]/95 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-[32px] sm:rounded-[36px] p-6 sm:p-10 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.06)] space-y-10">
           
-          {/* Top 4-Column Grid */}
+          {/* Top Multi-Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8">
             
             {/* Column 1: Brand & Taglines (Span 4) */}
@@ -94,21 +94,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </div>
 
               <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-snug">
-                Technology, Utilities and Digital Products — Made for a Smarter Tomorrow.
+                Technology that makes difficult things simple.
               </p>
 
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                At Less Creation, we build independent digital applications like Less Legal to make legal knowledge, document tools and everyday utilities simple and accessible for everyone.
+                Less Creation is an independent technology and product studio. We create simple, useful, and affordable digital products like Less Legal to make legal workflows and daily utilities accessible for everyone.
               </p>
 
-              {/* 4 Pills: Independent Digital Products | Privacy Conscious | User First Always | Made For India */}
+              {/* 4 Pills */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
                   <div className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-[#C21F2F] shrink-0">
                     <Layers className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 leading-tight">
-                    Independent<br />Digital Products
+                    Independent<br />Product Studio
                   </span>
                 </div>
 
@@ -141,174 +141,203 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Column 2: Quick Navigation (Span 3) */}
-            <div className="lg:col-span-3 space-y-3 lg:pl-4">
-              <div>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Quick Navigation</h3>
-                <div className="w-6 h-0.5 bg-[#C21F2F] rounded-full mt-1.5 mb-3" />
+            {/* Column 2: Products & Company (Span 3) */}
+            <div className="lg:col-span-3 space-y-5 lg:pl-2">
+              {/* Products Section */}
+              <div className="space-y-2.5">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Products</h3>
+                  <div className="w-6 h-0.5 bg-blue-600 rounded-full mt-1.5 mb-2" />
+                </div>
+                <ul className="space-y-2 text-xs font-medium">
+                  <li>
+                    <button
+                      onClick={() => onNavigate('less-legal')}
+                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                    >
+                      <Smartphone className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                      <span className="font-bold text-slate-900 dark:text-white">Less Legal</span>
+                      <span className="text-[9.5px] px-1.5 py-0.2 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold">Flagship</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('premium')}
+                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer text-left"
+                    >
+                      <Crown className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <span>Less Legal Lifetime Pass</span>
+                      <span className="text-[9.5px] px-1.5 py-0.2 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 font-black">₹99</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('less-legal-features')}
+                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                    >
+                      <LayoutGrid className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>30+ Utilities Catalog</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('download')}
+                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                    >
+                      <Download className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>Download Android App</span>
+                    </button>
+                  </li>
+                </ul>
               </div>
-              
-              <ul className="space-y-2.5 text-xs font-medium">
-                <li>
-                  <button
-                    onClick={() => onNavigate('home')}
-                    className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
-                  >
-                    <Home className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Home</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => onNavigate('about')}
-                    className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
-                  >
-                    <User className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>About Less Legal</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => onNavigate('founder')}
-                    className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
-                  >
-                    <Users className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Founder (Anurag Gurauli)</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => onNavigate('features')}
-                    className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
-                  >
-                    <LayoutGrid className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>App Features</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => onNavigate('premium')}
-                    className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
-                  >
-                    <Crown className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Premium Plans</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => onNavigate('download')}
-                    className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
-                  >
-                    <Download className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Download App</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => onNavigate('contact')}
-                    className="flex items-center gap-2.5 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
-                  >
-                    <Mail className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>Contact</span>
-                  </button>
-                </li>
-              </ul>
+
+              {/* Company Section */}
+              <div className="space-y-2.5">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Company</h3>
+                  <div className="w-6 h-0.5 bg-blue-600 rounded-full mt-1.5 mb-2" />
+                </div>
+                <ul className="space-y-2 text-xs font-medium">
+                  <li>
+                    <button
+                      onClick={() => onNavigate('about')}
+                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                    >
+                      <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>About Less Creation</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('founder')}
+                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                    >
+                      <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>Founder (Anurag Gurauli)</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
 
-            {/* Column 3: Website Legal & Less Legal App (Span 2) */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Website Legal */}
-              <div className="space-y-3">
+            {/* Column 3: Resources & Legal (Span 2) */}
+            <div className="lg:col-span-2 space-y-5">
+              {/* Resources */}
+              <div className="space-y-2.5">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Website Legal</h3>
-                  <div className="w-6 h-0.5 bg-[#C21F2F] rounded-full mt-1.5 mb-3" />
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Resources</h3>
+                  <div className="w-6 h-0.5 bg-blue-600 rounded-full mt-1.5 mb-2" />
                 </div>
-                
-                <ul className="space-y-2.5 text-xs font-medium">
+                <ul className="space-y-2 text-xs font-medium">
+                  <li>
+                    <button
+                      onClick={() => onNavigate('resources')}
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left font-bold text-slate-900 dark:text-white block"
+                    >
+                      Resources Hub & Guides
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('resources')}
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block text-slate-600 dark:text-slate-300"
+                    >
+                      Bare Acts Reference
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('resources')}
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block text-slate-600 dark:text-slate-300"
+                    >
+                      Legal Calculators & Units
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('less-legal-features')}
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block text-slate-600 dark:text-slate-300"
+                    >
+                      Case Diary & Hearings
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Legal Policies */}
+              <div className="space-y-2.5">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Legal</h3>
+                  <div className="w-6 h-0.5 bg-blue-600 rounded-full mt-1.5 mb-2" />
+                </div>
+                <ul className="space-y-1.5 text-xs font-medium">
                   <li>
                     <button
                       onClick={() => onNavigate('privacy')}
-                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block"
                     >
-                      <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-                      <span>Website Privacy Policy</span>
+                      Privacy Policy
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={() => onNavigate('terms')}
-                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block"
                     >
-                      <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-                      <span>Terms & Conditions</span>
+                      Terms of Service
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={() => onNavigate('refund')}
-                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block"
                     >
-                      <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-                      <span>Refund & Cancellation</span>
+                      Refund & Cancellation
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={() => onNavigate('disclaimer')}
-                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block"
                     >
-                      <FileText className="w-4 h-4 text-slate-400 shrink-0" />
-                      <span>Legal Disclaimer</span>
+                      Legal Disclaimer
                     </button>
                   </li>
-                </ul>
-              </div>
-
-              {/* Less Legal App */}
-              <div className="space-y-3">
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Less Legal App</h3>
-                  <div className="w-6 h-0.5 bg-[#C21F2F] rounded-full mt-1.5 mb-3" />
-                </div>
-
-                <ul className="space-y-2.5 text-xs font-medium">
                   <li>
                     <button
                       onClick={() => onNavigate('app-privacy')}
-                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-[#C21F2F] dark:hover:text-white transition-colors cursor-pointer text-left"
+                      className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left block"
                     >
-                      <ShieldCheck className="w-4 h-4 text-slate-400 shrink-0" />
-                      <span>App Privacy Policy</span>
+                      App Privacy Policy
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={() => onNavigate('app-delete-account')}
-                      className="flex items-center gap-2 text-[#C21F2F] hover:text-red-700 dark:hover:text-red-400 font-bold transition-colors cursor-pointer text-left"
+                      className="text-red-500 hover:underline cursor-pointer text-left block font-semibold"
                     >
-                      <Trash2 className="w-4 h-4 text-[#C21F2F] shrink-0" />
-                      <span>Delete Account & Data</span>
+                      Delete Account & Data
                     </button>
                   </li>
                 </ul>
               </div>
             </div>
 
-            {/* Column 4: Support & Contact (Span 3) */}
+            {/* Column 4: Support & Official Links (Span 3) */}
             <div className="lg:col-span-3 space-y-3.5">
               <div>
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Support & Contact</h3>
-                <div className="w-6 h-0.5 bg-[#C21F2F] rounded-full mt-1.5 mb-3" />
+                <div className="w-6 h-0.5 bg-blue-600 rounded-full mt-1.5 mb-3" />
               </div>
 
-              <div className="flex items-start gap-2.5 text-xs text-slate-600 dark:text-slate-300">
-                <Headphones className="w-4 h-4 text-slate-700 dark:text-slate-300 shrink-0 mt-0.5" />
-                <span className="leading-snug">Official support is available for all Less Creation products.</span>
+              <div className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300">
+                <Headphones className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                <span className="leading-snug">Official developer support for all Less Creation software.</span>
               </div>
 
               {/* Email Card */}
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 shadow-2xs">
-                <div className="w-9 h-9 rounded-xl bg-red-500/10 text-[#C21F2F] flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
@@ -319,7 +348,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     lesslegalsupport@gmail.com
                   </a>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
-                    We usually reply within 24 hours.
+                    Response within 24 hours
                   </span>
                 </div>
               </div>
@@ -327,53 +356,30 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               {/* Contact Support Button */}
               <button
                 onClick={() => onNavigate('contact')}
-                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:via-blue-600 hover:to-sky-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-blue-500/20 border border-white/10 hover:scale-[1.01] transition-all cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:via-blue-600 hover:to-sky-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-blue-500/20 transition-all cursor-pointer"
               >
                 <Mail className="w-4 h-4" />
                 <span>Contact Support</span>
                 <ArrowRight className="w-4 h-4 ml-0.5" />
               </button>
 
-              {/* Get the App Container */}
-              <div className="p-3.5 rounded-2xl bg-blue-50/40 dark:bg-white/5 border border-blue-100/80 dark:border-white/10 space-y-2.5 shadow-2xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                    <Smartphone className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-900 dark:text-white leading-tight">Get the App</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">All legal & utility tools in one place</p>
-                  </div>
+              {/* Get App Badges */}
+              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">Get Less Legal</span>
+                  <span className="text-[10px] text-slate-500">Android</span>
                 </div>
-
-                <div className="grid grid-cols-2 gap-2 pt-0.5">
-                  {/* Google Play */}
-                  <a
-                    href={SITE_CONFIG.playStoreUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-black text-white hover:bg-slate-900 transition-colors shadow-2xs"
-                  >
-                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M3.609 1.814L13.793 12 3.61 22.186c-.328-.328-.51-.78-.51-1.25V3.064c0-.47.182-.922.51-1.25zm11.314 11.314l2.127 2.127-11.83 6.76 9.703-8.887zm0-2.256L5.22 1.985l11.83 6.76-2.127 2.127zm1.13 1.128l3.655-2.09c.773-.442.773-1.162 0-1.604l-3.655-2.09-1.42 1.42 1.42 4.364z"/>
-                    </svg>
-                    <div className="text-left leading-none">
-                      <span className="text-[8px] uppercase tracking-wider text-slate-400 block font-medium">GET IT ON</span>
-                      <span className="text-[10px] font-bold text-white block">Google Play</span>
-                    </div>
-                  </a>
-
-                  {/* App Store (Coming Soon) */}
-                  <div className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-black text-white cursor-default shadow-2xs">
-                    <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.64-.78 1.08-1.86.96-2.95-1 .04-2.14.67-2.8 1.44-.58.67-1.1 1.76-.96 2.82 1.11.09 2.18-.57 2.8-1.31z"/>
-                    </svg>
-                    <div className="text-left leading-none">
-                      <span className="text-[7.5px] tracking-tight text-slate-400 block font-medium whitespace-nowrap">Coming soon on</span>
-                      <span className="text-[10px] font-bold text-white block whitespace-nowrap">App Store</span>
-                    </div>
-                  </div>
-                </div>
+                <a
+                  href={SITE_CONFIG.playStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-bold transition-colors"
+                >
+                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.609 1.814L13.793 12 3.61 22.186c-.328-.328-.51-.78-.51-1.25V3.064c0-.47.182-.922.51-1.25zm11.314 11.314l2.127 2.127-11.83 6.76 9.703-8.887zm0-2.256L5.22 1.985l11.83 6.76-2.127 2.127zm1.13 1.128l3.655-2.09c.773-.442.773-1.162 0-1.604l-3.655-2.09-1.42 1.42 1.42 4.364z"/>
+                  </svg>
+                  <span>Google Play</span>
+                </a>
               </div>
 
             </div>
@@ -387,7 +393,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="lg:col-span-4 space-y-1">
               <div className="flex items-center gap-1.5">
                 <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  © 2026 Less Legal. All Rights Reserved.
+                  © 2026 Less Creation. All Rights Reserved.
                 </p>
                 <button
                   id="admin-secret-lock-btn"
@@ -399,7 +405,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </button>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Founded & Created by Anurag Gurauli. | Less Creation
+                Less Legal is the flagship digital product of Less Creation. Founded & created by Anurag Gurauli.
               </p>
             </div>
 

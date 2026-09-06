@@ -7,7 +7,8 @@ import {
   Smartphone, Check, Layers, LayoutGrid, Music, Edit3,
   Search, Zap, Share2, MessageSquare, ChevronRight,
   Copy, Play, ChevronDown, UserCheck, Gavel, BookOpen, Scan, Calculator, Grid,
-  Rocket, Star, Users, Clock, User, Quote, Lightbulb, Target, Landmark
+  Rocket, Star, Users, Clock, User, Quote, Lightbulb, Target, Landmark,
+  Shield, Server, Award, Cpu, RefreshCw, KeyRound, ExternalLink, HelpCircle
 } from 'lucide-react';
 import { LTLogo } from '../components/LTLogo';
 import { ThreeDDeviceShowcase } from '../components/ThreeDDeviceShowcase';
@@ -70,33 +71,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-scroll refs
+  // Smooth scroll helper
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Interactive Live Simulator State
+  const [simTab, setSimTab] = useState<'diary' | 'converter' | 'pdf' | 'whatsapp'>('diary');
   const simTabRef = useAutoScroll(0.7);
   const categoriesRef = useAutoScroll(0.7);
 
-  const getProductDesc = (prod: (typeof SITE_CONFIG.products)[0]) => {
-    if (language === 'hi') {
-      if (prod.id === 'prod-less-legal') return 'कानून पेशेवरों और नागरिकों के लिए कानूनी ज्ञान एवं डिजिटल उपयोगिताएँ।';
-      if (prod.id === 'prod-faget-app') return 'भारतीय लोगों के लिए इवेंट्स प्रबंधन ऐप। (Events management app for Indian Peoples)';
-      if (prod.id === 'prod-less-music') return 'भारतीय संस्कृति का 3000+ ऑफ़लाइन संगीत हब। (3000+ offline music Hub of India\'s culture)';
-      if (prod.id === 'prod-less-notes') return 'सरल और तेज़ उत्पादकता नोट्स एवं त्वरित दस्तावेज़ पैड।';
-    }
-    return prod.description;
-  };
-
-  // 1. Interactive Simulator Tab
-  const [simTab, setSimTab] = useState<'diary' | 'converter' | 'pdf' | 'whatsapp'>('diary');
-
-  // 2. Feature Search & Filter
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-
-  // 3. Live Land Area Converter State
+  // 1. Live Land Converter State
   const [landValue, setLandValue] = useState<number>(1);
   const [landUnit, setLandUnit] = useState<string>('bigha');
   const [copiedUnit, setCopiedUnit] = useState<string | null>(null);
 
-  // 4. Real Working Direct WhatsApp State
+  // 2. Search & Category State for Catalog
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  // 3. Direct WhatsApp Tool State
   const [waNumber, setWaNumber] = useState<string>('');
 
   const handleOpenWhatsApp = () => {
@@ -116,7 +113,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     }
   };
 
-  // 4. Interactive FAQ Accordion
+  // Interactive FAQ Accordion State
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   // Compute converted land values
@@ -130,7 +127,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     { key: 'Learning & Reference', label: t.featuresPage.categories.learningReference },
   ];
 
-  // Category translation mapping
   const getCategoryLabel = (category: string) => {
     switch (category) {
       case 'PDF & Files': return t.featuresPage.categories.pdfFiles;
@@ -160,150 +156,95 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const faqs = t.home.faqs;
 
   return (
-    <div className="space-y-8 sm:space-y-10 py-3 sm:py-4 overflow-hidden transition-colors duration-300">
+    <div className="space-y-10 sm:space-y-14 py-2 sm:py-4 overflow-hidden transition-colors duration-300 pb-16">
       
-      {/* 1. HERO SECTION WITH CINEMATIC GLASSMORPHISM & STUDIO FLOOR */}
-      <section className="relative text-slate-900 dark:text-white pt-2 sm:pt-4 pb-8 sm:pb-12 overflow-hidden">
+      {/* 1. HERO SECTION: LESS CREATION PARENT BRAND */}
+      <section className="relative text-slate-900 dark:text-white pt-1 sm:pt-4 pb-6 sm:pb-10 overflow-hidden">
         <HeroAmbientGlow />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 space-y-8 sm:space-y-10">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 space-y-6 sm:space-y-10">
           
-          {/* Split Side-by-Side Grid for Laptop & Tablet Modes */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center">
             
-            {/* Left Column: Brand Logo, App Name, Title, Subtitle & Action CTAs */}
+            {/* Left Column: Brand Statement & Action CTAs */}
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-7 space-y-6 sm:space-y-7 text-center sm:text-left flex flex-col items-center sm:items-start"
+              className="lg:col-span-7 space-y-5 sm:space-y-7 text-center sm:text-left flex flex-col items-center sm:items-start"
             >
-              <div className="flex flex-col gap-3.5 sm:gap-4 items-center sm:items-start w-full">
+              <div className="flex flex-col gap-2.5 sm:gap-3.5 items-center sm:items-start w-full">
                 
-                {/* Hero Status Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 dark:bg-blue-900/30 border border-blue-200/80 dark:border-blue-700/40 text-[#2563EB] dark:text-blue-400 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-2xs backdrop-blur-md">
-                  <Zap className="w-3.5 h-3.5 fill-[#2563EB] dark:fill-blue-400 text-[#2563EB] dark:text-blue-400" />
-                  FLAGSHIP PRODUCT STUDIO
+                {/* Brand Studio Pill */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 dark:bg-blue-900/30 border border-blue-200/90 dark:border-blue-700/40 text-blue-700 dark:text-blue-300 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-2xs backdrop-blur-md">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <span>{t.home.heroBadge || "LESS CREATION • TECHNOLOGY & PRODUCT STUDIO"}</span>
                 </div>
 
-                {/* Main Headline */}
-                <div className="w-full flex flex-col gap-1.5 mt-1">
-                  <h1 className="text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.2rem] font-black tracking-tight leading-[1.04] text-slate-900 dark:text-white">
-                    <span className="block text-slate-900 dark:text-slate-100">Less Legal :</span>
-                    <span className="block mt-1">
-                      All in One <span className="text-[#2563EB] dark:text-[#3B82F6]">Smart App</span>
+                {/* Primary Company Headline */}
+                <div className="w-full flex flex-col gap-1 mt-0.5">
+                  <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[3.8rem] font-black tracking-tight leading-[1.1] text-slate-900 dark:text-white">
+                    <span className="block text-slate-900 dark:text-slate-100">
+                      {isHindi ? t.home.heroTitlePart1 : "Technology that makes"}
+                    </span>
+                    <span className="block mt-0.5 text-blue-600 dark:text-blue-400">
+                      {isHindi ? t.home.heroTitlePart2 : "difficult things simple."}
                     </span>
                   </h1>
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-slate-200 mt-2 sm:mt-3">
-                    {language === 'hi' ? 'पावरफुल डिजिटल टूल्स : मेड सिंपल' : 'Powerful Digital Tools : Made Simple'}
-                  </h2>
                 </div>
                 
-                {/* Subtitle Paragraph */}
-                <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-[#B8B3AF] font-medium max-w-xl leading-relaxed mt-1">
-                  {t.home.heroSubtitle}
+                {/* Core Brand Description */}
+                <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-[#B8B3AF] font-medium max-w-xl leading-relaxed mt-0.5">
+                  {t.home.heroSubtitle || "Less Creation builds simple, useful and affordable digital products designed to solve real-world problems."}
                 </p>
               </div>
 
-              {/* Features Icons Grid (6 Items in a neat row) */}
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4 w-full max-w-full sm:max-w-xl">
-                <div className="flex flex-col items-center gap-1.5 group cursor-default">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-indigo-100/70 dark:bg-indigo-900/30 flex items-center justify-center shadow-xs border border-indigo-200/60 dark:border-indigo-800/40 group-hover:scale-105 transition-transform">
-                    <Calendar className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">Case Diary</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 group cursor-default">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-emerald-100/70 dark:bg-emerald-900/30 flex items-center justify-center shadow-xs border border-emerald-200/60 dark:border-emerald-800/40 group-hover:scale-105 transition-transform">
-                    <BookOpen className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">Bare Acts</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 group cursor-default">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-blue-100/70 dark:bg-blue-900/30 flex items-center justify-center shadow-xs border border-blue-200/60 dark:border-blue-800/40 group-hover:scale-105 transition-transform">
-                    <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">PDF Tools</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 group cursor-default">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-blue-100/70 dark:bg-blue-900/30 flex items-center justify-center shadow-xs border border-blue-200/60 dark:border-blue-800/40 group-hover:scale-105 transition-transform">
-                    <Scan className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">Scanner</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 group cursor-default">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-amber-100/70 dark:bg-amber-900/30 flex items-center justify-center shadow-xs border border-amber-200/60 dark:border-amber-800/40 group-hover:scale-105 transition-transform">
-                    <Calculator className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">Calculations</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 group cursor-default">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-purple-100/70 dark:bg-purple-900/30 flex items-center justify-center shadow-xs border border-purple-200/60 dark:border-purple-800/40 group-hover:scale-105 transition-transform">
-                    <Grid className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 text-center leading-tight">30+ Tools</span>
-                </div>
-              </div>
-
               {/* Action CTAs Row */}
-              <div className="flex flex-col sm:flex-row flex-wrap items-center sm:items-start justify-center sm:justify-start gap-4 pt-2 w-full">
+              <div className="flex flex-col sm:flex-row flex-wrap items-center sm:items-start justify-center sm:justify-start gap-3.5 sm:gap-4 pt-2 w-full">
+                {/* Primary CTA: Explore Products */}
                 <button
-                  onClick={() => onNavigate('download')}
-                  className="flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:via-blue-600 hover:to-sky-600 text-white shadow-[0_10px_25px_rgba(37,99,235,0.35)] hover:shadow-[0_12px_30px_rgba(37,99,235,0.45)] border border-white/20 transition-all transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto shrink-0 group cursor-pointer backdrop-blur-md"
+                  id="hero-explore-products-btn"
+                  onClick={() => scrollToSection('product-ecosystem')}
+                  className="flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:via-blue-600 hover:to-sky-600 text-white shadow-[0_10px_25px_rgba(37,99,235,0.35)] hover:shadow-[0_14px_32px_rgba(37,99,235,0.45)] border border-white/20 transition-all transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto shrink-0 group cursor-pointer font-extrabold text-sm sm:text-base whitespace-nowrap badge-one-line"
                 >
-                  <Download className="w-6 h-6 group-hover:translate-y-0.5 transition-transform shrink-0" />
-                  <div className="text-left">
-                    <div className="text-base sm:text-lg font-black leading-tight">Download Less Legal</div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-blue-100 leading-tight mt-0.5">For Android (APK / Play Store)</div>
-                  </div>
+                  <LayoutGrid className="w-5 h-5 shrink-0" />
+                  <span>{t.home.ctaExploreProducts || "Explore Products"}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0" />
                 </button>
 
-                {/* Apple App Store Block */}
-                <div className="flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl bg-[#0D0D12] hover:bg-black text-white shadow-xl w-full sm:w-auto cursor-default shrink-0 transition-colors">
-                  <svg className="w-6 h-6 fill-current text-white shrink-0 drop-shadow" viewBox="0 0 170 170">
-                    <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-5.02.24-9.94-1.81-14.77-6.14-3.32-2.92-7.25-7.65-11.8-14.19-6.3-8.99-11.23-18.72-14.77-29.2-3.54-10.48-5.31-20.35-5.31-29.61 0-12.28 3.12-22.58 9.38-30.9 6.25-8.32 14.16-12.58 23.71-12.78 4.67 0 9.77 1.15 15.3 3.44 5.53 2.29 9.38 3.44 11.55 3.44 2.06 0 5.96-1.15 11.71-3.44 5.75-2.29 10.66-3.35 14.73-3.18 10.15.53 18.23 4.29 24.26 11.27-9.08 5.53-13.52 13.1-13.31 22.7.21 7.57 3.09 13.9 8.64 18.99 5.55 5.09 12.22 7.9 20.02 8.44-2.53 7.42-6.02 14.91-10.47 22.48zM119.22 31.75c0-6.12 2.22-11.83 6.66-17.13 4.44-5.3 9.94-8.58 16.5-9.84.21 1.06.32 2.02.32 2.87 0 6.02-2.25 11.72-6.75 17.1-4.5 5.38-10.05 8.71-16.65 9.98-.08-.98-.08-1.96-.08-2.98z" />
-                  </svg>
-                  <div className="text-left">
-                    <div className="text-base sm:text-lg font-bold leading-tight">App Store</div>
-                    <div className="text-[10px] sm:text-xs font-medium text-slate-400 leading-tight mt-0.5">Coming Soon for iOS</div>
-                  </div>
-                </div>
+                {/* Secondary CTA: Discover Flagship App (Less Legal) */}
+                <button
+                  id="hero-discover-flagship-btn"
+                  onClick={() => scrollToSection('flagship-section')}
+                  className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-2xl bg-white/90 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white border border-slate-200/90 dark:border-white/15 shadow-sm hover:shadow-md transition-all transform hover:scale-[1.02] active:scale-95 w-full sm:w-auto shrink-0 cursor-pointer font-bold text-sm sm:text-base whitespace-nowrap badge-one-line backdrop-blur-md"
+                >
+                  <Scale className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                  <span>{t.home.ctaDiscoverLessLegal || "Discover Less Legal"}</span>
+                </button>
               </div>
 
-              {/* Stats Row */}
-              <div className="flex flex-wrap items-center justify-start gap-4 sm:gap-6 mt-4 w-full text-slate-800 dark:text-slate-200">
-                <div className="flex items-center gap-2.5">
-                  <Users className="w-6 h-6 text-[#2563EB]" />
-                  <div className="flex flex-col leading-tight text-left">
-                    <span className="font-black text-sm sm:text-base text-slate-900 dark:text-white">10K+</span>
-                    <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Happy Users</span>
-                  </div>
+              {/* Trust Indicators Bar */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-4 w-full text-slate-800 dark:text-slate-200 border-t border-slate-200/70 dark:border-white/10">
+                <div className="flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                  <span className="text-[11px] sm:text-xs font-bold leading-tight">{t.home.trustFastEngine}</span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <Star className="w-6 h-6 fill-amber-400 text-amber-500" />
-                  <div className="flex flex-col leading-tight text-left">
-                    <span className="font-black text-sm sm:text-base text-slate-900 dark:text-white">4.8</span>
-                    <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">User Rating</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span className="text-[11px] sm:text-xs font-bold leading-tight">{t.home.trustPrivacy}</span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-6 h-6 text-emerald-500" />
-                  <div className="flex flex-col leading-tight text-left">
-                    <span className="font-black text-sm sm:text-base text-slate-900 dark:text-white">Trusted</span>
-                    <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Safe & Secure</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <Grid className="w-4 h-4 text-indigo-500 shrink-0" />
+                  <span className="text-[11px] sm:text-xs font-bold leading-tight">{t.home.trustToolsCount}</span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <Rocket className="w-6 h-6 text-blue-500" />
-                  <div className="flex flex-col leading-tight text-left">
-                    <span className="font-black text-sm sm:text-base text-slate-900 dark:text-white">27+</span>
-                    <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Useful Tools</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <Smartphone className="w-4 h-4 text-amber-500 shrink-0" />
+                  <span className="text-[11px] sm:text-xs font-bold leading-tight">{t.home.trustAndroidReady}</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Right Column: 3D Interactive Android Device Showcase + Floating Cards */}
+            {/* Right Column: 3D Interactive Showcase */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, x: 20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -314,193 +255,182 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Bottom Feature Bar (Frosted Glass Pill Container) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6 }}
-            className="rounded-3xl sm:rounded-full bg-white/85 dark:bg-white/5 backdrop-blur-2xl border border-white/90 dark:border-white/10 shadow-[0_20px_45px_-12px_rgba(37,99,235,0.08)] py-5 px-6 sm:px-10 flex flex-wrap items-center justify-between gap-6 w-full"
-          >
-            <div className="flex items-center gap-3.5 group cursor-default">
-              <div className="w-11 h-11 rounded-2xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-[#2563EB] dark:text-blue-400 shrink-0">
-                <BookOpen className="w-6 h-6 group-hover:scale-110 transition-transform" />
+        </div>
+      </section>
+
+      {/* 2. PRODUCT ECOSYSTEM SECTION */}
+      <section id="product-ecosystem" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-white/5 border border-blue-500/20 dark:border-blue-400/20 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
+            <LayoutGrid className="w-3.5 h-3.5" />
+            <span>{t.home.ecosystemBadge || "PRODUCT ECOSYSTEM"}</span>
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+            {t.home.ecosystemTitle || "Products Built for Real-World Use"}
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
+            {t.home.ecosystemSub || "Purposeful digital applications crafted for clarity, utility, and everyday efficiency."}
+          </p>
+        </ScrollReveal>
+
+        {/* Ecosystem Grid: 1 Flagship Hero Card + 3 Innovation Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          
+          {/* Flagship Product Card: Less Legal (Occupies 7 cols on desktop) */}
+          <div className="lg:col-span-7 rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-blue-50/90 via-sky-50/40 to-white dark:from-[#111827] dark:via-[#0F172A] dark:to-[#1E293B] border-2 border-blue-500/50 dark:border-blue-400/40 shadow-[0_20px_50px_rgba(59,130,246,0.18)] flex flex-col justify-between space-y-6 relative overflow-hidden">
+            {/* Top Badge */}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[11px] font-black uppercase tracking-wider shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 fill-slate-950 shrink-0" />
+                <span>{t.home.flagshipBadge || "FLAGSHIP PRODUCT"}</span>
               </div>
-              <div className="flex flex-col text-left">
-                <span className="text-sm sm:text-base font-extrabold text-slate-800 dark:text-white leading-tight">Simple Interface</span>
-                <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Easy for everyone</span>
+              <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                {isHindi ? "उपलब्ध • एंड्रॉइड 7.0+" : "Available • Android 7.0+"}
+              </span>
+            </div>
+
+            {/* Product Body */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md">
+                  <Scale className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+                    {t.home.flagshipTitle || "Less Legal"}
+                  </h3>
+                  <p className="text-xs font-bold text-blue-600 dark:text-blue-400">
+                    {isHindi ? "ऑल-इन-वन स्मार्ट कानूनी वर्कस्पेस" : "All-in-One Smart Legal Workspace"}
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                {t.home.flagshipDesc || "An all-in-one smart workspace bringing practical legal utilities, reference tools, PDF tools and everyday productivity features together."}
+              </p>
+
+              {/* Feature Chips */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {[
+                  isHindi ? "बेयर एक्ट्स लाइब्रेरी" : "Bare Acts Library",
+                  isHindi ? "पीडीएफ टूल्स सूट" : "PDF Suite",
+                  isHindi ? "केस डायरी व प्लानर" : "Case Diary",
+                  isHindi ? "क्षेत्रफल कनवर्टर" : "Area Converter",
+                  isHindi ? "डायरेक्ट व्हाट्सएप" : "Direct WhatsApp",
+                  isHindi ? "ऑफलाइन लेस-शेयर" : "Offline LessShare"
+                ].map((tag, idx) => (
+                  <span key={idx} className="px-2.5 py-1 rounded-xl bg-white/80 dark:bg-white/10 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
 
-            <div className="flex items-center gap-3.5 group cursor-default">
-              <div className="w-11 h-11 rounded-2xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-[#2563EB] dark:text-blue-400 shrink-0">
-                <Clock className="w-6 h-6 group-hover:scale-110 transition-transform" />
-              </div>
-              <div className="flex flex-col text-left">
-                <span className="text-sm sm:text-base font-extrabold text-slate-800 dark:text-white leading-tight">Save Time</span>
-                <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Get work done faster</span>
-              </div>
-            </div>
+            {/* Action Bar */}
+            <div className="pt-4 border-t border-blue-200/60 dark:border-white/10 flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => scrollToSection('flagship-section')}
+                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
+              >
+                <span>{isHindi ? "लाइव डेमो व विवरण देखें" : "Explore Flagship App"}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
 
-            <div className="flex items-center gap-3.5 group cursor-default">
-              <div className="w-11 h-11 rounded-2xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-[#2563EB] dark:text-blue-400 shrink-0">
-                <Smartphone className="w-6 h-6 group-hover:scale-110 transition-transform" />
-              </div>
-              <div className="flex flex-col text-left">
-                <span className="text-sm sm:text-base font-extrabold text-slate-800 dark:text-white leading-tight">All in One</span>
-                <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Multiple tools in one app</span>
-              </div>
+              <button
+                onClick={() => onNavigate('download')}
+                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
+              >
+                <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span>{isHindi ? "APK डाउनलोड करें" : "Download APK"}</span>
+              </button>
             </div>
+          </div>
 
-            <div className="flex items-center gap-3.5 group cursor-default">
-              <div className="w-11 h-11 rounded-2xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
-                <ShieldCheck className="w-6 h-6 group-hover:scale-110 transition-transform" />
-              </div>
-              <div className="flex flex-col text-left">
-                <span className="text-sm sm:text-base font-extrabold text-slate-800 dark:text-white leading-tight">100% Secure</span>
-                <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">Your data is safe</span>
-              </div>
-            </div>
+          {/* Secondary Products / Innovation Pipeline (Occupies 5 cols on desktop) */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-4">
             
-            {/* Decorative Cursive Handwriting */}
-            <div className="hidden xl:block transform -rotate-3 text-right">
-              <div className="font-serif italic font-extrabold text-lg sm:text-xl text-[#2563EB] dark:text-[#60A5FA] tracking-wide leading-tight">
-                Less Effort
+            {/* Card 1: Less Docs & Notes */}
+            <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-2 hover:-translate-y-1 transition-transform">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-base font-bold text-slate-900 dark:text-white">Less Docs & Notes</h4>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20 whitespace-nowrap">
+                  {t.home.upcomingBadge || "In R&D"}
+                </span>
               </div>
-              <div className="font-serif italic font-extrabold text-xl sm:text-2xl text-[#2563EB] dark:text-[#60A5FA] tracking-wide leading-tight -mt-0.5">
-                More Possibilities
-              </div>
-              <div className="w-full h-1 rounded-full bg-gradient-to-r from-transparent via-[#2563EB] to-transparent opacity-80 mt-1" />
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isHindi 
+                  ? "त्वरित नोट्स और सुरक्षित स्थानीय भंडारण के लिए ऑन-डिवाइस ड्राफ्टिंग एवं ओसीआर कैप्चर।" 
+                  : "Lightweight on-device drafting, instant markdown, and OCR capture designed for rapid notes and secure local storage."}
+              </p>
             </div>
-          </motion.div>
+
+            {/* Card 2: Less Finance & Tools */}
+            <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-2 hover:-translate-y-1 transition-transform">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+                    <Calculator className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-base font-bold text-slate-900 dark:text-white">Less Finance & Tools</h4>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20 whitespace-nowrap">
+                  {isHindi ? "भविष्य की अवधारणा" : "Future Concept"}
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isHindi 
+                  ? "साधारण ब्याज, स्टाम्प शुल्क और ईएमआई कैलकुलेटर जो वित्तीय गणनाओं को सहज बनाते हैं।" 
+                  : "Simple interest, stamp duty, EMI calculators, and statutory financial estimates made intuitive and instant."}
+              </p>
+            </div>
+
+            {/* Card 3: Less AI Studio */}
+            <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-2 hover:-translate-y-1 transition-transform">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
+                    <Zap className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-base font-bold text-slate-900 dark:text-white">Less AI Studio</h4>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/20 whitespace-nowrap">
+                  {isHindi ? "अन्वेषण में" : "In Exploration"}
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                {isHindi 
+                  ? "दस्तावेज़ सारांशीकरण और कानूनी पाठ अनुक्रमण के लिए निजी ऑन-डिवाइस एआई सहायक।" 
+                  : "Private on-device AI helpers for document summarization, legal text indexing, and rapid query parsing."}
+              </p>
+            </div>
+
+          </div>
 
         </div>
       </section>
 
-      {/* 1.5. PREMIUM GOLDEN FOMO BANNER CARD */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 15 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-slate-50 to-[#F1F5F9] dark:from-[#090D1A] dark:via-[#02040A] dark:to-[#0B0F19] text-slate-900 dark:text-white border-2 border-slate-200/90 dark:border-[#E5BA55]/40 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(229,186,85,0.12)] p-6 sm:p-8 lg:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10 select-none"
-        >
-          {/* Moving golden shine overlay in the card */}
-          <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_30%,rgba(229,186,85,0.04)_50%,transparent_70%)] bg-[length:200%_100%] animate-[gold-sweep_6s_linear_infinite] pointer-events-none" />
-          
-          {/* Left Column: Text & Badges */}
-          <div className="space-y-4 sm:space-y-5 flex-1 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 dark:border-[#E5BA55]/50 text-amber-700 dark:text-[#E5BA55] text-xs font-black uppercase tracking-wider animate-pulse">
-              <Sparkles className="w-4 h-4 fill-amber-500 dark:fill-[#E5BA55]" />
-              {language === 'hi' ? 'सीमित समय - लाइफटाइम धमाका ऑफर' : 'LIMITED TIME - LIFETIME SPECIAL OFFER'}
-            </div>
-            
-            <div className="space-y-2">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
-                {language === 'hi' 
-                  ? 'हमेशा के लिए लें (Permanent) प्रीमियम मेंबरशिप!' 
-                  : 'Claim Permanent Lifetime Premium Membership!'}
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl font-semibold leading-relaxed">
-                {language === 'hi'
-                  ? 'सभी 30+ प्रीमियम डिजिटल टूल्स, Case Diary, Bare Acts और फ़्यूचर अपडेट्स का असीमित लाभ उठाएं। कोई मासिक रिन्यूअल फीस नहीं, केवल एक बार भुगतान करें और हमेशा सुरक्षित रहें।'
-                  : 'Unlock unlimited access to all 30+ smart tools, case diaries, custom Bare Acts, & future upgrades. No monthly renewals, no hidden fees, pay once and keep it forever.'}
-              </p>
-            </div>
-
-            {/* Badges row */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 text-[10px] sm:text-xs font-bold text-slate-700 dark:text-amber-400/90">
-              <span className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-2.5 py-1 rounded-lg text-slate-700 dark:text-slate-200">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
-                {language === 'hi' ? 'कोई रिन्यूअल नहीं' : 'No Renewals Ever'}
-              </span>
-              <span className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-2.5 py-1 rounded-lg text-slate-700 dark:text-slate-200">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
-                {language === 'hi' ? 'निःशुल्क भविष्य के अपडेट' : 'Free Future Upgrades'}
-              </span>
-              <span className="flex items-center gap-1 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-2.5 py-1 rounded-lg text-slate-700 dark:text-slate-200">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
-                {language === 'hi' ? '100% सुरक्षित भुगतान' : '100% Secure Checkout'}
-              </span>
-            </div>
-          </div>
-
-          {/* Right Column: Pricing, Countdown Timer & Claim CTA */}
-          <div className="flex flex-col items-center justify-center bg-slate-100/90 dark:bg-black/40 border border-slate-200 dark:border-[#E5BA55]/20 rounded-2xl p-5 sm:p-6 w-full lg:w-80 shrink-0 relative overflow-hidden shadow-inner space-y-4">
-            
-            {/* Countdown Box */}
-            <div className="text-center w-full space-y-1.5">
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                {language === 'hi' ? 'ऑफर समाप्त होने का समय:' : 'OFFER CLOSES IN:'}
-              </span>
-              
-              <div className="flex items-center justify-center gap-2">
-                <div className="flex flex-col items-center">
-                  <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-[#E5BA55]/20 text-slate-900 dark:text-[#E5BA55] w-12 h-12 flex items-center justify-center text-lg font-black rounded-lg shadow font-mono">
-                    {timeLeft.hours.toString().padStart(2, '0')}
-                  </div>
-                  <span className="text-[9px] text-slate-500 font-bold mt-1 uppercase">hrs</span>
-                </div>
-                <span className="text-amber-500 dark:text-[#E5BA55] font-black text-xl mb-6 animate-pulse">:</span>
-                <div className="flex flex-col items-center">
-                  <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-[#E5BA55]/20 text-slate-900 dark:text-[#E5BA55] w-12 h-12 flex items-center justify-center text-lg font-black rounded-lg shadow font-mono">
-                    {timeLeft.minutes.toString().padStart(2, '0')}
-                  </div>
-                  <span className="text-[9px] text-slate-500 font-bold mt-1 uppercase">mins</span>
-                </div>
-                <span className="text-amber-500 dark:text-[#E5BA55] font-black text-xl mb-6 animate-pulse">:</span>
-                <div className="flex flex-col items-center">
-                  <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-red-500/20 text-red-600 dark:text-[#E03A3E] w-12 h-12 flex items-center justify-center text-lg font-black rounded-lg shadow font-mono">
-                    {timeLeft.seconds.toString().padStart(2, '0')}
-                  </div>
-                  <span className="text-[9px] text-red-500 dark:text-red-400 font-bold mt-1 uppercase">secs</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Pricing Section with cross discount */}
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xs sm:text-sm text-slate-400 dark:text-slate-500 line-through font-bold">
-                  ₹329
-                </span>
-                <span className="bg-red-500/10 dark:bg-red-500/15 border border-red-500/30 text-red-600 dark:text-red-400 text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider animate-bounce">
-                  70% OFF
-                </span>
-              </div>
-              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">
-                ₹99 <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">/ {language === 'hi' ? 'एक बार' : 'One Time'}</span>
-              </div>
-            </div>
-
-            {/* Claim CTA Button with moving sweep */}
-            <button
-              onClick={() => onNavigate('premium')}
-              className="gold-shimmer-button w-full py-3 sm:py-3.5 rounded-xl uppercase tracking-wider text-xs font-black cursor-pointer transform transition-all duration-300 hover:scale-[1.03] active:scale-95 shadow-md flex items-center justify-center gap-1.5"
-            >
-              <Sparkles className="w-4 h-4 fill-amber-950 shrink-0" />
-              <span>{language === 'hi' ? 'परमानेंट प्रीमियम लें' : 'Claim Premium Now'}</span>
-            </button>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* 2. INTERACTIVE LIVE APP SIMULATOR SHOWCASE */}
-      <section id="interactive-simulator" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto mb-6 space-y-3">
+      {/* 3. LESS LEGAL FLAGSHIP SHOWCASE & LIVE SIMULATOR */}
+      <section id="flagship-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-bold">
             <Smartphone className="w-4 h-4" />
-            {t.home.simBadge}
+            <span>{t.home.simBadge}</span>
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
             {t.home.simTitle}
           </h2>
-          <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
             {t.home.simSub}
           </p>
         </ScrollReveal>
 
         {/* Simulator Tabs Header */}
-        <div className="overflow-hidden w-full pb-4 mask-edges-x max-w-7xl mx-auto px-1">
+        <div className="overflow-hidden w-full pb-2 mask-edges-x max-w-7xl mx-auto px-1">
           <div ref={simTabRef} className="flex items-center overflow-x-auto no-scrollbar w-full select-none cursor-grab">
             {[...Array(4)].map((_, arrayIdx) => (
               <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
@@ -530,10 +460,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
         {/* Simulator Frame Container */}
         <div className="bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-400/20 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden">
-          {/* Subtle Ambient Red Blur Inside Card */}
           <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Phone Header Mockup */}
+          {/* Mock Header */}
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3.5 mb-5">
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
@@ -572,13 +501,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="bg-gradient-to-br from-blue-50/60 via-white/80 to-sky-50/40 dark:from-[#111827]/90 dark:via-[#0F172A]/85 dark:to-[#1E293B]/90 backdrop-blur-xl p-4 rounded-2xl border border-blue-400/35 dark:border-blue-500/25 shadow-sm space-y-3">
                   <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#B8B3AF] gap-2">
                     <span className="font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap badge-one-line">{t.home.simScheduleTitle}</span>
-                    <span className="whitespace-nowrap badge-one-line shrink-0">{t.home.simActiveCases}</span>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 whitespace-nowrap badge-one-line shrink-0">
+                      {isHindi ? 'नमूना डेटा (Sample Data)' : 'Demo Preview • Sample Data'}
+                    </span>
                   </div>
 
                   <div className="space-y-2.5">
-                    <div className="p-3 sm:p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 flex items-center justify-between gap-2 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <div className="p-3 sm:p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 flex items-center justify-between gap-2 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                       <div className="space-y-0.5 min-w-0">
-                        <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Sharma vs. State of UP</div>
+                        <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Sharma vs. State of UP <span className="text-[10px] font-normal text-slate-400">(Sample)</span></div>
                         <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">Court No. 4 • Criminal Appeal • Item #12</div>
                       </div>
                       <span className="text-[10px] font-bold bg-blue-500/15 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-lg border border-blue-500/30 whitespace-nowrap badge-one-line shrink-0">
@@ -586,9 +517,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       </span>
                     </div>
 
-                    <div className="p-3 sm:p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 flex items-center justify-between gap-2 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <div className="p-3 sm:p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 flex items-center justify-between gap-2 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                       <div className="space-y-0.5 min-w-0">
-                        <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Verma Infra vs. City Development</div>
+                        <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] truncate">Verma Infra vs. City Development <span className="text-[10px] font-normal text-slate-400">(Sample)</span></div>
                         <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] truncate">District Tribunal • Arbitration • Item #5</div>
                       </div>
                       <span className="text-[10px] font-bold bg-sky-500/15 text-sky-700 dark:text-sky-300 px-2.5 py-1 rounded-lg border border-sky-500/30 whitespace-nowrap badge-one-line shrink-0">
@@ -599,15 +530,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center">
                     <div className="text-xl font-extrabold text-blue-600 dark:text-blue-400">24</div>
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simPendingTasks}</div>
                   </div>
-                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center">
                     <div className="text-xl font-extrabold text-blue-600 dark:text-blue-400">100%</div>
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simAutoSavedNotes}</div>
                   </div>
-                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center col-span-2 sm:col-span-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                  <div className="p-3.5 bg-gradient-to-br from-blue-50/50 to-white/80 dark:from-[#111827]/70 dark:to-[#0F172A]/80 rounded-xl border border-blue-200/50 dark:border-blue-800/25 shadow-xs text-center col-span-2 sm:col-span-1">
                     <div className="text-xl font-extrabold text-slate-900 dark:text-[#F5F2EE]">Local</div>
                     <div className="text-[10px] text-slate-500 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simOnDeviceDb}</div>
                   </div>
@@ -664,7 +595,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         <div 
                           key={key} 
                           onClick={() => handleCopyValue(key, convertedVal)}
-                          className={`p-3 rounded-xl border transition-all cursor-pointer hover:-translate-y-1 hover:shadow-xs duration-300 ${
+                          className={`p-3 rounded-xl border transition-all cursor-pointer hover:-translate-y-0.5 duration-300 ${
                             isSelected 
                               ? 'bg-blue-500/10 dark:bg-blue-950/40 border-blue-300 dark:border-blue-800 text-blue-900 dark:text-blue-100 shadow-xs' 
                               : 'bg-white/40 dark:bg-slate-900/30 border-blue-200/40 dark:border-blue-800/20 hover:border-blue-400/30 hover:bg-blue-500/5 text-slate-600 dark:text-[#B8B3AF]'
@@ -698,19 +629,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <div className="text-xs font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap badge-one-line">{t.home.simPdfProcessingTitle}</div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-0.5 transition-all duration-300">
                       <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-1" />
                       <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfMergeTitle}</div>
                       <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfMergeDesc}</div>
                     </div>
 
-                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-0.5 transition-all duration-300">
                       <Lock className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-1" />
                       <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfEncryptTitle}</div>
                       <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfEncryptDesc}</div>
                     </div>
 
-                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <div className="p-3.5 bg-white/50 dark:bg-[#0F172A]/40 rounded-xl border border-blue-200/50 dark:border-blue-800/25 space-y-1 hover:-translate-y-0.5 transition-all duration-300">
                       <Share2 className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-1" />
                       <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] whitespace-nowrap badge-one-line">{t.home.simPdfTransferTitle}</div>
                       <div className="text-[10px] text-slate-600 dark:text-[#B8B3AF]">{t.home.simPdfTransferDesc}</div>
@@ -741,9 +672,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       {t.home.simWhatsappSub}
                     </div>
                     
-                    {/* Compact input & Left-aligned Chat Now Button */}
                     <div className="flex flex-wrap items-center justify-start gap-2.5 pt-1">
-                      {/* Compact Number Input Box */}
                       <div className="flex items-center gap-1.5 bg-white dark:bg-[#0A0A0C] border border-slate-200 dark:border-white/15 rounded-xl px-3 py-2 w-36 sm:w-44 focus-within:border-blue-500 transition-colors">
                         <span className="text-xs font-bold text-blue-600 dark:text-blue-400 shrink-0">+91</span>
                         <input
@@ -759,10 +688,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         />
                       </div>
 
-                      {/* Small Chat Now Button moved to Left Side */}
                       <button 
                         onClick={handleOpenWhatsApp}
-                        className="px-3 py-2 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 whitespace-nowrap badge-one-line shrink-0 hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md"
+                        className="px-3.5 py-2 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-xs rounded-xl flex items-center gap-1.5 whitespace-nowrap badge-one-line shrink-0 hover:scale-105 active:scale-95 transition-transform cursor-pointer shadow-md"
                         title={t.home.simWhatsappBtn}
                       >
                         <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#25D366]" />
@@ -781,595 +709,266 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
           </AnimatePresence>
         </div>
+
+        {/* Lifetime Pass Banner Card */}
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-slate-50 to-[#F1F5F9] dark:from-[#090D1A] dark:via-[#02040A] dark:to-[#0B0F19] text-slate-900 dark:text-white border-2 border-slate-200/90 dark:border-[#E5BA55]/40 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(229,186,85,0.12)] p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 select-none">
+          <div className="space-y-3 flex-1 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 dark:border-[#E5BA55]/50 text-amber-700 dark:text-[#E5BA55] text-xs font-black uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 fill-amber-500 dark:fill-[#E5BA55]" />
+              <span>{language === 'hi' ? 'सीमित समय - लाइफटाइम पास' : 'LIMITED TIME - LIFETIME ACCESS'}</span>
+            </div>
+            
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white leading-tight">
+              {language === 'hi' 
+                ? 'लेस लीगल स्थायी प्रीमियम मेंबरशिप' 
+                : 'Less Legal Permanent Lifetime Access'}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl font-medium leading-relaxed">
+              {language === 'hi'
+                ? 'सभी 30+ टूल्स, केस डायरी, बेयर एक्ट्स और भविष्य के अपडेट्स का स्थायी लाभ। कोई आवर्ती शुल्क नहीं।'
+                : 'Unlock all 30+ smart tools, case diary, custom Bare Acts & free lifetime upgrades with a one-time pass.'}
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center justify-center bg-white/80 dark:bg-black/40 border border-slate-200 dark:border-[#E5BA55]/20 rounded-2xl p-4 sm:p-5 w-full lg:w-72 shrink-0 space-y-3 shadow-xs">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-xs text-slate-400 line-through font-bold">₹329</span>
+                <span className="bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-black px-1.5 py-0.5 rounded uppercase">70% OFF</span>
+              </div>
+              <div className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">
+                ₹99 <span className="text-xs text-slate-500 font-bold">/ {language === 'hi' ? 'एक बार' : 'Lifetime'}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => onNavigate('premium')}
+              className="gold-shimmer-button w-full py-2.5 rounded-xl uppercase tracking-wider text-xs font-black cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+            >
+              <Sparkles className="w-3.5 h-3.5 fill-amber-950 shrink-0" />
+              <span>{language === 'hi' ? 'प्रीमियम पास लें' : 'Get Lifetime Pass'}</span>
+            </button>
+          </div>
+        </div>
       </section>
 
-      {/* 3. PRODUCT ECOSYSTEM GRID */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-6 space-y-3">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 dark:border-[#D8BD82]/30 text-amber-700 dark:text-[#D8BD82] text-xs font-bold">
-            <LayoutGrid className="w-3.5 h-3.5" />
-            {t.home.ecosystemBadge || "Product Ecosystem"}
+      {/* 4. WHY LESS CREATION: 5 FOUNDATIONAL PILLARS */}
+      <section id="why-less-creation" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-white/5 border border-blue-500/20 dark:border-blue-400/20 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
+            <Lightbulb className="w-3.5 h-3.5" />
+            <span>{t.home.whyBadge || "ENGINEERING PHILOSOPHY"}</span>
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-            {t.home.ecosystemTitle || "Built by Less Creation"}
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+            {t.home.whyTitle || "Why Less Creation?"}
           </h2>
-          <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-            {t.home.ecosystemSub || "Discover our suite of independent digital tools designed to simplify daily workflows."}
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
+            {t.home.whySubtitle || "The five foundational principles that guide everything we build."}
           </p>
         </ScrollReveal>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {SITE_CONFIG.products.map((product) => {
-            const isFlagship = product.category === 'Flagship Product';
-            const isAvailable = product.status === 'Available';
-            const isLifted = !!liftedProducts[product.id];
-
-            let IconComp = Scale;
-            if (product.iconName === 'Calendar') IconComp = Calendar;
-            if (product.iconName === 'Music') IconComp = Music;
-            if (product.iconName === 'Edit3') IconComp = Edit3;
-
+        {/* 5 Pillars Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {t.home.whyPillars.map((pillar, idx) => {
+            const icons = [Compass, Target, Shield, Lock, Users];
+            const PillarIcon = icons[idx % icons.length];
             return (
-              <StaggerItem key={product.id} interactive={true}>
-                <div 
-                  onClick={() => {
-                    setLiftedProducts(prev => ({
-                      ...prev,
-                      [product.id]: !prev[product.id]
-                    }));
-                  }}
-                  className={`group relative p-6 rounded-3xl transition-all duration-300 h-full flex flex-col backdrop-blur-2xl border-2 space-y-4 overflow-hidden text-slate-900 dark:text-[#F5F2EE] cursor-pointer ${
-                    isLifted
-                      ? '-translate-y-4 border-blue-500/75 dark:border-blue-400/75 shadow-[0_24px_50px_rgba(59,130,246,0.3)] bg-gradient-to-br from-blue-50/90 via-indigo-50/50 to-white/90 dark:from-[#1E293B] dark:via-[#0F172A] dark:to-[#111827]'
-                      : 'border-blue-400/35 dark:border-blue-500/25 shadow-[0_12px_35px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-2.5 bg-gradient-to-br from-white/95 via-blue-50/50 to-indigo-50/30 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90'
-                  }`}
-                >
-                  
-                  {isFlagship && (
-                    <div className="absolute top-0 right-0 -mt-3 mr-4">
-                      <span className="bg-gradient-to-r from-blue-600 to-sky-500 text-white text-[10px] font-extrabold uppercase px-3 py-1 rounded-full shadow-md border border-white/20">
-                        {language === 'hi' ? 'प्रमुख ऐप (Flagship)' : 'Flagship App'}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-1 transition-transform group-hover:scale-110">
-                    <IconComp className="w-6 h-6" />
+              <div 
+                key={idx}
+                className="p-6 rounded-3xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  <div className="w-11 h-11 rounded-2xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+                    <PillarIcon className="w-5 h-5" />
                   </div>
-
-                  <div className="flex-grow space-y-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-xl font-bold text-slate-900 dark:text-[#F5F2EE]">
-                        {product.name}
-                      </h3>
-                      {!isAvailable && (
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 dark:text-blue-300 bg-blue-500/10 dark:bg-blue-500/20 px-2 py-0.5 rounded-md border border-blue-500/30 whitespace-nowrap">
-                          {language === 'hi' ? 'विकास में (In Development)' : 'In Development'}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-                      {getProductDesc(product)}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-blue-200/40 dark:border-blue-800/20">
-                    {isAvailable ? (
-                      <button
-                        onClick={() => product.downloadUrl && onNavigate('download')}
-                        className="w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-transform hover:scale-[1.02] active:scale-[0.98]"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>{language === 'hi' ? 'ऐप प्राप्त करें' : 'Get App'}</span>
-                      </button>
-                    ) : (
-                      <button disabled className="w-full py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-[#77736F] flex items-center justify-center gap-2 cursor-not-allowed">
-                        <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                        <span>{language === 'hi' ? 'विकास में (In Development)' : 'In Development'}</span>
-                      </button>
-                    )}
-                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    {pillar.desc}
+                  </p>
                 </div>
-              </StaggerItem>
+                <div className="pt-2 text-[10px] font-black text-slate-400 uppercase tracking-wider">
+                  0{idx + 1} • {isHindi ? "आधारभूत सिद्धांत" : "Core Pillar"}
+                </div>
+              </div>
             );
           })}
-        </StaggerContainer>
+        </div>
       </section>
 
-      {/* FOUNDER PREVIEW SECTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up" className="relative z-10">
-          <div className="p-6 sm:p-10 rounded-[28px] bg-white/95 dark:bg-[#121622]/95 border border-slate-200/80 dark:border-white/10 shadow-xl overflow-hidden relative backdrop-blur-xl">
+      {/* 5. MISSION SECTION */}
+      <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollReveal direction="up">
+          <div className="rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-blue-900/90 via-slate-900 to-slate-950 text-white border border-blue-500/30 shadow-2xl relative overflow-hidden space-y-8">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
             
-            {/* Background glowing effects for the section */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 dark:bg-cyan-500/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none" />
+            <div className="max-w-3xl mx-auto text-center space-y-4">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider">
+                <Target className="w-3.5 h-3.5" />
+                <span>{t.home.missionBadge || "OUR MISSION"}</span>
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                {t.home.missionTitle || "Technology should not feel complicated."}
+              </h2>
+              <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed">
+                {t.home.missionSubtitle || "At Less Creation, our focus is on making useful digital technology easier to understand, easier to use, and accessible to everyone."}
+              </p>
+            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative z-10">
+            {/* Quote Banner */}
+            <div className="max-w-2xl mx-auto p-6 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md text-center italic text-sm sm:text-base text-blue-100 font-medium">
+              {t.home.missionQuote || "“When technology removes friction and respects human time, it transforms daily work into effortless progress.”"}
+            </div>
+
+            {/* Architecture Pipeline Steps */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-4 max-w-4xl mx-auto text-center">
+              {[
+                { step: "01", label: isHindi ? "विचार" : "Idea" },
+                { step: "02", label: isHindi ? "समस्या" : "Problem" },
+                { step: "03", label: isHindi ? "सरल तकनीक" : "Simple Tech" },
+                { step: "04", label: isHindi ? "उपयोगी उत्पाद" : "Useful Product" },
+                { step: "05", label: isHindi ? "वास्तविक प्रभाव" : "Real Impact" }
+              ].map((item, idx) => (
+                <div key={idx} className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                  <div className="text-[10px] font-bold text-blue-300">{item.step}</div>
+                  <div className="text-xs font-bold text-white whitespace-nowrap">{item.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* 6. TRUST & SECURITY SECTION */}
+      <section id="trust-security" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-900/30 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>{t.home.trustBadge || "TRUST & TECHNICAL INTEGRITY"}</span>
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+            {t.home.trustTitle || "Built on Real Security & Privacy"}
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
+            {t.home.trustSub || "We only claim technical capabilities that are genuinely implemented in our software."}
+          </p>
+        </ScrollReveal>
+
+        {/* 4 Trust Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {t.home.trustCards.map((card, idx) => {
+            const icons = [Cpu, Lock, KeyRound, Server];
+            const CardIcon = icons[idx % icons.length];
+            return (
+              <div 
+                key={idx}
+                className="p-5 sm:p-6 rounded-3xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+              >
+                <div className="space-y-2.5">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                    <CardIcon className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    {card.desc}
+                  </p>
+                </div>
+                <div className="pt-2 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>{isHindi ? "सत्यापित सुरक्षा" : "Verified Standard"}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 7. FOUNDER PREVIEW SECTION */}
+      <section id="founder-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ScrollReveal direction="up">
+          <div className="p-5 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-[#121622]/95 border border-slate-200/80 dark:border-white/10 shadow-xl overflow-hidden relative backdrop-blur-xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
               
-              {/* Left Column: Image & Quote */}
-              <div className="lg:col-span-4 flex flex-col gap-5">
-                {/* Image Card */}
-                <div className="relative rounded-[24px] p-2 bg-gradient-to-b from-slate-100 to-white dark:from-white/10 dark:to-white/5 border border-slate-200 dark:border-white/10 shadow-lg group">
-                  <div className="relative w-full aspect-[4/5] rounded-[18px] overflow-hidden bg-slate-900 isolate">
+              {/* Image Column: Compact on mobile, rich on desktop */}
+              <div className="lg:col-span-4 flex flex-col items-center lg:items-stretch">
+                <div className="relative rounded-2xl p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-white/10 dark:to-white/5 border border-slate-200 dark:border-white/10 shadow-md w-full max-w-[210px] sm:max-w-[260px] lg:max-w-none">
+                  <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-slate-900 isolate">
                     {!founderImgErr ? (
                       <img 
                         src="/images/anurag_tiwari.jpg" 
                         alt="Anurag Gurauli — Founder of Less Creation"
                         onError={() => setFounderImgErr(true)}
-                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 rounded-[18px]"
+                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 rounded-xl"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col items-center justify-center p-4 text-center rounded-[18px]">
+                      <div className="w-full h-full bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col items-center justify-center p-4 text-center rounded-xl">
                         <Scale className="w-10 h-10 text-amber-500 mb-2" />
-                        <div className="text-sm font-bold text-white">{t.founder.name}</div>
-                        <div className="text-[10px] text-amber-400">{t.founder.role}</div>
+                        <div className="text-sm font-bold text-white">Anurag Gurauli</div>
+                        <div className="text-[10px] text-amber-400">Founder, Less Creation</div>
                       </div>
                     )}
                     
-                    {/* Compact Professional Name Plate (Patti) Overlay */}
-                    <div className="absolute bottom-2 inset-x-2.5 p-2 sm:p-2.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-amber-500/30 text-center shadow-md">
-                      {/* Golden Accent Patti Header */}
-                      <div className="inline-block px-2 py-0.5 rounded bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow-xs leading-none">
+                    <div className="absolute bottom-2 inset-x-2 p-1.5 sm:p-2 rounded-xl bg-slate-950/85 backdrop-blur-md border border-amber-500/30 text-center shadow-md">
+                      <div className="inline-block px-1.5 py-0.5 rounded bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[8.5px] uppercase tracking-wider">
                         FOUNDER & ADVOCATE
                       </div>
-                      <h4 className="text-xs sm:text-sm font-black text-white tracking-wide uppercase mt-0.5 leading-tight">Anurag Gurauli</h4>
-                      <p className="text-[10px] text-amber-200/90 font-semibold leading-tight mt-0.5">
+                      <h4 className="text-xs font-black text-white tracking-wide uppercase mt-0.5 leading-tight">Anurag Gurauli</h4>
+                      <p className="text-[9.5px] text-amber-200/90 font-semibold leading-tight mt-0.5">
                         Founder, Less Creation • Advocate, High Court
                       </p>
                     </div>
                   </div>
                 </div>
-
-                {/* Quote Card */}
-                <div className="rounded-[20px] bg-blue-500/5 dark:bg-blue-950/15 border border-blue-200/20 dark:border-blue-900/20 p-5 relative">
-                  <Quote className="w-6 h-6 text-blue-500/30 absolute top-4 left-4 animate-pulse" />
-                  <div className="pl-8">
-                    <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium italic leading-relaxed">
-                      {isHindi 
-                        ? 'प्रौद्योगिकी को उपयोगी ज्ञान, कानूनी उपकरण और डिजिटल सेवाओं को सभी के लिए आसान बनाना चाहिए।'
-                        : 'Technology should make useful knowledge, legal tools and digital services easier to access.'}
-                    </p>
-                    <p className="text-[11px] font-bold text-blue-600 dark:text-blue-400 mt-3">
-                      — Anurag Gurauli
-                    </p>
-                  </div>
-                </div>
               </div>
 
-              {/* Middle Column: Text & Features */}
-              <div className="lg:col-span-5 flex flex-col justify-center space-y-6">
-                <div className="space-y-3">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-wider border border-blue-500/20 dark:border-blue-500/30">
+              {/* Story Column */}
+              <div className="lg:col-span-8 flex flex-col justify-center space-y-4 sm:space-y-5 text-center lg:text-left">
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0">
                     <User className="w-3.5 h-3.5" />
-                    <span>{isHindi ? 'संस्थापक से मिलें' : 'MEET THE FOUNDER'}</span>
+                    <span>{t.home.founderPreviewBadge || "MEET THE FOUNDER"}</span>
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
-                    {isHindi ? 'वास्तविक उपयोगिता के लिए एक' : 'Created by an Advocate for'}{' '}
-                    <span className="text-blue-600 dark:text-blue-400">{isHindi ? 'अधिवक्ता द्वारा निर्मित' : 'Real-World Utility'}</span>
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                    {t.home.founderPreviewTitle || "Created by an Advocate for Real-World Utility"}
                   </h3>
 
-                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {isHindi 
-                      ? 'अनुराग गुरौली, इलाहाबाद उच्च न्यायालय में कार्यरत अधिवक्ता ने, कानूनी पहुंच और रोजमर्रा के डिजिटल कार्यों को आसान बनाने के लिए Less Creation की स्थापना की।' 
-                      : 'Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.'}
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    {t.home.founderPreviewText || "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks."}
                   </p>
                 </div>
 
-                {/* 4 Feature Cards Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  {/* Card 1 */}
-                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
-                      <Gavel className="w-5 h-5" />
-                    </div>
-                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                      {isHindi ? 'कानूनी पृष्ठभूमि' : 'Legal Background'}
-                    </span>
-                  </div>
-                  {/* Card 2 */}
-                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
-                      <Lightbulb className="w-5 h-5" />
-                    </div>
-                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                      {isHindi ? 'समस्या केंद्रित' : 'Problem Focused'}
-                    </span>
-                  </div>
-                  {/* Card 3 */}
-                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
-                      <Users className="w-5 h-5" />
-                    </div>
-                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                      {isHindi ? 'उपयोगकर्ता दृष्टिकोण' : 'User First Approach'}
-                    </span>
-                  </div>
-                  {/* Card 4 */}
-                  <div className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 flex flex-col items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
-                      <Target className="w-5 h-5" />
-                    </div>
-                    <span className="text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                      {isHindi ? 'व्यावहारिक समाधान' : 'Practical Solutions'}
-                    </span>
+                <div className="p-3.5 sm:p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/40 dark:border-blue-900/30 text-xs sm:text-sm text-slate-700 dark:text-slate-300 italic font-medium text-left">
+                  {isHindi 
+                    ? "“तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। लेस क्रिएशन इसी विचार के साथ बनाया जा रहा है।”"
+                    : "“Technology is truly meaningful when it removes friction from essential tasks and makes knowledge accessible to everyone.”"}
+                  <div className="text-[11px] font-bold text-blue-600 dark:text-blue-400 not-italic mt-2">
+                    — Anurag Gurauli • Founder, Less Creation
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  {isHindi 
-                    ? 'Less Creation एक सरल विचार पर बना है: प्रौद्योगिकी को उपयोगी ज्ञान, कानूनी उपकरण और डिजिटल सेवाओं को सभी के लिए आसान बनाना चाहिए।' 
-                    : 'Less Creation is built around a simple idea: technology should make useful knowledge, legal tools and digital services easier to access for everyone.'}
-                </p>
-
-                <div className="pt-2">
+                <div className="pt-1 flex justify-center lg:justify-start">
                   <button
                     onClick={() => onNavigate('founder')}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold rounded-xl shadow-md shadow-blue-500/20 border border-white/20 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer w-full sm:w-auto"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold rounded-xl shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer w-full sm:w-auto"
                   >
                     <User className="w-4 h-4" />
-                    <span>{isHindi ? 'संस्थापक के बारे में अधिक जानें' : 'Know More About Founder'}</span>
+                    <span>{isHindi ? "संस्थापक के बारे में अधिक जानें" : "Read Founder's Story"}</span>
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </button>
                 </div>
               </div>
 
-              {/* Right Column: Graphic & Sidebar Card */}
-              <div className="lg:col-span-3 flex flex-col justify-center items-center lg:items-end space-y-8 mt-6 lg:mt-0 relative">
-                
-                {/* Handwriting Graphic Text */}
-                <div className="text-center lg:text-right relative mt-4 lg:mt-0">
-                  <p className="font-serif italic text-2xl sm:text-3xl text-slate-800 dark:text-slate-200 leading-tight">
-                    {isHindi ? 'लोगों के लिए' : 'Law'}<br />
-                    {isHindi ? 'कानूनी तकनीक' : 'Technology'}<br />
-                    {isHindi ? '' : 'For People'}
-                  </p>
-                  <svg className="absolute -bottom-4 right-0 w-32 h-4 text-blue-600 dark:text-blue-400" viewBox="0 0 100 10" preserveAspectRatio="none">
-                    <path d="M0 5 Q 50 10 100 0" stroke="currentColor" strokeWidth="2" fill="none" />
-                  </svg>
-                </div>
-
-                {/* Built with Real Experience Card */}
-                <div className="w-full lg:max-w-[220px] xl:max-w-[240px] bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 rounded-3xl p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-700 dark:text-blue-400">
-                    <Landmark className="w-7 h-7" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-2">
-                      {isHindi ? 'वास्तविक अनुभव से निर्मित' : 'Built with Real Experience'}
-                    </h4>
-                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                      {isHindi 
-                        ? 'वास्तविक उपयोग के लिए डिज़ाइन किए गए व्यावहारिक कानूनी इनसाइट्स।' 
-                        : 'Practical legal insights designed for real-world use cases.'}
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-
             </div>
           </div>
         </ScrollReveal>
       </section>
 
-      {/* 4. SEARCHABLE & FILTERABLE FEATURE CATALOG */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <ScrollReveal direction="up" className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-              {t.home.featureSectionBadge}
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight mt-1">
-              {t.home.featureSectionTitle}
-            </h2>
-            <p className="text-sm text-slate-600 dark:text-[#B8B3AF] mt-1 max-w-xl">
-              {t.home.featureSectionSub}
-            </p>
-          </div>
-
-          {/* Search Box */}
-          <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 text-slate-500 dark:text-[#77736F] absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder={language === 'hi' ? 'सुविधाएं खोजें (जैसे Bare Acts, Bigha)...' : 'Search features (e.g. Bare Acts, Bigha)...'}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/95 dark:bg-[#121622]/95 backdrop-blur-md border border-slate-200/80 dark:border-white/10 text-xs text-slate-900 dark:text-[#F5F2EE] focus:outline-none focus:border-[#C21F2F] shadow-sm transition-all"
-            />
-          </div>
-        </ScrollReveal>
-
-        {/* Filter Categories Bar */}
-        <div className="overflow-hidden w-full pb-2 mask-edges-x">
-          <div ref={categoriesRef} className="flex items-center overflow-x-auto no-scrollbar w-full select-none cursor-grab">
-            {[...Array(4)].map((_, arrayIdx) => (
-              <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
-                {categories.map((cat, idx) => (
-                  <button
-                    key={`${cat.key}-${idx}-${arrayIdx}`}
-                    onClick={() => setSelectedCategory(cat.key)}
-                    className={`shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap badge-one-line transition-all cursor-pointer ${
-                      selectedCategory === cat.key
-                        ? 'btn-crimson font-bold text-white shadow-md'
-                        : 'bg-white/95 dark:bg-[#121622]/95 backdrop-blur-md text-slate-700 dark:text-[#B8B3AF] border border-slate-200/80 dark:border-white/10 hover:text-slate-900 dark:hover:text-[#F5F2EE] shadow-sm'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Feature Items Grid */}
-        <div className="min-h-[280px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${selectedCategory}-${searchQuery}`}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.2 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-            >
-              {filteredFeatures.slice(0, 12).map((item, idx) => {
-                const colorThemes = [
-                  { iconBg: 'bg-indigo-100 dark:bg-indigo-950/40 text-[#2563EB]', icon: Scale, catBg: 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-300 border-indigo-200/70' },
-                  { iconBg: 'bg-blue-100 dark:bg-blue-950/40 text-[#2563EB]', icon: FileText, catBg: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200/70' },
-                  { iconBg: 'bg-emerald-100 dark:bg-emerald-950/40 text-[#059669]', icon: BookOpen, catBg: 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border-emerald-200/70' },
-                  { iconBg: 'bg-amber-100 dark:bg-amber-950/40 text-[#D97706]', icon: Calculator, catBg: 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border-amber-200/70' },
-                  { iconBg: 'bg-purple-100 dark:bg-purple-950/40 text-[#7C3AED]', icon: Calendar, catBg: 'bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300 border-purple-200/70' },
-                  { iconBg: 'bg-blue-100 dark:bg-blue-950/40 text-[#0284C7]', icon: Scan, catBg: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200/70' }
-                ];
-                const theme = colorThemes[idx % colorThemes.length];
-                const IconComp = theme.icon;
-                const isLifted = !!liftedFeatures[item.id];
-
-                return (
-                  <motion.div 
-                    key={item.id}
-                    onClick={() => {
-                      setLiftedFeatures(prev => ({
-                        ...prev,
-                        [item.id]: !prev[item.id]
-                      }));
-                    }}
-                    animate={{ 
-                      y: isLifted ? -16 : 0,
-                      scale: isLifted ? 1.02 : 1,
-                    }}
-                    whileHover={{ y: isLifted ? -20 : -4 }}
-                    className={`rounded-[24px] p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl cursor-pointer ${
-                      isLifted
-                        ? 'border-blue-500/70 dark:border-blue-400/70 shadow-[0_24px_50px_rgba(59,130,246,0.25)] bg-gradient-to-br from-blue-50/90 via-indigo-50/40 to-white dark:from-[#1E293B] dark:via-[#182035] dark:to-[#121622]'
-                        : 'bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 dark:from-[#121622] dark:via-[#182035] dark:to-[#121622] border border-blue-100/70 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(37,99,235,0.12)] hover:border-blue-300 dark:hover:border-blue-700/50'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-start justify-between gap-2 mb-4">
-                        <div className={`w-12 h-12 rounded-2xl ${theme.iconBg} flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}>
-                          <IconComp className="w-6 h-6" />
-                        </div>
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${theme.catBg} leading-tight whitespace-nowrap`}>
-                          {getCategoryLabel(item.category)}
-                        </span>
-                      </div>
-
-                      <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white mb-2 leading-snug">
-                        {item.title}
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-2">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    <div className="space-y-4 pt-2">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {item.highlights.map((tag, hIdx) => (
-                          <span key={hIdx} className="px-2.5 py-1 rounded-full bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[10px] sm:text-[11px] font-semibold text-slate-600 dark:text-slate-300 leading-tight">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div 
-                        onClick={() => onNavigate('features')}
-                        className="pt-3 border-t border-blue-100/80 dark:border-white/10 flex items-center justify-between cursor-pointer"
-                      >
-                        <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-[#2563EB] dark:group-hover:text-[#60A5FA] transition-colors flex items-center gap-1.5">
-                          <span>{language === 'hi' ? 'टूल खोलें' : 'Open Tool'}</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                        </span>
-
-                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 group-hover:bg-[#2563EB] group-hover:text-white flex items-center justify-center transition-all shadow-xs">
-                          <ArrowRight className="w-4 h-4" />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {filteredFeatures.length === 0 && (
-          <div className="text-center py-12 glass-panel rounded-2xl p-6">
-            <Search className="w-8 h-8 text-[#77736F] mx-auto mb-2" />
-            <div className="text-sm font-bold text-[#F5F2EE]">No features found matching "{searchQuery}"</div>
-            <button 
-              onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-              className="mt-3 text-xs font-semibold text-[#D8BD82] underline"
-            >
-              Clear filters and view all 22 tools
-            </button>
-          </div>
-        )}
-
-        {filteredFeatures.length > 12 && (
-          <div className="text-center pt-4">
-            <button
-              onClick={() => onNavigate('features')}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl btn-glass font-bold text-xs"
-            >
-              <span>{language === 'hi' ? 'शेष 17+ फीचर्स देखें' : 'View Remaining 17+ Features'}</span>
-              <ArrowRight className="w-4 h-4 text-[#E03A3E]" />
-            </button>
-          </div>
-        )}
-      </section>
-
-      {/* 5. FOUR PILLARS OF EXCELLENCE */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up" className="text-center max-w-2xl mx-auto mb-6 space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#2563EB] dark:text-blue-400">
-            Engineered for Security & Speed
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-            Why Choose Less Legal?
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-[#B8B3AF]">
-            Built from the ground up to guarantee user privacy, zero cloud dependency, and effortless practice organization.
-          </p>
-        </ScrollReveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">100% On-Device Privacy</h3>
-            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
-              Your client notes, hearing schedules, and PDF documents stay strictly on your local Android device storage. Zero cloud telemetry.
-            </p>
-            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
-          </div>
-
-          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
-              <Zap className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">Lightning Fast Performance</h3>
-            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
-              Launch Bare Acts, perform land unit conversions, and draft legal memos instantly with smooth on-device processing.
-            </p>
-            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
-          </div>
-
-          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
-              <FileText className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">All-in-One PDF Suite</h3>
-            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
-              Merge, split, protect, and compress legal filings effortlessly. Transfer heavy files directly device-to-device with LessShare.
-            </p>
-            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
-          </div>
-
-          <div className="group relative rounded-2xl p-6 bg-gradient-to-br from-blue-50/90 via-sky-50/50 to-indigo-50/70 dark:from-[#111827]/90 dark:via-[#0F172A]/80 dark:to-[#1E293B]/90 backdrop-blur-xl border border-blue-400/30 dark:border-blue-500/25 shadow-[0_10px_30px_rgba(59,130,246,0.12)] hover:shadow-[0_20px_45px_rgba(59,130,246,0.22)] hover:-translate-y-1.5 transition-all duration-300 space-y-3.5 overflow-hidden">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-400/20 text-[#2563EB] dark:text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold shadow-sm group-hover:scale-110 transition-transform">
-              <Lock className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">Fixed-Validity Passes</h3>
-            <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
-              Transparent one-time purchases for ad-free access. Zero auto-renewing subscriptions or unexpected bank debits.
-            </p>
-            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/20 transition-all" />
-          </div>
-        </div>
-      </section>
-
-      {/* 6. TRANSPARENT PRICING & AD-FREE PASSES */}
-      <section className="bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-2xl rounded-3xl mx-4 sm:mx-6 lg:mx-8 px-6 sm:px-12 py-16 relative overflow-hidden border border-blue-500/25 dark:border-blue-400/20 shadow-[0_20px_50px_rgba(59,130,246,0.15)]">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-80 h-80 bg-sky-400/20 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="relative max-w-5xl mx-auto text-center space-y-8">
-          
-          <ScrollReveal direction="up" className="space-y-3">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-500/30">
-              <Sparkles className="w-3.5 h-3.5 text-[#2563EB] dark:text-blue-400" />
-              {t.premiumPage.badge}
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-[#F5F2EE]">
-              {t.premiumPage.title}
-            </h2>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] max-w-2xl mx-auto">
-              {t.premiumPage.subtitle}
-            </p>
-          </ScrollReveal>
-
-          <div className="max-w-xl mx-auto text-left">
-            <div className="relative">
-              <div className="bg-gradient-to-br from-white/95 via-blue-50/80 to-sky-50/90 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 border-2 border-blue-500/40 dark:border-blue-400/40 shadow-[0_16px_45px_rgba(59,130,246,0.22)] hover:shadow-[0_24px_55px_rgba(59,130,246,0.32)] transition-all duration-300 relative overflow-hidden flex flex-col justify-between space-y-6">
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-bold text-[#2563EB] dark:text-blue-400">
-                      {language === 'hi' ? 'स्थायी लाइफटाइम पास (स्पेशल ऑफर)' : 'Lifetime Premium Pass (Special Offer)'}
-                    </span>
-                    <span className="text-[10px] font-bold text-blue-900 dark:text-blue-100 bg-blue-500/20 dark:bg-blue-600/40 px-3 py-1 rounded-full border border-blue-500/40 dark:border-blue-400/40 whitespace-nowrap animate-pulse">
-                      {language === 'hi' ? 'सीमित समय ऑफर' : 'Limited Time Offer'}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-5xl font-extrabold text-[#2563EB] dark:text-blue-400">₹99</span>
-                    <span className="text-xs text-slate-500 dark:text-[#B8B3AF] line-through">₹329</span>
-                    <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">
-                      {language === 'hi' ? '/ एकमुश्त स्थायी भुगतान' : '/ one-time lifetime payment'}
-                    </span>
-                  </div>
-
-                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mb-4 leading-relaxed font-semibold">
-                    {language === 'hi' 
-                      ? 'स्पेशल ऑफर! अब सिर्फ ₹99 के एकमुश्त भुगतान में आपकी पंजीकृत ईमेल आईडी (Registered Email) को स्थायी (Permanently) रूप से लाइफटाइम प्रीमियम बना दिया जाएगा।' 
-                      : 'Special Offer! Single ₹99 purchase permanently links Lifetime Premium status to your registered Email ID forever.'}
-                  </p>
-
-                  <ul className="space-y-2.5 text-xs text-slate-700 dark:text-[#B8B3AF]">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                      <span>{language === 'hi' ? 'आपकी पंजीकृत ईमेल आईडी पर हमेशा के लिए विज्ञापन-मुक्त अनुभव' : '100% ad-free experience bound to your Email ID forever'}</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                      <span>{language === 'hi' ? 'सभी 46+ टूल्स, केस डायरी एवं पीडीएफ वर्कस्पेस की अनलॉक्ड पहुँच' : 'Unlocked access to all 46+ tools, case diary & PDF workspace'}</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                      <span>{language === 'hi' ? 'कोई आवर्ती शुल्क नहीं, कोई ऑटो-डेबिट नहीं' : 'Strictly one-time payment with zero recurring auto-debit'}</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <button 
-                  onClick={() => onNavigate('premium')}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-xs py-3.5 rounded-xl shadow-[0_8px_25px_rgba(37,99,235,0.35)] hover:shadow-[0_12px_30px_rgba(37,99,235,0.45)] transition-all cursor-pointer flex items-center justify-center gap-2"
-                >
-                  <span>{language === 'hi' ? 'लाइफटाइम पास विवरण एवं खरीद (₹99)' : 'Get Lifetime Pass (₹99)'}</span>
-                </button>
-              </div>
-
-              <div className="absolute -top-3.5 right-6 bg-gradient-to-r from-blue-600 to-sky-500 text-white text-[10px] font-extrabold uppercase px-3.5 py-1 rounded-full shadow-lg z-10 border border-white/30">
-                {language === 'hi' ? 'स्थायी पास' : 'PERMANENT PASS'}
-              </div>
-            </div>
-          </div>
-          <div className="pt-2 text-xs text-slate-500 dark:text-[#77736F]">
-            {language === 'hi' ? 'खरीदारी सीधे Less Legal एंड्रॉइड ऐप के भीतर प्रमाणित भुगतान गेटवे के माध्यम से की जाती है।' : 'Purchases are made securely inside the Android application via certified Play Store / Razorpay gateway.'}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 7. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      {/* 8. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
+      <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <ScrollReveal direction="up" className="text-center space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {t.home.faqBadge}
@@ -1377,6 +976,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
             {t.home.faqTitle}
           </h2>
+          <p className="text-sm text-slate-600 dark:text-[#B8B3AF]">
+            {t.home.faqSub}
+          </p>
         </ScrollReveal>
 
         <div className="space-y-3">
@@ -1386,7 +988,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             return (
               <div 
                 key={idx}
-                className="bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-2xl overflow-hidden transition-all duration-300 border border-blue-200/40 dark:border-blue-500/20 shadow-[0_8px_30px_rgba(59,130,246,0.06)] hover:shadow-[0_16px_40px_rgba(59,130,246,0.15)] hover:-translate-y-1"
+                className="bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-2xl overflow-hidden transition-all duration-300 border border-blue-200/40 dark:border-blue-500/20 shadow-xs hover:shadow-md"
               >
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
@@ -1417,48 +1019,47 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 8. FINAL CALL TO ACTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* 9. FINAL CALL TO ACTION */}
+      <section id="final-cta" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <ScrollReveal direction="up">
           <div className="p-8 sm:p-14 bg-gradient-to-br from-white/95 via-blue-50/50 to-indigo-50/30 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90 backdrop-blur-2xl rounded-3xl border-2 border-blue-400/35 dark:border-blue-500/25 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto space-y-6 relative overflow-hidden">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-500 text-white flex items-center justify-center mx-auto shadow-xl shadow-blue-500/30 border border-white/20">
-              <Smartphone className="w-7 h-7" />
+              <Sparkles className="w-7 h-7" />
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-                {language === 'hi' ? 'अपने कानूनी वर्कफ़्लो को सरल बनाने के लिए तैयार हैं?' : 'Ready to Simplify Your Legal Workflow?'}
+              <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+                {t.home.finalCtaTitle || "Explore what we're creating."}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto">
-                {language === 'hi' ? 'Bare Acts, PDF कन्वर्टर्स और Case Diary एक्सेस करने के लिए आज ही अपने एंड्रॉइड स्मार्टफोन या टैबलेट पर Less Legal डाउनलोड करें।' : 'Download Less Legal today on your Android smartphone or tablet to access Bare Acts, PDF converters, and Case Diary.'}
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto font-medium">
+                {t.home.finalCtaSub || "Experience simple, secure software designed to solve real-world challenges."}
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-              <GlowingButton
-                onClick={() => onNavigate('download')}
-                variant="primary"
-                className="w-full sm:w-auto px-8 py-4 text-sm font-bold shadow-[0_12px_30px_rgba(37,99,235,0.35)]"
+              <button
+                onClick={() => scrollToSection('product-ecosystem')}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-sm shadow-[0_10px_25px_rgba(37,99,235,0.35)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line flex items-center justify-center gap-2"
               >
-                <Download className="w-4 h-4" />
-                <span>{language === 'hi' ? 'एंड्रॉइड APK डाउनलोड करें' : 'Download Android APK'}</span>
-              </GlowingButton>
+                <LayoutGrid className="w-4 h-4" />
+                <span>{t.home.ctaExploreProducts || "Explore Products"}</span>
+              </button>
               
-              <GlowingButton
-                onClick={() => onNavigate('about')}
-                variant="secondary"
-                className="w-full sm:w-auto px-8 py-4 text-sm font-bold"
+              <button
+                onClick={() => onNavigate('download')}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white font-bold text-sm border border-slate-200 dark:border-white/15 shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line flex items-center justify-center gap-2"
               >
-                <span>Less Creation {language === 'hi' ? 'के बारे में' : 'About'}</span>
-              </GlowingButton>
+                <Download className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span>{isHindi ? "लेस लीगल डाउनलोड करें" : "Get Less Legal"}</span>
+              </button>
             </div>
 
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-600 dark:text-[#77736F]">
-              <span>{language === 'hi' ? 'एंड्रॉइड 7.0+ न्यूनतम' : 'Android 7.0+ Minimum'}</span>
+            <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-600 dark:text-[#77736F] font-bold">
+              <span>Less Creation Studio</span>
               <span>•</span>
-              <span>{language === 'hi' ? '100% ऑन-डिवाइस स्टोरेज' : '100% On-Device Storage'}</span>
+              <span>{isHindi ? "100% ऑन-डिवाइस सुरक्षा" : "100% On-Device Privacy"}</span>
               <span>•</span>
-              <span>{language === 'hi' ? 'स्वतंत्र और तथ्यात्मक' : 'Independent & Factual'}</span>
+              <span>{isHindi ? "स्वतंत्र सॉफ्टवेयर ब्रांड" : "Independent Software Brand"}</span>
             </div>
           </div>
         </ScrollReveal>

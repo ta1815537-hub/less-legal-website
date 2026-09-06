@@ -80,12 +80,6 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
       desc: isHindi ? 'प्रमुख केंद्रीय और राज्य बेयर एक्ट्स तक तुरंत और ऑफलाइन पहुँच।' : 'Instant offline access to major Indian Central and State bare acts.'
     },
     {
-      icon: BookMarked,
-      color: 'text-violet-600 bg-violet-50 dark:bg-violet-950/40 dark:text-violet-400 border border-violet-200/50 dark:border-violet-800/40',
-      title: isHindi ? 'कानूनी ड्राफ्ट्स' : 'Legal Drafts Repository',
-      desc: isHindi ? 'नोटिस, समझौते, याचिकाएं और तैयार कानूनी टेम्पलेट्स का संग्रह।' : 'Extensive templates for legal notices, affidavits, agreements & pleadings.'
-    },
-    {
       icon: BookOpen,
       color: 'text-blue-600 bg-blue-50 dark:bg-blue-950/40 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/40',
       title: isHindi ? 'केस डायरी' : 'Case Diary Tracker',
@@ -197,17 +191,22 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mb-2">
-                  {isHindi ? 'आजीवन संपूर्ण एक्सेस' : 'Lifetime Full Access'}
+                  {isHindi ? 'लेस लीगल स्थायी प्रीमियम मेंबरशिप' : 'Less Legal Permanent Lifetime Access'}
                 </h2>
                 
                 {/* Price Display */}
-                <div className="flex items-baseline gap-3 my-5">
+                <div className="flex items-baseline gap-3 my-4">
                   <span className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight">₹99</span>
-                  <span className="text-lg font-semibold text-slate-400 line-through">₹329</span>
+                  <span className="text-lg font-semibold text-slate-500 dark:text-slate-400">/ {isHindi ? 'लाइफटाइम' : 'Lifetime'}</span>
+                  <span className="text-base font-semibold text-slate-400 line-through ml-1">₹329</span>
                   <span className="text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-500/10 dark:bg-amber-900/40 px-2.5 py-1 rounded-lg border border-amber-500/20 dark:border-amber-800/20 whitespace-nowrap">
                     {isHindi ? '70% छूट' : '70% OFF'}
                   </span>
                 </div>
+
+                <p className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-3">
+                  {isHindi ? 'एकमुश्त भुगतान • कोई सदस्यता नहीं' : 'One-time payment • No subscription'}
+                </p>
 
                 {/* Key Billing Highlights */}
                 <div className="grid grid-cols-3 gap-2 py-3.5 my-3 border-y border-blue-200/40 dark:border-blue-800/20 bg-blue-500/5 dark:bg-blue-950/10 px-3 py-2.5 rounded-2xl text-center">

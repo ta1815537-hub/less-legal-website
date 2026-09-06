@@ -15,48 +15,14 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [productsSubmenuOpen, setProductsSubmenuOpen] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   
   const { isDark: globalIsDark, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
+  const isHindi = language === 'hi';
 
   const { scrollYProgress } = useScroll();
-
-  // Persistent Countdown Timer for FOMO
-  const [timeLeft, setTimeLeft] = useState({ days: 28, hours: 23, minutes: 47, seconds: 12 });
-
-  useEffect(() => {
-    const STORAGE_KEY = 'less_legal_promo_target_v4_28d';
-    let targetTime = localStorage.getItem(STORAGE_KEY);
-    
-    // 28 days, 23 hours, 47 minutes, 12 seconds
-    const initialDuration = (28 * 24 * 3600 + 23 * 3600 + 47 * 60 + 12) * 1000;
-    
-    if (!targetTime) {
-      const newTarget = Date.now() + initialDuration;
-      localStorage.setItem(STORAGE_KEY, newTarget.toString());
-      targetTime = newTarget.toString();
-    }
-
-    const interval = setInterval(() => {
-      const difference = parseInt(targetTime!) - Date.now();
-      if (difference <= 0) {
-        // Reset countdown to a new 28d 23h cycle if it finishes to maintain FOMO urgency
-        const newTarget = Date.now() + initialDuration;
-        localStorage.setItem(STORAGE_KEY, newTarget.toString());
-      } else {
-        const totalSecs = Math.floor(difference / 1000);
-        const d = Math.floor(totalSecs / (24 * 3600));
-        const remSecs = totalSecs % (24 * 3600);
-        const h = Math.floor(remSecs / 3600);
-        const m = Math.floor((remSecs % 3600) / 60);
-        const s = remSecs % 60;
-        setTimeLeft({ days: d, hours: h, minutes: m, seconds: s });
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 15);
@@ -64,57 +30,62 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks: { label: string; route: PageRoute }[] = [
-    { label: t.nav.home, route: 'home' },
-    { label: t.nav.founder, route: 'founder' },
-    { label: t.nav.about, route: 'about' },
-    { label: t.nav.features, route: 'features' },
-    { label: t.nav.premium, route: 'premium' },
-    { label: t.nav.contact, route: 'contact' },
-  ];
-
   const handleNavClick = (route: PageRoute) => {
     onNavigate(route);
     setMobileMenuOpen(false);
   };
 
+  const scrollToProducts = () => {
+    onNavigate('home');
+    setMobileMenuOpen(false);
+    setTimeout(() => {
+      document.getElementById('product-ecosystem')?.scrollIntoView({ behavior: 'smooth' });
+    }, 120);
+  };
+
+  const desktopNavLinks: { label: string; route: PageRoute; badge?: string }[] = [
+    { label: isHindi ? 'होम' : 'Home', route: 'home' },
+    { label: isHindi ? 'लेस लीगल' : 'Less Legal', route: 'less-legal', badge: isHindi ? 'फ्लैगशिप' : 'Flagship' },
+    { label: isHindi ? 'लेस क्रिएशन' : 'About', route: 'about' },
+    { label: isHindi ? 'संस्थापक' : 'Founder', route: 'founder' },
+    { label: isHindi ? 'संसाधन व टूल्स' : 'Resources', route: 'resources' },
+    { label: isHindi ? 'प्रीमियम' : 'Premium', route: 'premium', badge: '₹99' },
+    { label: isHindi ? 'संपर्क' : 'Contact', route: 'contact' },
+  ];
+
   return (
     <>
-      {/* Top Promotional FOMO Bar */}
-      <div className="fixed top-0 left-0 right-0 h-10 sm:h-11 z-[65] bg-gradient-to-r from-slate-950 via-[#0D2447] to-slate-950 border-b border-blue-500/25 flex items-center justify-center px-1.5 sm:px-3 text-white overflow-hidden select-none">
+      {/* Top Promotional Announcement Bar */}
+      <div className="fixed top-0 left-0 right-0 h-9 sm:h-10 z-[65] bg-gradient-to-r from-slate-950 via-[#0D2447] to-slate-950 border-b border-blue-500/25 flex items-center justify-center px-2 sm:px-4 text-white overflow-hidden select-none">
         {/* Subtle royal blue shining line inside the banner */}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(59,130,246,0.12),transparent)] bg-[length:200%_100%] animate-pulse pointer-events-none" />
         
-        <div className="max-w-[1400px] w-full flex items-center justify-center gap-1.5 sm:gap-4 text-xs font-semibold">
-          {/* Offer text */}
-          <div className="flex items-center gap-1 shrink-0">
-            <span className="text-[10px] sm:text-xs animate-bounce shrink-0">🔥</span>
-            <span className="text-[9.5px] sm:text-xs font-black text-sky-400 uppercase tracking-wider whitespace-nowrap">
-              {language === 'hi' ? 'लाइफटाइम मेंबरशिप सिर्फ ₹99 में!' : 'Lifetime Membership just ₹99!'}
+        <div className="max-w-[1400px] w-full flex items-center justify-between sm:justify-center gap-1.5 sm:gap-6 text-xs font-semibold">
+          {/* Offer text - Guaranteed single line on all mobile screens */}
+          <div className="flex items-center gap-1 shrink min-w-0">
+            <span className="text-xs text-amber-400 shrink-0">✨</span>
+            <span className="text-[10px] sm:text-xs font-extrabold text-sky-300 dark:text-sky-200 tracking-wide uppercase whitespace-nowrap">
+              <span className="sm:hidden">
+                {language === 'hi' 
+                  ? 'लेस लीगल पास मात्र ₹99 • एकमुश्त' 
+                  : 'Less Legal Pass ₹99 • Lifetime'}
+              </span>
+              <span className="hidden sm:inline">
+                {language === 'hi' 
+                  ? 'लेस लीगल लाइफटाइम पास • मात्र ₹99 एकमुश्त • कोई सब्सक्रिप्शन नहीं' 
+                  : 'Less Legal Lifetime Pass • ₹99 One-Time Access • No Subscriptions'}
+              </span>
             </span>
           </div>
 
-          {/* Countdown timer & Claim Button */}
-          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
-            {/* Timer Wrapper */}
-            <div className="flex items-center gap-0.5 sm:gap-1 bg-black/40 border border-blue-500/20 px-1 sm:px-2.5 py-0.5 rounded-lg font-mono text-[9px] sm:text-xs font-black text-sky-300 shrink-0">
-              <span className="text-slate-300 font-bold">{timeLeft.days}</span>
-              <span className="text-amber-400 text-[8px] sm:text-[10px] font-bold mr-0.5">{language === 'hi' ? 'दिन' : 'd'}</span>
-              
-              <span className="text-slate-300 font-bold">{timeLeft.hours.toString().padStart(2, '0')}</span>
-              <span className="text-amber-400 text-[8px] sm:text-[10px] font-bold mr-0.5">{language === 'hi' ? 'घंटे' : 'h'}</span>
-              
-              <span>{timeLeft.minutes.toString().padStart(2, '0')}</span>
-              <span className="animate-pulse text-slate-400">:</span>
-              <span className="text-red-400">{timeLeft.seconds.toString().padStart(2, '0')}</span>
-            </div>
-
-            {/* Shine Button */}
+          {/* Action Button */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => handleNavClick('premium')}
-              className="gold-shimmer-button text-[9px] sm:text-xs px-2 sm:px-4 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-extrabold cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
+              className="gold-shimmer-button text-[9px] sm:text-[11px] px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-black cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0 flex items-center gap-1"
             >
-              {language === 'hi' ? 'ऑफ़र लें' : 'Claim Offer'}
+              <Sparkles className="w-3 h-3 fill-amber-950 shrink-0" />
+              <span>{language === 'hi' ? 'ऑफ़र लें' : 'Get Pass'}</span>
             </button>
           </div>
         </div>
@@ -123,9 +94,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
       {/* Scroll Progress Bar */}
       <motion.div
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
-        className="fixed top-10 sm:top-11 left-0 right-0 h-1 sm:h-1.5 z-[60] bg-gradient-to-r from-amber-400 via-[#E03A3E] to-[#8B0000] dark:from-[#D8BD82] dark:via-[#E03A3E] dark:to-[#C21F2F]"
+        className="fixed top-9 sm:top-10 left-0 right-0 h-0.5 sm:h-1 z-[60] bg-gradient-to-r from-amber-400 via-[#E03A3E] to-[#8B0000] dark:from-[#D8BD82] dark:via-[#E03A3E] dark:to-[#C21F2F]"
       />
-      <header className="fixed top-10 sm:top-11 z-50 w-full bg-white/30 dark:bg-[#080808]/30 backdrop-blur-xl border-b border-slate-200/30 dark:border-white/10 shadow-sm transition-all duration-300">
+      <header className="fixed top-9 sm:top-10 z-50 w-full bg-white/40 dark:bg-[#080808]/40 backdrop-blur-xl border-b border-slate-200/40 dark:border-white/10 shadow-xs transition-all duration-300">
         <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-4 xl:px-8">
         <div className="h-16 sm:h-20 flex items-center justify-between gap-2 lg:gap-3">
           
@@ -189,7 +160,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
 
           {/* Desktop Integrated Navigation Bar (Visible only on lg:flex) */}
           <nav className="hidden lg:flex items-center gap-1 px-1.5 py-1.5 rounded-full bg-slate-100/90 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 backdrop-blur-md shrink-0">
-            {navLinks.map((item) => {
+            {desktopNavLinks.map((item) => {
               const isActive = currentRoute === item.route;
               const isPremium = item.route === 'premium';
               return (
@@ -198,7 +169,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   href={`/${item.route === 'home' ? '' : item.route}`}
                   id={`nav-link-${item.route}`}
                   onClick={(e) => { e.preventDefault(); handleNavClick(item.route); }}
-                  className={`relative px-2.5 xl:px-4 py-1.5 xl:py-2 rounded-full text-xs xl:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap single-line-fit flex items-center gap-1 ${
+                  className={`relative px-2.5 xl:px-4 py-1.5 xl:py-2 rounded-full text-xs xl:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap single-line-fit flex items-center gap-1.5 ${
                     isActive
                       ? 'text-blue-600 bg-blue-500/10 dark:bg-blue-500/15 dark:text-blue-400 border border-blue-500/25 dark:border-blue-500/30 shadow-2xs backdrop-blur-md'
                       : isPremium
@@ -210,6 +181,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                     <Sparkles className="w-3 h-3 text-amber-500 fill-amber-500 shrink-0" />
                   )}
                   <span>{item.label}</span>
+                  {item.badge && !isPremium && (
+                    <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                      {item.badge}
+                    </span>
+                  )}
                 </a>
               );
             })}
@@ -231,10 +207,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
 
               <motion.button
                 id="nav-mobile-features-icon"
-                onClick={() => handleNavClick('features')}
+                onClick={() => handleNavClick('resources')}
                 whileTap={{ scale: 0.92 }}
                 className="p-2 rounded-xl bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25 dark:border-blue-500/30 cursor-pointer shrink-0 backdrop-blur-md"
-                aria-label="Useful Features"
+                aria-label="Resources & Tools"
+                title="Resources & Tools"
               >
                 <Layers className="w-4 h-4" />
               </motion.button>
@@ -298,86 +275,220 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile Glass Overlay Drawer */}
+      {/* Mobile Polished Full-Width Navigation Panel */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: -15 }}
+            initial={{ opacity: 0, scale: 0.96, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: -15 }}
+            exit={{ opacity: 0, scale: 0.96, y: -10 }}
             transition={{ type: "spring", stiffness: 420, damping: 28 }}
             style={{ willChange: "transform, opacity" }}
-            className="lg:hidden absolute top-full left-4 right-4 mt-2 p-4.5 sm:p-5 rounded-[24px] bg-white/95 dark:bg-[#08080C]/95 backdrop-blur-3xl border border-white/45 dark:border-white/10 shadow-[0_30px_70px_rgba(0,0,0,0.3)] dark:shadow-[0_30px_70px_rgba(0,0,0,0.5)] space-y-4 z-40 overflow-hidden"
+            className="lg:hidden absolute top-full left-3 right-3 sm:left-4 sm:right-4 mt-2 p-4 rounded-[26px] bg-white/95 dark:bg-[#0C101A]/95 backdrop-blur-2xl border border-slate-200/80 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] space-y-3 z-50 overflow-hidden"
           >
-            {/* Elegant glass accent line inside */}
-            <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-blue-500/30 via-indigo-500/30 to-purple-500/30 dark:from-blue-400/20 dark:via-[#D8BD82]/20 dark:to-red-400/20" />
+            {/* Top subtle blue accent */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-500" />
 
-            <div className="flex flex-col space-y-1.5">
-              {navLinks.map((item, idx) => {
-                const isActive = currentRoute === item.route;
-                return (
-                  <motion.button
-                    key={item.route}
-                    id={`mobile-nav-${item.route}`}
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.03, type: "spring", stiffness: 350, damping: 25 }}
-                    onClick={() => handleNavClick(item.route)}
-                    whileHover={{ x: 6 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`text-left px-4 py-3 rounded-xl text-xs sm:text-sm font-bold tracking-wide transition-all cursor-pointer whitespace-nowrap badge-one-line flex items-center justify-between group ${
-                      isActive
-                        ? 'bg-blue-500/15 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/35 shadow-[0_4px_24px_rgba(37,99,235,0.12)]'
-                        : 'text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-[#F5F2EE] hover:bg-white/40 dark:hover:bg-white/5 border border-transparent hover:border-slate-200/50 dark:hover:border-white/5'
-                    }`}
-                  >
-                    <span>{item.label}</span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500 dark:text-blue-400 transform translate-x-2 group-hover:translate-x-0 transition-transform font-bold text-base leading-none">
-                      →
-                    </span>
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, type: "spring", stiffness: 350, damping: 25 }}
-              className="pt-3.5 border-t border-slate-200/60 dark:border-white/10 space-y-2.5"
-            >
-              {/* Language Switcher Card - Beautiful Glass design */}
+            {/* Navigation List */}
+            <div className="flex flex-col divide-y divide-slate-100 dark:divide-white/5">
+              
+              {/* 1. Home */}
               <button
-                onClick={toggleLanguage}
-                className="w-full py-3 px-4 rounded-xl text-xs font-bold text-slate-900 dark:text-[#F5F2EE] bg-white/45 dark:bg-white/5 border border-slate-200/65 dark:border-white/10 flex items-center justify-center gap-2 cursor-pointer shadow-xs hover:bg-white/60 dark:hover:bg-white/10 transition-colors"
+                id="mobile-nav-home"
+                onClick={() => handleNavClick('home')}
+                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
+                  currentRoute === 'home'
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
+                }`}
               >
-                <Globe className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                <span>{language === 'hi' ? 'Switch to English' : 'हिन्दी (Hindi) में बदलें'}</span>
+                <span>{isHindi ? 'होम' : 'Home'}</span>
+                <span className="text-slate-400 text-xs">→</span>
               </button>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              {/* 2. Products Accordion / Submenu */}
+              <div className="py-1">
                 <button
-                  id="mobile-premium-btn"
-                  onClick={() => handleNavClick('premium')}
-                  className="w-full py-3 px-3 rounded-xl text-xs font-black text-amber-800 dark:text-[#D8BD82] bg-amber-500/15 dark:bg-[#D8BD82]/15 border border-amber-600/35 dark:border-[#D8BD82]/35 text-center flex items-center justify-center gap-1.5 active:scale-[0.97] hover:bg-amber-500/25 transition-all cursor-pointer whitespace-nowrap badge-one-line"
+                  id="mobile-nav-products-accordion"
+                  onClick={() => setProductsSubmenuOpen(!productsSubmenuOpen)}
+                  className="w-full py-2 px-3 rounded-xl text-left text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white flex items-center justify-between cursor-pointer"
                 >
-                  <Sparkles className="w-4 h-4 text-amber-600 dark:text-[#D8BD82] fill-amber-500/30 shrink-0" />
-                  <span className="whitespace-nowrap leading-none">{t.nav.premium}</span>
+                  <div className="flex items-center gap-2">
+                    <span>{isHindi ? 'उत्पाद' : 'Products'}</span>
+                    <span className="text-[10px] font-black px-2 py-0.2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                      2
+                    </span>
+                  </div>
+                  <span className={`text-slate-400 text-xs transition-transform duration-200 ${productsSubmenuOpen ? 'rotate-90' : ''}`}>
+                    ›
+                  </span>
                 </button>
+
+                {/* Products Submenu Items */}
+                <AnimatePresence>
+                  {productsSubmenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="pl-3 pr-1 py-1 space-y-1 overflow-hidden"
+                    >
+                      {/* Less Legal Flagship */}
+                      <button
+                        id="mobile-nav-sub-less-legal"
+                        onClick={() => handleNavClick('less-legal')}
+                        className={`w-full py-2.5 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-colors border cursor-pointer ${
+                          currentRoute === 'less-legal' || currentRoute === 'less-legal-features'
+                            ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30 font-bold'
+                            : 'bg-blue-500/5 dark:bg-blue-500/10 text-slate-800 dark:text-slate-100 hover:bg-blue-500/10 border-blue-500/15'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
+                          <span className="font-bold text-slate-900 dark:text-white">Less Legal</span>
+                          <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-md bg-blue-500/20 text-blue-600 dark:text-blue-300 uppercase tracking-wide">
+                            {isHindi ? 'फ्लैगशिप' : 'Flagship'}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold">{isHindi ? 'पेज देखें' : 'View Page'} →</span>
+                      </button>
+
+                      {/* Future Products (In R&D) */}
+                      <button
+                        id="mobile-nav-sub-future-products"
+                        onClick={scrollToProducts}
+                        className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                          <span>{isHindi ? 'भविष्य के उत्पाद' : 'Future Products'}</span>
+                          <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400">
+                            {isHindi ? 'आर एंड डी' : 'In R&D'}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-medium">→</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* 3. About Less Creation */}
+              <button
+                id="mobile-nav-about"
+                onClick={() => handleNavClick('about')}
+                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
+                  currentRoute === 'about'
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <span>{isHindi ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}</span>
+                <span className="text-slate-400 text-xs">→</span>
+              </button>
+
+              {/* 4. Founder */}
+              <button
+                id="mobile-nav-founder"
+                onClick={() => handleNavClick('founder')}
+                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
+                  currentRoute === 'founder'
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <span>{isHindi ? 'संस्थापक (अनुराग गुरौली)' : 'Founder (Anurag Gurauli)'}</span>
+                <span className="text-slate-400 text-xs">→</span>
+              </button>
+
+              {/* 5. Resources */}
+              <button
+                id="mobile-nav-resources"
+                onClick={() => handleNavClick('resources')}
+                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
+                  currentRoute === 'resources'
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span>{isHindi ? 'संसाधन और टूल्स' : 'Resources & Tools'}</span>
+                  <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    {isHindi ? 'गाइड्स व टूल्स' : 'Hub'}
+                  </span>
+                </div>
+                <span className="text-slate-400 text-xs">→</span>
+              </button>
+
+              {/* 6. Premium */}
+              <button
+                id="mobile-nav-premium-link"
+                onClick={() => handleNavClick('premium')}
+                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
+                  currentRoute === 'premium'
+                    ? 'text-amber-600 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/30'
+                    : 'text-amber-700 dark:text-amber-300 hover:text-amber-800'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>{isHindi ? 'प्रीमियम पास' : 'Premium Lifetime'}</span>
+                  <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-800 dark:text-amber-300">
+                    ₹99
+                  </span>
+                </div>
+                <span className="text-amber-600 dark:text-amber-400 text-xs font-bold">→</span>
+              </button>
+
+              {/* 7. Contact */}
+              <button
+                id="mobile-nav-contact"
+                onClick={() => handleNavClick('contact')}
+                className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors ${
+                  currentRoute === 'contact'
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-950/30'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <span>{isHindi ? 'संपर्क करें' : 'Contact Support'}</span>
+                <span className="text-slate-400 text-xs">→</span>
+              </button>
+            </div>
+
+            {/* Bottom Controls Row: Language, Theme, and Premium CTA */}
+            <div className="pt-2 border-t border-slate-100 dark:border-white/10 space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                {/* Language Switch */}
                 <button
-                  id="mobile-features-drawer-btn"
-                  onClick={() => handleNavClick('features')}
-                  className="w-full py-3 px-3 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 shadow-md shadow-blue-500/20 text-center flex items-center justify-center gap-1.5 active:scale-[0.97] transition-all cursor-pointer whitespace-nowrap badge-one-line"
+                  onClick={toggleLanguage}
+                  className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <Layers className="w-4 h-4 shrink-0" />
-                  <span className="whitespace-nowrap leading-none">{language === 'en' ? 'Useful Features' : 'उपयोगी सुविधाएँ'}</span>
+                  <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <span>{language === 'hi' ? 'English' : 'हिन्दी'}</span>
+                </button>
+
+                {/* Theme Toggle */}
+                <button
+                  onClick={toggleTheme}
+                  className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  {globalIsDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-slate-700" />}
+                  <span>{globalIsDark ? 'Light' : 'Dark'}</span>
                 </button>
               </div>
-            </motion.div>
 
-            <div className="pt-2 text-center text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-[#77736F]">
-              Less Creation • {language === 'hi' ? 'सरलता के साथ निर्मित' : 'Built with Simplicity'}
+              {/* Full-width Premium CTA */}
+              <button
+                id="mobile-premium-bottom-cta"
+                onClick={() => handleNavClick('premium')}
+                className="w-full py-2.5 px-4 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 shadow-md shadow-blue-500/25 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+                <span>{isHindi ? 'लेस लीगल लाइफटाइम पास लें — ₹99' : 'Get Less Legal Lifetime Pass — ₹99'}</span>
+              </button>
             </div>
+
           </motion.div>
         )}
       </AnimatePresence>

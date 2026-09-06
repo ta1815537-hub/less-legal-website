@@ -4,6 +4,10 @@ export interface TranslationSchema {
   // Navigation
   nav: {
     home: string;
+    products?: string;
+    lessLegal?: string;
+    aboutLessCreation?: string;
+    resources?: string;
     features: string;
     premium: string;
     founder: string;
@@ -136,6 +140,8 @@ export interface TranslationSchema {
     heroTitlePart1?: string;
     heroTitlePart2?: string;
     heroSubtitle: string;
+    ctaExploreProducts: string;
+    ctaDiscoverLessLegal: string;
     ctaDownload: string;
     ctaDemo: string;
     ctaFeatures: string;
@@ -144,6 +150,39 @@ export interface TranslationSchema {
     trustToolsCount: string;
     trustAndroidReady: string;
     
+    // Product Ecosystem
+    ecosystemBadge: string;
+    ecosystemTitle: string;
+    ecosystemSub: string;
+    flagshipBadge: string;
+    flagshipTitle: string;
+    flagshipDesc: string;
+    upcomingBadge: string;
+    
+    // Why Less Creation
+    whyBadge: string;
+    whyTitle: string;
+    whySubtitle: string;
+    whyPillars: {
+      title: string;
+      desc: string;
+    }[];
+
+    // Mission
+    missionBadge: string;
+    missionTitle: string;
+    missionSubtitle: string;
+    missionQuote: string;
+
+    // Trust & Security
+    trustBadge: string;
+    trustTitle: string;
+    trustSub: string;
+    trustCards: {
+      title: string;
+      desc: string;
+    }[];
+
     // Preview Simulator
     simBadge: string;
     simTitle: string;
@@ -183,15 +222,14 @@ export interface TranslationSchema {
     featureSectionTitle: string;
     featureSectionSub: string;
 
-    // Ecosystem
-    ecosystemBadge: string;
-    ecosystemTitle: string;
-    ecosystemSub: string;
-
     // Founder Preview
     founderPreviewBadge: string;
     founderPreviewTitle: string;
     founderPreviewText: string;
+
+    // Final CTA
+    finalCtaTitle: string;
+    finalCtaSub: string;
 
     // FAQ
     faqBadge: string;
@@ -431,9 +469,13 @@ export const translations: Record<Language, TranslationSchema> = {
   en: {
     nav: {
       home: "Home",
+      products: "Products",
+      lessLegal: "Less Legal",
+      aboutLessCreation: "About Less Creation",
+      founder: "Founder",
+      resources: "Resources",
       features: "Features",
       premium: "Premium",
-      founder: "Founder",
       about: "About",
       contact: "Contact",
       download: "Download App",
@@ -553,25 +595,93 @@ export const translations: Record<Language, TranslationSchema> = {
       flagshipProductLabel: "Flagship Legal App"
     },
     home: {
-      heroBadge: "Flagship Product Studio",
-      heroTitle: "Less Legal : All in One Smart App | Powerful Digital Tools : Made Simple",
-      heroTitlePart1: "Less Legal : All in One Smart App",
-      heroTitlePart2: "Powerful Digital Tools : Made Simple",
-      heroSubtitle: "Less Legal is a trending new smart app by Less Creation founded by Anurag Gurauli. Bring bare acts, PDF app features, document scanner, Share it app utility, case diary, and everyday tools into one Android application.",
+      heroBadge: "Parent Technology & Product Studio",
+      heroTitle: "Technology that makes difficult things simple.",
+      heroTitlePart1: "Technology that makes",
+      heroTitlePart2: "difficult things simple.",
+      heroSubtitle: "Less Creation builds simple, useful and affordable digital products designed to solve real-world problems.",
+      ctaExploreProducts: "Explore Products",
+      ctaDiscoverLessLegal: "Discover Less Legal",
       ctaDownload: "Download Less Legal",
-      ctaDemo: "Try Live Interactive Demo",
+      ctaDemo: "Try Interactive Preview",
       ctaFeatures: "Explore All Tools",
-      trustFastEngine: "Fast On-Device Engine",
-      trustPrivacy: "On-Device Privacy",
-      trustToolsCount: "30+ Integrated Tools",
+      trustFastEngine: "High-Performance Native",
+      trustPrivacy: "On-Device Privacy First",
+      trustToolsCount: "30+ Integrated Utilities",
       trustAndroidReady: "Android 7.0 to 15 Ready",
       
-      simBadge: "Interactive App Preview",
+      // Product Ecosystem
+      ecosystemBadge: "PRODUCT ECOSYSTEM",
+      ecosystemTitle: "Products built for real-world use",
+      ecosystemSub: "Purpose-driven digital applications engineered for clarity, utility, and everyday efficiency.",
+      flagshipBadge: "FLAGSHIP PRODUCT",
+      flagshipTitle: "Less Legal",
+      flagshipDesc: "An all-in-one smart workspace bringing practical legal utilities, reference tools, PDF tools and everyday productivity features together.",
+      upcomingBadge: "In Research & Development",
+
+      // Why Less Creation
+      whyBadge: "ENGINEERING PHILOSOPHY",
+      whyTitle: "Why Less Creation",
+      whySubtitle: "Five foundational design and technology principles behind every product we craft.",
+      whyPillars: [
+        {
+          title: "Simple by Design",
+          desc: "We remove friction, excessive layers, and clutter so users can accomplish their real-world goals immediately."
+        },
+        {
+          title: "Useful in Real Life",
+          desc: "Engineered specifically to solve genuine, daily bottlenecks faced by professionals, advocates, and everyday citizens."
+        },
+        {
+          title: "Affordable Access",
+          desc: "Transparent, honest pricing with fair one-time lifetime options instead of aggressive recurring subscription models."
+        },
+        {
+          title: "Built with Privacy in Mind",
+          desc: "On-device processing architecture ensures your documents, notes, and local files remain private on your hardware."
+        },
+        {
+          title: "Designed for Everyone",
+          desc: "High-contrast ergonomics and intuitive design that welcome both busy legal practitioners and first-time smartphone users."
+        }
+      ],
+
+      // Mission
+      missionBadge: "OUR MISSION",
+      missionTitle: "Technology should not feel complicated.",
+      missionSubtitle: "At Less Creation, we focus on making useful digital technology easier to understand, straightforward to navigate, and accessible to everyone who needs it.",
+      missionQuote: "“When technology removes unnecessary hurdles and respects human time, it transforms everyday work into something effortless.”",
+
+      // Trust & Security
+      trustBadge: "SECURITY & ARCHITECTURE",
+      trustTitle: "Built with Verified Technical Integrity",
+      trustSub: "We only claim technical capabilities that are genuinely implemented in our software.",
+      trustCards: [
+        {
+          title: "Local Processing on Supported Features",
+          desc: "PDF manipulation, case notes, and calculators execute directly on your device without unneeded remote uploads."
+        },
+        {
+          title: "Secure HTTPS/TLS Connections",
+          desc: "All web communications and API endpoints are protected using modern TLS encryption standards."
+        },
+        {
+          title: "Razorpay Payment Processing",
+          desc: "All pass upgrades and digital transactions are processed directly through Razorpay's secure checkout infrastructure."
+        },
+        {
+          title: "Privacy-Conscious Architecture",
+          desc: "Independent software built with transparent privacy policies, minimal data collection, and direct account deletion options."
+        }
+      ],
+
+      // Preview Simulator
+      simBadge: "Interactive Flagship Preview",
       simTitle: "Experience the Less Legal Workspace",
-      simSub: "Interact with actual live utilities integrated into our Android application.",
+      simSub: "Interact with real live utilities integrated directly into our flagship Android application.",
       simDiary: "Case Diary & Planner",
       simConverter: "Live Area Converter",
-      simPdf: "PDF Engine & Share",
+      simPdf: "PDF Engine & Transfer",
       simWhatsapp: "Direct WhatsApp",
       simInterfaceLabel: "Less Legal Interface",
       simOnDeviceBadge: "On-Device",
@@ -602,18 +712,21 @@ export const translations: Record<Language, TranslationSchema> = {
       featureSectionTitle: "Explore 30+ Integrated Utilities",
       featureSectionSub: "From instant PDF merging to regional land converters, examine all tools available inside the app.",
 
-      ecosystemBadge: "DIGITAL ECOSYSTEM",
-      ecosystemTitle: "Products by Less Creation",
-      ecosystemSub: "Built with a core focus on simplicity, utility, and user privacy.",
-
       founderPreviewBadge: "MEET THE FOUNDER",
       founderPreviewTitle: "Created by an Advocate for Real-World Utility",
-      founderPreviewText: "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks.",
+      founderPreviewText: "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify technology and solve practical challenges.",
+
+      finalCtaTitle: "Explore what we're creating.",
+      finalCtaSub: "Experience simple, privacy-focused software designed to solve practical everyday challenges.",
 
       faqBadge: "FREQUENTLY ASKED QUESTIONS",
       faqTitle: "Got Questions? We Have Factual Answers",
       faqSub: "Transparent information regarding our software, privacy model, and passes.",
       faqs: [
+        {
+          q: "What is Less Creation and how does it relate to Less Legal?",
+          a: "Less Creation is the parent technology brand and product studio founded by Anurag Gurauli. Less Legal is its flagship software application, uniting practical legal reference tools, PDF utilities, and productivity features for legal professionals and citizens."
+        },
         {
           q: "Is Less Legal affiliated with the Government of India or any Court?",
           a: "No. Less Legal is an entirely independent, private software utility application developed by Less Creation. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
@@ -889,10 +1002,14 @@ export const translations: Record<Language, TranslationSchema> = {
 
   hi: {
     nav: {
-      home: "मुख्य पृष्ठ",
+      home: "होम",
+      products: "उत्पाद",
+      lessLegal: "लेस लीगल",
+      aboutLessCreation: "लेस क्रिएशन के बारे में",
+      founder: "संस्थापक",
+      resources: "संसाधन",
       features: "सुविधाएँ",
       premium: "प्रीमियम",
-      founder: "संस्थापक",
       about: "हमारे बारे में",
       contact: "संपर्क",
       download: "ऐप डाउनलोड करें",
@@ -1012,25 +1129,93 @@ export const translations: Record<Language, TranslationSchema> = {
       flagshipProductLabel: "प्रमुख कानूनी ऐप"
     },
     home: {
-      heroBadge: "फ्लैगशिप प्रोडक्ट स्टूडियो",
-      heroTitle: "लेस लीगल : ऑल इन वन स्मार्ट ऐप | पावरफुल डिजिटल टूल्स : मेड सिंपल",
-      heroTitlePart1: "लेस लीगल : ऑल इन वन स्मार्ट ऐप",
-      heroTitlePart2: "पावरफुल डिजिटल टूल्स : मेड सिंपल",
-      heroSubtitle: "कानूनी संदर्भ, पीडीएफ वर्कस्पेस, कैलकुलेटर और दैनिक टूल्स को एक सहज एंड्रॉइड ऐप में उपलब्ध कराना।",
+      heroBadge: "पैरेंट टेक्नोलॉजी एवं प्रोडक्ट स्टूडियो",
+      heroTitle: "तकनीक जो जटिल कार्यों को सरल बनाती है।",
+      heroTitlePart1: "तकनीक जो जटिल कार्यों को",
+      heroTitlePart2: "सरल बनाती है।",
+      heroSubtitle: "लेस क्रिएशन वास्तविक जीवन की समस्याओं को हल करने के लिए सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाता है।",
+      ctaExploreProducts: "उत्पादों को देखें",
+      ctaDiscoverLessLegal: "लेस लीगल जानें",
       ctaDownload: "डाउनलोड लेस लीगल",
-      ctaDemo: "लाइव डेमो देखें",
+      ctaDemo: "इंटरैक्टिव पूर्वावलोकन",
       ctaFeatures: "सभी टूल्स देखें",
-      trustFastEngine: "तेज़ ऑन-डिवाइस इंजन",
+      trustFastEngine: "उच्च-प्रदर्शन नेटिव इंजन",
       trustPrivacy: "पूर्ण ऑन-डिवाइस गोपनीयता",
-      trustToolsCount: "30+ एकीकृत टूल्स",
+      trustToolsCount: "30+ एकीकृत उपयोगिताएँ",
       trustAndroidReady: "एंड्रॉइड 7.0 से 15 तैयार",
 
-      simBadge: "इंटरैक्टिव ऐप पूर्वावलोकन",
+      // Product Ecosystem
+      ecosystemBadge: "उत्पाद पारिस्थितिकी तंत्र",
+      ecosystemTitle: "वास्तविक उपयोग के लिए निर्मित उत्पाद",
+      ecosystemSub: "स्पष्टता, उपयोगिता और दैनिक दक्षता के लिए निर्मित उद्देश्यपूर्ण डिजिटल एप्लिकेशन।",
+      flagshipBadge: "फ्लैगशिप उत्पाद",
+      flagshipTitle: "लेस लीगल",
+      flagshipDesc: "एक ऑल-इन-वन स्मार्ट वर्कस्पेस जो व्यावहारिक कानूनी उपयोगिताओं, संदर्भ टूल्स, पीडीएफ टूल्स और दैनिक उत्पादकता सुविधाओं को एक साथ लाता है।",
+      upcomingBadge: "अनुसंधान एवं विकास में",
+
+      // Why Less Creation
+      whyBadge: "इंजीनियरिंग दर्शन",
+      whyTitle: "लेस क्रिएशन क्यों?",
+      whySubtitle: "वे पाँच आधारभूत सिद्धांत जो हमारे प्रत्येक उत्पाद के निर्माण को दिशा देते हैं।",
+      whyPillars: [
+        {
+          title: "डिजाइन में सादगी (Simple by Design)",
+          desc: "हम अनावश्यक जटिलता और रुकावटों को हटाते हैं ताकि उपयोगकर्ता अपने मुख्य कार्य पर तुरंत ध्यान केंद्रित कर सकें।"
+        },
+        {
+          title: "वास्तविक जीवन में उपयोगी (Useful in Real Life)",
+          desc: "अधिवक्ताओं, विधि छात्रों और नागरिकों द्वारा दैनिक रूप से सामना की जाने वाली व्यावहारिक समस्याओं को हल करने के लिए निर्मित।"
+        },
+        {
+          title: "सुलभ एवं किफायती (Affordable Access)",
+          desc: "आक्रामक आवर्ती सब्सक्रिप्शन के बजाय पारदर्शी और उचित लाइफटाइम पास विकल्प प्रदान करना।"
+        },
+        {
+          title: "गोपनीयता को प्राथमिकता (Built for Privacy)",
+          desc: "ऑन-डिवाइस आर्किटेक्चर यह सुनिश्चित करता है कि आपके दस्तावेज़, नोट्स और फाइलें आपके डिवाइस पर ही सुरक्षित रहें।"
+        },
+        {
+          title: "सभी के लिए सहज (Designed for Everyone)",
+          desc: "सहज और स्पष्ट इंटरफ़ेस जो कानूनी पेशेवरों के साथ-साथ आम उपयोगकर्ताओं के लिए भी आसान है।"
+        }
+      ],
+
+      // Mission
+      missionBadge: "हमारा उद्देश्य",
+      missionTitle: "तकनीक जटिल नहीं लगनी चाहिए।",
+      missionSubtitle: "लेस क्रिएशन में हमारा ध्यान उपयोगी डिजिटल तकनीक को समझने में आसान, उपयोग में सहज और हर किसी के लिए सुलभ बनाने पर है।",
+      missionQuote: "“जब तकनीक अनावश्यक बाधाओं को दूर करती है और मानव समय का सम्मान करती है, तो वह दैनिक कार्यों को सरल बना देती है।”",
+
+      // Trust & Security
+      trustBadge: "सुरक्षा एवं तकनीकी अखंडता",
+      trustTitle: "सत्यापित तकनीकी सुरक्षा व अखंडता पर आधारित",
+      trustSub: "हम केवल उन्हीं तकनीकी क्षमताओं का उल्लेख करते हैं जो हमारे सॉफ्टवेयर में वास्तविक रूप से लागू हैं।",
+      trustCards: [
+        {
+          title: "सपोर्टेड फीचर्स पर स्थानीय प्रोसेसिंग",
+          desc: "पीडीएफ टूल्स, केस नोट्स और कैलकुलेटर बिना किसी अनावश्यक रिमोट अपलोड के सीधे आपके डिवाइस पर चलते हैं।"
+        },
+        {
+          title: "सुरक्षित HTTPS/TLS कनेक्शन्स",
+          desc: "सभी वेब संचार और एपीआई एंडपॉइंट्स आधुनिक टीएलएस (TLS) सुरक्षा मानकों से सुरक्षित हैं।"
+        },
+        {
+          title: "Razorpay भुगतान प्रोसेसिंग",
+          desc: "सभी पास अपग्रेड और लेनदेन Razorpay के सुरक्षित चेकआउट इन्फ्रास्ट्रक्चर के माध्यम से प्रोसेस होते हैं।"
+        },
+        {
+          title: "गोपनीयता के प्रति जागरूक आर्किटेक्चर",
+          desc: "पारदर्शी नीतियों, न्यूनतम डेटा संग्रहण और प्रत्यक्ष खाता हटाने के विकल्पों के साथ स्वतंत्र सॉफ्टवेयर।"
+        }
+      ],
+
+      // Preview Simulator
+      simBadge: "इंटरैक्टिव फ्लैगशिप पूर्वावलोकन",
       simTitle: "लेस लीगल वर्कस्पेस का अनुभव करें",
       simSub: "हमारे एंड्रॉइड एप्लिकेशन में एकीकृत वास्तविक लाइव टूल्स का उपयोग करके देखें।",
       simDiary: "केस डायरी एवं प्लानर",
       simConverter: "लाइव क्षेत्रफल कनवर्टर",
-      simPdf: "पीडीएफ इंजन एवं शेयर",
+      simPdf: "पीडीएफ इंजन एवं ट्रांसफर",
       simWhatsapp: "डायरेक्ट व्हाट्सएप",
       simInterfaceLabel: "लेस लीगल इंटरफ़ेस",
       simOnDeviceBadge: "ऑन-डिवाइस",
@@ -1061,18 +1246,21 @@ export const translations: Record<Language, TranslationSchema> = {
       featureSectionTitle: "30+ एकीकृत सुविधाओं का अन्वेषण करें",
       featureSectionSub: "पीडीएफ मर्जर से लेकर क्षेत्रीय भूमि कनवर्टर तक, ऐप में उपलब्ध सभी टूल्स देखें।",
 
-      ecosystemBadge: "डिजिटल पारिस्थितिकी तंत्र",
-      ecosystemTitle: "लेस क्रिएशन के उत्पाद",
-      ecosystemSub: "सादगी, उपयोगिता और उपयोगकर्ता गोपनीयता पर विशेष ध्यान देकर निर्मित।",
-
       founderPreviewBadge: "संस्थापक से मिलें",
       founderPreviewTitle: "व्यावहारिक उपयोगिता के लिए एक अधिवक्ता द्वारा निर्मित",
-      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने कानूनी पहुँच और दैनिक डिजिटल कार्यों को सरल बनाने के लिए लेस क्रिएशन की स्थापना की।",
+      founderPreviewText: "इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली ने तकनीक को सरल बनाने और व्यावहारिक चुनौतियों को हल करने के लिए लेस क्रिएशन की स्थापना की।",
+
+      finalCtaTitle: "जानें कि हम क्या बना रहे हैं।",
+      finalCtaSub: "व्यावहारिक चुनौतियों को हल करने के लिए डिज़ाइन किए गए सरल और सुरक्षित सॉफ़्टवेयर का अनुभव करें।",
 
       faqBadge: "अक्सर पूछे जाने वाले प्रश्न",
       faqTitle: "क्या आपके पास प्रश्न हैं? हमारे पास सटीक उत्तर हैं",
       faqSub: "हमारे सॉफ्टवेयर, गोपनीयता मॉडल और पास से संबंधित पारदर्शी जानकारी।",
       faqs: [
+        {
+          q: "लेस क्रिएशन क्या है और इसका लेस लीगल से क्या संबंध है?",
+          a: "लेस क्रिएशन एक टेक्नोलॉजी और डिजिटल प्रोडक्ट ब्रांड है जिसके संस्थापक अनुराग गुरौली हैं। लेस लीगल इसका प्रमुख (फ्लैगशिप) सॉफ्टवेयर एप्लिकेशन है जो कानूनी संदर्भ, पीडीएफ टूल्स और उत्पादकता सुविधाएँ प्रदान करता है।"
+        },
         {
           q: "क्या लेस लीगल भारत सरकार या किसी अदालत से संबद्ध है?",
           a: "नहीं। लेस लीगल, लेस क्रिएशन द्वारा विकसित एक पूरी तरह से स्वतंत्र, निजी सॉफ्टवेयर उपयोगिता एप्लिकेशन है। यह किसी भी सरकारी संस्था या अदालत से संबद्ध या संचालित नहीं है। प्रदान की गई सभी संदर्भ सामग्री केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है।"

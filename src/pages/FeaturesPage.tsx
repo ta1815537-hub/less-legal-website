@@ -312,6 +312,21 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-16 space-y-8 sm:space-y-10 overflow-hidden">
       
+      {/* Top Breadcrumb */}
+      <div className="flex items-center justify-between relative z-10">
+        <button
+          onClick={() => onNavigate('less-legal')}
+          className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 text-blue-600" />
+          <span>{language === 'hi' ? 'लेस लीगल पर वापस जाएं' : 'Back to Less Legal'}</span>
+        </button>
+
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 text-[11px] font-extrabold tracking-wide">
+          <span>{language === 'hi' ? 'लेस लीगल: फीचर कैटलॉग' : 'Less Legal: Feature Catalog'}</span>
+        </div>
+      </div>
+
       {/* 1. HERO SECTION WITH 3D PHONE SHOWCASE & HANDWRITTEN ANNOTATIONS */}
       <section className="relative pt-4 sm:pt-6 pb-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
