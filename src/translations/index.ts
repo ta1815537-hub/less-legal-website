@@ -959,7 +959,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec10Title: "10. Children's Privacy",
       sec10Text: "Less Legal is designed for general audiences, students, and legal practitioners. We do not knowingly collect personal identifiable information from children under the age of 13. If you become aware that a child has provided us with personal data, please contact us for immediate removal.",
       sec11Title: "11. Contact for Privacy Inquiries",
-      sec11Text: "If you have any questions, concerns, or requests regarding this Privacy Policy, please contact our Grievance Officer via our Contact Page or email us directly at lesslegalsupport@gmail.com.",
+      sec11Text: "If you have any questions, concerns, or requests regarding this Privacy Policy, please contact our Grievance Officer via our Contact Page or email us directly at support@lesscreation.com.",
       readTerms: "Read Terms & Conditions →",
       readRefund: "Read Refund & Cancellation Policy →"
     },
@@ -1493,7 +1493,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec10Title: "10. बच्चों की गोपनीयता",
       sec10Text: "लेस लीगल सामान्य दर्शकों, छात्रों और कानूनी चिकित्सकों के लिए डिज़ाइन किया गया है। हम जानबूझकर 13 वर्ष से कम उम्र के बच्चों से व्यक्तिगत पहचान योग्य जानकारी एकत्र नहीं करते हैं। यदि आपको पता चलता है कि किसी बच्चे ने हमें व्यक्तिगत डेटा प्रदान किया है, तो कृपया तत्काल हटाने के लिए हमसे संपर्क करें।",
       sec11Title: "11. गोपनीयता पूछताछ के लिए संपर्क",
-      sec11Text: "यदि इस गोपनीयता नीति के संबंध में आपके कोई प्रश्न, चिंताएं या अनुरोध हैं, तो कृपया हमारे संपर्क पृष्ठ के माध्यम से हमारे शिकायत अधिकारी से संपर्क करें या हमें सीधे lesslegalsupport@gmail.com पर ईमेल करें।",
+      sec11Text: "यदि इस गोपनीयता नीति के संबंध में आपके कोई प्रश्न, चिंताएं या अनुरोध हैं, तो कृपया हमारे संपर्क पृष्ठ के माध्यम से हमारे शिकायत अधिकारी से संपर्क करें या हमें सीधे support@lesscreation.com पर ईमेल करें।",
       readTerms: "सेवा की शर्तें पढ़ें →",
       readRefund: "रिफंड एवं रद्दीकरण नीति पढ़ें →"
     },

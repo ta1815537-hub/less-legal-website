@@ -21,7 +21,7 @@ import { DisclaimerPage } from './pages/DisclaimerPage';
 import { DownloadPage } from './pages/DownloadPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { LanguageProvider } from './context/LanguageContext';
-import { FloatingLanguageButton } from './components/FloatingLanguageButton';
+import { FloatingSupportButton } from './components/FloatingSupportButton';
 
 // Helper to determine route from current window path, query param, or hash
 function getRouteFromLocation(): PageRoute {
@@ -282,8 +282,10 @@ export default function App() {
         {/* Footer with Mandatory Direct Policy Links */}
         <Footer onNavigate={navigateTo} />
 
-        {/* Floating Language Switcher Button (Bottom Right) */}
-        <FloatingLanguageButton />
+        {/* Floating Less Support Button (Elevated bottom-right, automatically hidden on Contact and Account Delete pages) */}
+        {currentRoute !== 'contact' && currentRoute !== 'app-delete-account' && (
+          <FloatingSupportButton onNavigate={navigateTo} />
+        )}
 
       </div>
     </LanguageProvider>

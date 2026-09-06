@@ -4,7 +4,8 @@ import { SITE_CONFIG } from '../config';
 import { 
   Mail, Phone, MapPin, Send, MessageSquare, 
   ShieldCheck, CheckCircle2, Clock, 
-  Smartphone, ArrowLeft, Search, RefreshCw, FileSearch, AlertCircle, Tag
+  Smartphone, ArrowLeft, Search, RefreshCw, FileSearch, 
+  AlertCircle, Tag, Copy, Check, Sparkles, Shield, ChevronRight
 } from 'lucide-react';
 import { 
   ScrollReveal, StaggerContainer, StaggerItem, 
@@ -35,6 +36,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lastSubmittedTicket, setLastSubmittedTicket] = useState<ContactSubmission | null>(null);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedTicketId, setCopiedTicketId] = useState<string | null>(null);
 
   // Status Search State
   const [searchEmail, setSearchEmail] = useState('');
@@ -84,6 +87,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const hasPhone = Boolean(SITE_CONFIG.supportPhone && SITE_CONFIG.supportPhone.trim() !== "");
   const hasAddress = Boolean(SITE_CONFIG.businessAddress && SITE_CONFIG.businessAddress.trim() !== "");
   const hasAnyDirectContact = hasEmail || hasPhone || hasAddress;
+
+  const handleCopyEmail = () => {
+    if (SITE_CONFIG.supportEmail) {
+      navigator.clipboard.writeText(SITE_CONFIG.supportEmail);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    }
+  };
+
+  const handleCopyTicket = (id: string) => {
+    navigator.clipboard.writeText(id);
+    setCopiedTicketId(id);
+    setTimeout(() => setCopiedTicketId(null), 2000);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -148,61 +165,119 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-16 space-y-8 overflow-hidden">
+    <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-32 sm:pb-36 space-y-8 overflow-hidden">
       <HeroAmbientGlow />
       
-      {/* Header */}
-      <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
-        <motion.button
-          whileHover={{ x: -3 }}
-          onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
-        >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-[#E02636]" />
-          <span className="whitespace-nowrap">{t.common.backToHome}</span>
-        </motion.button>
+      {/* Top Header & Breadcrumb */}
+      <ScrollReveal direction="up" className="max-w-3xl mx-auto text-center space-y-4 relative z-10">
+        <div className="flex items-center justify-center">
+          <motion.button
+            whileHover={{ x: -2 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => onNavigate('home')}
+            className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-xs backdrop-blur-md"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+            <span className="whitespace-nowrap">{t.common.backToHome}</span>
+          </motion.button>
+        </div>
 
-        <motion.div 
-          whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/40 text-[#E02636] dark:text-red-400 text-xs font-black tracking-wider uppercase shadow-2xs cursor-default whitespace-nowrap"
-        >
-          <MessageSquare className="w-3.5 h-3.5 fill-current shrink-0" />
-          <span className="whitespace-nowrap">{t.contactPage.badge}</span>
-        </motion.div>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+        {/* Live Status Pill */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/5 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-semibold tracking-wide text-slate-800 dark:text-slate-200 shadow-2xs">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="whitespace-nowrap">{isHindi ? 'सक्रिय सहायता केंद्र • Less Support Desk' : 'Active Support Desk • Less Support'}</span>
+        </div>
+
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
           {t.contactPage.title}
         </h1>
-        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-2xl mx-auto">
+
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-2xl mx-auto">
           {t.contactPage.subtitle}
         </p>
+
+        {/* SLA Guarantee Strip */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[11px] font-medium text-slate-500 dark:text-slate-400">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
+            <Clock className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+            <span>{isHindi ? '24-48 व्यावसायिक घंटे में समाधान' : '24-48 Business Hours Turnaround'}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+            <span>{isHindi ? 'क्लाउड डेटाबेस एन्क्रिप्टेड' : 'Cloud Database Encrypted'}</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
+            <Tag className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+            <span>{isHindi ? 'ऑर्डर / टिकट ट्रैकिंग समर्थित' : 'Order & Ticket Tracking'}</span>
+          </span>
+        </div>
       </ScrollReveal>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
+      {/* Main Grid Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start relative z-10">
         
-        {/* Left Column: Official Contact Details & Instructions */}
+        {/* LEFT COLUMN: Channels, SLAs, Guidelines */}
         <ScrollReveal direction="up" delay={0.08} className="lg:col-span-5 space-y-6">
           
-          <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-xl">
-            <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-3">
-              {language === 'hi' ? 'आधिकारिक संचार चैनल' : 'Official Communication Channels'}
-            </h2>
+          {/* Official Channels Card */}
+          <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg space-y-5 backdrop-blur-xl">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-red-100/80 dark:bg-red-950/50 text-[#E02636] flex items-center justify-center font-bold shrink-0 border border-red-200/80 dark:border-red-900/50">
+                  <MessageSquare className="w-4 h-4" />
+                </div>
+                <h2 className="text-base font-black text-slate-900 dark:text-white">
+                  {isHindi ? 'आधिकारिक सहायता चैनल' : 'Official Support Channels'}
+                </h2>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800/40 whitespace-nowrap">
+                {isHindi ? 'सत्यापित' : 'Verified'}
+              </span>
+            </div>
 
-            {/* Direct Contact Channels */}
+            {/* Support Channels List */}
             {hasAnyDirectContact ? (
-              <StaggerContainer className="space-y-4 text-xs">
+              <StaggerContainer className="space-y-3.5 text-xs">
                 
                 {hasEmail && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5">
-                      <div className="w-9 h-9 rounded-xl bg-red-100 dark:bg-red-950/50 text-[#E02636] flex items-center justify-center font-bold shrink-0 border border-red-200 dark:border-red-900/50">
-                        <Mail className="w-4 h-4" />
+                    <div className="group p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-[#E02636]/40 dark:hover:border-[#E02636]/40 transition-all duration-200 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-950/60 text-[#E02636] flex items-center justify-center font-bold shrink-0">
+                            <Mail className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="font-bold text-slate-900 dark:text-white">{isHindi ? 'ईमेल सहायता' : 'Email Support'}</div>
+                            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{isHindi ? 'प्राथमिक सपोर्ट चैनल' : 'Primary Support Channel'}</div>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={handleCopyEmail}
+                          title={isHindi ? "ईमेल कॉपी करें" : "Copy Email"}
+                          className="px-2.5 py-1 rounded-lg bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-[11px] font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] dark:hover:text-red-400 flex items-center gap-1 cursor-pointer transition-colors shadow-2xs whitespace-nowrap"
+                        >
+                          {copiedEmail ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                          <span>{copiedEmail ? (isHindi ? 'कॉपी हुआ' : 'Copied') : (isHindi ? 'कॉपी' : 'Copy')}</span>
+                        </button>
                       </div>
-                      <div>
-                        <div className="font-bold text-slate-900 dark:text-white">{language === 'hi' ? 'ईमेल सहायता' : 'Email Support'}</div>
-                        <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="text-[#E02636] hover:underline font-bold break-all">
-                          {SITE_CONFIG.supportEmail}
+
+                      <div className="pt-1">
+                        <a 
+                          href={`mailto:${SITE_CONFIG.supportEmail}`} 
+                          className="text-xs font-black text-[#E02636] hover:underline break-all inline-flex items-center gap-1"
+                        >
+                          <span>{SITE_CONFIG.supportEmail}</span>
+                          <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                         </a>
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium">{language === 'hi' ? '24-48 व्यावसायिक घंटों के भीतर प्रतिक्रिया' : 'Response within 24-48 business hours'}</div>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium leading-relaxed">
+                          {isHindi ? '24 से 48 व्यावसायिक घंटों के भीतर उत्तर दिया जाएगा।' : 'Standard response within 24-48 business hours.'}
+                        </p>
                       </div>
                     </div>
                   </StaggerItem>
@@ -210,16 +285,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {hasPhone && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5">
-                      <div className="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950/50 text-blue-600 flex items-center justify-center font-bold shrink-0 border border-blue-200 dark:border-blue-900/50">
-                        <Phone className="w-4 h-4" />
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1.5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center font-bold shrink-0">
+                          <Phone className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-900 dark:text-white">{isHindi ? 'टेलीफोन / हेल्पलाइन' : 'Telephone / Helpline'}</div>
+                          <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-slate-800 dark:text-slate-200 font-bold hover:text-blue-500 transition-colors">
+                            {SITE_CONFIG.supportPhone}
+                          </a>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-bold text-slate-900 dark:text-white">{language === 'hi' ? 'टेलीफोन / हेल्पलाइन' : 'Telephone / Helpline'}</div>
-                        <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-slate-700 dark:text-slate-300 font-bold">
-                          {SITE_CONFIG.supportPhone}
-                        </a>
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium">{language === 'hi' ? 'सोम - शुक्र, सुबह 10:00 - शाम 6:00 IST' : 'Mon - Fri, 10:00 AM - 6:00 PM IST'}</div>
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 pl-10.5 font-medium">
+                        {isHindi ? 'सोम - शुक्र, सुबह 10:00 - शाम 6:00 IST' : 'Mon - Fri, 10:00 AM - 6:00 PM IST'}
                       </div>
                     </div>
                   </StaggerItem>
@@ -227,78 +306,83 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {hasAddress && (
                   <StaggerItem>
-                    <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5">
-                      <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/50 text-amber-700 flex items-center justify-center font-bold shrink-0 border border-amber-200 dark:border-amber-900/50">
-                        <MapPin className="w-4 h-4" />
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1.5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-700 flex items-center justify-center font-bold shrink-0">
+                          <MapPin className="w-4 h-4" />
+                        </div>
+                        <div className="font-bold text-slate-900 dark:text-white">{isHindi ? 'पंजीकृत व्यावसायिक पता' : 'Registered Business Address'}</div>
                       </div>
-                      <div>
-                        <div className="font-bold text-slate-900 dark:text-white">{language === 'hi' ? 'पंजीकृत व्यावसायिक पता' : 'Registered Business Address'}</div>
-                        <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed mt-0.5">{SITE_CONFIG.businessAddress}</p>
-                      </div>
+                      <p className="text-slate-600 dark:text-slate-300 font-medium text-[11px] leading-relaxed pl-10.5">
+                        {SITE_CONFIG.businessAddress}
+                      </p>
                     </div>
                   </StaggerItem>
                 )}
 
               </StaggerContainer>
-            ) : (
-              <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10 text-xs text-slate-700 dark:text-slate-300 space-y-2 font-medium">
-                <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <Smartphone className="w-4 h-4 text-[#E02636]" />
-                  <span>{language === 'hi' ? 'इन-ऐप सहायता डेस्क' : 'In-App Support Desk'}</span>
-                </div>
-                <p>
-                  {language === 'hi' ? 'तत्काल सहायता के लिए, ' : 'For immediate assistance, open the '}<strong className="text-slate-900 dark:text-white">Less Legal</strong> {language === 'hi' ? 'एंड्रॉइड ऐप खोलें और ' : 'Android application and navigate to '}<em>{language === 'hi' ? 'सेटिंग्स > सहायता और समर्थन' : 'Settings > Help & Support'}</em>{language === 'hi' ? ' पर जाएं।' : '.'}
-                </p>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                  {language === 'hi' ? 'आप सहायता या सत्यापन अनुरोध लॉग करने के लिए इस पृष्ठ पर संदेश फ़ॉर्म का भी उपयोग कर सकते हैं।' : 'You can also use the message form on this page to log a support or verification request.'}
-                </p>
-              </div>
-            )}
+            ) : null}
 
-            {/* Support Standards */}
-            <div className="pt-2 space-y-3 text-xs text-slate-600 dark:text-slate-300 font-medium">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[#E02636] shrink-0" />
-                <span><strong className="text-slate-900 dark:text-white font-bold">{language === 'hi' ? 'मानक टर्नअराउंड' : 'Standard Turnaround'}:</strong> {language === 'hi' ? '24 से 48 व्यावसायिक घंटे' : '24 to 48 business hours'}</span>
+            {/* In-App Direct Guidance */}
+            <div className="p-4 bg-slate-50/80 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10 text-xs space-y-2">
+              <div className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Smartphone className="w-4 h-4 text-[#E02636] shrink-0" />
+                <span>{isHindi ? 'इन-ऐप सहायता डेस्क (In-App Support)' : 'In-App Support Desk'}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#E02636] shrink-0" />
-                <span><strong className="text-slate-900 dark:text-white font-bold">{language === 'hi' ? 'लेनदेन पूछताछ' : 'Transaction Inquiries'}:</strong> {language === 'hi' ? 'तेजी से समाधान के लिए ऑर्डर / ट्रांजेक्शन आईडी शामिल करें' : 'Include Order / Transaction ID for faster resolution'}</span>
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+                {isHindi 
+                  ? 'तत्काल सहायता के लिए Less Legal एंड्रॉइड ऐप में ' 
+                  : 'For in-app issues or fast pass verification, open the Less Legal Android app and visit '}
+                <strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'सेटिंग्स > सहायता एवं समर्थन' : 'Settings > Help & Support'}</strong>.
+              </p>
+            </div>
+
+            {/* Turnaround Standards & Grievance */}
+            <div className="pt-1 space-y-2.5 text-xs text-slate-600 dark:text-slate-300 font-medium border-t border-slate-100 dark:border-white/10">
+              <div className="flex items-center gap-2 text-[11px]">
+                <Clock className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+                <span><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'मानक टर्नअराउंड' : 'Standard Turnaround'}:</strong> {isHindi ? '24 से 48 व्यावसायिक घंटे' : '24 to 48 business hours'}</span>
+              </div>
+              <div className="flex items-center gap-2 text-[11px]">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+                <span><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'लेनदेन पूछताछ' : 'Transaction Verification'}:</strong> {isHindi ? 'तेजी से समाधान के लिए ऑर्डर / ट्रांजेक्शन आईडी दर्ज करें' : 'Include Order / Transaction ID for priority check'}</span>
               </div>
             </div>
 
           </div>
 
-          {/* Grievance Redressal Notice */}
-          <div className="p-5 rounded-[24px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300 space-y-2 shadow-lg backdrop-blur-xl">
-            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#E02636]" />
-              <span>{language === 'hi' ? 'शिकायत निवारण तंत्र' : 'Grievance Redressal Mechanism'}</span>
-            </h3>
-            <p className="leading-relaxed text-[11px] font-medium">
-              {language === 'hi' ? 'सूचना प्रौद्योगिकी नियमों और उपभोक्ता संरक्षण दिशानिर्देशों के अनुसार, ऐप कार्यक्षमता, पास सक्रियण या बिलिंग के संबंध में उपयोगकर्ता की शिकायतों को 48 घंटों के भीतर स्वीकार किया जाएगा और 30 दिनों के भीतर संबोधित किया जाएगा।' : 'In accordance with Information Technology Rules and Consumer Protection guidelines, user grievances regarding app functionality, pass activation, or billing will be acknowledged promptly within 48 hours and addressed within 30 days.'}
+          {/* Grievance Redressal Card */}
+          <div className="p-5 sm:p-6 rounded-[24px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300 space-y-2 shadow-md backdrop-blur-xl">
+            <div className="flex items-center gap-2 font-black text-slate-900 dark:text-white">
+              <Shield className="w-4 h-4 text-[#E02636] shrink-0" />
+              <span>{isHindi ? 'शिकायत निवारण तंत्र (IT Act Rules)' : 'Grievance Redressal Mechanism'}</span>
+            </div>
+            <p className="leading-relaxed text-[11px] font-medium text-slate-600 dark:text-slate-300">
+              {isHindi 
+                ? 'सूचना प्रौद्योगिकी नियमों और उपभोक्ता संरक्षण दिशानिर्देशों के अनुसार, ऐप कार्यक्षमता, पास सक्रियण या बिलिंग के संबंध में उपयोगकर्ता की शिकायतों को 48 घंटों के भीतर स्वीकार किया जाएगा और 30 दिनों के भीतर पूर्ण समाधान दिया जाएगा।' 
+                : 'In accordance with Information Technology Rules and Consumer Protection guidelines, user grievances regarding app functionality, pass activation, or billing will be acknowledged promptly within 48 hours and resolved within 30 days.'}
             </p>
           </div>
 
         </ScrollReveal>
 
-        {/* Right Column: Support Inquiry Form & Status Checker */}
+        {/* RIGHT COLUMN: Interactive Form & Status Tracker */}
         <ScrollReveal direction="up" delay={0.14} className="lg:col-span-7">
-          <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-xl">
+          <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-xl">
             
-            {/* Top Switcher Tabs */}
-            <div className="flex rounded-full bg-slate-100 dark:bg-white/5 p-1 border border-slate-200/80 dark:border-white/10 text-xs font-bold">
+            {/* Top Sleek Switcher Tabs - Single line guaranteed */}
+            <div className="flex rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1.5 border border-slate-200/80 dark:border-white/10 gap-1">
               <button
                 type="button"
                 onClick={() => setActiveTab('submit')}
-                className={`flex-1 py-2.5 rounded-full transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                className={`flex-1 py-3 px-3 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold whitespace-nowrap ${
                   activeTab === 'submit'
-                    ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-sm font-black'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-md font-black'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                <Send className="w-3.5 h-3.5 text-[#E02636]" />
-                <span>{isHindi ? "सहायता अनुरोध भेजें" : "Submit Request"}</span>
+                <Send className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+                <span className="whitespace-nowrap">{isHindi ? "सहायता अनुरोध भेजें" : "Submit Request"}</span>
               </button>
 
               <button
@@ -309,57 +393,70 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     handleSearchStatus();
                   }
                 }}
-                className={`flex-1 py-2.5 rounded-full transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                className={`flex-1 py-3 px-3 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold whitespace-nowrap ${
                   activeTab === 'check-status'
-                    ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-sm font-black'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-md font-black'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                <FileSearch className="w-3.5 h-3.5 text-blue-500" />
-                <span>{isHindi ? "फॉर्म स्थिति जांचें" : "Check Form Status"}</span>
+                <FileSearch className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                <span className="whitespace-nowrap">{isHindi ? "फॉर्म स्थिति जांचें" : "Check Form Status"}</span>
               </button>
             </div>
 
-            {/* TAB 1: SUBMIT FORM */}
+            {/* TAB 1: SUBMIT INQUIRY FORM */}
             {activeTab === 'submit' && (
-              <div>
-                <h2 className="text-lg font-black text-slate-900 dark:text-white mb-1">
-                  {isHindi ? 'सहायता अनुरोध फॉर्म' : 'Support Request Form'}
-                </h2>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mb-6 font-medium">
-                  {isHindi ? 'विवरण भरें और अपना प्रश्न दर्ज करें। हम शीघ्र सहायता करेंगे।' : 'Fill in your details and describe your inquiry. We will assist you promptly.'}
-                </p>
+              <div className="space-y-4">
+                <div className="border-b border-slate-100 dark:border-white/10 pb-3">
+                  <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+                    {isHindi ? 'सहायता अनुरोध फॉर्म' : 'Support Request Form'}
+                  </h2>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-0.5">
+                    {isHindi ? 'अपना विवरण भरें और प्रश्न दर्ज करें। हमारी टीम त्वरित सहायता प्रदान करेगी।' : 'Fill in your inquiry details below. Our team logs and tracks all tickets.'}
+                  </p>
+                </div>
 
                 <AnimatePresence mode="wait">
                   {submitted ? (
                     <motion.div 
                       key="submitted-state"
-                      initial={{ opacity: 0, scale: 0.95 }}
+                      initial={{ opacity: 0, scale: 0.96 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
+                      exit={{ opacity: 0, scale: 0.96 }}
                       transition={{ duration: 0.35, ease: EASING_SPRING }}
-                      className="p-6 sm:p-8 rounded-2xl bg-red-50/70 dark:bg-red-950/20 border border-red-200/80 dark:border-red-900/40 text-center space-y-4"
+                      className="p-6 sm:p-8 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-center space-y-4"
                     >
                       <motion.div 
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.1 }}
-                        className="w-12 h-12 rounded-full bg-[#E02636] text-white flex items-center justify-center mx-auto shadow-md"
+                        className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-md"
                       >
                         <CheckCircle2 className="w-6 h-6" />
                       </motion.div>
+
                       <div className="space-y-1">
-                        <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F2EE]">
+                        <h3 className="text-base font-bold text-slate-900 dark:text-white">
                           {isHindi ? 'अनुरोध सफलतापूर्वक प्राप्त हुआ!' : 'Request Successfully Received!'}
                         </h3>
                         {lastSubmittedTicket && (
-                          <div className="inline-block px-3 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 font-mono text-xs font-bold">
-                            Ticket ID: {lastSubmittedTicket.id}
+                          <div className="flex items-center justify-center gap-2 pt-1">
+                            <span className="font-mono text-xs font-bold px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
+                              Ticket #{lastSubmittedTicket.id}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleCopyTicket(lastSubmittedTicket.id)}
+                              className="px-2 py-1 rounded-lg bg-white dark:bg-black/40 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold flex items-center gap-1 hover:bg-emerald-50 cursor-pointer transition-all"
+                            >
+                              {copiedTicketId === lastSubmittedTicket.id ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                              <span>{copiedTicketId === lastSubmittedTicket.id ? (isHindi ? "कॉपी" : "Copied") : (isHindi ? "कॉपी" : "Copy")}</span>
+                            </button>
                           </div>
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-600 dark:text-[#B8B3AF] max-w-md mx-auto leading-relaxed">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed font-medium">
                         {isHindi 
                           ? 'आपका अनुरोध सुरक्षित रूप से एडमिन डैशबोर्ड एवं क्लाउड डेटाबेस में दर्ज हो गया है। एडमिन द्वारा अपडेट की गई रियल-टाइम स्थिति जांचने के लिए "फॉर्म स्थिति जांचें" विकल्प का उपयोग करें।' 
                           : 'Your inquiry has been stored securely in the Cloud Database & Admin Portal. You can track real-time admin status anytime using your email.'}
@@ -372,10 +469,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             setActiveTab('check-status');
                             handleSearchStatus();
                           }}
-                          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E02636] hover:bg-[#c91e2e] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
                         >
                           <Search className="w-4 h-4" />
-                          <span>{isHindi ? 'लाइव स्टेटस चेक करें' : 'Check Live Status'}</span>
+                          <span>{isHindi ? 'लाइव स्थिति चेक करें' : 'Check Live Status'}</span>
                         </button>
 
                         <button
@@ -384,7 +481,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             setSubmitted(false);
                             setFormData({ name: '', email: '', subject: 'General Inquiry', transactionId: '', message: '' });
                           }}
-                          className="text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white underline cursor-pointer"
+                          className="text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white underline cursor-pointer whitespace-nowrap"
                         >
                           {isHindi ? 'दूसरा प्रश्न भेजें' : 'Send another inquiry'}
                         </button>
@@ -399,11 +496,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       onSubmit={handleSubmit} 
                       className="space-y-4 text-xs"
                     >
-                      
+                      {/* Name & Email Row */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                          <label htmlFor="contact-name" className="font-bold text-slate-900 dark:text-white">
-                            {t.contactPage.nameLabel} <span className="text-[#E02636]">*</span>
+                          <label htmlFor="contact-name" className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
+                            <span>{t.contactPage.nameLabel}</span>
+                            <span className="text-[#E02636]">*</span>
                           </label>
                           <input
                             id="contact-name"
@@ -412,13 +510,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             placeholder={isHindi ? 'आपका पूरा नाम' : 'Your full name'}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E02636]"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
                           />
                         </div>
 
                         <div className="space-y-1.5">
-                          <label htmlFor="contact-email" className="font-bold text-slate-900 dark:text-white">
-                            {t.contactPage.emailLabel} <span className="text-[#E02636]">*</span>
+                          <label htmlFor="contact-email" className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
+                            <span>{t.contactPage.emailLabel}</span>
+                            <span className="text-[#E02636]">*</span>
                           </label>
                           <input
                             id="contact-email"
@@ -427,11 +526,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             placeholder="name@example.com"
-                            className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E02636]"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
                           />
                         </div>
                       </div>
 
+                      {/* Subject & Transaction ID Row */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                           <label htmlFor="contact-subject" className="font-bold text-slate-900 dark:text-white">
@@ -441,7 +541,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             id="contact-subject"
                             value={formData.subject}
                             onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#121622] border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E02636]"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#121622] border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
                           >
                             <option value="General Inquiry">{isHindi ? 'सामान्य प्रश्न' : 'General Inquiry'}</option>
                             <option value="Technical Support">{isHindi ? 'तकनीकी सहायता' : 'Technical Support'}</option>
@@ -454,8 +554,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         </div>
 
                         <div className="space-y-1.5">
-                          <label htmlFor="contact-txnid" className="font-bold text-slate-900 dark:text-white">
-                            {isHindi ? 'ट्रांजेक्शन आई डी' : 'Transaction ID'} <span className="text-slate-400 font-normal">({isHindi ? 'वैकल्पिक' : 'Optional'})</span>
+                          <label htmlFor="contact-txnid" className="font-bold text-slate-900 dark:text-white flex items-center justify-between">
+                            <span>{isHindi ? 'ट्रांजेक्शन आई डी' : 'Transaction ID'}</span>
+                            <span className="text-[10px] text-slate-400 font-normal">({isHindi ? 'वैकल्पिक' : 'Optional'})</span>
                           </label>
                           <input
                             id="contact-txnid"
@@ -463,14 +564,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             value={formData.transactionId}
                             onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
                             placeholder="e.g. Razorpay / Google Play Order ID"
-                            className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E02636]"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all font-mono"
                           />
                         </div>
                       </div>
 
+                      {/* Message Textarea */}
                       <div className="space-y-1.5">
-                        <label htmlFor="contact-message" className="font-bold text-slate-900 dark:text-white">
-                          {t.contactPage.messageLabel} <span className="text-[#E02636]">*</span>
+                        <label htmlFor="contact-message" className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
+                          <span>{t.contactPage.messageLabel}</span>
+                          <span className="text-[#E02636]">*</span>
                         </label>
                         <textarea
                           id="contact-message"
@@ -478,8 +581,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                           rows={4}
                           value={formData.message}
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          placeholder={isHindi ? 'कृपया अपने प्रश्न के बारे में विवरण प्रदान करें...' : 'Please provide details regarding your query...'}
-                          className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E02636] resize-y"
+                          placeholder={isHindi ? 'कृपया अपने प्रश्न के बारे में विस्तार से विवरण प्रदान करें...' : 'Please provide details regarding your query...'}
+                          className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all resize-y"
                         />
                       </div>
 
@@ -488,30 +591,31 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         <motion.div 
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="p-4 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-900 dark:text-amber-200 text-xs space-y-2.5"
+                          className="p-4 rounded-2xl bg-amber-50/90 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800/50 text-amber-900 dark:text-amber-200 text-xs space-y-2.5"
                         >
-                          <div className="flex items-center gap-2 font-extrabold text-amber-800 dark:text-amber-300">
+                          <div className="flex items-center gap-2 font-black text-amber-800 dark:text-amber-300">
                             <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 animate-pulse" />
                             <span>
                               {isHindi 
-                                ? '12 घंटे की फॉर्म सबमिशन सीमा (Limit Reached)' 
+                                ? '12 घंटे की फॉर्म सबमिशन सीमा (Quota Limit)' 
                                 : '12-Hour Submission Limit Reached'}
                             </span>
                           </div>
-                          <p className="leading-relaxed text-[11px] text-amber-900/90 dark:text-amber-200/90">
+                          <p className="leading-relaxed text-[11px] text-amber-900/90 dark:text-amber-200/90 font-medium">
                             {isHindi 
                               ? `ईमेल (${formData.email}) से पिछले 12 घंटों में 2 बार फॉर्म सबमिट किया जा चुका है। सर्वर लोड सुरक्षा एवं बोट रोकथाम के लिए, नया सबमिशन करने हेतु नीचे दिया गया टाइमर पूरा होने की प्रतीक्षा करें:`
-                              : `This email (${formData.email}) has reached the limit of 2 submissions per 12 hours to protect server resources. Please wait for the timer to reset:`}
+                              : `This email (${formData.email}) has reached the limit of 2 submissions per 12 hours. Please wait for the timer to reset:`}
                           </p>
-                          <div className="flex items-center justify-between p-3 rounded-xl bg-amber-500/20 border border-amber-500/30 font-mono font-bold text-xs shadow-inner">
+                          <div className="flex items-center justify-between p-3 rounded-xl bg-amber-100/80 dark:bg-amber-900/40 border border-amber-300/60 dark:border-amber-700/50 font-mono font-bold text-xs shadow-inner">
                             <span className="text-amber-800 dark:text-amber-300">{isHindi ? 'पुनः प्रयास टाइमर (Timer):' : 'Reset Countdown:'}</span>
-                            <span className="text-amber-950 dark:text-amber-50 text-xs sm:text-sm tracking-wide bg-amber-500/30 px-3 py-1 rounded-lg border border-amber-500/40 font-black">
+                            <span className="text-amber-950 dark:text-amber-50 text-xs sm:text-sm tracking-wide bg-amber-200 dark:bg-amber-800 px-3 py-1 rounded-lg border border-amber-300 dark:border-amber-600 font-black">
                               ⏳ {formatCountdown(rateLimitInfo.remainingMs)}
                             </span>
                           </div>
                         </motion.div>
                       )}
 
+                      {/* Submit Action Button - Single line text */}
                       <GlowingButton
                         type="submit"
                         variant="primary"
@@ -521,12 +625,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         }`}
                       >
                         {isSubmitting ? (
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-2 whitespace-nowrap">
                             <RefreshCw className="w-4 h-4 animate-spin" />
                             <span>{isHindi ? 'सुरक्षित सहेजा जा रहा है...' : 'Saving to Database...'}</span>
                           </div>
                         ) : rateLimitInfo.isLimited ? (
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-2 whitespace-nowrap">
                             <Clock className="w-4 h-4" />
                             <span>
                               {isHindi 
@@ -535,17 +639,17 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             </span>
                           </div>
                         ) : (
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-2 whitespace-nowrap">
                             <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
                             <span className="whitespace-nowrap">{t.contactPage.sendButton}</span>
                           </div>
                         )}
                       </GlowingButton>
 
-                      <p className="text-[11px] text-slate-500 dark:text-[#77736F] text-center pt-1">
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center pt-1 font-medium">
                         {isHindi 
-                          ? '12 घंटे में अधिकतम 2 सबमिशन की अनुमति है। सभी संदेश एडमिन पोर्टल में सहेजे जाते हैं।' 
-                          : 'Max 2 submissions per 12 hours per email. Saved to Admin Portal.'}
+                          ? '12 घंटे में अधिकतम 2 सबमिशन की अनुमति है। सभी संदेश एडमिन पोर्टल में सुरक्षित सहेजे जाते हैं।' 
+                          : 'Max 2 submissions per 12 hours per email. Saved to Cloud Admin Portal.'}
                       </p>
 
                     </motion.form>
@@ -557,24 +661,24 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             {/* TAB 2: CHECK TICKET / FORM STATUS */}
             {activeTab === 'check-status' && (
               <div className="space-y-6">
-                <div>
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-[#F5F2EE] mb-1 flex items-center gap-2">
+                <div className="border-b border-slate-100 dark:border-white/10 pb-3">
+                  <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
                     <FileSearch className="w-5 h-5 text-blue-500" />
                     <span>{isHindi ? 'फॉर्म की रियल-टाइम स्थिति जांचें' : 'Check Form Status'}</span>
                   </h2>
-                  <p className="text-xs text-slate-600 dark:text-[#B8B3AF]">
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium mt-0.5">
                     {isHindi 
-                      ? 'वह ईमेल आईडी दर्ज करें जो आपने फॉर्म सबमिट करते समय दर्ज की थी। एडमिन डैशबोर्ड से लाइव स्टेटस यहाँ दिखेगा।' 
+                      ? 'वह ईमेल आईडी दर्ज करें जो आपने फॉर्म सबमिट करते समय दर्ज की थी। एडमिन डैशबोर्ड से लाइव स्थिति यहाँ दिखेगी।' 
                       : 'Enter the email address you used when submitting the form to view real-time status from the Admin Dashboard.'}
                   </p>
                 </div>
 
                 <form onSubmit={handleSearchStatus} className="space-y-3">
-                  <div className="space-y-1 text-xs">
-                    <label className="font-bold text-slate-900 dark:text-[#F5F2EE]">
+                  <div className="space-y-1.5 text-xs">
+                    <label className="font-bold text-slate-900 dark:text-white">
                       {isHindi ? 'पंजीकृत ईमेल आईडी (Registered Email Address)' : 'Registered Email Address'}
                     </label>
-                    <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2.5">
                       <div className="relative flex-1">
                         <input
                           type="email"
@@ -582,24 +686,24 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                           value={searchEmail}
                           onChange={(e) => setSearchEmail(e.target.value)}
                           placeholder="name@example.com"
-                          className="w-full pl-9 pr-4 py-2.5 glass-input rounded-xl text-xs text-slate-900 dark:text-[#F5F2EE]"
+                          className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
                         />
-                        <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                       <button
                         type="submit"
                         disabled={isSearching}
-                        className="px-5 py-2.5 rounded-xl bg-[#C21F2F] hover:bg-[#a81927] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 disabled:opacity-50"
+                        className="px-6 py-3 rounded-xl bg-[#E02636] hover:bg-[#c91e2e] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 whitespace-nowrap"
                       >
                         {isSearching ? (
                           <>
                             <RefreshCw className="w-4 h-4 animate-spin" />
-                            <span>{isHindi ? 'खोजा जा रहा है...' : 'Searching...'}</span>
+                            <span className="whitespace-nowrap">{isHindi ? 'खोजा जा रहा है...' : 'Searching...'}</span>
                           </>
                         ) : (
                           <>
                             <Search className="w-4 h-4" />
-                            <span>{isHindi ? 'स्थिति चेक करें' : 'Check Status'}</span>
+                            <span className="whitespace-nowrap">{isHindi ? 'स्थिति चेक करें' : 'Check Status'}</span>
                           </>
                         )}
                       </button>
@@ -609,26 +713,26 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {/* RESULTS LIST */}
                 {searchFinished && (
-                  <div className="space-y-4 pt-2 border-t border-slate-200 dark:border-white/10">
+                  <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-white/10">
                     {ticketResults.length === 0 ? (
-                      <div className="p-6 rounded-2xl bg-slate-100/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-center space-y-2">
+                      <div className="p-7 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-center space-y-2">
                         <AlertCircle className="w-8 h-8 text-amber-500 mx-auto" />
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-[#F5F2EE]">
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                           {isHindi ? 'कोई अनुरोध नहीं मिला' : 'No Submissions Found'}
                         </h4>
-                        <p className="text-xs text-slate-600 dark:text-[#B8B3AF] max-w-sm mx-auto">
+                        <p className="text-xs text-slate-600 dark:text-slate-300 max-w-sm mx-auto font-medium">
                           {isHindi 
                             ? `ईमेल (${searchEmail}) से कोई फ़ॉर्म अनुरोध दर्ज नहीं है। कृपया सही ईमेल दर्ज करें।` 
                             : `No form submission records were found for "${searchEmail}". Please verify the email address.`}
                         </p>
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        <div className="text-xs font-bold text-slate-600 dark:text-[#B8B3AF] flex items-center justify-between">
+                      <div className="space-y-3.5">
+                        <div className="text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center justify-between">
                           <span>{isHindi ? `कुल दर्ज अनुरोध: ${ticketResults.length}` : `Total Submissions: ${ticketResults.length}`}</span>
                           <button 
                             onClick={() => handleSearchStatus()}
-                            className="text-[11px] text-[#C21F2F] hover:underline flex items-center gap-1 cursor-pointer"
+                            className="text-[11px] text-[#E02636] hover:underline flex items-center gap-1 cursor-pointer font-bold whitespace-nowrap"
                           >
                             <RefreshCw className="w-3 h-3" />
                             <span>{isHindi ? 'रिफ्रेश करें' : 'Refresh'}</span>
@@ -638,14 +742,24 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         {ticketResults.map((ticket) => (
                           <div 
                             key={ticket.id}
-                            className="p-4 rounded-2xl bg-white dark:bg-[#121215] border border-slate-200 dark:border-white/10 shadow-sm space-y-3 text-xs"
+                            className="p-5 rounded-2xl bg-slate-50/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 shadow-sm space-y-3.5 text-xs"
                           >
-                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-white/5 pb-2.5">
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/60 dark:border-white/5 pb-3">
                               <div className="space-y-0.5">
-                                <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
-                                  Ticket #{ticket.id}
-                                </span>
-                                <h4 className="font-bold text-slate-900 dark:text-white text-sm">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-mono text-xs font-black text-slate-900 dark:text-white bg-white dark:bg-white/10 px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-white/10">
+                                    Ticket #{ticket.id}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleCopyTicket(ticket.id)}
+                                    title="Copy Ticket ID"
+                                    className="text-slate-400 hover:text-slate-700 dark:hover:text-white cursor-pointer"
+                                  >
+                                    {copiedTicketId === ticket.id ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                                  </button>
+                                </div>
+                                <h4 className="font-bold text-slate-900 dark:text-white text-sm pt-0.5">
                                   {ticket.subject}
                                 </h4>
                               </div>
@@ -653,20 +767,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                               {/* Live Status Badge */}
                               <div>
                                 {ticket.status === 'Resolved' && (
-                                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-bold text-xs flex items-center gap-1 border border-emerald-500/30">
+                                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-bold text-xs flex items-center gap-1.5 border border-emerald-500/30 whitespace-nowrap">
                                     <CheckCircle2 className="w-3.5 h-3.5" />
                                     <span>{isHindi ? 'हल हो गया (Resolved)' : 'Resolved'}</span>
                                   </span>
                                 )}
                                 {ticket.status === 'In Progress' && (
-                                  <span className="px-3 py-1 rounded-full bg-blue-500/15 text-blue-700 dark:text-blue-400 font-bold text-xs flex items-center gap-1 border border-blue-500/30">
+                                  <span className="px-3 py-1 rounded-full bg-blue-500/15 text-blue-700 dark:text-blue-400 font-bold text-xs flex items-center gap-1.5 border border-blue-500/30 whitespace-nowrap">
                                     <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                                     <span>{isHindi ? 'प्रगति पर (In Progress)' : 'In Progress'}</span>
                                   </span>
                                 )}
                                 {ticket.status === 'Pending' && (
-                                  <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold text-xs flex items-center gap-1 border border-amber-500/30">
-                                    <Clock className="w-3.5 h-3.5" />
+                                  <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 font-bold text-xs flex items-center gap-1.5 border border-amber-500/30 whitespace-nowrap">
+                                    <Clock className="w-3.5 h-3.5 animate-pulse" />
                                     <span>{isHindi ? 'लंबित (Pending)' : 'Pending'}</span>
                                   </span>
                                 )}
@@ -674,30 +788,30 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             </div>
 
                             {/* Ticket Details */}
-                            <div className="space-y-2 text-slate-600 dark:text-[#B8B3AF]">
-                              <p className="bg-slate-50 dark:bg-white/5 p-2.5 rounded-xl text-[11px] leading-relaxed italic border border-slate-200/50 dark:border-white/5">
+                            <div className="space-y-2.5 text-slate-600 dark:text-slate-300">
+                              <p className="bg-white dark:bg-black/20 p-3 rounded-xl text-xs leading-relaxed border border-slate-200/60 dark:border-white/5 font-medium">
                                 "{ticket.message}"
                               </p>
 
                               {ticket.transactionId && (
-                                <div className="text-[11px] flex items-center gap-1 text-slate-500">
-                                  <Tag className="w-3 h-3 text-slate-400" />
-                                  <span>Txn ID: <strong>{ticket.transactionId}</strong></span>
+                                <div className="text-[11px] flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-medium">
+                                  <Tag className="w-3.5 h-3.5 text-slate-400" />
+                                  <span>Txn ID: <strong className="font-mono text-slate-800 dark:text-slate-200">{ticket.transactionId}</strong></span>
                                 </div>
                               )}
 
                               {/* Admin Notes / Update response if provided */}
                               {ticket.adminNotes && (
-                                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 space-y-1">
-                                  <div className="font-bold text-[11px] flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
-                                    <ShieldCheck className="w-3.5 h-3.5 text-[#C21F2F]" />
-                                    <span>{isHindi ? 'एडमिन उत्तर / अपडेट टिप्पणी:' : 'Admin Reply / Update:'}</span>
+                                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 space-y-1">
+                                  <div className="font-bold text-xs flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
+                                    <ShieldCheck className="w-4 h-4 text-[#E02636]" />
+                                    <span>{isHindi ? 'एडमिन उत्तर / अपडेट टिप्पणी:' : 'Official Admin Response:'}</span>
                                   </div>
                                   <p className="text-xs leading-relaxed font-medium">{ticket.adminNotes}</p>
                                 </div>
                               )}
 
-                              <div className="text-[10px] text-slate-400 pt-1 text-right">
+                              <div className="text-[10px] text-slate-400 pt-1 text-right font-medium">
                                 {isHindi ? 'दर्ज करने का समय:' : 'Submitted on:'} {new Date(ticket.timestamp).toLocaleString(isHindi ? 'hi-IN' : 'en-US')}
                               </div>
                             </div>

@@ -95,7 +95,7 @@ export const SITE_CONFIG = {
   ] as ProductItem[],
 
   // Real Contact Details
-  supportEmail: "lesslegalsupport@gmail.com",
+  supportEmail: "support@lesscreation.com",
   supportPhone: "",        // e.g. "+91 9876543210"
   businessAddress: "",     // e.g. "Office No. 102, Legal Hub Tower, Bangalore, Karnataka, India"
   

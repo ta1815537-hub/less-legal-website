@@ -342,10 +342,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
                 <div className="min-w-0">
                   <a 
-                    href="mailto:lesslegalsupport@gmail.com" 
+                    href="mailto:support@lesscreation.com" 
                     className="text-xs font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
                   >
-                    lesslegalsupport@gmail.com
+                    support@lesscreation.com
                   </a>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
                     Response within 24 hours
