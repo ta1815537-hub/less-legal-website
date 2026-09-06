@@ -12,9 +12,9 @@ export const launchLessLegalApp = (path: string = 'premium') => {
   if (isAndroid) {
     // Chrome Android Intent URL format with browser_fallback_url
     // Package: com.lesslegal.app
-    // Target scheme/path: https://lesslegal.app/premium
+    // Target scheme/path: https://www.lesscreation.com/app/premium
     const encodedFallback = encodeURIComponent(playStoreUrl);
-    const intentUrl = `intent://lesslegal.app/${path}#Intent;scheme=https;package=com.lesslegal.app;S.browser_fallback_url=${encodedFallback};end;`;
+    const intentUrl = `intent://www.lesscreation.com/app/${path}#Intent;scheme=https;package=com.lesslegal.app;S.browser_fallback_url=${encodedFallback};end;`;
 
     // Trigger Android OS intent dispatch
     window.location.href = intentUrl;

@@ -1320,7 +1320,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="text-5xl font-extrabold text-[#2563EB] dark:text-blue-400">₹99</span>
-                    <span className="text-xs text-slate-500 dark:text-[#B8B3AF] line-through">₹179</span>
+                    <span className="text-xs text-slate-500 dark:text-[#B8B3AF] line-through">₹329</span>
                     <span className="text-xs text-slate-600 dark:text-[#B8B3AF]">
                       {language === 'hi' ? '/ एकमुश्त स्थायी भुगतान' : '/ one-time lifetime payment'}
                     </span>

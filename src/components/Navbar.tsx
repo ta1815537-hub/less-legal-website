@@ -23,15 +23,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   const { scrollYProgress } = useScroll();
 
   // Persistent Countdown Timer for FOMO
-  const [timeLeft, setTimeLeft] = useState({ hours: 38, minutes: 47, seconds: 12 });
+  const [timeLeft, setTimeLeft] = useState({ days: 28, hours: 23, minutes: 47, seconds: 12 });
 
   useEffect(() => {
-    const STORAGE_KEY = 'less_legal_promo_target_v3_38h';
+    const STORAGE_KEY = 'less_legal_promo_target_v4_28d';
     let targetTime = localStorage.getItem(STORAGE_KEY);
     
+    // 28 days, 23 hours, 47 minutes, 12 seconds
+    const initialDuration = (28 * 24 * 3600 + 23 * 3600 + 47 * 60 + 12) * 1000;
+    
     if (!targetTime) {
-      // Set to 38 hours, 47 minutes, 12 seconds from now
-      const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
+      const newTarget = Date.now() + initialDuration;
       localStorage.setItem(STORAGE_KEY, newTarget.toString());
       targetTime = newTarget.toString();
     }
@@ -39,14 +41,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
     const interval = setInterval(() => {
       const difference = parseInt(targetTime!) - Date.now();
       if (difference <= 0) {
-        // Reset countdown to a new 38h 47m 12s cycle if it finishes to maintain FOMO urgency
-        const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
+        // Reset countdown to a new 28d 23h cycle if it finishes to maintain FOMO urgency
+        const newTarget = Date.now() + initialDuration;
         localStorage.setItem(STORAGE_KEY, newTarget.toString());
       } else {
-        const h = Math.floor(difference / (1000 * 60 * 60));
-        const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((difference % (1000 * 60)) / 1000);
-        setTimeLeft({ hours: h, minutes: m, seconds: s });
+        const totalSecs = Math.floor(difference / 1000);
+        const d = Math.floor(totalSecs / (24 * 3600));
+        const remSecs = totalSecs % (24 * 3600);
+        const h = Math.floor(remSecs / 3600);
+        const m = Math.floor((remSecs % 3600) / 60);
+        const s = remSecs % 60;
+        setTimeLeft({ days: d, hours: h, minutes: m, seconds: s });
       }
     }, 1000);
 
@@ -76,39 +81,38 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   return (
     <>
       {/* Top Promotional FOMO Bar */}
-      <div className="fixed top-0 left-0 right-0 h-10 sm:h-11 z-[65] bg-gradient-to-r from-slate-900 via-[#1C1405] to-slate-900 border-b border-[#E5BA55]/35 flex items-center justify-center px-3 text-white overflow-hidden select-none">
-        {/* Subtle gold shining line inside the banner */}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(229,186,85,0.15),transparent)] bg-[length:200%_100%] animate-pulse pointer-events-none" />
+      <div className="fixed top-0 left-0 right-0 h-10 sm:h-11 z-[65] bg-gradient-to-r from-slate-950 via-[#0D2447] to-slate-950 border-b border-blue-500/25 flex items-center justify-center px-1.5 sm:px-3 text-white overflow-hidden select-none">
+        {/* Subtle royal blue shining line inside the banner */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(59,130,246,0.12),transparent)] bg-[length:200%_100%] animate-pulse pointer-events-none" />
         
-        <div className="max-w-[1400px] w-full flex items-center justify-between gap-2 text-xs font-semibold">
+        <div className="max-w-[1400px] w-full flex items-center justify-center gap-1.5 sm:gap-4 text-xs font-semibold">
           {/* Offer text */}
-          <div className="flex items-center gap-1 sm:gap-2 truncate">
-            <span className="hidden xs:inline-block animate-bounce">🔥</span>
-            <span className="text-[10px] sm:text-xs font-black text-[#E5BA55] uppercase tracking-wider whitespace-nowrap">
-              {language === 'hi' ? 'सीमित ऑफर' : 'LIMITED OFFER'}
-            </span>
-            <span className="text-[9px] sm:text-[11px] text-slate-200 truncate">
-              {language === 'hi' 
-                ? ': हमेशा के लिए (Permanent) प्रीमियम मेंबरशिप पर 70% छूट!' 
-                : ': Permanent Lifetime Premium Membership at 70% Off!'}
+          <div className="flex items-center gap-1 shrink-0">
+            <span className="text-[10px] sm:text-xs animate-bounce shrink-0">🔥</span>
+            <span className="text-[9.5px] sm:text-xs font-black text-sky-400 uppercase tracking-wider whitespace-nowrap">
+              {language === 'hi' ? 'लाइफटाइम मेंबरशिप सिर्फ ₹99 में!' : 'Lifetime Membership just ₹99!'}
             </span>
           </div>
 
           {/* Countdown timer & Claim Button */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
             {/* Timer Wrapper */}
-            <div className="flex items-center gap-1 bg-black/40 border border-slate-700/50 dark:border-[#D8BD82]/20 px-1.5 sm:px-2 py-0.5 rounded-lg font-mono text-[10px] sm:text-xs font-black text-amber-400">
-              <span>{timeLeft.hours.toString().padStart(2, '0')}</span>
-              <span className="animate-pulse">:</span>
+            <div className="flex items-center gap-0.5 sm:gap-1 bg-black/40 border border-blue-500/20 px-1 sm:px-2.5 py-0.5 rounded-lg font-mono text-[9px] sm:text-xs font-black text-sky-300 shrink-0">
+              <span className="text-slate-300 font-bold">{timeLeft.days}</span>
+              <span className="text-amber-400 text-[8px] sm:text-[10px] font-bold mr-0.5">{language === 'hi' ? 'दिन' : 'd'}</span>
+              
+              <span className="text-slate-300 font-bold">{timeLeft.hours.toString().padStart(2, '0')}</span>
+              <span className="text-amber-400 text-[8px] sm:text-[10px] font-bold mr-0.5">{language === 'hi' ? 'घंटे' : 'h'}</span>
+              
               <span>{timeLeft.minutes.toString().padStart(2, '0')}</span>
-              <span className="animate-pulse">:</span>
-              <span className="text-[#E03A3E]">{timeLeft.seconds.toString().padStart(2, '0')}</span>
+              <span className="animate-pulse text-slate-400">:</span>
+              <span className="text-red-400">{timeLeft.seconds.toString().padStart(2, '0')}</span>
             </div>
 
             {/* Shine Button */}
             <button
               onClick={() => handleNavClick('premium')}
-              className="gold-shimmer-button text-[10px] sm:text-xs px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full uppercase tracking-wider font-extrabold cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap"
+              className="gold-shimmer-button text-[9px] sm:text-xs px-2 sm:px-4 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-extrabold cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
             >
               {language === 'hi' ? 'ऑफ़र लें' : 'Claim Offer'}
             </button>
@@ -122,66 +126,69 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         className="fixed top-10 sm:top-11 left-0 right-0 h-1 sm:h-1.5 z-[60] bg-gradient-to-r from-amber-400 via-[#E03A3E] to-[#8B0000] dark:from-[#D8BD82] dark:via-[#E03A3E] dark:to-[#C21F2F]"
       />
       <header className="fixed top-10 sm:top-11 z-50 w-full bg-white/30 dark:bg-[#080808]/30 backdrop-blur-xl border-b border-slate-200/30 dark:border-white/10 shadow-sm transition-all duration-300">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="h-16 sm:h-20 flex items-center justify-between gap-2 lg:gap-4">
+        <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-4 xl:px-8">
+        <div className="h-16 sm:h-20 flex items-center justify-between gap-2 lg:gap-3">
           
-          {/* LEFT: Mobile Hamburger Menu Trigger (Visible only on lg:hidden) */}
-          <div className="flex lg:hidden items-center shrink-0 -ml-2">
-            <button
-              id="nav-mobile-toggle-btn"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-800 dark:text-[#F5F2EE] hover:bg-slate-100 dark:hover:bg-white/10 focus:outline-none transition-colors cursor-pointer shrink-0"
-              aria-label="Toggle navigation menu"
+          {/* LEFT GROUP: Mobile Hamburger Menu Trigger + Brand Logo & Shlok */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 min-w-0">
+            {/* Mobile Hamburger Menu Trigger */}
+            <div className="flex lg:hidden items-center shrink-0">
+              <button
+                id="nav-mobile-toggle-btn"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-1.5 sm:p-2 rounded-xl text-slate-800 dark:text-[#F5F2EE] hover:bg-slate-100 dark:hover:bg-white/10 active:scale-95 focus:outline-none transition-all cursor-pointer shrink-0"
+                aria-label="Toggle navigation menu"
+              >
+                <div className="w-5 h-4 relative flex flex-col justify-between items-center">
+                  <span
+                    className={`w-5 h-0.5 rounded-full bg-slate-800 dark:bg-[#F5F2EE] transition-all duration-300 transform origin-left ${
+                      mobileMenuOpen ? 'rotate-45 translate-x-0.5 -translate-y-0.5' : ''
+                    }`}
+                  />
+                  <span
+                    className={`w-5 h-0.5 rounded-full bg-slate-800 dark:bg-[#F5F2EE] transition-all duration-200 ${
+                      mobileMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100'
+                    }`}
+                  />
+                  <span
+                    className={`w-5 h-0.5 rounded-full bg-slate-800 dark:bg-[#F5F2EE] transition-all duration-300 transform origin-left ${
+                      mobileMenuOpen ? '-rotate-45 translate-x-0.5 translate-y-0.5' : ''
+                    }`}
+                  />
+                </div>
+              </button>
+            </div>
+
+            {/* Brand Logo & Studio Sub-label */}
+            <a 
+              id="nav-brand-logo"
+              href="/"
+              onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
+              className="flex items-center gap-1.5 sm:gap-2.5 text-left group focus:outline-none cursor-pointer shrink-0"
             >
-              <div className="w-5 h-4.5 relative flex flex-col justify-between items-center">
-                <span
-                  className={`w-5 h-0.5 rounded-full bg-slate-800 dark:bg-[#F5F2EE] transition-all duration-300 transform origin-left ${
-                    mobileMenuOpen ? 'rotate-45 translate-x-0.5 -translate-y-0.5' : ''
-                  }`}
-                />
-                <span
-                  className={`w-5 h-0.5 rounded-full bg-slate-800 dark:bg-[#F5F2EE] transition-all duration-200 ${
-                    mobileMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100'
-                  }`}
-                />
-                <span
-                  className={`w-5 h-0.5 rounded-full bg-slate-800 dark:bg-[#F5F2EE] transition-all duration-300 transform origin-left ${
-                    mobileMenuOpen ? '-rotate-45 translate-x-0.5 translate-y-0.5' : ''
-                  }`}
-                />
+              <motion.div
+                whileHover={{ scale: 1.05, rotate: 2 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2, ease: EASING_SPRING }}
+                className="p-1 sm:p-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs shrink-0"
+              >
+                <LTLogo className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" />
+              </motion.div>
+              <div className="flex flex-col justify-center min-w-0">
+                <div className="flex items-center gap-1">
+                  <span className="font-extrabold text-sm sm:text-base md:text-xl tracking-tight text-slate-900 dark:text-[#F5F2EE] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors whitespace-nowrap">
+                    {SITE_CONFIG.companyName || 'Less Creation'}
+                  </span>
+                </div>
+                <p className="text-[8.5px] xs:text-[9.5px] sm:text-[11px] font-semibold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap tracking-tight leading-tight">
+                  अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
+                </p>
               </div>
-            </button>
+            </a>
           </div>
 
-          {/* Brand Logo & Studio Sub-label */}
-          <a 
-            id="nav-brand-logo"
-            href="/"
-            onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
-            className="flex items-center gap-2.5 sm:gap-3 text-left group focus:outline-none cursor-pointer shrink-0"
-          >
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: 2 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2, ease: EASING_SPRING }}
-              className="p-1 sm:p-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs shrink-0"
-            >
-              <LTLogo className="w-8 h-8 sm:w-10 sm:h-10" />
-            </motion.div>
-            <div className="single-line-fit">
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base sm:text-lg md:text-xl tracking-tight text-slate-900 dark:text-[#F5F2EE] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors whitespace-nowrap">
-                  {SITE_CONFIG.companyName || 'Less Creation'}
-                </span>
-              </div>
-              <p className="text-[10px] sm:text-[11px] font-semibold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap badge-one-line">
-                अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
-              </p>
-            </div>
-          </a>
-
           {/* Desktop Integrated Navigation Bar (Visible only on lg:flex) */}
-          <nav className="hidden lg:flex items-center gap-1 lg:gap-1 px-2 py-1.5 rounded-full bg-slate-100/90 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 backdrop-blur-md shrink-0">
+          <nav className="hidden lg:flex items-center gap-1 px-1.5 py-1.5 rounded-full bg-slate-100/90 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 backdrop-blur-md shrink-0">
             {navLinks.map((item) => {
               const isActive = currentRoute === item.route;
               const isPremium = item.route === 'premium';
@@ -191,7 +198,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   href={`/${item.route === 'home' ? '' : item.route}`}
                   id={`nav-link-${item.route}`}
                   onClick={(e) => { e.preventDefault(); handleNavClick(item.route); }}
-                  className={`relative px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-xs lg:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap single-line-fit flex items-center gap-1.5 ${
+                  className={`relative px-2.5 xl:px-4 py-1.5 xl:py-2 rounded-full text-xs xl:text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap single-line-fit flex items-center gap-1 ${
                     isActive
                       ? 'text-blue-600 bg-blue-500/10 dark:bg-blue-500/15 dark:text-blue-400 border border-blue-500/25 dark:border-blue-500/30 shadow-2xs backdrop-blur-md'
                       : isPremium
@@ -209,7 +216,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
           </nav>
 
           {/* RIGHT SIDE: Combined desktop CTAs + Mobile useful buttons */}
-          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-1.5 xl:gap-3.5 shrink-0">
             
             {/* Mobile-only controls (Theme, Features) (Visible only on lg:hidden) */}
             <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
@@ -234,13 +241,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             </div>
 
             {/* Desktop-only CTA Controls (Visible only on lg:flex) */}
-            <div className="hidden lg:flex items-center gap-2 lg:gap-3 shrink-0">
+            <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 shrink-0">
               {/* Theme Switcher Toggle Pill (Sun & Moon capsule) */}
               <motion.button
                 onClick={toggleTheme}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.94 }}
-                className="px-2 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200/80 dark:hover:bg-white/10 border border-slate-200/90 dark:border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs shrink-0"
+                className="px-2 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200/80 dark:hover:bg-white/10 border border-slate-200/90 dark:border-white/10 transition-colors flex items-center gap-1 cursor-pointer shadow-xs shrink-0"
                 aria-label="Toggle Theme"
                 title={globalIsDark ? "Switch to White / Light Theme" : "Switch to Dark Glass Theme"}
               >
@@ -257,7 +264,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 onClick={() => onNavigate('features')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.94 }}
-                className="p-2 lg:p-2.5 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200/80 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-white/10 transition-colors flex items-center justify-center cursor-pointer shadow-xs shrink-0"
+                className="p-2 xl:p-2.5 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200/80 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-white/10 transition-colors flex items-center justify-center cursor-pointer shadow-xs shrink-0"
                 aria-label="Search"
               >
                 <Search className="w-4 h-4" />
@@ -268,7 +275,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 onClick={toggleLanguage}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-full bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs shrink-0"
+                className="px-2 py-1.5 xl:px-3 xl:py-2 rounded-full bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30 transition-colors flex items-center gap-1 cursor-pointer shadow-xs shrink-0"
                 title="Change Language / भाषा बदलें"
               >
                 <Globe className="w-4 h-4" />
@@ -280,7 +287,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 onClick={() => onNavigate('premium')}
                 whileHover={{ y: -1.5, scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="px-4 lg:px-5 py-2 lg:py-2.5 rounded-full text-xs lg:text-sm font-extrabold text-white bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 shadow-[0_4px_18px_rgba(59,130,246,0.35)] transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0"
+                className="px-3.5 xl:px-5 py-2 xl:py-2.5 rounded-full text-xs xl:text-sm font-extrabold text-white bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 shadow-[0_4px_18px_rgba(59,130,246,0.35)] transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap shrink-0"
               >
                 <Sparkles className="w-3.5 h-3.5 text-yellow-300 fill-yellow-300 animate-pulse shrink-0" />
                 <span>{language === 'hi' ? 'प्रीमियम' : 'Premium'}</span>

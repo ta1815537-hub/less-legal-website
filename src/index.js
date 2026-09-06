@@ -7,7 +7,7 @@ const FIREBASE_API_KEY = "AIzaSyCfmeRhssHAjeGAqcyq6gCTxHAOYlpcUwo";
 const PLAN_PREMIUM_PERMANENT = {
   id: 'PREMIUM_PERMANENT',
   productId: 'lesslegal_premium_permanent',
-  amountInPaise: 17900,
+  amountInPaise: 9900,
   currency: 'INR',
 };
 
@@ -315,6 +315,47 @@ export default {
     // Handle Preflight OPTIONS
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders });
+    }
+
+    // Direct handler for Digital Asset Links (Android App Links verification)
+    if (url.pathname === '/.well-known/assetlinks.json') {
+      const assetlinks = [
+        {
+          "relation": ["delegate_permission/common.handle_all_urls"],
+          "target": {
+            "namespace": "android_app",
+            "package_name": "com.aistudio.lesslegalservice.jdsvtw",
+            "sha256_cert_fingerprints": [
+              "DB:06:AF:53:4F:FA:ED:09:54:2D:65:DD:35:42:B8:70:80:57:DE:A1:D3:A5:19:08:B8:BB:17:1E:9B:4D:91:5F"
+            ]
+          }
+        },
+        {
+          "relation": ["delegate_permission/common.handle_all_urls"],
+          "target": {
+            "namespace": "android_app",
+            "package_name": "com.lesslegal.app",
+            "sha256_cert_fingerprints": [
+              "DB:06:AF:53:4F:FA:ED:09:54:2D:65:DD:35:42:B8:70:80:57:DE:A1:D3:A5:19:08:B8:BB:17:1E:9B:4D:91:5F",
+              "E0:12:48:8E:8F:2E:83:DB:0C:EA:47:17:A4:B5:4F:3E:38:C8:74:10:2B:14:A9:CE:A5:74:9D:4A:9D:FA:77:58",
+              "A4:F9:07:8D:22:6E:71:84:95:8A:0D:7F:6B:0B:AB:A1:F7:BF:89:8B:B1:9F:3A:FB:F3:E6:A7:1F:6F:98:A8:04"
+            ]
+          }
+        }
+      ];
+      return new Response(JSON.stringify(assetlinks), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          ...corsHeaders
+        }
+      });
+    }
+
+    // Direct redirection for Android App Links browser fallback
+    if (url.pathname.startsWith('/app')) {
+      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.lesslegal.app';
+      return Response.redirect(playStoreUrl, 302);
     }
 
     if (url.pathname.startsWith('/api/')) {

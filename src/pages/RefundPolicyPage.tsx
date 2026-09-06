@@ -62,26 +62,13 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
           {t.refundPolicyPage.sec1Title}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           
-          {/* Plan 1 */}
-          <div className="p-6 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-3 backdrop-blur-xl">
-            <div className="flex items-center justify-between">
-              <h3 className="font-black text-slate-900 dark:text-white text-base">{t.refundPolicyPage.plan3mTitle}</h3>
-              <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-white/10 px-3 py-1 rounded-full border border-slate-200 dark:border-white/10">
-                {t.refundPolicyPage.plan3mDuration}
-              </span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-              {t.refundPolicyPage.plan3mText}
-            </p>
-          </div>
-
           {/* Plan 2 */}
-          <div className="p-6 rounded-[28px] bg-blue-500/5 dark:bg-blue-950/15 border border-blue-500/20 dark:border-blue-500/30 shadow-xl space-y-3 backdrop-blur-xl">
+          <div className="p-6 rounded-[28px] bg-amber-500/5 dark:bg-amber-950/15 border border-amber-500/20 dark:border-amber-500/30 shadow-xl space-y-3 backdrop-blur-xl">
             <div className="flex items-center justify-between">
               <h3 className="font-black text-slate-900 dark:text-white text-base">{t.refundPolicyPage.plan1yTitle}</h3>
-              <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-500/20 px-3 py-1 rounded-full border border-blue-500/20 dark:border-blue-500/30">
+              <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/20 dark:border-amber-500/30">
                 {t.refundPolicyPage.plan1yDuration}
               </span>
             </div>

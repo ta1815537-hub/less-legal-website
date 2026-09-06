@@ -55,6 +55,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   // Refresh & Toast State
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [refreshToast, setRefreshToast] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
@@ -380,45 +381,115 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   };
 
   // Status Handlers
-  const handleUpdateDeletionStatus = (id: string, status: 'Pending' | 'Processing' | 'Completed') => {
-    adminStorage.updateDeletionStatus(id, status);
-    loadData();
+  const handleUpdateDeletionStatus = async (id: string, status: 'Pending' | 'Processing' | 'Completed') => {
+    try {
+      await adminStorage.updateDeletionStatus(id, status);
+      setToastType('success');
+      setRefreshToast(isHindi ? 'स्थिति सफलतापूर्वक अपडेट हो गई!' : 'Status updated successfully!');
+      setTimeout(() => setRefreshToast(null), 3000);
+      loadData();
+    } catch (err: any) {
+      console.error('Error updating deletion status:', err);
+      setToastType('error');
+      setRefreshToast(
+        isHindi 
+          ? 'स्थिति अपडेट करने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
+          : `Failed to update status: ${err.message || 'Permission Denied'}`
+      );
+      setTimeout(() => setRefreshToast(null), 5000);
+    }
   };
 
-  const handleUpdateContactStatus = (id: string, status: 'Pending' | 'In Progress' | 'Resolved') => {
-    adminStorage.updateContactStatus(id, status);
-    loadData();
+  const handleUpdateContactStatus = async (id: string, status: 'Pending' | 'In Progress' | 'Resolved') => {
+    try {
+      await adminStorage.updateContactStatus(id, status);
+      setToastType('success');
+      setRefreshToast(isHindi ? 'स्थिति सफलतापूर्वक अपडेट हो गई!' : 'Status updated successfully!');
+      setTimeout(() => setRefreshToast(null), 3000);
+      loadData();
+    } catch (err: any) {
+      console.error('Error updating contact status:', err);
+      setToastType('error');
+      setRefreshToast(
+        isHindi 
+          ? 'स्थिति अपडेट करने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
+          : `Failed to update status: ${err.message || 'Permission Denied'}`
+      );
+      setTimeout(() => setRefreshToast(null), 5000);
+    }
   };
 
-  const handleDeleteDeletionItem = (id: string) => {
+  const handleDeleteDeletionItem = async (id: string) => {
     if (confirm(isHindi ? 'क्या आप इस अनुरोध को स्थायी रूप से हटाना चाहते हैं?' : 'Are you sure you want to delete this request permanently?')) {
-      adminStorage.deleteDeletionRequest(id);
-      loadData();
+      try {
+        await adminStorage.deleteDeletionRequest(id);
+        setToastType('success');
+        setRefreshToast(isHindi ? 'अनुरोध सफलतापूर्वक हटा दिया गया!' : 'Request deleted successfully!');
+        setTimeout(() => setRefreshToast(null), 3000);
+        loadData();
+      } catch (err: any) {
+        console.error('Error deleting request:', err);
+        setToastType('error');
+        setRefreshToast(
+          isHindi 
+            ? 'अनुरोध हटाने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
+            : `Failed to delete request: ${err.message || 'Permission Denied'}`
+        );
+        setTimeout(() => setRefreshToast(null), 5000);
+      }
     }
   };
 
-  const handleDeleteContactItem = (id: string) => {
+  const handleDeleteContactItem = async (id: string) => {
     if (confirm(isHindi ? 'क्या आप इस संदेश को स्थायी रूप से हटाना चाहते हैं?' : 'Are you sure you want to delete this submission permanently?')) {
-      adminStorage.deleteContactSubmission(id);
-      loadData();
+      try {
+        await adminStorage.deleteContactSubmission(id);
+        setToastType('success');
+        setRefreshToast(isHindi ? 'संदेश सफलतापूर्वक हटा दिया गया!' : 'Submission deleted successfully!');
+        setTimeout(() => setRefreshToast(null), 3000);
+        loadData();
+      } catch (err: any) {
+        console.error('Error deleting submission:', err);
+        setToastType('error');
+        setRefreshToast(
+          isHindi 
+            ? 'संदेश हटाने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
+            : `Failed to delete submission: ${err.message || 'Permission Denied'}`
+        );
+        setTimeout(() => setRefreshToast(null), 5000);
+      }
     }
   };
 
-  const handleSaveNote = (id: string, type: 'deletion' | 'contact') => {
-    if (type === 'deletion') {
-      const target = deletions.find(d => d.id === id);
-      if (target) {
-        adminStorage.updateDeletionStatus(id, target.status, noteText);
+  const handleSaveNote = async (id: string, type: 'deletion' | 'contact') => {
+    try {
+      if (type === 'deletion') {
+        const target = deletions.find(d => d.id === id);
+        if (target) {
+          await adminStorage.updateDeletionStatus(id, target.status, noteText);
+        }
+      } else {
+        const target = contacts.find(c => c.id === id);
+        if (target) {
+          await adminStorage.updateContactStatus(id, target.status, noteText);
+        }
       }
-    } else {
-      const target = contacts.find(c => c.id === id);
-      if (target) {
-        adminStorage.updateContactStatus(id, target.status, noteText);
-      }
+      setToastType('success');
+      setRefreshToast(isHindi ? 'नोट सफलतापूर्वक सहेजा गया!' : 'Note saved successfully!');
+      setTimeout(() => setRefreshToast(null), 3000);
+      setEditingNoteId(null);
+      setNoteText('');
+      loadData();
+    } catch (err: any) {
+      console.error('Error saving note:', err);
+      setToastType('error');
+      setRefreshToast(
+        isHindi 
+          ? 'नोट सहेजने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
+          : `Failed to save note: ${err.message || 'Permission Denied'}`
+      );
+      setTimeout(() => setRefreshToast(null), 5000);
     }
-    setEditingNoteId(null);
-    setNoteText('');
-    loadData();
   };
 
   // CSV Exporter
@@ -675,8 +746,16 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       </div>
 
       {refreshToast && (
-        <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center gap-2 animate-in fade-in relative z-10 shadow-sm">
-          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+        <div className={`p-3.5 rounded-2xl border text-xs font-bold flex items-center gap-2 animate-in fade-in relative z-10 shadow-sm ${
+          toastType === 'success'
+            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-300'
+            : 'bg-rose-500/10 border-rose-500/30 text-rose-700 dark:text-rose-300'
+        }`}>
+          {toastType === 'success' ? (
+            <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+          ) : (
+            <AlertTriangle className="w-4.5 h-4.5 text-rose-500 shrink-0" />
+          )}
           <span>{refreshToast}</span>
         </div>
       )}

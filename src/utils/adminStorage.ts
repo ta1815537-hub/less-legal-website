@@ -233,10 +233,10 @@ export const adminStorage = {
     return localItems.filter(item => item.email.trim().toLowerCase() === cleanEmail);
   },
 
-  updateContactStatus: (id: string, status: ContactSubmission['status'], adminNotes?: string): boolean => {
+  updateContactStatus: async (id: string, status: ContactSubmission['status'], adminNotes?: string): Promise<void> => {
     const list = adminStorage.getContactSubmissions();
     const index = list.findIndex(item => item.id === id);
-    if (index === -1) return false;
+    if (index === -1) throw new Error('Contact submission not found');
 
     list[index].status = status;
     if (adminNotes !== undefined) {
@@ -253,16 +253,14 @@ export const adminStorage = {
 
     // Cloud update
     if (docId) {
-      updateDoc(doc(db, 'contact_submissions', docId), {
+      await updateDoc(doc(db, 'contact_submissions', docId), {
         status,
         ...(adminNotes !== undefined ? { adminNotes } : {})
-      }).catch(err => console.warn('Cloud update failed:', err));
+      });
     }
-
-    return true;
   },
 
-  deleteContactSubmission: (id: string): boolean => {
+  deleteContactSubmission: async (id: string): Promise<void> => {
     const list = adminStorage.getContactSubmissions();
     const target = list.find(item => item.id === id);
     const filtered = list.filter(item => item.id !== id);
@@ -274,10 +272,8 @@ export const adminStorage = {
 
     if (target) {
       const docId = target.firestoreDocId || target.id;
-      deleteDoc(doc(db, 'contact_submissions', docId)).catch(err => console.warn('Cloud delete failed:', err));
+      await deleteDoc(doc(db, 'contact_submissions', docId));
     }
-
-    return true;
   },
 
   // Account Deletion Requests
@@ -480,10 +476,10 @@ export const adminStorage = {
     });
   },
 
-  updateDeletionStatus: (id: string, status: DeletionRequest['status'], adminNotes?: string): boolean => {
+  updateDeletionStatus: async (id: string, status: DeletionRequest['status'], adminNotes?: string): Promise<void> => {
     const list = adminStorage.getDeletionRequests();
     const index = list.findIndex(item => item.id === id);
-    if (index === -1) return false;
+    if (index === -1) throw new Error('Deletion request not found');
 
     list[index].status = status;
     if (adminNotes !== undefined) {
@@ -499,16 +495,14 @@ export const adminStorage = {
     }
 
     if (docId) {
-      updateDoc(doc(db, 'account_deletion_requests', docId), {
+      await updateDoc(doc(db, 'account_deletion_requests', docId), {
         status,
         ...(adminNotes !== undefined ? { adminNotes } : {})
-      }).catch(err => console.warn('Cloud update failed:', err));
+      });
     }
-
-    return true;
   },
 
-  deleteDeletionRequest: (id: string): boolean => {
+  deleteDeletionRequest: async (id: string): Promise<void> => {
     const list = adminStorage.getDeletionRequests();
     const target = list.find(item => item.id === id);
     const filtered = list.filter(item => item.id !== id);
@@ -520,10 +514,8 @@ export const adminStorage = {
 
     if (target) {
       const docId = target.firestoreDocId || target.id;
-      deleteDoc(doc(db, 'account_deletion_requests', docId)).catch(err => console.warn('Cloud delete failed:', err));
+      await deleteDoc(doc(db, 'account_deletion_requests', docId));
     }
-
-    return true;
   },
 
   // Authoritative Firebase Auth Custom Claim (admin: true) Check

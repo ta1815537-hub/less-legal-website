@@ -1,43 +1,162 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // =========================================================
+    // SECURITY HELPERS
+    // =========================================================
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "advocatetiwaribaba@gmail.com" ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
     function isValidEmail(email) {
       return email is string && email.size() > 3 && email.size() <= 120;
     }
 
+    // =========================================================
+    // GLOBAL ADMIN BYPASS ACCESS
+    // Admins have absolute full access to read/write any document
+    // =========================================================
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // =========================================================
+    // CORE APP & WEBSITE COLLECTIONS
+    // =========================================================
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn() && (isOwner(adminId) || isAdmin());
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && (isOwner(userId) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /user_security_records/{userId} {
+      allow read: if isSignedIn() && (isOwner(userId) || isAdmin());
+      allow create, update: if isSignedIn() && (isOwner(userId) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /user_subscriptions/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /razorpay_payments/{paymentId} {
+      allow read: if isSignedIn() && (isAdmin() || resource.data.uid == request.auth.uid);
+      allow create, update, delete: if isAdmin();
+    }
+
     match /account_deletion_requests/{requestId} {
-      allow create: if request.resource.data.email is string
-                    && isValidEmail(request.resource.data.email)
-                    && request.resource.data.ticketId is string;
-      allow read, update, delete: if true;
+      allow create: if request.resource.data.email is string && isValidEmail(request.resource.data.email) && request.resource.data.ticketId is string;
+      allow read, update, delete: if isAdmin();
     }
 
     match /contact_submissions/{submissionId} {
-      allow create: if request.resource.data.email is string
-                    && isValidEmail(request.resource.data.email)
-                    && request.resource.data.name is string;
-      allow read, update, delete: if true;
+      allow create: if request.resource.data.email is string && isValidEmail(request.resource.data.email) && request.resource.data.name is string;
+      allow read, update, delete: if isAdmin();
     }
 
-    
-    match /user_subscriptions/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false; // Only written by Cloudflare Worker Service Account
-    }
-    match /razorpay_payments/{paymentId} {
-      allow read: if request.auth != null && request.auth.uid == resource.data.uid;
-      allow write: if false; // Only written by Cloudflare Worker Service Account
-    }
     match /memberships/{membershipId} {
-      allow read, create, update: if true;
+      allow read, write: if isAdmin();
     }
 
     match /payment_transactions/{transactionId} {
-      allow read, create, update: if true;
+      allow read, write: if isAdmin();
     }
 
     match /admin_config/{configId} {
-      allow read, write: if true;
+      allow read, write: if isAdmin();
+    }
+
+    match /feedbacks/{feedbackId} {
+      allow create: if isSignedIn();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /user_queries/{queryId} {
+      allow create: if isSignedIn();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /stories/{storyId} {
+      allow create: if isSignedIn();
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    match /festival_wishes/{wishId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /drafts/{documentId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /feature_analytics/{documentId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /analytics/{documentId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    match /user_stories/{documentId} {
+      allow read, create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    // =========================================================
+    // CONSOLIDATED PUBLIC CONTENT COLLECTIONS
+    // Handles all standard legal contents in one elegant block
+    // =========================================================
+    match /{collectionName}/{documentId} {
+      allow read: if collectionName in [
+        'ads', 'app_config', 'articles', 'audience_content', 'bare_acts', 
+        'citations', 'cloud_lawyers', 'cloud_quizzes', 'constitution', 
+        'courses', 'court_etiquette', 'court_etiquettes', 'courtroom_etiquette', 
+        'daily_words', 'etiquette', 'glossary', 'helplines', 'job_alerts', 
+        'judgments', 'lawyers', 'legal_essays', 'legal_procedures', 'news', 
+        'official_bare_acts', 'poster_hub_items', 'quizzes', 'right_articles', 
+        'success_stories', 'ticker', 'traffic_rules', 'useful_links'
+      ];
+      allow write: if isAdmin();
+    }
+
+    // =========================================================
+    // FALLBACK FOR UNKNOWN COLLECTIONS
+    // =========================================================
+    match /{document=**} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
     }
   }
 }
