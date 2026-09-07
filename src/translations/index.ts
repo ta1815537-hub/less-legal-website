@@ -608,7 +608,7 @@ export const translations: Record<Language, TranslationSchema> = {
       trustFastEngine: "High-Performance Native",
       trustPrivacy: "On-Device Privacy First",
       trustToolsCount: "30+ Integrated Utilities",
-      trustAndroidReady: "Android 7.0 to 15 Ready",
+      trustAndroidReady: "Cross-Platform Ready",
       
       // Product Ecosystem
       ecosystemBadge: "PRODUCT ECOSYSTEM",
@@ -1142,7 +1142,7 @@ export const translations: Record<Language, TranslationSchema> = {
       trustFastEngine: "उच्च-प्रदर्शन नेटिव इंजन",
       trustPrivacy: "पूर्ण ऑन-डिवाइस गोपनीयता",
       trustToolsCount: "30+ एकीकृत उपयोगिताएँ",
-      trustAndroidReady: "एंड्रॉइड 7.0 से 15 तैयार",
+      trustAndroidReady: "आधुनिक एवं तेज़ अनुभव",
 
       // Product Ecosystem
       ecosystemBadge: "उत्पाद पारिस्थितिकी तंत्र",

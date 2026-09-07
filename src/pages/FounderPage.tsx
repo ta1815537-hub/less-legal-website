@@ -4,11 +4,12 @@ import { useLanguage } from '../context/LanguageContext';
 import { 
   Scale, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, 
   Lightbulb, AlertCircle, Layers, Award, Target, CheckCircle2,
-  ExternalLink, UserCheck
+  ExternalLink, UserCheck, Briefcase, BookOpen, HeartHandshake,
+  Compass, ChevronRight
 } from 'lucide-react';
 import { 
   ScrollReveal, StaggerContainer, StaggerItem, 
-  HeroAmbientGlow, GlowingButton 
+  HeroAmbientGlow 
 } from '../components/MotionWrappers';
 import { motion } from 'motion/react';
 
@@ -18,135 +19,147 @@ interface FounderPageProps {
 
 export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
+  const isHindi = language === 'hi';
   const [imgError, setImgError] = useState(false);
   const [isHoveredLessLegal, setIsHoveredLessLegal] = useState(false);
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-16 space-y-10 overflow-hidden">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-20 space-y-12 sm:space-y-16 overflow-hidden">
       <HeroAmbientGlow />
 
-      {/* Back Button */}
-      <div className="relative z-10 text-center">
+      {/* Top Breadcrumb & Return Action */}
+      <div className="relative z-10 flex items-center justify-between">
         <motion.button
           whileHover={{ x: -3 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap bg-white/95 dark:bg-[#111827]/90 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-sm hover:shadow-md backdrop-blur-xl"
         >
           <ArrowLeft className="w-4 h-4 shrink-0 text-blue-600 dark:text-blue-400" />
           <span>{t.common.backToHome}</span>
         </motion.button>
+
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-[11px] font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">
+          <Scale className="w-3.5 h-3.5" />
+          <span>{isHindi ? "संस्थापक प्रोफ़ाइल" : "Founder & Leadership"}</span>
+        </div>
       </div>
 
       {/* ================================================== */}
-      {/* HERO SECTION — Desktop Left: Photo, Right: Info    */}
+      {/* 1. HERO SECTION — Modern Asymmetric Editorial Card */}
       {/* ================================================== */}
       <ScrollReveal direction="up" className="relative z-10">
-        <motion.div whileHover={{ y: -3 }} transition={{ type: "spring", stiffness: 300 }} className="p-6 sm:p-10 lg:p-12 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/12 shadow-xl relative overflow-hidden backdrop-blur-xl">
-          {/* Subtle Ambient Blue/Cyan Gradient Background */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <motion.div 
+          whileHover={{ y: -3 }} 
+          transition={{ type: "spring", stiffness: 300, damping: 25 }} 
+          className="animated-card relative p-6 sm:p-10 lg:p-12 rounded-[32px] bg-gradient-to-br from-white via-white/95 to-slate-50/90 dark:from-[#0E1526] dark:via-[#0D1424] dark:to-[#080D1A] border border-slate-200/90 dark:border-white/12 shadow-[0_25px_60px_rgba(37,99,235,0.12)] dark:shadow-[0_30px_70px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-2xl"
+        >
+          {/* Subtle Ambient Radial Lighting */}
+          <div className="absolute top-0 right-0 -mr-24 -mt-24 w-96 h-96 bg-gradient-to-bl from-blue-500/20 via-cyan-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 -ml-24 -mb-24 w-96 h-96 bg-gradient-to-tr from-amber-500/15 via-blue-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
             
-            {/* LEFT: Founder Photograph Container with Animated Running Color Border */}
+            {/* LEFT: Founder Portrait with Premium Frame & Dynamic Badge */}
             <div className="lg:col-span-5 flex justify-center">
               <motion.div 
                 whileHover={{ scale: 1.02, y: -4 }}
-                whileTap={{ scale: 0.96 }}
+                whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="relative group w-full max-w-sm"
               >
-                {/* Outer Flowing Animated Rotating Gradient Border */}
-                <div className="animated-founder-border shadow-2xl rounded-[1.8rem] overflow-hidden p-1" style={{ transform: 'translateZ(0)' }}>
+                {/* Glow Halo */}
+                <div className="absolute -inset-2 bg-gradient-to-tr from-amber-500/30 via-blue-600/30 to-cyan-400/30 rounded-[2.2rem] blur-xl opacity-75 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+
+                <div className="relative rounded-[2rem] overflow-hidden bg-slate-950 border-2 border-slate-200/80 dark:border-white/20 shadow-2xl isolate">
                   
-                  <div className="relative rounded-[calc(1.8rem-4px)] overflow-hidden bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/15 shadow-xl isolate" style={{ transform: 'translateZ(0)' }}>
-                    
-                    {!imgError ? (
-                      <div className="relative overflow-hidden bg-slate-900 flex justify-center items-center rounded-t-[calc(1.8rem-4px)]">
-                        <img 
-                          src="/images/anurag_tiwari.jpg" 
-                          alt="Anurag Gurauli — Founder of Less Creation" 
-                          onError={() => setImgError(true)}
-                          loading="eager"
-                          className="w-full h-auto max-h-[480px] object-cover object-top transform group-hover:scale-[1.02] transition-transform duration-500 ease-out"
-                        />
-                        {/* Light Sweep overlay on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                      </div>
-                    ) : (
-                      /* Styled Fallback */
-                      <div className="aspect-[4/5] bg-gradient-to-b from-slate-100 via-white to-blue-50/30 dark:from-[#0F172A] dark:via-[#080808] dark:to-[#0c1220] flex flex-col items-center justify-center p-6 text-center space-y-4 rounded-t-[calc(1.8rem-4px)]">
-                        <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-950/40 border-2 border-blue-500 flex items-center justify-center shadow-lg">
-                          <Scale className="w-10 h-10 text-blue-500" />
-                        </div>
-                        <div>
-                          <div className="text-xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-wide whitespace-nowrap badge-one-line">{t.founder.name}</div>
-                          <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mt-1 whitespace-nowrap badge-one-line">{t.founder.role}</div>
-                          <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] mt-1 whitespace-nowrap badge-one-line">Allahabad High Court</div>
-                        </div>
-                        <div className="px-3 py-1 rounded-full bg-slate-200/60 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-[10px] text-amber-800 dark:text-[#B8BD82] whitespace-nowrap badge-one-line">
-                          Less Creation
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Caption Bar */}
-                    <div className="p-3 bg-slate-100/95 dark:bg-[#0A0A0C]/90 backdrop-blur-md border-t border-slate-200 dark:border-white/10 flex flex-col items-center justify-center text-center space-y-1 rounded-b-[calc(1.8rem-4px)] w-full">
-                      <span className="font-extrabold text-slate-900 dark:text-white text-xs sm:text-sm tracking-tight whitespace-nowrap">{t.founder.name}</span>
-                      <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-300 font-extrabold text-[8.5px] sm:text-[10px] uppercase tracking-wider border border-blue-500/20 dark:border-blue-500/30 max-w-full leading-[1.3]">
-                        Founder of Less Legal & Less Creation
-                      </span>
+                  {!imgError ? (
+                    <div className="relative aspect-[4/5] overflow-hidden bg-slate-950">
+                      <img 
+                        src="/images/anurag_tiwari.jpg" 
+                        alt="Anurag Gurauli — Founder of Less Creation & Advocate" 
+                        onError={() => setImgError(true)}
+                        loading="eager"
+                        className="w-full h-full object-cover object-top transform group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80" />
                     </div>
+                  ) : (
+                    <div className="aspect-[4/5] bg-gradient-to-b from-slate-900 via-[#0F172A] to-[#070B14] flex flex-col items-center justify-center p-6 text-center space-y-3">
+                      <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-lg">
+                        <Scale className="w-8 h-8" />
+                      </div>
+                      <div>
+                        <div className="text-xl font-black text-white">{t.founder.name}</div>
+                        <div className="text-xs font-bold text-amber-400 mt-1 uppercase tracking-wider">{t.founder.role}</div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">Allahabad High Court</div>
+                      </div>
+                    </div>
+                  )}
 
+                  {/* High Quality Bottom Identity Card */}
+                  <div className="absolute bottom-3 inset-x-3 p-3 rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-amber-500/40 text-center shadow-2xl">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow-xs">
+                      <Scale className="w-3 h-3 fill-slate-950 shrink-0" />
+                      <span>FOUNDER & ADVOCATE</span>
+                    </div>
+                    <h4 className="text-sm font-black text-white tracking-wide uppercase mt-1 leading-tight">
+                      {t.founder.name}
+                    </h4>
+                    <p className="text-[10.5px] text-amber-200/90 font-bold leading-tight mt-0.5">
+                      Founder, Less Creation • Advocate, High Court
+                    </p>
                   </div>
+
                 </div>
               </motion.div>
             </div>
 
-            {/* RIGHT: Founder Details */}
-            <div className="lg:col-span-7 space-y-6 text-left">
+            {/* RIGHT: High-Impact Founder Headline & Credentials */}
+            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               
               <div className="space-y-3">
-                <motion.div 
-                  whileHover={{ scale: 1.03 }}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs cursor-default whitespace-nowrap"
-                >
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mx-auto lg:mx-0">
                   <Sparkles className="w-3.5 h-3.5 fill-current" />
-                  <span className="whitespace-nowrap tracking-wider">{t.founder.badge}</span>
-                </motion.div>
+                  <span>{t.founder.badge}</span>
+                </div>
 
-                <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+                <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                   {t.founder.name}
                 </h1>
                 
-                <p className="text-base sm:text-lg font-black text-blue-600 dark:text-blue-400">
+                <p className="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400">
                   {t.founder.subtitle}
                 </p>
 
-                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                  <UserCheck className="w-4 h-4 text-blue-500 shrink-0" />
+                <div className="inline-flex items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  <UserCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span>{t.founder.practice}</span>
-                </p>
+                </div>
               </div>
 
-              {/* Short Quote Banner */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 italic text-sm text-slate-700 dark:text-slate-300 leading-relaxed relative">
+              {/* Short Quote Banner with Glowing Edge */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-slate-100/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 italic text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed relative text-left shadow-2xs">
+                <div className="text-xl font-serif text-blue-500/50 leading-none mb-1">“</div>
                 <p>{t.founder.shortQuote}</p>
+                <div className="text-[11px] font-bold text-blue-600 dark:text-blue-400 not-italic mt-2">
+                  — Anurag Gurauli • Allahabad High Court
+                </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
                 <button
                   onClick={() => onNavigate('download')}
-                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600 text-white text-xs font-black shadow-md hover:from-blue-700 hover:to-indigo-700 cursor-pointer transition-all flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-black shadow-md shadow-blue-500/25 cursor-pointer transition-all hover:scale-[1.02] active:scale-95 flex items-center gap-2"
                 >
                   <span>{t.nav.downloadApp}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
                 
                 <button
                   onClick={() => onNavigate('features')}
-                  className="px-6 py-2.5 rounded-full bg-white/90 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-extrabold hover:bg-slate-100 dark:hover:bg-white/20 cursor-pointer transition-all shadow-xs"
+                  className="px-6 py-3 rounded-xl bg-white/95 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-extrabold hover:bg-slate-100 dark:hover:bg-white/20 cursor-pointer transition-all shadow-xs hover:scale-[1.02] active:scale-95"
                 >
                   <span>{t.common.exploreFeatures}</span>
                 </button>
@@ -159,194 +172,260 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       </ScrollReveal>
 
       {/* ================================================== */}
-      {/* FOUNDER STORY — The Person Behind Less Creation */}
+      {/* 2. FOUNDER STORY — The Person Behind Less Creation */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.06} className="relative z-10">
-        <div className="glass-card p-6 sm:p-10 rounded-3xl space-y-6">
-          <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-              <Scale className="w-5 h-5" />
+        <div className="animated-card p-6 sm:p-10 md:p-12 rounded-[32px] bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-2xl">
+          
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-5">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-blue-500/10 dark:bg-blue-500/20 border border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 shadow-xs">
+                <Scale className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                  {t.founder.storyTitle}
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">
+                  {isHindi ? 'अधिवक्ता एवं डिजिटल आर्किटेक्ट दृष्टिकोण' : 'Advocate & Digital Architect Perspective'}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
-                {t.founder.storyTitle}
-              </h2>
-              <p className="text-xs text-slate-500 dark:text-[#B8B3AF]">{language === 'hi' ? 'अधिवक्ता एवं निर्माता दृष्टिकोण' : 'Advocate & Creator Perspective'}</p>
+
+            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[11px] font-bold text-slate-600 dark:text-slate-300">
+              <BookOpen className="w-3.5 h-3.5 text-blue-500" />
+              <span>{isHindi ? "वास्तविक अनुभव" : "Courtroom Grounding"}</span>
             </div>
           </div>
 
-          <div className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-[#B8B3AF] leading-relaxed">
-            <p className="font-semibold text-slate-900 dark:text-[#F5F2EE]">{t.founder.storyP1}</p>
+          <div className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+            <div className="p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/30 font-bold text-slate-900 dark:text-white">
+              {t.founder.storyP1}
+            </div>
             <p>{t.founder.storyP2}</p>
             <p>{t.founder.storyP3}</p>
-            <p className="font-semibold text-blue-600 dark:text-blue-400">{t.founder.storyP4}</p>
+            <div className="p-4 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/20 border border-emerald-500/30 font-bold text-emerald-700 dark:text-emerald-300">
+              {t.founder.storyP4}
+            </div>
           </div>
         </div>
       </ScrollReveal>
 
       {/* ================================================== */}
-      {/* WHY I CREATED LESS LEGAL                          */}
+      {/* 3. WHY I CREATED LESS LEGAL — 6 Core Pillars Card  */}
       {/* ================================================== */}
-      <ScrollReveal direction="up" delay={0.1} className="relative z-10">
-        <motion.div whileHover={{ scale: 1.01, y: -5 }} transition={{ type: "spring", stiffness: 300 }} className="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-200 dark:border-white/12 space-y-6">
+      <ScrollReveal direction="up" delay={0.08} className="relative z-10">
+        <div className="animated-card p-6 sm:p-10 md:p-12 rounded-[32px] bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-2xl">
           
-          <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-600/30 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
+            <div className="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
               <Target className="w-5 h-5" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
-              {t.founder.whyTitle}
-            </h2>
+            <div>
+              <h2 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {t.founder.whyTitle}
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">
+                {isHindi ? "कानूनी प्रक्रियाओं को सरल और सुरक्षित बनाने का संकल्प" : "Commitment to Simplify and Secure Legal Workflows"}
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-4 text-sm text-slate-700 dark:text-[#B8B3AF] leading-relaxed">
+          <div className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
             <p>{t.founder.whyP1}</p>
-            <p className="font-medium text-slate-900 dark:text-[#F5F2EE]">{t.founder.whyP2}</p>
+            <p className="font-bold text-slate-900 dark:text-white">{t.founder.whyP2}</p>
             
-            {/* The 6 Core Bullets Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 py-3">
+            {/* The 6 Core Interactive Bullets Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 py-2">
               {t.founder.whyBullets.map((bullet, idx) => (
                 <motion.div 
                   key={idx}
-                  whileHover={{ scale: 1.02, x: 2 }}
-                  className="p-3 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-[#F5F2EE]"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-start gap-3 text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 shadow-2xs hover:shadow-md transition-all"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] dark:text-[#22C55E] shrink-0" />
-                  <span>{bullet}</span>
+                  <div className="w-6 h-6 rounded-full bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                  <span className="leading-snug">{bullet}</span>
                 </motion.div>
               ))}
             </div>
 
             <p>{t.founder.whyP3}</p>
-            <p className="font-medium text-slate-900 dark:text-[#F5F2EE]">{t.founder.whyP4}</p>
+            <p className="font-bold text-blue-600 dark:text-blue-400">{t.founder.whyP4}</p>
           </div>
 
-          {/* Factual Disclaimer Banner */}
-          <div className="p-4 rounded-2xl bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 text-xs text-slate-600 dark:text-[#B8B3AF] flex items-start gap-3">
-            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-            <p>{t.founder.disclaimerNote}</p>
+          {/* Factual Independence Disclaimer Banner */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border border-amber-500/30 text-xs sm:text-sm text-slate-700 dark:text-amber-200 flex items-start gap-3.5 shadow-2xs">
+            <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <p className="leading-relaxed">{t.founder.disclaimerNote}</p>
           </div>
 
-        </motion.div>
+        </div>
       </ScrollReveal>
 
       {/* ================================================== */}
-      {/* CONNECTED ECOSYSTEM FLOW — Visual Connection      */}
+      {/* 4. CONNECTED ECOSYSTEM FLOW — Visual 3D Connection */}
       {/* ================================================== */}
-      <ScrollReveal direction="up" delay={0.12} className="relative z-10">
-        <motion.div whileHover={{ scale: 1.01 }} transition={{ type: "spring", stiffness: 300 }} className="p-6 sm:p-10 glass-panel-gradient rounded-3xl border border-slate-200 dark:border-white/15 space-y-8 text-center">
+      <ScrollReveal direction="up" delay={0.1} className="relative z-10">
+        <div className="animated-card p-6 sm:p-10 md:p-12 rounded-[32px] bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/20 dark:from-[#0E1526] dark:via-[#0F172A] dark:to-[#1E293B] border border-blue-200/70 dark:border-white/10 space-y-8 text-center backdrop-blur-2xl shadow-xl">
           
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
+          <div className="max-w-2xl mx-auto space-y-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider">
+              <Compass className="w-3.5 h-3.5" />
+              <span>{isHindi ? "पारदर्शी संबंध संरचना" : "Clear Organizational Structure"}</span>
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
               {t.founder.connectionTitle}
             </h2>
-            <p className="text-xs text-slate-600 dark:text-[#B8B3AF] mt-1">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium">
               {t.founder.connectionSub}
             </p>
           </div>
 
-          {/* Flow Diagram Cards */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 lg:gap-6 relative">
+          {/* 3 Step Interactive Flow Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative">
             
             {/* Step 1: Founder */}
-            <div className="p-5 rounded-2xl bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/10 shadow-lg w-full md:w-64 text-center space-y-2">
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">1</div>
-              <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.founderLabel}</div>
-              <div className="text-base font-extrabold text-slate-900 dark:text-[#F5F2EE]">{t.founder.name}</div>
-              <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">{t.founder.role}</div>
-            </div>
-
-            {/* Connecting Arrow 1 */}
-            <div className="text-blue-600 dark:text-blue-400 font-bold flex md:block transform rotate-90 md:rotate-0">
-              <ArrowRight className="w-5 h-5 animate-pulse" />
-            </div>
-
-            {/* Step 2: Parent Brand */}
-            <div className="p-5 rounded-2xl bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/10 shadow-lg w-full md:w-64 text-center space-y-2">
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">2</div>
-              <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.parentBrandLabel}</div>
-              <div className="text-base font-extrabold text-blue-600 dark:text-blue-400">Less Creation</div>
-              <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">{language === 'hi' ? 'डिजिटल प्रोडक्ट स्टूडियो' : 'Digital Product Studio'}</div>
-            </div>
-
-            {/* Connecting Arrow 2 */}
-            <div className="text-blue-600 dark:text-blue-400 font-bold flex md:block transform rotate-90 md:rotate-0">
-              <ArrowRight className="w-5 h-5 animate-pulse" />
-            </div>
-
-            {/* Step 3: Flagship Product (Interactive Card) */}
             <motion.div 
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="p-6 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/10 shadow-lg text-center space-y-3 relative group"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto text-sm font-black">
+                1
+              </div>
+              <div className="text-[10.5px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-extrabold">
+                {t.founder.founderLabel}
+              </div>
+              <div className="text-lg font-black text-slate-900 dark:text-white">
+                {t.founder.name}
+              </div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                {t.founder.role}
+              </div>
+              <div className="pt-1 text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                {isHindi ? "संस्थापक एवं प्रेरणास्रोत" : "Creator & Visionary"}
+              </div>
+            </motion.div>
+
+            {/* Step 2: Parent Studio */}
+            <motion.div 
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="p-6 rounded-3xl bg-white dark:bg-[#111827] border-2 border-blue-500/40 dark:border-blue-500/30 shadow-lg text-center space-y-3 relative group"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto text-sm font-black">
+                2
+              </div>
+              <div className="text-[10.5px] uppercase tracking-wider text-blue-600 dark:text-blue-400 font-extrabold">
+                {t.founder.parentBrandLabel}
+              </div>
+              <div className="text-lg font-black text-blue-600 dark:text-blue-400">
+                Less Creation
+              </div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                {isHindi ? 'डिजिटल सॉफ्टवेयर स्टूडियो' : 'Digital Software Studio'}
+              </div>
+              <div className="pt-1 text-[11px] font-bold text-blue-600 dark:text-blue-400">
+                {isHindi ? "मूल निर्माता कंपनी" : "Parent Software Brand"}
+              </div>
+            </motion.div>
+
+            {/* Step 3: Flagship Product */}
+            <motion.div 
+              whileHover={{ y: -4, scale: 1.02 }}
               onHoverStart={() => setIsHoveredLessLegal(true)}
               onHoverEnd={() => setIsHoveredLessLegal(false)}
               onClick={() => onNavigate('features')}
-              className={`p-5 rounded-2xl bg-white dark:bg-[#0D131F] border cursor-pointer transition-all duration-300 w-full md:w-64 text-center space-y-2 relative overflow-hidden ${
+              className={`p-6 rounded-3xl bg-white dark:bg-[#111827] border-2 cursor-pointer transition-all duration-300 text-center space-y-3 relative group shadow-lg ${
                 isHoveredLessLegal 
-                  ? 'border-blue-500 shadow-2xl shadow-blue-500/20' 
-                  : 'border-slate-200 dark:border-white/10 shadow-lg'
+                  ? 'border-emerald-500 shadow-2xl shadow-emerald-500/20' 
+                  : 'border-slate-200/80 dark:border-white/10'
               }`}
             >
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">3</div>
-              <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.flagshipProductLabel}</div>
-              <div className="text-base font-extrabold text-slate-900 dark:text-[#F5F2EE] flex items-center justify-center gap-1">
-                <span>Less Legal</span>
-                <ExternalLink className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto text-sm font-black">
+                3
               </div>
-              <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">{language === 'hi' ? 'कानूनी ज्ञान और उपयोगिताएं' : 'Legal Knowledge & Utilities'}</div>
+              <div className="text-[10.5px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-extrabold">
+                {t.founder.flagshipProductLabel}
+              </div>
+              <div className="text-lg font-black text-slate-900 dark:text-white flex items-center justify-center gap-1.5">
+                <span>Less Legal</span>
+                <ExternalLink className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                {isHindi ? 'विधिक कार्यप्रणाली सूट' : 'Legal Utility & Research Suite'}
+              </div>
+              <div className="pt-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                {isHindi ? "फ्लैगशिप मोबाइल एप्लीकेशन" : "Flagship Mobile App"}
+              </div>
             </motion.div>
 
           </div>
 
-        </motion.div>
+        </div>
       </ScrollReveal>
 
       {/* ================================================== */}
-      {/* MY VISION — Step Progression (IDEA -> IMPACT)      */}
+      {/* 5. PRODUCT EVOLUTION PHILOSOPHY (IDEA -> IMPACT)   */}
       {/* ================================================== */}
-      <ScrollReveal direction="up" delay={0.14} className="relative z-10">
-        <div className="glass-card p-6 sm:p-10 rounded-3xl space-y-8">
+      <ScrollReveal direction="up" delay={0.12} className="relative z-10">
+        <div className="animated-card p-6 sm:p-10 md:p-12 rounded-[32px] bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-xl space-y-8 backdrop-blur-2xl">
           
-          <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-600/30 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
+            <div className="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
               <Lightbulb className="w-5 h-5" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
-              {t.founder.visionTitle}
-            </h2>
+            <div>
+              <h2 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {t.founder.visionTitle}
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">
+                {isHindi ? "विचार से वास्तविक प्रभाव तक की यात्रा" : "Journey from Ideation to Real Ground Impact"}
+              </p>
+            </div>
           </div>
 
-          <div className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-[#B8B3AF] leading-relaxed">
+          <div className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
             <p>{t.founder.visionP1}</p>
-            <p className="font-semibold text-slate-900 dark:text-[#F5F2EE]">{t.founder.visionP2}</p>
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 font-bold text-slate-900 dark:text-white">
+              {t.founder.visionP2}
+            </div>
             <p>{t.founder.visionP3}</p>
             <p>{t.founder.visionP4}</p>
-            <p className="font-semibold text-blue-600 dark:text-blue-400">{t.founder.visionP5}</p>
+            <div className="p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/30 font-bold text-blue-600 dark:text-blue-400">
+              {t.founder.visionP5}
+            </div>
           </div>
 
-          {/* Animated Visual Progression Bar */}
-          <div className="pt-4 border-t border-slate-200 dark:border-white/10">
-            <div className="text-xs font-bold text-slate-500 dark:text-[#B8B3AF] mb-4 text-center uppercase tracking-wider">
-              {language === 'hi' ? 'विकास की प्रक्रिया' : 'Product Evolution Philosophy'}
+          {/* 5-Step Animated Visual Progression Pipeline */}
+          <div className="pt-4 border-t border-slate-200/80 dark:border-white/10 space-y-4">
+            <div className="text-xs font-black text-slate-500 dark:text-slate-400 text-center uppercase tracking-wider">
+              {language === 'hi' ? 'विकास की प्रक्रिया (5 चरण)' : '5-Step Product Evolution Philosophy'}
             </div>
 
-            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
               {[
-                { label: t.founder.visionSteps.idea, icon: Lightbulb, color: "text-amber-500" },
-                { label: t.founder.visionSteps.problem, icon: AlertCircle, color: "text-blue-600 dark:text-blue-400" },
-                { label: t.founder.visionSteps.technology, icon: Layers, color: "text-sky-500" },
-                { label: t.founder.visionSteps.product, icon: Scale, color: "text-indigo-600 dark:text-indigo-400" },
-                { label: t.founder.visionSteps.impact, icon: Award, color: "text-emerald-500" }
-              ].map((step, idx) => {
-                const IconComponent = step.icon;
+                { step: "01", label: t.founder.visionSteps.idea, icon: Lightbulb, color: "text-amber-500", bg: "bg-amber-500/10 dark:bg-amber-500/15" },
+                { step: "02", label: t.founder.visionSteps.problem, icon: AlertCircle, color: "text-red-500 dark:text-red-400", bg: "bg-red-500/10 dark:bg-red-500/15" },
+                { step: "03", label: t.founder.visionSteps.technology, icon: Layers, color: "text-sky-500", bg: "bg-sky-500/10 dark:bg-sky-500/15" },
+                { step: "04", label: t.founder.visionSteps.product, icon: Scale, color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-500/10 dark:bg-blue-500/15" },
+                { step: "05", label: t.founder.visionSteps.impact, icon: Award, color: "text-emerald-500", bg: "bg-emerald-500/10 dark:bg-emerald-500/15" }
+              ].map((item, idx) => {
+                const IconComponent = item.icon;
                 return (
                   <StaggerItem key={idx}>
                     <motion.div 
-                      whileHover={{ scale: 1.04, y: -2 }}
-                      className="p-3.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-center space-y-2 h-full flex flex-col items-center justify-center"
+                      whileHover={{ scale: 1.04, y: -3 }}
+                      className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-center space-y-2 h-full flex flex-col items-center justify-between shadow-2xs hover:shadow-md transition-all"
                     >
-                      <IconComponent className={`w-5 h-5 ${step.color}`} />
-                      <div className="text-[11px] font-extrabold text-slate-800 dark:text-[#F5F2EE] tracking-tight whitespace-nowrap">
-                        {step.label}
+                      <div className="text-[10px] font-black text-slate-400 dark:text-slate-500 tracking-wider">
+                        STEP {item.step}
+                      </div>
+                      <div className={`w-10 h-10 rounded-2xl ${item.bg} flex items-center justify-center mx-auto shadow-2xs`}>
+                        <IconComponent className={`w-5 h-5 ${item.color}`} />
+                      </div>
+                      <div className="text-xs font-black text-slate-800 dark:text-white tracking-tight">
+                        {item.label}
                       </div>
                     </motion.div>
                   </StaggerItem>
@@ -359,32 +438,38 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       </ScrollReveal>
 
       {/* ================================================== */}
-      {/* FOUNDER JOURNEY TIMELINE — Practice to Innovation */}
+      {/* 6. FOUNDER JOURNEY TIMELINE — Practice to Innovation */}
       {/* ================================================== */}
-      <ScrollReveal direction="up" delay={0.16} className="relative z-10 space-y-6">
-        <div className="text-center space-y-1">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-[#F5F2EE]">
+      <ScrollReveal direction="up" delay={0.14} className="relative z-10 space-y-6">
+        <div className="text-center space-y-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider">
+            <Briefcase className="w-3.5 h-3.5" />
+            <span>{isHindi ? "प्रगति मील के पत्थर" : "Milestones & Evolution"}</span>
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.founder.timelineTitle}
           </h2>
-          <p className="text-xs text-slate-500 dark:text-[#B8B3AF]">{language === 'hi' ? 'न्यूनतम प्रगति यात्रा' : 'Minimal Progression Journey'}</p>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium max-w-xl mx-auto">
+            {language === 'hi' ? 'वकालत से लेकर डिजिटल सॉफ़्टवेयर नवाचार तक का सफ़र' : 'From active courtroom practice to independent software innovation'}
+          </p>
         </div>
 
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {t.founder.timelineItems.map((item, idx) => (
             <StaggerItem key={idx}>
               <motion.div 
-                whileHover={{ y: -4 }}
-                className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2 h-full flex flex-col justify-between shadow-md"
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="animated-card p-5 rounded-3xl bg-white/95 dark:bg-[#111827]/95 border border-slate-200/80 dark:border-white/10 space-y-3 h-full flex flex-col justify-between shadow-sm hover:shadow-xl transition-all"
               >
-                <div>
-                  <div className="text-2xl font-black text-blue-600 dark:text-blue-400 opacity-80 mb-1">
+                <div className="space-y-2">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-400 text-white text-xs font-black flex items-center justify-center shadow-md">
                     {item.step}
                   </div>
-                  <h3 className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] leading-snug">
+                  <h3 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-snug">
                     {item.title}
                   </h3>
                 </div>
-                <p className="text-[11px] text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                   {item.desc}
                 </p>
               </motion.div>
@@ -394,27 +479,33 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       </ScrollReveal>
 
       {/* ================================================== */}
-      {/* FOUNDER MESSAGE — Quote Card                      */}
+      {/* 7. FOUNDER PHILOSOPHY / CLOSING MASTER QUOTE CARD  */}
       {/* ================================================== */}
-      <ScrollReveal direction="up" delay={0.18} className="relative z-10">
+      <ScrollReveal direction="up" delay={0.16} className="relative z-10">
         <motion.div 
           whileHover={{ scale: 1.01 }}
-          className="p-8 sm:p-12 rounded-3xl ultra-glass-card border border-blue-500/30 shadow-2xl text-center space-y-6 max-w-3xl mx-auto relative overflow-hidden"
+          className="animated-card p-8 sm:p-12 md:p-14 rounded-[36px] bg-gradient-to-br from-white via-blue-50/40 to-indigo-50/30 dark:from-[#0E1526] dark:via-[#11192C] dark:to-[#080D1A] border-2 border-blue-400/40 dark:border-blue-500/30 shadow-[0_20px_60px_rgba(37,99,235,0.15)] text-center space-y-6 max-w-3xl mx-auto relative overflow-hidden backdrop-blur-2xl"
         >
-          <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center mx-auto text-xl font-serif shadow-xs">
+          {/* Top Elegant Quote Glyph */}
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-500 text-white flex items-center justify-center mx-auto text-2xl font-serif shadow-lg shadow-blue-500/30 border border-white/20">
             “
           </div>
           
-          <h3 className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+          <div className="inline-block px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider">
             {t.founder.messageTitle}
-          </h3>
+          </div>
 
-          <blockquote className="text-lg sm:text-xl font-medium text-slate-900 dark:text-[#F5F2EE] italic leading-relaxed">
+          <blockquote className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white italic leading-relaxed">
             “{t.founder.messageQuote}”
           </blockquote>
 
-          <div className="pt-2 border-t border-slate-200 dark:border-white/10 text-xs font-bold text-blue-600 dark:text-blue-400">
-            {t.founder.messageAuthor}
+          <div className="pt-4 border-t border-slate-200/80 dark:border-white/10 flex flex-col items-center justify-center space-y-1">
+            <span className="text-sm font-black text-slate-900 dark:text-white">
+              {t.founder.name}
+            </span>
+            <span className="text-xs text-blue-600 dark:text-blue-400 font-bold">
+              {t.founder.messageAuthor}
+            </span>
           </div>
         </motion.div>
       </ScrollReveal>

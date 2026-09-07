@@ -203,7 +203,7 @@ export const DynamicAppsShowcase: React.FC<DynamicAppsShowcaseProps> = ({
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="group relative rounded-3xl bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl border border-slate-200/80 dark:border-white/10 hover:border-blue-500/50 dark:hover:border-blue-500/40 p-5 sm:p-6 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                  className="animated-card group relative rounded-3xl bg-white/95 dark:bg-[#111827]/95 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-500/50 dark:hover:border-blue-500/40 p-5 sm:p-6 shadow-sm dark:shadow-black/40 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 flex flex-col justify-between overflow-hidden"
                 >
                   {/* Top Ambient Glow on Hover */}
                   <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-blue-500/10 via-transparent to-transparent rounded-bl-full pointer-events-none transition-opacity duration-300 group-hover:opacity-100 opacity-60" />
@@ -238,9 +238,11 @@ export const DynamicAppsShowcase: React.FC<DynamicAppsShowcaseProps> = ({
                             <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/20 whitespace-nowrap">
                               {app.badge || 'New'}
                             </span>
-                            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 whitespace-nowrap">
-                              v{app.version}
-                            </span>
+                            {app.category && (
+                              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 whitespace-nowrap">
+                                {app.category}
+                              </span>
+                            )}
                           </div>
 
                           <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">

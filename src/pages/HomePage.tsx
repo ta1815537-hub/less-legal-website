@@ -266,16 +266,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </div>
 
       {/* 2. PRODUCT ECOSYSTEM SECTION */}
-      <section id="product-ecosystem" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-white/5 border border-blue-500/20 dark:border-blue-400/20 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
+      <section id="product-ecosystem" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-900/30 border border-blue-500/20 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
             <LayoutGrid className="w-3.5 h-3.5" />
             <span>{t.home.ecosystemBadge || "PRODUCT ECOSYSTEM"}</span>
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.home.ecosystemTitle || "Products Built for Real-World Use"}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
             {t.home.ecosystemSub || "Purposeful digital applications crafted for clarity, utility, and everyday efficiency."}
           </p>
         </ScrollReveal>
@@ -295,7 +295,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <span>{t.home.flagshipBadge || "FLAGSHIP PRODUCT"}</span>
               </div>
               <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/40 px-3 py-1 rounded-full border border-emerald-500/20">
-                {isHindi ? "उपलब्ध • एंड्रॉइड 7.0+" : "Available • Android 7.0+"}
+                {isHindi ? "सक्रिय उत्पाद • एंड्रॉइड ऐप" : "Active Product • Android App"}
               </span>
             </div>
 
@@ -329,7 +329,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   isHindi ? "डायरेक्ट व्हाट्सएप" : "Direct WhatsApp",
                   isHindi ? "ऑफ़लाइन लेस-शेयर" : "Offline LessShare"
                 ].map((tag, idx) => (
-                  <span key={idx} className="px-3 py-1.5 rounded-xl bg-white/80 dark:bg-white/10 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                  <span key={idx} className="px-3 py-1.5 rounded-xl bg-white/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
                     {tag}
                   </span>
                 ))}
@@ -349,7 +349,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                 <button
                   onClick={() => onNavigate('download')}
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-[#131C31] hover:bg-slate-100 dark:hover:bg-[#1E293B] text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
                 >
                   <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>{isHindi ? "APK डाउनलोड करें" : "Download APK"}</span>
@@ -357,7 +357,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
 
               <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                {isHindi ? "v8.7.5 • निःशुल्क + प्रीमियम पास" : "v8.7.5 • Free + Premium Pass"}
+                {isHindi ? "निःशुल्क संस्करण + लाइफटाइम पास" : "Free Edition + Lifetime Pass"}
               </span>
             </div>
           </div>
@@ -366,16 +366,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 3. LESS LEGAL FLAGSHIP SHOWCASE & LIVE SIMULATOR */}
-      <section id="flagship-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-bold">
+      <section id="flagship-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 dark:bg-blue-900/40 border border-blue-500/30 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-bold">
             <Smartphone className="w-4 h-4" />
             <span>{t.home.simBadge}</span>
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {t.home.simTitle}
           </h2>
-          <p className="text-sm text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
             {t.home.simSub}
           </p>
         </ScrollReveal>
@@ -397,7 +397,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
                       simTab === tab.id
                         ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-500 shadow-[0_4px_15px_rgba(59,130,246,0.25)]'
-                        : 'bg-white/75 dark:bg-slate-900/40 backdrop-blur-md text-slate-700 dark:text-[#B8B3AF] border-blue-200/40 dark:border-blue-800/20 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/30 hover:bg-blue-500/5 shadow-xs'
+                        : 'bg-white/90 dark:bg-[#111827]/90 backdrop-blur-md text-slate-700 dark:text-slate-300 border-blue-200/50 dark:border-slate-800 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-500/10 shadow-xs'
                     }`}
                   >
                     <tab.icon className={`w-4 h-4 shrink-0 ${tab.iconColor}`} />
@@ -410,27 +410,27 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Simulator Frame Container */}
-        <div className="animated-card bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-400/20 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden">
+        <div className="animated-card bg-white/95 dark:bg-[#111827]/95 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-500/30 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden">
           <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Mock Header */}
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3.5 mb-5">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3.5 mb-5">
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                 <Scale className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] flex items-center gap-2 whitespace-nowrap badge-one-line">
+                <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2 whitespace-nowrap badge-one-line">
                   <span className="whitespace-nowrap badge-one-line">{t.home.simInterfaceLabel}</span>
                   <span className="text-[10px] bg-blue-500/10 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/20 dark:border-blue-400/20 font-semibold whitespace-nowrap badge-one-line">
                     {t.home.simOnDeviceBadge}
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-600 dark:text-[#B8B3AF] whitespace-nowrap badge-one-line">{t.home.simSandboxSub}</div>
+                <div className="text-[11px] text-slate-600 dark:text-slate-400 whitespace-nowrap badge-one-line">{t.home.simSandboxSub}</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-600 dark:text-[#B8B3AF] shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-600 dark:text-slate-400 shrink-0">
               <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap badge-one-line">{t.home.simEncryptedLabel}</span>
             </div>
@@ -704,29 +704,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 4. WHY LESS CREATION: 5 FOUNDATIONAL PILLARS */}
-      <section id="why-less-creation" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-white/5 border border-blue-500/20 dark:border-blue-400/20 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
+      <section id="why-less-creation" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-900/30 border border-blue-500/20 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
             <Lightbulb className="w-3.5 h-3.5" />
             <span>{t.home.whyBadge || "ENGINEERING PHILOSOPHY"}</span>
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.home.whyTitle || "Why Less Creation?"}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
             {t.home.whySubtitle || "The five foundational principles that guide everything we build."}
           </p>
         </ScrollReveal>
 
         {/* 5 Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {t.home.whyPillars.map((pillar, idx) => {
             const icons = [Compass, Target, Shield, Lock, Users];
             const PillarIcon = icons[idx % icons.length];
             return (
               <div 
                 key={idx}
-                className="animated-card p-6 rounded-3xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                className="animated-card p-6 rounded-3xl bg-white/90 dark:bg-[#111827]/90 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-sm dark:shadow-black/40 space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <div className="w-11 h-11 rounded-2xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
@@ -739,7 +739,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {pillar.desc}
                   </p>
                 </div>
-                <div className="pt-2 text-[10px] font-black text-slate-400 uppercase tracking-wider">
+                <div className="pt-2 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                   0{idx + 1} • {isHindi ? "आधारभूत सिद्धांत" : "Core Pillar"}
                 </div>
               </div>
@@ -748,60 +748,123 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 5. MISSION SECTION */}
-      <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up">
-          <div className="animated-card rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-blue-900/90 via-slate-900 to-slate-950 text-white border border-blue-500/30 shadow-2xl relative overflow-hidden space-y-8">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+      {/* 5. MISSION & MANIFESTO SECTION */}
+      <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 scroll-mt-28">
+        
+        {/* Section Header directly on natural background */}
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/25 dark:border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-extrabold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>{t.home.missionBadge || "OUR MANIFESTO & MISSION"}</span>
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+            {t.home.missionTitle || "Technology should not feel complicated."}
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            {t.home.missionSubtitle || "At Less Creation, our focus is on making useful digital technology easier to understand, straightforward to navigate, and accessible to everyone."}
+          </p>
+        </ScrollReveal>
+
+        {/* Real Mission Message Card (Obsidian Gold & Warm Amber Luxury Aesthetic) */}
+        <ScrollReveal direction="up" className="max-w-4xl mx-auto">
+          <div className="relative rounded-3xl p-6 sm:p-10 md:p-12 bg-gradient-to-br from-slate-900 via-[#12131A] to-[#1A1516] text-white border-2 border-amber-500/40 dark:border-amber-400/35 shadow-[0_25px_60px_-15px_rgba(245,158,11,0.2)] overflow-hidden">
             
-            <div className="max-w-3xl mx-auto text-center space-y-4">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider">
-                <Target className="w-3.5 h-3.5" />
-                <span>{t.home.missionBadge || "OUR MISSION"}</span>
-              </span>
-              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-                {t.home.missionTitle || "Technology should not feel complicated."}
-              </h2>
-              <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed">
-                {t.home.missionSubtitle || "At Less Creation, our focus is on making useful digital technology easier to understand, easier to use, and accessible to everyone."}
-              </p>
-            </div>
-
-            {/* Quote Banner */}
-            <div className="max-w-2xl mx-auto p-6 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md text-center italic text-sm sm:text-base text-blue-100 font-medium">
-              {t.home.missionQuote || "“When technology removes friction and respects human time, it transforms daily work into effortless progress.”"}
-            </div>
-
-            {/* Architecture Pipeline Steps */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-4 max-w-4xl mx-auto text-center">
-              {[
-                { step: "01", label: isHindi ? "विचार" : "Idea" },
-                { step: "02", label: isHindi ? "समस्या" : "Problem" },
-                { step: "03", label: isHindi ? "सरल तकनीक" : "Simple Tech" },
-                { step: "04", label: isHindi ? "उपयोगी उत्पाद" : "Useful Product" },
-                { step: "05", label: isHindi ? "वास्तविक प्रभाव" : "Real Impact" }
-              ].map((item, idx) => (
-                <div key={idx} className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                  <div className="text-[10px] font-bold text-blue-300">{item.step}</div>
-                  <div className="text-xs font-bold text-white whitespace-nowrap">{item.label}</div>
+            {/* Ambient Lighting Gradients */}
+            <div className="absolute top-0 right-0 -mt-16 -mr-16 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+            
+            {/* Top Seal / Header */}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-500/20 pb-5 mb-6 sm:mb-8 relative z-10">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center font-black shadow-md shadow-amber-500/20">
+                  <Target className="w-5 h-5" />
                 </div>
-              ))}
+                <div>
+                  <div className="text-xs font-black tracking-wider uppercase text-amber-400">
+                    LESS CREATION MANIFESTO
+                  </div>
+                  <div className="text-[11px] text-slate-400 font-medium font-serif italic">
+                    अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिन:
+                  </div>
+                </div>
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-amber-400/30 text-amber-300 text-[11px] font-bold">
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                <span>{isHindi ? "मार्गदर्शक सिद्धांत" : "Guiding Philosophy"}</span>
+              </div>
             </div>
+
+            {/* Core Inspiring Quote Body */}
+            <div className="relative z-10 space-y-4 my-2 text-center sm:text-left">
+              <span className="text-4xl sm:text-6xl text-amber-400/40 font-serif leading-none select-none block -mb-4 sm:-mb-6">“</span>
+              <blockquote className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-100 leading-snug tracking-tight font-serif italic px-2 sm:px-4">
+                {t.home.missionQuote || "When technology removes unnecessary hurdles and respects human time, it transforms everyday work into effortless progress."}
+              </blockquote>
+              <span className="text-4xl sm:text-6xl text-amber-400/40 font-serif leading-none select-none block text-right -mt-2">”</span>
+            </div>
+
+            {/* Footer Attribution */}
+            <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400 relative z-10">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                <span className="font-semibold text-slate-300">{isHindi ? "मानव-केंद्रित सॉफ़्टवेयर निर्माण" : "Human-Centered Engineering Principle"}</span>
+              </div>
+              <div className="font-mono text-[11px] text-amber-400/80">
+                #BuildWithIntegrity
+              </div>
+            </div>
+
           </div>
         </ScrollReveal>
+
+        {/* Connected Innovation Pipeline (Directly on canvas, responsive across all screens) */}
+        <ScrollReveal direction="up" className="max-w-5xl mx-auto space-y-4 pt-2">
+          <div className="text-center">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              {isHindi ? "हमारा विकास चक्र" : "Our Product Development Journey"}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
+            {[
+              { step: "01", label: isHindi ? "विचार" : "Idea", sub: isHindi ? "समस्या की खोज" : "Discovery", color: "from-blue-500 to-sky-500" },
+              { step: "02", label: isHindi ? "समस्या" : "Problem", sub: isHindi ? "जटिलता का विश्लेषण" : "Root Analysis", color: "from-sky-500 to-cyan-500" },
+              { step: "03", label: isHindi ? "सरल तकनीक" : "Simple Tech", sub: isHindi ? "कम जटिल समाधान" : "Clean Code", color: "from-cyan-500 to-emerald-500" },
+              { step: "04", label: isHindi ? "उपयोगी उत्पाद" : "Useful Product", sub: isHindi ? "वास्तविक उपयोगिता" : "Utility App", color: "from-emerald-500 to-amber-500" },
+              { step: "05", label: isHindi ? "वास्तविक प्रभाव" : "Real Impact", sub: isHindi ? "समय की बचत" : "Human Progress", color: "from-amber-500 to-orange-500" }
+            ].map((item, idx) => (
+              <div 
+                key={idx} 
+                className="relative rounded-2xl p-4 bg-white/80 dark:bg-[#111827]/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/90 text-center space-y-2 hover:-translate-y-1 transition-all duration-300 shadow-xs group"
+              >
+                <div className={`w-8 h-8 mx-auto rounded-xl bg-gradient-to-tr ${item.color} text-white font-black text-xs flex items-center justify-center shadow-sm`}>
+                  {item.step}
+                </div>
+                <div className="text-sm font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                  {item.label}
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium leading-tight">
+                  {item.sub}
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
+
       </section>
 
       {/* 6. TRUST & SECURITY SECTION */}
-      <section id="trust-security" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+      <section id="trust-security" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
         <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-900/30 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-900/30 border border-emerald-500/20 dark:border-emerald-700/40 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>{t.home.trustBadge || "TRUST & TECHNICAL INTEGRITY"}</span>
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.home.trustTitle || "Built on Real Security & Privacy"}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
             {t.home.trustSub || "We only claim technical capabilities that are genuinely implemented in our software."}
           </p>
         </ScrollReveal>
@@ -814,7 +877,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             return (
               <div 
                 key={idx}
-                className="p-5 sm:p-6 rounded-3xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                className="animated-card p-5 sm:p-6 rounded-3xl bg-white/90 dark:bg-[#111827]/90 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-sm dark:shadow-black/40 space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-2.5">
                   <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
@@ -838,79 +901,126 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 7. FOUNDER PREVIEW SECTION */}
-      <section id="founder-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="founder-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-28">
         <ScrollReveal direction="up">
-          <div className="p-5 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-[#121622]/95 border border-slate-200/80 dark:border-white/10 shadow-xl overflow-hidden relative backdrop-blur-xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+          <div className="animated-card relative p-6 sm:p-10 md:p-12 rounded-[32px] bg-gradient-to-br from-white via-white/95 to-slate-50/90 dark:from-[#0E1526] dark:via-[#0D1424] dark:to-[#080D1A] border border-slate-200/90 dark:border-white/12 shadow-[0_25px_60px_rgba(37,99,235,0.12)] dark:shadow-[0_30px_70px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-2xl">
+            
+            {/* Ambient Lighting Gradients */}
+            <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-bl from-blue-500/15 via-cyan-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-gradient-to-tr from-amber-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
               
-              {/* Image Column: Compact on mobile, rich on desktop */}
-              <div className="lg:col-span-4 flex flex-col items-center lg:items-stretch">
-                <div className="relative rounded-2xl p-1.5 sm:p-2 bg-gradient-to-b from-slate-100 to-white dark:from-white/10 dark:to-white/5 border border-slate-200 dark:border-white/10 shadow-md w-full max-w-[210px] sm:max-w-[260px] lg:max-w-none">
-                  <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-slate-900 isolate">
-                    {!founderImgErr ? (
-                      <img 
-                        src="/images/anurag_tiwari.jpg" 
-                        alt="Anurag Gurauli — Founder of Less Creation"
-                        onError={() => setFounderImgErr(true)}
-                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 rounded-xl"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-b from-slate-800 to-slate-900 flex flex-col items-center justify-center p-4 text-center rounded-xl">
-                        <Scale className="w-10 h-10 text-amber-500 mb-2" />
-                        <div className="text-sm font-bold text-white">Anurag Gurauli</div>
-                        <div className="text-[10px] text-amber-400">Founder, Less Creation</div>
+              {/* Image Column: Luxury Framing with Glowing Accents */}
+              <div className="lg:col-span-5 flex flex-col items-center">
+                <div className="relative group w-full max-w-[280px] sm:max-w-[320px] lg:max-w-none">
+                  {/* Outer Floating Glow on hover */}
+                  <div className="absolute -inset-2 bg-gradient-to-tr from-amber-500/25 via-blue-600/30 to-cyan-400/25 rounded-[2rem] blur-lg opacity-70 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                  
+                  <div className="relative rounded-[1.75rem] overflow-hidden bg-slate-900 border-2 border-slate-200/80 dark:border-white/15 shadow-2xl isolate">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-slate-950">
+                      {!founderImgErr ? (
+                        <img 
+                          src="/images/anurag_tiwari.jpg" 
+                          alt="Anurag Gurauli — Founder of Less Creation & Advocate"
+                          onError={() => setFounderImgErr(true)}
+                          className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-b from-slate-900 via-[#0F172A] to-[#070B14] flex flex-col items-center justify-center p-6 text-center">
+                          <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 mb-3 shadow-lg">
+                            <Scale className="w-8 h-8" />
+                          </div>
+                          <div className="text-base font-black text-white">Anurag Gurauli</div>
+                          <div className="text-xs text-amber-400 font-bold mt-0.5">Founder, Less Creation</div>
+                        </div>
+                      )}
+                      
+                      {/* Interactive Bottom Identity Banner */}
+                      <div className="absolute bottom-3 inset-x-3 p-3 rounded-2xl bg-slate-950/90 backdrop-blur-xl border border-amber-500/40 text-center shadow-2xl">
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow-xs">
+                          <Scale className="w-3 h-3 fill-slate-950 shrink-0" />
+                          <span>FOUNDER & ADVOCATE</span>
+                        </div>
+                        <h4 className="text-sm font-black text-white tracking-wide uppercase mt-1 leading-tight">
+                          Anurag Gurauli
+                        </h4>
+                        <p className="text-[10px] text-amber-200/90 font-bold leading-tight mt-0.5">
+                          Founder, Less Creation • Advocate, High Court
+                        </p>
                       </div>
-                    )}
-                    
-                    <div className="absolute bottom-2 inset-x-2 p-1.5 sm:p-2 rounded-xl bg-slate-950/85 backdrop-blur-md border border-amber-500/30 text-center shadow-md">
-                      <div className="inline-block px-1.5 py-0.5 rounded bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[8.5px] uppercase tracking-wider">
-                        FOUNDER & ADVOCATE
-                      </div>
-                      <h4 className="text-xs font-black text-white tracking-wide uppercase mt-0.5 leading-tight">Anurag Gurauli</h4>
-                      <p className="text-[9.5px] text-amber-200/90 font-semibold leading-tight mt-0.5">
-                        Founder, Less Creation • Advocate, High Court
-                      </p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Story Column */}
-              <div className="lg:col-span-8 flex flex-col justify-center space-y-4 sm:space-y-5 text-center lg:text-left">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mx-auto lg:mx-0">
-                    <User className="w-3.5 h-3.5" />
+              <div className="lg:col-span-7 flex flex-col justify-center space-y-5 text-center lg:text-left">
+                
+                <div className="space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider mx-auto lg:mx-0 border border-blue-500/20 dark:border-blue-500/30 shadow-2xs">
+                    <Sparkles className="w-3.5 h-3.5 fill-current" />
                     <span>{t.home.founderPreviewBadge || "MEET THE FOUNDER"}</span>
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                  <h3 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
                     {t.home.founderPreviewTitle || "Created by an Advocate for Real-World Utility"}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                    {t.home.founderPreviewText || "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to simplify legal access and everyday digital tasks."}
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium">
+                    {t.home.founderPreviewText || "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to eliminate friction from legal research, document management, and everyday digital productivity."}
                   </p>
                 </div>
 
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/40 dark:border-blue-900/30 text-xs sm:text-sm text-slate-700 dark:text-slate-300 italic font-medium text-left">
-                  {isHindi 
-                    ? "“तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल और अधिक सुलभ बनाती है। लेस क्रिएशन इसी विचार के साथ बनाया जा रहा है।”"
-                    : "“Technology is truly meaningful when it removes friction from essential tasks and makes knowledge accessible to everyone.”"}
-                  <div className="text-[11px] font-bold text-blue-600 dark:text-blue-400 not-italic mt-2">
-                    — Anurag Gurauli • Founder, Less Creation
+                {/* Key Pillars Badges */}
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-slate-200">
+                    <Scale className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                    <span>{isHindi ? "इलाहाबाद उच्च न्यायालय अधिवक्ता" : "Allahabad High Court Advocate"}</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-slate-200">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span>{isHindi ? "100% ऑन-डिवाइस डेटा सुरक्षा" : "On-Device Privacy First"}</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-slate-200">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                    <span>{isHindi ? "स्वतंत्र सॉफ्टवेयर आर्किटेक्ट" : "Independent Software Studio"}</span>
+                  </span>
+                </div>
+
+                {/* High Quality Quote Callout */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-indigo-50/40 to-transparent dark:from-[#131C31] dark:via-[#11192C] dark:to-transparent border border-blue-200/60 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-200 italic font-medium text-left relative shadow-2xs">
+                  <div className="text-2xl font-serif text-blue-500/40 leading-none mb-1">“</div>
+                  <p className="leading-relaxed">
+                    {isHindi 
+                      ? "तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल, सुरक्षित और हर नागरिक के लिए सुलभ बनाती है। लेस क्रिएशन इसी विचार के साथ बनाया जा रहा है।"
+                      : "Technology is truly meaningful when it removes friction from essential legal workflows and makes authentic knowledge accessible to every Indian."}
+                  </p>
+                  <div className="text-xs font-bold text-blue-600 dark:text-blue-400 not-italic mt-2.5 flex items-center gap-1.5">
+                    <span className="w-4 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
+                    <span>Anurag Gurauli • Founder & Creator</span>
                   </div>
                 </div>
 
-                <div className="pt-1 flex justify-center lg:justify-start">
+                {/* Interactive Action Bar */}
+                <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3">
                   <button
                     onClick={() => onNavigate('founder')}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold rounded-xl shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer w-full sm:w-auto"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-black rounded-xl shadow-md shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
                   >
                     <User className="w-4 h-4" />
-                    <span>{isHindi ? "संस्थापक के बारे में अधिक जानें" : "Read Founder's Story"}</span>
-                    <ArrowRight className="w-4 h-4 ml-1" />
+                    <span>{isHindi ? "संस्थापक प्रोफाइल व विज़न पढ़ें" : "Read Founder's Story"}</span>
+                    <ArrowRight className="w-4 h-4 ml-0.5" />
+                  </button>
+
+                  <button
+                    onClick={() => onNavigate('about')}
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/90 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-white text-xs font-extrabold rounded-xl border border-slate-200 dark:border-white/10 shadow-2xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
+                  >
+                    <span>{isHindi ? "लेस क्रिएशन के बारे में" : "About Less Creation"}</span>
                   </button>
                 </div>
+
               </div>
 
             </div>
@@ -919,15 +1029,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 8. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
-      <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 scroll-mt-28">
         <ScrollReveal direction="up" className="text-center space-y-2">
           <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {t.home.faqBadge}
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {t.home.faqTitle}
           </h2>
-          <p className="text-sm text-slate-600 dark:text-[#B8B3AF]">
+          <p className="text-sm text-slate-600 dark:text-slate-300">
             {t.home.faqSub}
           </p>
         </ScrollReveal>
@@ -939,14 +1049,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             return (
               <div 
                 key={idx}
-                className="bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-2xl overflow-hidden transition-all duration-300 border border-blue-200/40 dark:border-blue-500/20 shadow-xs hover:shadow-md"
+                className="animated-card bg-white/90 dark:bg-[#111827]/90 backdrop-blur-2xl rounded-2xl overflow-hidden transition-all duration-300 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md"
               >
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-[#F5F2EE] focus:outline-none cursor-pointer select-none"
+                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none cursor-pointer select-none"
                 >
                   <span>{faq.q}</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-[#77736F] shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : ''}`} />
                 </button>
 
                 <AnimatePresence initial={false}>
@@ -958,7 +1068,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-700 dark:text-[#B8B3AF] leading-relaxed border-t border-blue-100 dark:border-blue-900/30 pt-3">
+                      <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
                         {faq.a}
                       </div>
                     </motion.div>
@@ -971,18 +1081,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 9. FINAL CALL TO ACTION */}
-      <section id="final-cta" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section id="final-cta" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-mt-28">
         <ScrollReveal direction="up">
-          <div className="p-8 sm:p-14 bg-gradient-to-br from-white/95 via-blue-50/50 to-indigo-50/30 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90 backdrop-blur-2xl rounded-3xl border-2 border-blue-400/35 dark:border-blue-500/25 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto space-y-6 relative overflow-hidden">
+          <div className="animated-card p-8 sm:p-12 bg-gradient-to-br from-white/95 via-blue-50/50 to-indigo-50/30 dark:from-[#111827] dark:via-[#0F172A] dark:to-[#1E293B] backdrop-blur-2xl rounded-3xl border-2 border-blue-400/35 dark:border-blue-500/30 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto space-y-5 relative overflow-hidden">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-sky-500 text-white flex items-center justify-center mx-auto shadow-xl shadow-blue-500/30 border border-white/20">
               <Sparkles className="w-7 h-7" />
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+              <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                 {t.home.finalCtaTitle || "Explore what we're creating."}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF] max-w-xl mx-auto font-medium">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto font-medium">
                 {t.home.finalCtaSub || "Experience simple, secure software designed to solve real-world challenges."}
               </p>
             </div>
@@ -998,14 +1108,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               
               <button
                 onClick={() => onNavigate('download')}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white font-bold text-sm border border-slate-200 dark:border-white/15 shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white dark:bg-[#131C31] hover:bg-slate-100 dark:hover:bg-[#1E293B] text-slate-900 dark:text-white font-bold text-sm border border-slate-200 dark:border-slate-700 shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span>{isHindi ? "लेस लीगल डाउनलोड करें" : "Get Less Legal"}</span>
               </button>
             </div>
 
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-600 dark:text-[#77736F] font-bold">
+            <div className="pt-3 flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-600 dark:text-slate-400 font-bold">
               <span>Less Creation Studio</span>
               <span>•</span>
               <span>{isHindi ? "100% ऑन-डिवाइस सुरक्षा" : "100% On-Device Privacy"}</span>
