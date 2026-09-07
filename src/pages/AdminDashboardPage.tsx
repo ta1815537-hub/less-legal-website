@@ -4,7 +4,8 @@ import {
   ShieldCheck, Lock, Unlock, Key, Trash2, Mail, User, 
   Search, Filter, CheckCircle2, Clock, AlertCircle, RefreshCw, 
   Download, ArrowLeft, LogOut, FileText, ChevronRight, MessageSquare, 
-  Sparkles, Check, X, Tag, Edit3, ShieldAlert, Phone, AlertTriangle
+  Sparkles, Check, X, Tag, Edit3, ShieldAlert, Phone, AlertTriangle,
+  Globe, Smartphone
 } from 'lucide-react';
 import { 
   GoogleAuthProvider,
@@ -19,6 +20,7 @@ import { auth, db } from '../lib/firebase';
 import { HeroAmbientGlow } from '../components/MotionWrappers';
 import { useLanguage } from '../context/LanguageContext';
 import { adminStorage, ContactSubmission, DeletionRequest } from '../utils/adminStorage';
+import { AdminWebsiteControlPanel } from '../components/AdminWebsiteControlPanel';
 
 interface AdminDashboardPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -40,8 +42,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const [authError, setAuthError] = useState<string | null>(null);
   const [authSuccessMsg, setAuthSuccessMsg] = useState<string | null>(null);
 
-  // Tab State
-  const [activeTab, setActiveTab] = useState<'deletions' | 'contacts' | 'settings'>('deletions');
+  // Tab State - Includes new master website & app control center
+  const [activeTab, setActiveTab] = useState<'website_control' | 'deletions' | 'contacts' | 'settings'>('website_control');
 
   // Security & Inactivity Session State (15 Minutes = 900 Seconds)
   const INACTIVITY_TIMEOUT_SECONDS = 15 * 60;
@@ -565,7 +567,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center space-y-4 relative">
         <HeroAmbientGlow />
         <div className="relative z-10 flex flex-col items-center space-y-3 bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-[28px] p-8 shadow-sm">
-          <RefreshCw className="w-8 h-8 text-[#C21F2F] animate-spin" />
+          <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
           <p className="text-sm font-semibold text-slate-600 dark:text-[#B8B3AF]">
             {isHindi ? "सुरक्षित सर्वर प्रमाणीकरण की जाँच की जा रही है..." : "Verifying secure administrator session..."}
           </p>
@@ -581,7 +583,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
         <HeroAmbientGlow />
         
         <div className="p-6 sm:p-8 rounded-[28px] border border-blue-500/20 dark:border-blue-400/20 space-y-6 relative z-10 shadow-[0_16px_40px_rgba(59,130,246,0.12)] dark:shadow-[0_16px_40px_rgba(59,130,246,0.18)] bg-white/80 dark:bg-[#121622]/80 backdrop-blur-xl text-center">
-          <div className="w-14 h-14 rounded-2xl bg-[#C21F2F]/10 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/20 flex items-center justify-center mx-auto shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center mx-auto shadow-sm">
             <Lock className="w-7 h-7" />
           </div>
 
@@ -604,7 +606,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
           {/* Neutral Access Badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[11px] font-bold text-slate-600 dark:text-[#B8B3AF] mx-auto">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#C21F2F]" />
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>{isHindi ? "अधिकृत पहुंच केवल" : "Authorized Access Only"}</span>
           </div>
 
@@ -658,7 +660,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               onClick={() => onNavigate('home')}
               className="text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer transition-colors font-semibold"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#C21F2F]" />
+              <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>{isHindi ? "मुख्य वेबसाइट पर वापस जाएं" : "Back to Website"}</span>
             </button>
           </div>
@@ -680,10 +682,10 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               onClick={() => onNavigate('home')}
               className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-[#121622]/80 border border-slate-200/80 dark:border-white/10 px-3 py-1 rounded-full shadow-2xs mr-1"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#C21F2F]" />
+              <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>{isHindi ? "होम पेज" : "Back Home"}</span>
             </button>
-            <span className="px-3 py-1 rounded-full bg-[#C21F2F]/10 text-[#C21F2F] dark:text-[#E03A3E] text-xs font-bold border border-[#C21F2F]/30 flex items-center gap-1.5">
+            <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-800/40 flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Less Legal Admin Console</span>
             </span>
@@ -731,7 +733,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             disabled={isRefreshing}
             className="px-3.5 py-2 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-200/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50 shadow-2xs"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[#C21F2F]' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : ''}`} />
             <span className="whitespace-nowrap">{isRefreshing ? (isHindi ? "अपडेट..." : "Refreshing...") : (isHindi ? "रिफ्रेश" : "Refresh")}</span>
           </button>
 
@@ -807,10 +809,22 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       <div className="flex items-center justify-between flex-wrap gap-4 border-b border-white/80 dark:border-white/10 pb-4 relative z-10">
         <div className="flex items-center gap-1.5 rounded-2xl bg-white/90 dark:bg-[#121622]/80 backdrop-blur-xl p-1.5 border border-white/80 dark:border-white/10 text-xs font-bold shadow-2xs overflow-x-auto max-w-full">
           <button
+            onClick={() => setActiveTab('website_control')}
+            className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'website_control' 
+                ? 'bg-blue-600 text-white shadow-sm' 
+                : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Globe className="w-4 h-4 shrink-0" />
+            <span className="whitespace-nowrap">{isHindi ? "🌐 वेबसाइट व ऐप कंट्रोल हब" : "🌐 Live Website & App Hub"}</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('deletions')}
             className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'deletions' 
-                ? 'bg-white dark:bg-[#1C2230] text-[#C21F2F] dark:text-[#E03A3E] shadow-sm border border-slate-200/50 dark:border-white/10' 
+                ? 'bg-white dark:bg-[#1C2230] text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-white/10' 
                 : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -822,7 +836,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             onClick={() => setActiveTab('contacts')}
             className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'contacts' 
-                ? 'bg-white dark:bg-[#1C2230] text-[#C21F2F] dark:text-[#E03A3E] shadow-sm border border-slate-200/50 dark:border-white/10' 
+                ? 'bg-white dark:bg-[#1C2230] text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-white/10' 
                 : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -834,7 +848,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             onClick={() => setActiveTab('settings')}
             className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'settings' 
-                ? 'bg-white dark:bg-[#1C2230] text-[#C21F2F] dark:text-[#E03A3E] shadow-sm border border-slate-200/50 dark:border-white/10' 
+                ? 'bg-white dark:bg-[#1C2230] text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-white/10' 
                 : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -843,19 +857,31 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           </button>
         </div>
 
-        {activeTab !== 'settings' && (
+        {(activeTab === 'deletions' || activeTab === 'contacts') && (
           <button
             onClick={() => exportToCSV(activeTab === 'deletions' ? deletions : contacts, activeTab)}
             className="px-3.5 py-2 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] border border-slate-200/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap"
           >
-            <Download className="w-3.5 h-3.5 text-[#C21F2F]" />
+            <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span className="whitespace-nowrap">{isHindi ? "CSV एक्सपोर्ट करें" : "Export Report"}</span>
           </button>
         )}
       </div>
 
+      {/* MASTER WEBSITE & APP CONTROL TAB */}
+      {activeTab === 'website_control' && (
+        <AdminWebsiteControlPanel 
+          adminEmail={adminUser?.email || ''} 
+          onShowToast={(msg, type) => {
+            setRefreshToast(msg);
+            setToastType(type);
+            setTimeout(() => setRefreshToast(null), 5000);
+          }}
+        />
+      )}
+
       {/* Search & Filter Toolbars */}
-      {activeTab !== 'settings' && (
+      {(activeTab === 'deletions' || activeTab === 'contacts') && (
         <div className="flex flex-wrap items-center justify-between gap-4 relative z-10 bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-3.5 sm:p-4 rounded-2xl border border-white/80 dark:border-white/10 shadow-2xs">
           <div className="relative flex-1 min-w-[240px]">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -864,7 +890,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={isHindi ? "ईमेल, टिकट ID या यूज़र ID द्वारा खोजें..." : "Search by Email, Ticket ID, or User ID..."}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#C21F2F]"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
             />
           </div>
 
@@ -906,7 +932,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                 <div key={item.id} className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-5 sm:p-6 rounded-[24px] border border-white/80 dark:border-white/10 space-y-4 hover:shadow-md transition-all shadow-2xs">
                   <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-white/10 pb-3">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-[#C21F2F]/10 text-[#C21F2F] dark:text-[#E03A3E] border border-[#C21F2F]/20">
+                      <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
                         {item.ticketId}
                       </span>
                       <span className="text-xs text-slate-400">
@@ -945,7 +971,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                     <div className="space-y-1">
                       <span className="text-slate-400 font-semibold">{isHindi ? "यूज़र ईमेल:" : "User Email:"}</span>
                       <p className="font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                        <Mail className="w-3.5 h-3.5 text-[#C21F2F]" />
+                        <Mail className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                         {item.email}
                       </p>
                     </div>
@@ -1010,7 +1036,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                             setEditingNoteId(item.id);
                             setNoteText(item.adminNotes || '');
                           }}
-                          className="text-[#C21F2F] hover:underline text-[11px] font-bold cursor-pointer"
+                          className="text-blue-600 dark:text-blue-400 hover:underline text-[11px] font-bold cursor-pointer"
                         >
                           {item.adminNotes ? (isHindi ? "संपादित करें" : "Edit Note") : (isHindi ? "+ नोट जोड़ें" : "+ Add Note")}
                         </button>
@@ -1084,8 +1110,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                     <div className="space-y-1">
                       <span className="text-slate-400 font-semibold">{isHindi ? "ईमेल आईडी:" : "Email Address:"}</span>
                       <p className="font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                        <Mail className="w-3.5 h-3.5 text-[#C21F2F]" />
-                        <a href={`mailto:${item.email}`} className="hover:underline text-[#C21F2F]">
+                        <Mail className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                        <a href={`mailto:${item.email}`} className="hover:underline text-blue-600 dark:text-blue-400">
                           {item.email}
                         </a>
                       </p>
@@ -1149,7 +1175,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                             setEditingNoteId(item.id);
                             setNoteText(item.adminNotes || '');
                           }}
-                          className="text-[#C21F2F] hover:underline text-[11px] font-bold cursor-pointer"
+                          className="text-blue-600 dark:text-blue-400 hover:underline text-[11px] font-bold cursor-pointer"
                         >
                           {item.adminNotes ? (isHindi ? "संपादित करें" : "Edit Note") : (isHindi ? "+ नोट जोड़ें" : "+ Add Note")}
                         </button>
@@ -1214,7 +1240,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                 }}
                 className="w-full py-3 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-xs border border-slate-200/80 dark:border-white/10 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
               >
-                <Key className="w-4 h-4 text-[#C21F2F]" />
+                <Key className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span>{isHindi ? "पासवर्ड बदलने के लिए ईमेल भेजें" : "Send Password Reset Email"}</span>
               </button>
 

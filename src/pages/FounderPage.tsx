@@ -32,7 +32,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           onClick={() => onNavigate('home')}
           className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-[#E02636]" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-600 dark:text-blue-400" />
           <span>{t.common.backToHome}</span>
         </motion.button>
       </div>
@@ -138,7 +138,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   onClick={() => onNavigate('download')}
-                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#E02636] to-[#C21F2F] text-white text-xs font-black shadow-md hover:from-[#C21F2F] hover:to-[#9B111E] cursor-pointer transition-all flex items-center gap-2"
+                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600 text-white text-xs font-black shadow-md hover:from-blue-700 hover:to-indigo-700 cursor-pointer transition-all flex items-center gap-2"
                 >
                   <span>{t.nav.downloadApp}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -164,7 +164,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       <ScrollReveal direction="up" delay={0.06} className="relative z-10">
         <div className="glass-card p-6 sm:p-10 rounded-3xl space-y-6">
           <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
-            <div className="w-10 h-10 rounded-xl bg-[#C21F2F]/15 border border-[#C21F2F]/30 text-[#C21F2F] dark:text-[#E03A3E] flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
               <Scale className="w-5 h-5" />
             </div>
             <div>
@@ -179,7 +179,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <p className="font-semibold text-slate-900 dark:text-[#F5F2EE]">{t.founder.storyP1}</p>
             <p>{t.founder.storyP2}</p>
             <p>{t.founder.storyP3}</p>
-            <p className="font-semibold text-[#C21F2F] dark:text-[#E03A3E]">{t.founder.storyP4}</p>
+            <p className="font-semibold text-blue-600 dark:text-blue-400">{t.founder.storyP4}</p>
           </div>
         </div>
       </ScrollReveal>
@@ -223,7 +223,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
           {/* Factual Disclaimer Banner */}
           <div className="p-4 rounded-2xl bg-amber-500/10 dark:bg-white/5 border border-amber-600/30 text-xs text-slate-600 dark:text-[#B8B3AF] flex items-start gap-3">
-            <AlertCircle className="w-4 h-4 text-[#C21F2F] dark:text-[#E03A3E] shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
             <p>{t.founder.disclaimerNote}</p>
           </div>
 
@@ -257,7 +257,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Connecting Arrow 1 */}
-            <div className="text-[#C21F2F] dark:text-[#E03A3E] font-bold flex md:block transform rotate-90 md:rotate-0">
+            <div className="text-blue-600 dark:text-blue-400 font-bold flex md:block transform rotate-90 md:rotate-0">
               <ArrowRight className="w-5 h-5 animate-pulse" />
             </div>
 
@@ -265,12 +265,12 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <div className="p-5 rounded-2xl bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-white/10 shadow-lg w-full md:w-64 text-center space-y-2">
               <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-700 dark:text-[#D8BD82] flex items-center justify-center mx-auto text-xs font-bold">2</div>
               <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.parentBrandLabel}</div>
-              <div className="text-base font-extrabold text-[#C21F2F] dark:text-[#E03A3E]">Less Creation</div>
+              <div className="text-base font-extrabold text-blue-600 dark:text-blue-400">Less Creation</div>
               <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">{language === 'hi' ? 'डिजिटल प्रोडक्ट स्टूडियो' : 'Digital Product Studio'}</div>
             </div>
 
             {/* Connecting Arrow 2 */}
-            <div className="text-[#C21F2F] dark:text-[#E03A3E] font-bold flex md:block transform rotate-90 md:rotate-0">
+            <div className="text-blue-600 dark:text-blue-400 font-bold flex md:block transform rotate-90 md:rotate-0">
               <ArrowRight className="w-5 h-5 animate-pulse" />
             </div>
 
@@ -282,7 +282,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('features')}
               className={`p-5 rounded-2xl bg-white dark:bg-[#0D131F] border cursor-pointer transition-all duration-300 w-full md:w-64 text-center space-y-2 relative overflow-hidden ${
                 isHoveredLessLegal 
-                  ? 'border-[#C21F2F] shadow-2xl shadow-[#C21F2F]/20' 
+                  ? 'border-blue-500 shadow-2xl shadow-blue-500/20' 
                   : 'border-slate-200 dark:border-white/10 shadow-lg'
               }`}
             >
@@ -290,7 +290,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-[#B8B3AF] font-bold">{t.founder.flagshipProductLabel}</div>
               <div className="text-base font-extrabold text-slate-900 dark:text-[#F5F2EE] flex items-center justify-center gap-1">
                 <span>Less Legal</span>
-                <ExternalLink className="w-3.5 h-3.5 text-[#C21F2F] dark:text-[#E03A3E]" />
+                <ExternalLink className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">{language === 'hi' ? 'कानूनी ज्ञान और उपयोगिताएं' : 'Legal Knowledge & Utilities'}</div>
             </motion.div>
@@ -320,7 +320,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <p className="font-semibold text-slate-900 dark:text-[#F5F2EE]">{t.founder.visionP2}</p>
             <p>{t.founder.visionP3}</p>
             <p>{t.founder.visionP4}</p>
-            <p className="font-semibold text-[#C21F2F] dark:text-[#E03A3E]">{t.founder.visionP5}</p>
+            <p className="font-semibold text-blue-600 dark:text-blue-400">{t.founder.visionP5}</p>
           </div>
 
           {/* Animated Visual Progression Bar */}
@@ -332,9 +332,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <StaggerContainer className="grid grid-cols-1 sm:grid-cols-5 gap-3">
               {[
                 { label: t.founder.visionSteps.idea, icon: Lightbulb, color: "text-amber-500" },
-                { label: t.founder.visionSteps.problem, icon: AlertCircle, color: "text-[#C21F2F] dark:text-[#E03A3E]" },
-                { label: t.founder.visionSteps.technology, icon: Layers, color: "text-blue-500" },
-                { label: t.founder.visionSteps.product, icon: Scale, color: "text-[#C21F2F] dark:text-[#E03A3E]" },
+                { label: t.founder.visionSteps.problem, icon: AlertCircle, color: "text-blue-600 dark:text-blue-400" },
+                { label: t.founder.visionSteps.technology, icon: Layers, color: "text-sky-500" },
+                { label: t.founder.visionSteps.product, icon: Scale, color: "text-indigo-600 dark:text-indigo-400" },
                 { label: t.founder.visionSteps.impact, icon: Award, color: "text-emerald-500" }
               ].map((step, idx) => {
                 const IconComponent = step.icon;
@@ -377,7 +377,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2 h-full flex flex-col justify-between shadow-md"
               >
                 <div>
-                  <div className="text-2xl font-black text-[#C21F2F] dark:text-[#E03A3E] opacity-80 mb-1">
+                  <div className="text-2xl font-black text-blue-600 dark:text-blue-400 opacity-80 mb-1">
                     {item.step}
                   </div>
                   <h3 className="text-xs font-bold text-slate-900 dark:text-[#F5F2EE] leading-snug">
@@ -399,13 +399,13 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       <ScrollReveal direction="up" delay={0.18} className="relative z-10">
         <motion.div 
           whileHover={{ scale: 1.01 }}
-          className="p-8 sm:p-12 rounded-3xl glass-panel-crimson border border-[#C21F2F]/40 shadow-2xl text-center space-y-6 max-w-3xl mx-auto relative overflow-hidden"
+          className="p-8 sm:p-12 rounded-3xl ultra-glass-card border border-blue-500/30 shadow-2xl text-center space-y-6 max-w-3xl mx-auto relative overflow-hidden"
         >
-          <div className="w-12 h-12 rounded-full bg-amber-500/15 dark:bg-[#C21F2F]/20 text-amber-700 dark:text-[#D8BD82] border border-amber-600/30 dark:border-[#D8BD82]/40 flex items-center justify-center mx-auto text-xl font-serif shadow-xs">
+          <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center mx-auto text-xl font-serif shadow-xs">
             “
           </div>
           
-          <h3 className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E] uppercase tracking-wider">
+          <h3 className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
             {t.founder.messageTitle}
           </h3>
 
@@ -413,7 +413,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             “{t.founder.messageQuote}”
           </blockquote>
 
-          <div className="pt-2 border-t border-slate-200 dark:border-white/10 text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E]">
+          <div className="pt-2 border-t border-slate-200 dark:border-white/10 text-xs font-bold text-blue-600 dark:text-blue-400">
             {t.founder.messageAuthor}
           </div>
         </motion.div>

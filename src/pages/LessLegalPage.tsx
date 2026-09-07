@@ -201,7 +201,7 @@ export const LessLegalPage: React.FC<LessLegalPageProps> = ({ onNavigate }) => {
           {verifiedFeatures.map((item, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow space-y-3 flex flex-col justify-between"
+              className="animated-card p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow space-y-3 flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
@@ -237,7 +237,7 @@ export const LessLegalPage: React.FC<LessLegalPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* LIFETIME PASS VALUE PROPOSITION SECTION */}
-      <section className="relative z-10 p-6 sm:p-10 rounded-[32px] bg-gradient-to-br from-amber-500/10 via-slate-50 to-blue-500/10 dark:from-amber-950/20 dark:via-[#101420] dark:to-blue-950/20 border border-amber-500/30 dark:border-amber-400/20 shadow-lg space-y-6">
+      <section className="animated-card relative z-10 p-6 sm:p-10 rounded-[32px] bg-gradient-to-br from-amber-500/10 via-slate-50 to-blue-500/10 dark:from-amber-950/20 dark:via-[#101420] dark:to-blue-950/20 border border-amber-500/30 dark:border-amber-400/20 shadow-lg space-y-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-3 text-left max-w-xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-black">

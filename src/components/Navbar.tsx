@@ -11,6 +11,7 @@ import { motion, AnimatePresence, useScroll } from 'motion/react';
 import { EASING_SPRING } from './MotionWrappers';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
+import { adminStorage, SiteAppConfig } from '../utils/adminStorage';
 
 interface NavbarProps {
   currentRoute: PageRoute;
@@ -21,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productsSubmenuOpen, setProductsSubmenuOpen] = useState(true);
   const [scrolled, setScrolled] = useState(false);
+  const [siteConfig, setSiteConfig] = useState<SiteAppConfig>(adminStorage.getSiteAppConfig());
   
   const { isDark: globalIsDark, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
@@ -32,6 +34,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
     const handleScroll = () => setScrolled(window.scrollY > 15);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = adminStorage.subscribeToSiteAppConfig((updated) => {
+      setSiteConfig(updated);
+    });
+    return () => unsubscribe();
   }, []);
 
   const handleNavClick = (route: PageRoute) => {
@@ -60,47 +69,42 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   return (
     <>
       {/* Top Promotional Announcement Bar */}
-      <div className="fixed top-0 left-0 right-0 h-9 sm:h-10 z-[65] bg-gradient-to-r from-slate-950 via-[#0D2447] to-slate-950 border-b border-blue-500/25 flex items-center justify-center px-2 sm:px-4 text-white overflow-hidden select-none">
-        {/* Subtle royal blue shining line inside the banner */}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(59,130,246,0.12),transparent)] bg-[length:200%_100%] animate-pulse pointer-events-none" />
-        
-        <div className="max-w-[1400px] w-full flex items-center justify-between sm:justify-center gap-1.5 sm:gap-6 text-xs font-semibold">
-          {/* Offer text - Guaranteed single line on all mobile screens */}
-          <div className="flex items-center gap-1 shrink min-w-0">
-            <span className="text-xs text-amber-400 shrink-0">✨</span>
-            <span className="text-[10px] sm:text-xs font-extrabold text-sky-300 dark:text-sky-200 tracking-wide uppercase whitespace-nowrap">
-              <span className="sm:hidden">
+      {siteConfig.announcementActive && (
+        <div className="fixed top-0 left-0 right-0 h-9 sm:h-10 z-[65] bg-gradient-to-r from-slate-950 via-[#0D2447] to-slate-950 border-b border-blue-500/25 flex items-center justify-center px-2 sm:px-4 text-white overflow-hidden select-none">
+          {/* Subtle royal blue shining line inside the banner */}
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(59,130,246,0.12),transparent)] bg-[length:200%_100%] animate-pulse pointer-events-none" />
+          
+          <div className="max-w-[1400px] w-full flex items-center justify-between sm:justify-center gap-1.5 sm:gap-6 text-xs font-semibold">
+            {/* Offer text - Guaranteed single line on all mobile screens */}
+            <div className="flex items-center gap-1 shrink min-w-0">
+              <span className="text-xs text-amber-400 shrink-0">✨</span>
+              <span className="text-[10px] sm:text-xs font-extrabold text-sky-300 dark:text-sky-200 tracking-wide uppercase whitespace-nowrap truncate max-w-[200px] sm:max-w-none">
                 {language === 'hi' 
-                  ? 'लेस लीगल पास मात्र ₹99 • एकमुश्त' 
-                  : 'Less Legal Pass ₹99 • Lifetime'}
+                  ? (siteConfig.announcementTextHindi || 'लेस लीगल लाइफटाइम पास • मात्र ₹99 एकमुश्त • कोई सब्सक्रिप्शन नहीं')
+                  : (siteConfig.announcementTextEnglish || 'Less Legal Lifetime Pass • ₹99 One-Time Access • No Subscriptions')}
               </span>
-              <span className="hidden sm:inline">
-                {language === 'hi' 
-                  ? 'लेस लीगल लाइफटाइम पास • मात्र ₹99 एकमुश्त • कोई सब्सक्रिप्शन नहीं' 
-                  : 'Less Legal Lifetime Pass • ₹99 One-Time Access • No Subscriptions'}
-              </span>
-            </span>
-          </div>
+            </div>
 
-          {/* Action Button */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => handleNavClick('premium')}
-              className="gold-shimmer-button text-[9px] sm:text-[11px] px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-black cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0 flex items-center gap-1"
-            >
-              <Sparkles className="w-3 h-3 fill-amber-950 shrink-0" />
-              <span>{language === 'hi' ? 'ऑफ़र लें' : 'Get Pass'}</span>
-            </button>
+            {/* Action Button */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => handleNavClick((siteConfig.announcementButtonRoute as PageRoute) || 'premium')}
+                className="gold-shimmer-button text-[9px] sm:text-[11px] px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-black cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0 flex items-center gap-1"
+              >
+                <Sparkles className="w-3 h-3 fill-amber-950 shrink-0" />
+                <span>{siteConfig.announcementButtonText || (language === 'hi' ? 'ऑफ़र लें' : 'Get Pass')}</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Scroll Progress Bar */}
       <motion.div
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
-        className="fixed top-9 sm:top-10 left-0 right-0 h-0.5 sm:h-1 z-[60] bg-gradient-to-r from-amber-400 via-[#E03A3E] to-[#8B0000] dark:from-[#D8BD82] dark:via-[#E03A3E] dark:to-[#C21F2F]"
+        className="fixed top-9 sm:top-10 left-0 right-0 h-0.5 sm:h-1 z-[60] bg-gradient-to-r from-amber-400 via-blue-500 to-indigo-600 dark:from-[#D8BD82] dark:via-blue-500 dark:to-indigo-500"
       />
-      <header className="fixed top-9 sm:top-10 z-50 w-full bg-white/40 dark:bg-[#080808]/40 backdrop-blur-xl border-b border-slate-200/40 dark:border-white/10 shadow-xs transition-all duration-300">
+      <header className="fixed top-9 sm:top-10 z-50 w-full bg-white/40 dark:bg-[#090D1A]/60 backdrop-blur-xl border-b border-slate-200/40 dark:border-white/10 shadow-xs transition-all duration-300">
         <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-4 xl:px-8">
         <div className="h-16 sm:h-20 flex items-center justify-between gap-2 lg:gap-3">
           
@@ -298,7 +302,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               className="lg:hidden absolute top-full left-3 right-3 sm:left-4 sm:right-4 mt-2 p-4 rounded-[24px] bg-white dark:bg-[#0C101A] border border-slate-200/80 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] space-y-3 z-50 overflow-hidden"
             >
               {/* Top brand gradient accent line */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#C21F2F] via-[#E02636] to-amber-500" />
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-sky-500 to-amber-500" />
 
               {/* Navigation List */}
               <div className="flex flex-col divide-y divide-slate-100 dark:divide-white/5">
@@ -309,12 +313,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   onClick={() => handleNavClick('home')}
                   className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     currentRoute === 'home'
-                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
                       : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <Home className="w-4 h-4 text-[#E02636] shrink-0" />
+                    <Home className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                     <span className="whitespace-nowrap truncate">{isHindi ? 'होम' : 'Home'}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -326,14 +330,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   onClick={() => handleNavClick('less-legal')}
                   className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     currentRoute === 'less-legal' || currentRoute === 'less-legal-features'
-                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
                       : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                   }`}
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <Scale className="w-4 h-4 text-[#E02636] shrink-0" />
+                    <Scale className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                     <span className="whitespace-nowrap font-extrabold text-slate-900 dark:text-white">Less Legal</span>
-                    <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-full bg-[#E02636]/10 text-[#E02636] dark:text-rose-400 border border-[#E02636]/20 uppercase tracking-wide shrink-0">
+                    <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 uppercase tracking-wide shrink-0">
                       {isHindi ? 'फ्लैगशिप' : 'Flagship'}
                     </span>
                   </div>
@@ -346,7 +350,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   onClick={() => handleNavClick('download')}
                   className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     currentRoute === 'download'
-                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
                       : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                   }`}
                 >
@@ -393,29 +397,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                         <button
                           id="mobile-nav-sub-less-legal"
                           onClick={() => handleNavClick('less-legal')}
-                          className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-colors border cursor-pointer bg-red-500/5 dark:bg-red-500/10 text-slate-800 dark:text-slate-100 hover:bg-red-500/10 border-red-500/15"
+                          className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-colors border cursor-pointer bg-blue-500/5 dark:bg-blue-500/10 text-slate-800 dark:text-slate-100 hover:bg-blue-500/10 border-blue-500/15"
                         >
                           <div className="flex items-center gap-2 min-w-0">
-                            <span className="w-2 h-2 rounded-full bg-[#E02636] shrink-0" />
+                            <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 shrink-0" />
                             <span className="font-bold text-slate-900 dark:text-white whitespace-nowrap">Less Legal App</span>
                           </div>
-                          <span className="text-[10px] text-[#E02636] dark:text-rose-400 font-extrabold whitespace-nowrap">{isHindi ? 'पेज देखें' : 'View'} →</span>
-                        </button>
-
-                        {/* Future Products (In R&D) */}
-                        <button
-                          id="mobile-nav-sub-future-products"
-                          onClick={scrollToProducts}
-                          className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
-                        >
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
-                            <span className="whitespace-nowrap">{isHindi ? 'भविष्य के उत्पाद' : 'Future Products'}</span>
-                            <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 shrink-0">
-                              {isHindi ? 'आर एंड डी' : 'In R&D'}
-                            </span>
-                          </div>
-                          <span className="text-[10px] text-slate-400 font-medium">→</span>
+                          <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold whitespace-nowrap">{isHindi ? 'पेज देखें' : 'View'} →</span>
                         </button>
                       </motion.div>
                     )}
@@ -428,7 +416,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   onClick={() => handleNavClick('about')}
                   className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     currentRoute === 'about'
-                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
                       : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                   }`}
                 >
@@ -445,7 +433,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   onClick={() => handleNavClick('founder')}
                   className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     currentRoute === 'founder'
-                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
                       : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                   }`}
                 >
@@ -462,7 +450,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   onClick={() => handleNavClick('resources')}
                   className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     currentRoute === 'resources'
-                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
                       : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                   }`}
                 >
@@ -502,12 +490,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   onClick={() => handleNavClick('contact')}
                   className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
                     currentRoute === 'contact'
-                      ? 'text-[#E02636] dark:text-rose-400 bg-red-50/80 dark:bg-red-950/30'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
                       : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <MessageSquare className="w-4 h-4 text-[#E02636] shrink-0" />
+                    <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                     <span className="whitespace-nowrap truncate">{isHindi ? 'संपर्क सहायता' : 'Contact Support'}</span>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -540,7 +528,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 <button
                   id="mobile-premium-bottom-cta"
                   onClick={() => handleNavClick('premium')}
-                  className="w-full py-2.5 px-4 rounded-xl text-xs font-black text-white bg-gradient-to-r from-[#C21F2F] via-[#E02636] to-amber-600 hover:brightness-110 shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-98"
+                  className="w-full py-2.5 px-4 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600 hover:brightness-110 shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-98"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
                   <span className="whitespace-nowrap truncate">{isHindi ? 'लेस लीगल लाइफटाइम पास लें — ₹99' : 'Get Less Legal Lifetime Pass — ₹99'}</span>

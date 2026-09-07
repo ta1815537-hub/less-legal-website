@@ -130,9 +130,9 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
 
       </div>
 
-      {/* Jurisdiction Clause (Red Banner) */}
-      <div className="relative z-10 mt-10 rounded-[28px] overflow-hidden shadow-xl border border-red-500/30">
-        <div className="bg-gradient-to-r from-[#B51F2E] via-[#E02636] to-[#B51F2E] p-6 sm:p-8 text-center text-white">
+      {/* Jurisdiction Clause (Blue Banner) */}
+      <div className="relative z-10 mt-10 rounded-[28px] overflow-hidden shadow-xl border border-blue-500/30">
+        <div className="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-700 p-6 sm:p-8 text-center text-white">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center backdrop-blur-md">
               <Scale className="w-6 h-6 text-white" />
@@ -154,13 +154,13 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
       <div className="pt-8 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10 mt-8">
         <button
           onClick={() => onNavigate('terms')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           {t.disclaimerPage.readTerms}
         </button>
         <button
           onClick={() => onNavigate('about')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           {t.disclaimerPage.aboutLessLegal}
         </button>

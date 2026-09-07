@@ -85,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div>
                   <h2 className="text-2xl font-black tracking-tight leading-none">
                     <span className="text-slate-900 dark:text-white">Less </span>
-                    <span className="text-[#C21F2F]">Creation</span>
+                    <span className="text-blue-600 dark:text-blue-400">Creation</span>
                   </h2>
                   <p className="text-xs sm:text-[13px] font-bold text-amber-600 dark:text-amber-400 mt-1">
                     अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               {/* 4 Pills */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
-                  <div className="w-6 h-6 rounded-lg bg-red-500/10 flex items-center justify-center text-[#C21F2F] shrink-0">
+                  <div className="w-6 h-6 rounded-lg bg-blue-500/10 dark:bg-blue-400/10 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                     <Layers className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 leading-tight">
@@ -462,12 +462,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
             {/* 3. Trusted Legal & Utilities Tool (Span 3) */}
             <div className="lg:col-span-3">
-              <div className="flex items-center gap-3 p-3 rounded-2xl bg-red-500/5 dark:bg-red-500/10 border border-red-500/15 shadow-2xs">
-                <div className="w-10 h-10 rounded-xl bg-red-500/10 text-[#C21F2F] flex items-center justify-center shrink-0">
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/15 shadow-2xs">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#C21F2F] dark:text-[#E03A3E]">
+                  <p className="text-xs font-bold text-blue-600 dark:text-blue-400">
                     Trusted Legal & Utilities Tool
                   </p>
                   <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
@@ -491,8 +491,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Bottom Centered Slogan & Safe Space for Mobile Devices */}
-        <div className="pt-6 pb-6 text-center flex items-center justify-center gap-2">
-          <p className="text-[11px] sm:text-xs font-bold text-[#C21F2F]/80 dark:text-[#E03A3E]/80 tracking-[0.2em] sm:tracking-[0.25em] uppercase select-none">
+        <div className="pt-6 pb-20 sm:pb-24 text-center flex items-center justify-center gap-2">
+          <p className="text-[11px] sm:text-xs font-bold text-blue-600/80 dark:text-blue-400/80 tracking-[0.2em] sm:tracking-[0.25em] uppercase select-none">
             BUILDING A SIMPLER, SMARTER AND MORE INFORMED INDIA ❤️
           </p>
           <button

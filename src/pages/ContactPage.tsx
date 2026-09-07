@@ -177,7 +177,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('home')}
             className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-xs backdrop-blur-md"
           >
-            <ArrowLeft className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+            <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
             <span className="whitespace-nowrap">{t.common.backToHome}</span>
           </motion.button>
         </div>
@@ -202,7 +202,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
         {/* SLA Guarantee Strip */}
         <div className="pt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[11px] font-medium text-slate-500 dark:text-slate-400">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <Clock className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+            <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
             <span>{isHindi ? '24-48 व्यावसायिक घंटे में समाधान' : '24-48 Business Hours Turnaround'}</span>
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
@@ -226,7 +226,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg space-y-5 backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-3.5">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-red-100/80 dark:bg-red-950/50 text-[#E02636] flex items-center justify-center font-bold shrink-0 border border-red-200/80 dark:border-red-900/50">
+                <div className="w-8 h-8 rounded-xl bg-blue-100/80 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shrink-0 border border-blue-200/80 dark:border-blue-900/50">
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <h2 className="text-base font-black text-slate-900 dark:text-white">
@@ -244,10 +244,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 
                 {hasEmail && (
                   <StaggerItem>
-                    <div className="group p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-[#E02636]/40 dark:hover:border-[#E02636]/40 transition-all duration-200 space-y-2.5">
+                    <div className="group p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all duration-200 space-y-2.5">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-950/60 text-[#E02636] flex items-center justify-center font-bold shrink-0">
+                          <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shrink-0">
                             <Mail className="w-4 h-4" />
                           </div>
                           <div>
@@ -260,7 +260,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                           type="button"
                           onClick={handleCopyEmail}
                           title={isHindi ? "ईमेल कॉपी करें" : "Copy Email"}
-                          className="px-2.5 py-1 rounded-lg bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-[11px] font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] dark:hover:text-red-400 flex items-center gap-1 cursor-pointer transition-colors shadow-2xs whitespace-nowrap"
+                          className="px-2.5 py-1 rounded-lg bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-[11px] font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1 cursor-pointer transition-colors shadow-2xs whitespace-nowrap"
                         >
                           {copiedEmail ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
                           <span>{copiedEmail ? (isHindi ? 'कॉपी हुआ' : 'Copied') : (isHindi ? 'कॉपी' : 'Copy')}</span>
@@ -270,7 +270,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       <div className="pt-1">
                         <a 
                           href={`mailto:${SITE_CONFIG.supportEmail}`} 
-                          className="text-xs font-black text-[#E02636] hover:underline break-all inline-flex items-center gap-1"
+                          className="text-xs font-black text-blue-600 dark:text-blue-400 hover:underline break-all inline-flex items-center gap-1"
                         >
                           <span>{SITE_CONFIG.supportEmail}</span>
                           <ChevronRight className="w-3.5 h-3.5 shrink-0" />
@@ -326,7 +326,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             {/* In-App Direct Guidance */}
             <div className="p-4 bg-slate-50/80 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10 text-xs space-y-2">
               <div className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-[#E02636] shrink-0" />
+                <Smartphone className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                 <span>{isHindi ? 'इन-ऐप सहायता डेस्क (In-App Support)' : 'In-App Support Desk'}</span>
               </div>
               <p className="text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
@@ -340,11 +340,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
             {/* Turnaround Standards & Grievance */}
             <div className="pt-1 space-y-2.5 text-xs text-slate-600 dark:text-slate-300 font-medium border-t border-slate-100 dark:border-white/10">
               <div className="flex items-center gap-2 text-[11px]">
-                <Clock className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+                <Clock className="w-3.5 h-3.5 text-blue-500 shrink-0" />
                 <span><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'मानक टर्नअराउंड' : 'Standard Turnaround'}:</strong> {isHindi ? '24 से 48 व्यावसायिक घंटे' : '24 to 48 business hours'}</span>
               </div>
               <div className="flex items-center gap-2 text-[11px]">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-500 shrink-0" />
                 <span><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'लेनदेन पूछताछ' : 'Transaction Verification'}:</strong> {isHindi ? 'तेजी से समाधान के लिए ऑर्डर / ट्रांजेक्शन आईडी दर्ज करें' : 'Include Order / Transaction ID for priority check'}</span>
               </div>
             </div>
@@ -354,7 +354,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           {/* Grievance Redressal Card */}
           <div className="p-5 sm:p-6 rounded-[24px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300 space-y-2 shadow-md backdrop-blur-xl">
             <div className="flex items-center gap-2 font-black text-slate-900 dark:text-white">
-              <Shield className="w-4 h-4 text-[#E02636] shrink-0" />
+              <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
               <span>{isHindi ? 'शिकायत निवारण तंत्र (IT Act Rules)' : 'Grievance Redressal Mechanism'}</span>
             </div>
             <p className="leading-relaxed text-[11px] font-medium text-slate-600 dark:text-slate-300">
@@ -381,7 +381,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                <Send className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+                <Send className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
                 <span className="whitespace-nowrap">{isHindi ? "सहायता अनुरोध भेजें" : "Submit Request"}</span>
               </button>
 
@@ -469,7 +469,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             setActiveTab('check-status');
                             handleSearchStatus();
                           }}
-                          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#E02636] hover:bg-[#c91e2e] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
+                          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
                         >
                           <Search className="w-4 h-4" />
                           <span>{isHindi ? 'लाइव स्थिति चेक करें' : 'Check Live Status'}</span>
@@ -501,7 +501,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         <div className="space-y-1.5">
                           <label htmlFor="contact-name" className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
                             <span>{t.contactPage.nameLabel}</span>
-                            <span className="text-[#E02636]">*</span>
+                            <span className="text-blue-600 dark:text-blue-400">*</span>
                           </label>
                           <input
                             id="contact-name"
@@ -510,14 +510,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             placeholder={isHindi ? 'आपका पूरा नाम' : 'Your full name'}
-                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                           />
                         </div>
 
                         <div className="space-y-1.5">
                           <label htmlFor="contact-email" className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
                             <span>{t.contactPage.emailLabel}</span>
-                            <span className="text-[#E02636]">*</span>
+                            <span className="text-blue-600 dark:text-blue-400">*</span>
                           </label>
                           <input
                             id="contact-email"
@@ -526,7 +526,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             placeholder="name@example.com"
-                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                           />
                         </div>
                       </div>
@@ -541,7 +541,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             id="contact-subject"
                             value={formData.subject}
                             onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#121622] border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-[#121622] border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                           >
                             <option value="General Inquiry">{isHindi ? 'सामान्य प्रश्न' : 'General Inquiry'}</option>
                             <option value="Technical Support">{isHindi ? 'तकनीकी सहायता' : 'Technical Support'}</option>
@@ -564,7 +564,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                             value={formData.transactionId}
                             onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
                             placeholder="e.g. Razorpay / Google Play Order ID"
-                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all font-mono"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono"
                           />
                         </div>
                       </div>
@@ -573,7 +573,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       <div className="space-y-1.5">
                         <label htmlFor="contact-message" className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
                           <span>{t.contactPage.messageLabel}</span>
-                          <span className="text-[#E02636]">*</span>
+                          <span className="text-blue-600 dark:text-blue-400">*</span>
                         </label>
                         <textarea
                           id="contact-message"
@@ -582,7 +582,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                           value={formData.message}
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           placeholder={isHindi ? 'कृपया अपने प्रश्न के बारे में विस्तार से विवरण प्रदान करें...' : 'Please provide details regarding your query...'}
-                          className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all resize-y"
+                          className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-y"
                         />
                       </div>
 
@@ -686,14 +686,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                           value={searchEmail}
                           onChange={(e) => setSearchEmail(e.target.value)}
                           placeholder="name@example.com"
-                          className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
+                          className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                         />
                         <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                       <button
                         type="submit"
                         disabled={isSearching}
-                        className="px-6 py-3 rounded-xl bg-[#E02636] hover:bg-[#c91e2e] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 whitespace-nowrap"
+                        className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 whitespace-nowrap"
                       >
                         {isSearching ? (
                           <>
@@ -732,7 +732,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                           <span>{isHindi ? `कुल दर्ज अनुरोध: ${ticketResults.length}` : `Total Submissions: ${ticketResults.length}`}</span>
                           <button 
                             onClick={() => handleSearchStatus()}
-                            className="text-[11px] text-[#E02636] hover:underline flex items-center gap-1 cursor-pointer font-bold whitespace-nowrap"
+                            className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer font-bold whitespace-nowrap"
                           >
                             <RefreshCw className="w-3 h-3" />
                             <span>{isHindi ? 'रिफ्रेश करें' : 'Refresh'}</span>
@@ -804,7 +804,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                               {ticket.adminNotes && (
                                 <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 dark:text-amber-200 space-y-1">
                                   <div className="font-bold text-xs flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
-                                    <ShieldCheck className="w-4 h-4 text-[#E02636]" />
+                                    <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                     <span>{isHindi ? 'सहायता टीम का उत्तर:' : 'Support Team Response:'}</span>
                                   </div>
                                   <p className="text-xs leading-relaxed font-medium">{ticket.adminNotes}</p>

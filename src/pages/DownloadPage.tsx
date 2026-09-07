@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
 import { 
@@ -14,6 +14,8 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { launchLessLegalApp } from '../utils/deepLink';
+import { adminStorage, SiteAppConfig } from '../utils/adminStorage';
+import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
 
 interface DownloadPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -24,12 +26,23 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
   const isHindi = language === 'hi';
   const [showQrModal, setShowQrModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'highlights' | 'specs' | 'permissions'>('highlights');
+  const [siteConfig, setSiteConfig] = useState<SiteAppConfig>(adminStorage.getSiteAppConfig());
 
+  useEffect(() => {
+    const unsub = adminStorage.subscribeToSiteAppConfig((updated) => {
+      setSiteConfig(updated);
+    });
+    return () => unsub();
+  }, []);
+
+  const playStoreUrl = siteConfig.playStoreUrl || SITE_CONFIG.playStoreUrl;
   const isPlayStoreConfigured = Boolean(
-    SITE_CONFIG.playStoreUrl && 
-    SITE_CONFIG.playStoreUrl.trim() !== "" && 
-    !SITE_CONFIG.playStoreUrl.includes("YOUR_REAL")
+    playStoreUrl && 
+    playStoreUrl.trim() !== "" && 
+    !playStoreUrl.includes("YOUR_REAL")
   );
+
+  const currentVersion = siteConfig.appVersion || SITE_CONFIG.appVersion;
 
   const handleOpenAppDirectly = () => {
     launchLessLegalApp('home');
@@ -52,7 +65,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
       title: isHindi ? 'PDF वर्कस्पेस टूल्स' : 'PDF Workspace Tools',
       desc: isHindi ? 'दस्तावेज़ संपीड़ित, मर्ज, वॉटरमार्क और कानूनी स्टैम्पिंग टूल्स एक ही स्थान पर।' : 'Merge, compress, watermark, and format court-ready legal documents.',
       icon: Layers,
-      color: 'text-[#E02636]'
+      color: 'text-sky-500'
     },
     {
       title: isHindi ? 'कानूनी कैलकुलेटर हब' : 'Legal Calculator Hub',
@@ -74,33 +87,33 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           onClick={() => onNavigate('home')}
           className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-xs backdrop-blur-md"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#E02636]" />
+          <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
           <span className="whitespace-nowrap">{t.common.backToHome}</span>
         </motion.button>
 
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400 text-xs font-bold whitespace-nowrap">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>{isHindi ? 'नवीनतम संस्करण 8.7.5' : 'Latest Release v8.7.5'}</span>
+            <span>{isHindi ? `नवीनतम संस्करण ${currentVersion}` : `Latest Release v${currentVersion}`}</span>
           </span>
         </div>
       </div>
 
       {/* Page Title & Hero Intro */}
       <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#E02636]/10 via-amber-500/10 to-[#C21F2F]/10 border border-[#E02636]/20 text-[#E02636] dark:text-rose-400 text-xs font-black tracking-wider uppercase shadow-2xs whitespace-nowrap">
-          <Sparkles className="w-3.5 h-3.5 text-[#E02636]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs whitespace-nowrap">
+          <Sparkles className="w-3.5 h-3.5 text-blue-500" />
           <span className="whitespace-nowrap">{isHindi ? 'आधिकारिक मोबाइल एप्लिकेशन' : 'Official Mobile Application'}</span>
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
           {isHindi ? (
             <>
-              डाउनलोड करें <span className="bg-gradient-to-r from-[#C21F2F] via-[#E02636] to-amber-600 bg-clip-text text-transparent">Less Legal App</span>
+              डाउनलोड करें <span className="bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600 bg-clip-text text-transparent">Less Legal App</span>
             </>
           ) : (
             <>
-              Download <span className="bg-gradient-to-r from-[#C21F2F] via-[#E02636] to-amber-600 bg-clip-text text-transparent">Less Legal App</span>
+              Download <span className="bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600 bg-clip-text text-transparent">Less Legal App</span>
             </>
           )}
         </h1>
@@ -117,8 +130,8 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
         <div className="relative rounded-3xl bg-gradient-to-b from-white via-white/95 to-slate-50/90 dark:from-[#111726] dark:via-[#0F1420] dark:to-[#0B0F19] border border-slate-200/90 dark:border-white/10 shadow-2xl p-6 sm:p-10 backdrop-blur-2xl overflow-hidden">
           
           {/* Subtle Ambient Radial Glow */}
-          <div className="absolute top-0 right-1/4 w-80 h-80 bg-gradient-to-br from-[#E02636]/15 via-amber-500/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
-          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-gradient-to-tr from-[#2563EB]/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+          <div className="absolute top-0 right-1/4 w-80 h-80 bg-gradient-to-br from-blue-500/15 via-sky-500/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-gradient-to-tr from-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
           <div className="max-w-3xl mx-auto space-y-8">
             
@@ -129,11 +142,11 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 whileHover={{ scale: 1.05 }}
                 className="relative shrink-0"
               >
-                <div className="absolute -inset-2 bg-gradient-to-tr from-[#E02636]/30 via-amber-500/20 to-blue-500/20 rounded-3xl blur-md -z-10 animate-pulse" />
+                <div className="absolute -inset-2 bg-gradient-to-tr from-blue-600/30 via-sky-500/20 to-indigo-500/20 rounded-3xl blur-md -z-10 animate-pulse" />
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl p-1 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/15 shadow-xl flex items-center justify-center">
                   <AppLogo className="w-full h-full rounded-xl object-contain shadow-sm" />
                 </div>
-                <div className="absolute -bottom-2 -right-2 bg-[#E02636] text-white p-1 rounded-full shadow-md border-2 border-white dark:border-slate-900" title="Verified App">
+                <div className="absolute -bottom-2 -right-2 bg-blue-600 text-white p-1 rounded-full shadow-md border-2 border-white dark:border-slate-900" title="Verified App">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
               </motion.div>
@@ -141,11 +154,11 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               {/* Title & Metadata Badges */}
               <div className="flex-1 space-y-2">
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                  <span className="px-3 py-1 rounded-full text-[11px] font-black tracking-wide bg-gradient-to-r from-[#C21F2F] to-[#E02636] text-white shadow-xs whitespace-nowrap">
+                  <span className="px-3 py-1 rounded-full text-[11px] font-black tracking-wide bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs whitespace-nowrap">
                     {SITE_CONFIG.appName}
                   </span>
                   <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 whitespace-nowrap">
-                    v{SITE_CONFIG.appVersion}
+                    v{currentVersion}
                   </span>
                   <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20 whitespace-nowrap flex items-center gap-1">
                     <Sparkles className="w-3 h-3 text-amber-500" />
@@ -194,7 +207,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                      className="relative rounded-2xl p-4 bg-gradient-to-r from-[#B51C2C] via-[#E02636] to-[#C21F2F] text-white shadow-xl shadow-red-900/20 hover:shadow-red-900/40 border border-white/20 transition-all overflow-hidden flex items-center justify-between gap-4"
+                      className="relative rounded-2xl p-4 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white shadow-xl shadow-blue-900/20 hover:shadow-blue-900/40 border border-white/20 transition-all overflow-hidden flex items-center justify-between gap-4"
                     >
                       {/* Subtle Shine Effect */}
                       <div className="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-white/15 rounded-full blur-xl pointer-events-none" />
@@ -276,7 +289,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 <button
                   id="open-installed-app-btn"
                   onClick={handleOpenAppDirectly}
-                  className="inline-flex items-center gap-2 text-xs font-bold text-[#E02636] dark:text-rose-400 hover:text-red-700 dark:hover:text-rose-300 transition-colors cursor-pointer px-3 py-1.5 rounded-lg bg-[#E02636]/5 hover:bg-[#E02636]/10 border border-[#E02636]/15"
+                  className="inline-flex items-center gap-2 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer px-3 py-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-500/15 border border-blue-500/20"
                 >
                   <Smartphone className="w-3.5 h-3.5" />
                   <span className="whitespace-nowrap">{isHindi ? 'पहले से इंस्टॉल है? सीधे ऐप खोलें' : 'Already installed? Open app'}</span>
@@ -312,7 +325,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                     </div>
                     <div className="space-y-1.5 text-center sm:text-left">
                       <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center justify-center sm:justify-start gap-1.5">
-                        <QrCode className="w-4 h-4 text-[#E02636]" />
+                        <QrCode className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         <span>{isHindi ? 'अपने मोबाइल कैमरे से स्कैन करें' : 'Scan with your Phone Camera'}</span>
                       </div>
                       <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
@@ -346,9 +359,9 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                     {[...SITE_CONFIG.features.slice(0, 16), ...SITE_CONFIG.features.slice(0, 16)].map((feature, idx) => (
                       <div 
                         key={`dl-f1-${idx}`}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-full whitespace-nowrap shadow-2xs hover:border-[#E02636]/40 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-full whitespace-nowrap shadow-2xs hover:border-blue-500/40 transition-colors"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#E02636]" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                         <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200">{feature.title}</span>
                       </div>
                     ))}
@@ -367,7 +380,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#E02636]" />
+              <Sparkles className="w-4 h-4 text-blue-500" />
               <span>{isHindi ? 'मुख्य विशेषताएं' : 'Core App Capabilities'}</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
@@ -411,7 +424,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 onClick={() => setActiveTab('highlights')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'highlights'
-                    ? 'bg-gradient-to-r from-[#C21F2F] to-[#E02636] text-white shadow-md'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                     : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -421,7 +434,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 onClick={() => setActiveTab('permissions')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'permissions'
-                    ? 'bg-gradient-to-r from-[#C21F2F] to-[#E02636] text-white shadow-md'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
                     : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -517,7 +530,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                 <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#E02636]/10 text-[#E02636] flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
                     <Camera className="w-4 h-4" />
                   </div>
                   <div className="space-y-0.5">
@@ -587,7 +600,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0">
                     <Bell className="w-4 h-4" />
                   </div>
                   <div className="space-y-0.5">
@@ -606,13 +619,20 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
         </div>
       </div>
 
+      {/* Other Apps in Ecosystem */}
+      <DynamicAppsShowcase 
+        onNavigate={onNavigate} 
+        titleHi="अन्य उपलब्ध ऐप्स एवं टूल्स संग्रह" 
+        titleEn="Explore Other Companion Apps & Tools" 
+      />
+
       {/* App Compliance & Legal Resources Bar */}
       <div className="max-w-5xl mx-auto relative z-10 pt-2">
         <ScrollReveal direction="up" delay={0.1}>
           <div className="p-6 rounded-3xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg space-y-4 backdrop-blur-xl">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/70 dark:border-white/10">
               <div className="space-y-0.5">
-                <div className="text-[11px] font-black text-[#E02636] uppercase tracking-wider">
+                <div className="text-[11px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
                   Less Legal {isHindi ? 'ऐप अनुपालन और नीतियां' : 'App Compliance & Legal Resources'}
                 </div>
                 <div className="text-sm font-bold text-slate-900 dark:text-white">
@@ -627,14 +647,14 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-slate-700 dark:text-slate-300">
               <button
                 onClick={() => onNavigate('app-privacy')}
-                className="hover:text-[#E02636] transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap"
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap"
               >
                 <span>{isHindi ? 'गोपनीयता नीति (App Privacy)' : 'App Privacy Policy'}</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#E02636]" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-blue-500" />
               </button>
               <button
                 onClick={() => onNavigate('app-delete-account')}
-                className="text-[#E02636] hover:underline cursor-pointer flex items-center gap-1 whitespace-nowrap"
+                className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer flex items-center gap-1 whitespace-nowrap"
               >
                 <span>{isHindi ? 'खाता और डेटा हटाएं' : 'Delete Account & Data'}</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />

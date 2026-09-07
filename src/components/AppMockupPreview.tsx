@@ -60,7 +60,7 @@ export const AppMockupPreview: React.FC = () => {
               onClick={() => setActiveTab('pdf')}
               className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'pdf'
-                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border border-blue-200 dark:border-blue-500/30'
                   : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -70,7 +70,7 @@ export const AppMockupPreview: React.FC = () => {
               onClick={() => setActiveTab('diary')}
               className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'diary'
-                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border border-blue-200 dark:border-blue-500/30'
                   : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -80,7 +80,7 @@ export const AppMockupPreview: React.FC = () => {
               onClick={() => setActiveTab('calc')}
               className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'calc'
-                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border border-blue-200 dark:border-blue-500/30'
                   : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -90,7 +90,7 @@ export const AppMockupPreview: React.FC = () => {
               onClick={() => setActiveTab('acts')}
               className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                 activeTab === 'acts'
-                  ? 'bg-white dark:bg-slate-800 text-[#C21F2F] dark:text-[#E03A3E] shadow-xs border border-red-200 dark:border-red-900/50'
+                  ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border border-blue-200 dark:border-blue-500/30'
                   : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
               }`}
             >

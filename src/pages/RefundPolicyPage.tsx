@@ -48,7 +48,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
       {/* Overview Notice */}
       <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 backdrop-blur-xl">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-[#E02636]" />
+          <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>{t.refundPolicyPage.summaryTitle}</span>
         </div>
         <p className="leading-relaxed font-medium">
@@ -141,7 +141,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
         <div className="pt-2">
           <button
             onClick={() => onNavigate('contact')}
-            className="px-6 py-3 rounded-full bg-[#E02636] hover:bg-[#c91e2e] text-white font-bold text-xs shadow-md transition-all cursor-pointer inline-flex items-center gap-2"
+            className="px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-md transition-all cursor-pointer inline-flex items-center gap-2"
           >
             <span>{t.refundPolicyPage.sec4Button}</span>
           </button>
@@ -162,13 +162,13 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
       <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10">
         <button
           onClick={() => onNavigate('terms')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           {t.refundPolicyPage.readTerms}
         </button>
         <button
           onClick={() => onNavigate('contact')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           {t.refundPolicyPage.contactSupport}
         </button>

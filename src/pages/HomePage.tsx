@@ -20,6 +20,8 @@ import { useAutoScroll } from '../hooks/useAutoScroll';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { sanitizePhoneNumber, isRateLimited, isSafeUrl } from '../utils/security';
+import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
+import { DynamicNoticeBoard } from '../components/DynamicNoticeBoard';
 
 interface HomePageProps {
   onNavigate: (route: PageRoute) => void;
@@ -258,6 +260,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
+      {/* Dynamic Flash Notice Board */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <DynamicNoticeBoard onNavigate={onNavigate} />
+      </div>
+
       {/* 2. PRODUCT ECOSYSTEM SECTION */}
       <section id="product-ecosystem" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
@@ -273,27 +280,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </p>
         </ScrollReveal>
 
-        {/* Ecosystem Grid: 1 Flagship Hero Card + 3 Innovation Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        {/* Dynamic Apps & Tools Showcase (Cards Managed via Admin Control Center) */}
+        <DynamicAppsShowcase onNavigate={onNavigate} showAllLink={true} />
+
+        {/* Ecosystem Grid: Flagship Hero Product */}
+        <div className="max-w-4xl mx-auto w-full">
           
-          {/* Flagship Product Card: Less Legal (Occupies 7 cols on desktop) */}
-          <div className="lg:col-span-7 rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-blue-50/90 via-sky-50/40 to-white dark:from-[#111827] dark:via-[#0F172A] dark:to-[#1E293B] border-2 border-blue-500/50 dark:border-blue-400/40 shadow-[0_20px_50px_rgba(59,130,246,0.18)] flex flex-col justify-between space-y-6 relative overflow-hidden">
+          {/* Flagship Product Card: Less Legal */}
+          <div className="animated-card rounded-3xl p-6 sm:p-10 bg-gradient-to-br from-blue-50/90 via-sky-50/40 to-white dark:from-[#111827] dark:via-[#0F172A] dark:to-[#1E293B] border-2 border-blue-500/40 dark:border-blue-400/30 shadow-[0_20px_50px_rgba(59,130,246,0.18)] flex flex-col justify-between space-y-6 relative overflow-hidden">
             {/* Top Badge */}
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[11px] font-black uppercase tracking-wider shadow-sm">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[11px] font-black uppercase tracking-wider shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 fill-slate-950 shrink-0" />
                 <span>{t.home.flagshipBadge || "FLAGSHIP PRODUCT"}</span>
               </div>
-              <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-500/20">
+              <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/40 px-3 py-1 rounded-full border border-emerald-500/20">
                 {isHindi ? "उपलब्ध • एंड्रॉइड 7.0+" : "Available • Android 7.0+"}
               </span>
             </div>
 
             {/* Product Body */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md">
-                  <Scale className="w-6 h-6" />
+            <div className="space-y-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md shrink-0">
+                  <Scale className="w-7 h-7" />
                 </div>
                 <div>
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
@@ -305,7 +315,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                 {t.home.flagshipDesc || "An all-in-one smart workspace bringing practical legal utilities, reference tools, PDF tools and everyday productivity features together."}
               </p>
 
@@ -317,9 +327,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   isHindi ? "केस डायरी व प्लानर" : "Case Diary",
                   isHindi ? "क्षेत्रफल कनवर्टर" : "Area Converter",
                   isHindi ? "डायरेक्ट व्हाट्सएप" : "Direct WhatsApp",
-                  isHindi ? "ऑफलाइन लेस-शेयर" : "Offline LessShare"
+                  isHindi ? "ऑफ़लाइन लेस-शेयर" : "Offline LessShare"
                 ].map((tag, idx) => (
-                  <span key={idx} className="px-2.5 py-1 rounded-xl bg-white/80 dark:bg-white/10 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                  <span key={idx} className="px-3 py-1.5 rounded-xl bg-white/80 dark:bg-white/10 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                     {tag}
                   </span>
                 ))}
@@ -327,88 +337,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Action Bar */}
-            <div className="pt-4 border-t border-blue-200/60 dark:border-white/10 flex flex-wrap items-center gap-3">
-              <button
-                onClick={() => scrollToSection('flagship-section')}
-                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
-              >
-                <span>{isHindi ? "लाइव डेमो व विवरण देखें" : "Explore Flagship App"}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+            <div className="pt-5 border-t border-blue-200/60 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => scrollToSection('flagship-section')}
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
+                >
+                  <span>{isHindi ? "लाइव डेमो व विवरण देखें" : "Explore Flagship App"}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
 
-              <button
-                onClick={() => onNavigate('download')}
-                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
-              >
-                <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                <span>{isHindi ? "APK डाउनलोड करें" : "Download APK"}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Secondary Products / Innovation Pipeline (Occupies 5 cols on desktop) */}
-          <div className="lg:col-span-5 flex flex-col justify-between gap-4">
-            
-            {/* Card 1: Less Docs & Notes */}
-            <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-2 hover:-translate-y-1 transition-transform">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
-                    <FileText className="w-4 h-4" />
-                  </div>
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white">Less Docs & Notes</h4>
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20 whitespace-nowrap">
-                  {t.home.upcomingBadge || "In R&D"}
-                </span>
+                <button
+                  onClick={() => onNavigate('download')}
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-900 dark:text-white border border-slate-200 dark:border-white/15 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
+                >
+                  <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <span>{isHindi ? "APK डाउनलोड करें" : "Download APK"}</span>
+                </button>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {isHindi 
-                  ? "त्वरित नोट्स और सुरक्षित स्थानीय भंडारण के लिए ऑन-डिवाइस ड्राफ्टिंग एवं ओसीआर कैप्चर।" 
-                  : "Lightweight on-device drafting, instant markdown, and OCR capture designed for rapid notes and secure local storage."}
-              </p>
-            </div>
 
-            {/* Card 2: Less Finance & Tools */}
-            <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-2 hover:-translate-y-1 transition-transform">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
-                    <Calculator className="w-4 h-4" />
-                  </div>
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white">Less Finance & Tools</h4>
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20 whitespace-nowrap">
-                  {isHindi ? "भविष्य की अवधारणा" : "Future Concept"}
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {isHindi 
-                  ? "साधारण ब्याज, स्टाम्प शुल्क और ईएमआई कैलकुलेटर जो वित्तीय गणनाओं को सहज बनाते हैं।" 
-                  : "Simple interest, stamp duty, EMI calculators, and statutory financial estimates made intuitive and instant."}
-              </p>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                {isHindi ? "v8.7.5 • निःशुल्क + प्रीमियम पास" : "v8.7.5 • Free + Premium Pass"}
+              </span>
             </div>
-
-            {/* Card 3: Less AI Studio */}
-            <div className="p-5 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-2 hover:-translate-y-1 transition-transform">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
-                    <Zap className="w-4 h-4" />
-                  </div>
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white">Less AI Studio</h4>
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/20 whitespace-nowrap">
-                  {isHindi ? "अन्वेषण में" : "In Exploration"}
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {isHindi 
-                  ? "दस्तावेज़ सारांशीकरण और कानूनी पाठ अनुक्रमण के लिए निजी ऑन-डिवाइस एआई सहायक।" 
-                  : "Private on-device AI helpers for document summarization, legal text indexing, and rapid query parsing."}
-              </p>
-            </div>
-
           </div>
 
         </div>
@@ -459,7 +410,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Simulator Frame Container */}
-        <div className="bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-400/20 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden">
+        <div className="animated-card bg-white/80 dark:bg-[#0B132B]/80 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-400/20 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden">
           <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Mock Header */}
@@ -711,7 +662,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Lifetime Pass Banner Card */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-slate-50 to-[#F1F5F9] dark:from-[#090D1A] dark:via-[#02040A] dark:to-[#0B0F19] text-slate-900 dark:text-white border-2 border-slate-200/90 dark:border-[#E5BA55]/40 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(229,186,85,0.12)] p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 select-none">
+        <div className="animated-card relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-slate-50 to-[#F1F5F9] dark:from-[#090D1A] dark:via-[#02040A] dark:to-[#0B0F19] text-slate-900 dark:text-white border-2 border-slate-200/90 dark:border-[#E5BA55]/40 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(229,186,85,0.12)] p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 select-none">
           <div className="space-y-3 flex-1 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 dark:border-[#E5BA55]/50 text-amber-700 dark:text-[#E5BA55] text-xs font-black uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 fill-amber-500 dark:fill-[#E5BA55]" />
@@ -775,7 +726,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             return (
               <div 
                 key={idx}
-                className="p-6 rounded-3xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                className="animated-card p-6 rounded-3xl bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-sm space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <div className="w-11 h-11 rounded-2xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
@@ -800,7 +751,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 5. MISSION SECTION */}
       <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
-          <div className="rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-blue-900/90 via-slate-900 to-slate-950 text-white border border-blue-500/30 shadow-2xl relative overflow-hidden space-y-8">
+          <div className="animated-card rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-blue-900/90 via-slate-900 to-slate-950 text-white border border-blue-500/30 shadow-2xl relative overflow-hidden space-y-8">
             <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
             
             <div className="max-w-3xl mx-auto text-center space-y-4">

@@ -75,12 +75,12 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
           onClick={() => onNavigate('home')}
           className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-[#E02636]" />
+          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-600 dark:text-blue-400" />
           <span>{isHindi ? "होम पर वापस जाएं" : "Back to Home"}</span>
         </button>
 
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100/80 dark:bg-red-950/40 border border-red-200/80 dark:border-red-800/40 text-[#E02636] dark:text-red-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
             <Smartphone className="w-3.5 h-3.5" />
             <span>{isHindi ? "Less Legal — एंड्रॉइड ऐप गोपनीयता नीति" : "Less Legal — Android Application Privacy Policy"}</span>
           </div>
@@ -100,7 +100,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       {/* Summary Highlight Box */}
       <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 backdrop-blur-xl">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <Lock className="w-4 h-4 text-[#E02636]" />
+          <Lock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>{isHindi ? "ऐप गोपनीयता के मुख्य सिद्धांत" : "Core App Privacy Principles"}</span>
         </div>
         <p className="leading-relaxed font-medium">
@@ -113,7 +113,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       {/* DATA COLLECTION TABLE SECTION */}
       <div className="space-y-4 relative z-10">
         <div className="flex items-center gap-2">
-          <Database className="w-5 h-5 text-[#E02636]" />
+          <Database className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           <h2 className="text-xl font-black text-slate-900 dark:text-white">
             {isHindi ? "व्यापक ऐप डेटा संग्रह एवं प्रसंस्करण तालिका" : "Comprehensive Data Collection & Processing Disclosures"}
           </h2>
@@ -136,7 +136,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
                 <tr key={idx} className="hover:bg-slate-50/60 dark:hover:bg-white/[0.02] transition-colors">
                   <td className="p-4 font-bold text-slate-900 dark:text-white">{row.category}</td>
                   <td className="p-4">
-                    <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${row.collected.includes('Yes') || row.collected.includes('हाँ') ? 'bg-red-100 text-[#E02636] dark:bg-red-950/50 dark:text-red-400' : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300'}`}>
+                    <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${row.collected.includes('Yes') || row.collected.includes('हाँ') ? 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300'}`}>
                       {row.collected}
                     </span>
                   </td>
@@ -230,11 +230,11 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
           </p>
           <div className="space-y-3 text-xs sm:text-sm">
             <div className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
-              <HardDrive className="w-5 h-5 text-[#E02636] shrink-0 mt-0.5" />
+              <HardDrive className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
               <div><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "सीमित ऐप फ़ोल्डर अनुमति (Scoped Scope):" : "Scoped App Folder Permission:"}</strong> <span className="font-medium">{isHindi ? "ऐप केवल अपने निजी ऐप डेटा फ़ोल्डर (drive.appdata) तक पहुँच का अनुरोध करता है। Less Legal आपकी ड्राइव में अन्य निजी फ़ाइलों को कभी भी नहीं देख या बदल सकता है।" : "The app requests scoped access exclusively to its designated hidden app folder (`drive.appdata`). Less Legal CANNOT view, read, or modify unrelated personal files in your Google Drive."}</span></div>
             </div>
             <div className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
-              <HelpCircle className="w-5 h-5 text-[#E02636] shrink-0 mt-0.5" />
+              <HelpCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
               <div><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "बैकअप रोकना या अनुमति रद्द करना:" : "Stopping & Revoking Backup Access:"}</strong> <span className="font-medium">{isHindi ? "आप ऐप सेटिंग में बैकअप बंद कर सकते हैं या myaccount.google.com/permissions पर जाकर गूगल खाता सुरक्षा से अनुमति रद्द कर सकते हैं।" : "You can disable backup in app settings or revoke access anytime via Google Account Security at myaccount.google.com/permissions."}</span></div>
             </div>
           </div>
@@ -287,7 +287,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
               : "Less Legal is an independent application developed and published by Less Creation. For privacy questions, contact us at:"}
           </p>
           {hasEmail && (
-            <p className="pt-1 font-bold text-[#E02636]">
+            <p className="pt-1 font-bold text-blue-600 dark:text-blue-400">
               <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="hover:underline">
                 {SITE_CONFIG.supportEmail}
               </a>
@@ -301,14 +301,14 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10">
         <button
           onClick={() => onNavigate('app-delete-account')}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#E02636] text-white hover:bg-[#c91e2e] text-xs font-bold transition-all cursor-pointer shadow-md"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-700 hover:to-sky-600 text-xs font-bold transition-all cursor-pointer shadow-md"
         >
           <span>{isHindi ? "खाता और डेटा डिलीट करें" : "Delete Account & Data"}</span>
           <ArrowUpRight className="w-4 h-4" />
         </button>
         <button
           onClick={() => onNavigate('privacy')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           {isHindi ? "वेबसाइट गोपनीयता नीति देखें" : "View Website Privacy Policy"}
         </button>

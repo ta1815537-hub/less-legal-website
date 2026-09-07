@@ -16,7 +16,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
 
   return (
     <div 
-      className={`relative flex items-center justify-center shrink-0 rounded-2xl ${showShadow ? 'shadow-lg shadow-[#C21F2F]/20' : ''} ${className}`}
+      className={`relative flex items-center justify-center shrink-0 rounded-2xl ${showShadow ? 'shadow-lg shadow-blue-500/20' : ''} ${className}`}
       style={style}
     >
       {!imgErr ? (
@@ -34,12 +34,12 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           xmlns="http://www.w3.org/2000/svg"
         >
         <defs>
-          {/* Main Crimson to Dark Red Gradient */}
+          {/* Main Blue Gradient */}
           <linearGradient id="logoPrimaryGrad" x1="60" y1="60" x2="450" y2="450" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#E03A3E" />
-            <stop offset="35%" stopColor="#C21F2F" />
-            <stop offset="70%" stopColor="#8B0000" />
-            <stop offset="100%" stopColor="#4A0000" />
+            <stop offset="0%" stopColor="#38BDF8" />
+            <stop offset="35%" stopColor="#2563EB" />
+            <stop offset="70%" stopColor="#1E40AF" />
+            <stop offset="100%" stopColor="#0F172A" />
           </linearGradient>
 
           {/* Gold Droplet Accent Gradient */}
@@ -52,21 +52,21 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           {/* Gold Center Dot Gradient */}
           <linearGradient id="logoCenterGrad" x1="200" y1="210" x2="310" y2="310" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#F5F2EE" />
-            <stop offset="50%" stopColor="#D8BD82" />
-            <stop offset="100%" stopColor="#C21F2F" />
+            <stop offset="50%" stopColor="#38BDF8" />
+            <stop offset="100%" stopColor="#2563EB" />
           </linearGradient>
 
-          {/* Bottom Loop Crimson Gold Blend */}
+          {/* Bottom Loop Blue Gold Blend */}
           <linearGradient id="logoLoopGrad" x1="220" y1="340" x2="420" y2="320" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#C21F2F" />
-            <stop offset="50%" stopColor="#D8BD82" />
-            <stop offset="100%" stopColor="#8B0000" />
+            <stop offset="0%" stopColor="#2563EB" />
+            <stop offset="50%" stopColor="#38BDF8" />
+            <stop offset="100%" stopColor="#1E40AF" />
           </linearGradient>
 
           {/* Dark Glass Tile Bevel */}
           <linearGradient id="tileBorderGrad" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#D8BD82" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#C21F2F" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#2563EB" stopOpacity="0.2" />
           </linearGradient>
 
           {/* Inner Groove Shadow */}

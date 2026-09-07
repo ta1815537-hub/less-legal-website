@@ -48,7 +48,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       {/* Prominent Legal Advice Disclaimer in Terms */}
       <div className="rounded-[28px] p-6 sm:p-8 bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 shadow-lg backdrop-blur-xl">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-[#E02636]" />
+          <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
           <span>{t.termsPage.disclaimerBannerTitle}</span>
         </div>
         <p className="leading-relaxed font-medium">
@@ -160,13 +160,13 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10">
         <button
           onClick={() => onNavigate('privacy')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           {t.termsPage.readPrivacy}
         </button>
         <button
           onClick={() => onNavigate('refund')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#E02636] cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
         >
           {t.termsPage.readRefund}
         </button>

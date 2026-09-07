@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
 
 interface FeaturesPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -55,7 +56,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       category: 'Legal Utilities',
       description: 'महत्वपूर्ण तिथियों, कानूनी छुट्टियों और पारंपरिक पंचांगों को ट्रैक करें।',
       badge: 'Popular',
-      themeColor: 'red',
+      themeColor: 'blue',
       icon: Calendar,
       tags: ['• कानूनी छुट्टियां', 'धार्मिक पंचांग', 'न्यायालय अवकाश', '+1']
     },
@@ -160,7 +161,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       title: 'आरटीआई जनरेटर (RTI Generator)',
       category: 'Government',
       description: 'विभिन्न सरकारी विभागों के लिए सटीक आरटीआई आवेदन प्रारूप तैयार करें।',
-      themeColor: 'red',
+      themeColor: 'cyan',
       icon: FileSpreadsheet,
       tags: ['आवेदन ड्राफ्ट', 'शुल्क विवरण', 'विभाग सूची', '+1']
     },
@@ -227,11 +228,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
     switch (color) {
       case 'red':
         return {
-          iconBg: 'bg-red-100 dark:bg-red-950/40 text-[#E02636]',
-          badgeBg: 'bg-red-500 text-white',
-          catBg: 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 border-red-200/70',
-          btnBg: 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-300 group-hover:bg-[#E02636] group-hover:text-white',
-          hoverBorder: 'hover:border-red-200 dark:hover:border-red-800/40',
+          iconBg: 'bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400',
+          badgeBg: 'bg-blue-600 text-white',
+          catBg: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200/70',
+          btnBg: 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 group-hover:bg-blue-600 group-hover:text-white',
+          hoverBorder: 'hover:border-blue-200 dark:hover:border-blue-800/40',
         };
       case 'blue':
         return {
@@ -555,7 +556,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                       [item.id]: !prev[item.id]
                     }));
                   }}
-                  className={`rounded-[24px] p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl cursor-pointer ${
+                  className={`animated-card rounded-[24px] p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl cursor-pointer ${
                     isLifted 
                       ? 'border-blue-500/70 dark:border-blue-400/70 shadow-[0_24px_50px_rgba(59,130,246,0.25)] bg-gradient-to-br from-blue-50/90 via-indigo-50/40 to-white dark:from-[#1E293B] dark:via-[#182035] dark:to-[#121622]'
                       : `bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(0,0,0,0.08)] ${styles.hoverBorder}`
@@ -708,6 +709,9 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Dynamic Apps & Tools Showcase (Cards Managed via Admin Control Center) */}
+      <DynamicAppsShowcase onNavigate={onNavigate} />
 
       {/* 5. APP COMPLIANCE & LEGAL BOTTOM BAR */}
       <section className="pt-4">

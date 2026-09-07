@@ -34,11 +34,11 @@ export const SmokeBackground: React.FC = () => {
       className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none hidden dark:block"
       style={{ contain: 'strict' }}
     >
-      {/* Smoke Cloud 1 - Crimson / Ruby Ambient Vapor (Dark mode only) */}
-      <div className="vapor-orb-1 absolute -top-40 -left-40 w-[35rem] sm:w-[45rem] h-[35rem] sm:h-[45rem] bg-gradient-to-br from-[#8B0000]/20 via-[#C21F2F]/15 to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-50" />
+      {/* Smoke Cloud 1 - Clean Blue / Indigo Ambient Vapor (Dark mode only) */}
+      <div className="vapor-orb-1 absolute -top-40 -left-40 w-[35rem] sm:w-[45rem] h-[35rem] sm:h-[45rem] bg-gradient-to-br from-blue-600/15 via-indigo-600/10 to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-40" />
 
-      {/* Smoke Cloud 2 - Subtle Crimson Vapor (Dark mode only) */}
-      <div className="vapor-orb-2 absolute top-1/4 -right-40 w-[30rem] sm:w-[40rem] h-[30rem] sm:h-[40rem] bg-gradient-to-bl from-[#C21F2F]/15 via-[#8B0000]/10 to-transparent rounded-full blur-[50px] sm:blur-[90px] opacity-40" />
+      {/* Smoke Cloud 2 - Subtle Sky / Blue Vapor (Dark mode only) */}
+      <div className="vapor-orb-2 absolute top-1/4 -right-40 w-[30rem] sm:w-[40rem] h-[30rem] sm:h-[40rem] bg-gradient-to-bl from-sky-500/12 via-blue-700/10 to-transparent rounded-full blur-[50px] sm:blur-[90px] opacity-35" />
     </div>
   );
 };
@@ -188,7 +188,7 @@ interface GlowingButtonProps {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
-  variant?: 'primary' | 'secondary' | 'gold' | 'outline';
+  variant?: 'primary' | 'secondary' | 'gold' | 'outline' | '3d-glass';
   id?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
@@ -206,9 +206,10 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white shadow-[0_10px_28px_rgba(37,99,235,0.35)] border border-white/10 hover:shadow-[0_14px_36px_rgba(37,99,235,0.45)] shine-sweep-overlay';
+        return 'bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white shadow-[0_12px_32px_rgba(37,99,235,0.38)] border-t border-white/40 border-b border-blue-800/40 hover:shadow-[0_16px_40px_rgba(37,99,235,0.48)] shine-sweep-overlay';
+      case '3d-glass':
       case 'secondary':
-        return 'btn-glass shine-sweep-overlay';
+        return 'fluid-3d-glass-btn text-slate-900 dark:text-white font-bold shine-sweep-overlay';
       case 'gold':
         return 'btn-gold shine-sweep-overlay';
       case 'outline':
@@ -222,11 +223,13 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      whileHover={{ scale: 1.025 }}
-      whileTap={{ scale: 0.96 }}
+      whileHover={{ scale: 1.03, y: -2 }}
+      whileTap={{ scale: 0.95, y: 1 }}
       transition={{ duration: 0.2, ease: EASING_SPRING }}
-      className={`relative group overflow-hidden transition-all rounded-xl font-semibold px-5 py-3 text-sm flex items-center justify-center gap-2 ${getVariantStyles()} ${className}`}
+      className={`relative group overflow-hidden transition-all rounded-xl sm:rounded-2xl font-bold px-5 py-3 text-sm flex items-center justify-center gap-2 ${getVariantStyles()} ${className}`}
     >
+      {/* Liquid 3D Specular Refraction Effect */}
+      <span className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/50 to-transparent pointer-events-none" />
       <span className="relative z-10 flex items-center justify-center gap-2">
         {children}
       </span>

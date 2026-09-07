@@ -59,7 +59,7 @@ export const SITE_CONFIG = {
       id: "prod-less-legal",
       name: "Less Legal",
       description: "कानून पेशेवरों और नागरिकों के लिए कानूनी ज्ञान एवं डिजिटल उपयोगिताएँ।",
-      category: "Flagship",
+      category: "Flagship Product",
       iconName: "Scale",
       status: "Available",
       version: "8.7.5",
@@ -67,30 +67,6 @@ export const SITE_CONFIG = {
       downloadUrl: "/download",
       detailUrl: "/features",
       features: ["PDF वर्कस्पेस", "केस डायरी", "कैलकुलेटर हब", "बेयर एक्ट्स", "लीगल टूल्स"]
-    },
-    {
-      id: "prod-faget-app",
-      name: "Faget App",
-      description: "भारतीय लोगों के लिए इवेंट्स प्रबंधन ऐप।",
-      category: "Events & Management",
-      iconName: "Calendar",
-      status: "Coming Soon"
-    },
-    {
-      id: "prod-less-music",
-      name: "Less Music",
-      description: "भारतीय संस्कृति का 3000+ ऑफ़लाइन संगीत हब।",
-      category: "Music & Culture",
-      iconName: "Music",
-      status: "Coming Soon"
-    },
-    {
-      id: "prod-less-notes",
-      name: "Less Notes",
-      description: "न्यूनतम उत्पादकता नोट्स और त्वरित दस्तावेज़ स्क्रैचपैड।",
-      category: "Productivity",
-      iconName: "Edit3",
-      status: "Coming Soon"
     }
   ] as ProductItem[],
 

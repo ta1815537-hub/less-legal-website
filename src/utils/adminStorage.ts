@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, setDoc, getDoc, updateDoc, deleteDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import type { User as FirebaseUser } from 'firebase/auth';
 
@@ -27,13 +27,776 @@ export interface DeletionRequest {
   firestoreDocId?: string;
 }
 
+export interface CustomAppItem {
+  id: string;
+  nameHi: string;
+  nameEn: string;
+  taglineHi: string;
+  taglineEn: string;
+  descriptionHi: string;
+  descriptionEn: string;
+  category: string; // 'Legal AI' | 'Utility Tool' | 'Productivity' | 'Bare Acts' | 'Court Assistant' | 'Other'
+  badge: string; // 'Flagship' | 'New Release' | 'Popular' | 'Beta' | 'Free Tool'
+  iconUrl: string; // Google Drive / Direct URL / CDN
+  bannerUrl?: string; // Preview image
+  version: string; // e.g. "8.7.5"
+  downloadUrl: string; // APK / Drive / Direct download
+  playStoreUrl?: string; // Play Store Link
+  webUrl?: string; // Live Web App Demo
+  rating?: string; // e.g. "4.9 ★"
+  downloadsCount?: string; // e.g. "50K+ Downloads"
+  priceTag: string; // "Free", "Lifetime ₹99", "Freemium"
+  features: string[]; // Feature bullet points
+  status: 'live' | 'beta' | 'coming_soon';
+  isFeatured: boolean;
+  isActive: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CustomNoticeItem {
+  id: string;
+  titleHi: string;
+  titleEn: string;
+  contentHi: string;
+  contentEn: string;
+  tag: string; // 'Urgent' | 'Legal Alert' | 'App Update' | 'Server Notice' | 'Important'
+  type: 'info' | 'warning' | 'success' | 'alert';
+  link?: string;
+  linkText?: string;
+  isActive: boolean;
+  date: string;
+}
+
+export interface SocialChannelLink {
+  id: string;
+  title: string;
+  handle: string;
+  url: string;
+  platform: 'youtube' | 'telegram' | 'whatsapp' | 'instagram' | 'linkedin' | 'github' | 'twitter' | 'website';
+  badge: string; // e.g. "Official Channel", "10K+ Community"
+  isActive: boolean;
+  order: number;
+}
+
+export interface SiteAppConfig {
+  // App Version & Distribution Hub
+  appVersion: string;
+  appBuildNumber: string;
+  minAndroidVersion: string;
+  lastUpdatedDate: string;
+  apkDownloadUrl: string;
+  playStoreUrl: string;
+  forceUpdate: boolean;
+  updateTitleHi: string;
+  updateTitleEn: string;
+  updateNotesHi: string;
+  updateNotesEn: string;
+
+  // Live Announcement & Top Alert Banner
+  announcementActive: boolean;
+  announcementBadgeHi: string;
+  announcementBadgeEn: string;
+  announcementTextHi: string;
+  announcementTextEn: string;
+  announcementButtonTextHi: string;
+  announcementButtonTextEn: string;
+  announcementLink: string;
+  announcementType: 'deal' | 'update' | 'notice' | 'alert';
+
+  // Cloud Media & Promotional Showcase (Zero Firebase Bandwidth Cost)
+  bannerActive: boolean;
+  bannerTitle: string;
+  bannerSubtitle: string;
+  bannerImageUrl: string;
+  bannerVideoUrl: string;
+  bannerLink: string;
+  bannerTag: string;
+
+  // Pricing & Contact Settings
+  lifetimePassPrice: string;
+  lifetimePassOfferNotice: string;
+  supportPhone: string;
+  supportEmail: string;
+  supportWhatsApp: string;
+  maintenanceMode: boolean;
+  maintenanceMessage: string;
+
+  // Metadata
+  lastUpdated: string;
+  updatedBy: string;
+}
+
+export interface ConvertedCloudMedia {
+  rawUrl: string;
+  directUrl: string;
+  embedUrl: string;
+  provider: 'Google Drive' | 'Dropbox' | 'YouTube' | 'Imgur' | 'Direct Link' | 'Unknown';
+  mediaType: 'image' | 'video' | 'audio' | 'link';
+  detectedId?: string;
+}
+
+export const convertCloudStorageUrl = (rawUrl: string): ConvertedCloudMedia => {
+  const trimmed = (rawUrl || '').trim();
+  if (!trimmed) {
+    return {
+      rawUrl: '',
+      directUrl: '',
+      embedUrl: '',
+      provider: 'Unknown',
+      mediaType: 'link'
+    };
+  }
+
+  // 1. Google Drive Links
+  // Examples:
+  // - https://drive.google.com/file/d/1A2B3C4D5E6F/view?usp=sharing
+  // - https://drive.google.com/open?id=1A2B3C4D5E6F
+  // - https://drive.google.com/uc?id=1A2B3C4D5E6F
+  const gDriveMatch = trimmed.match(/(?:file\/d\/|id=|open\?id=)([a-zA-Z0-9_-]{15,})/);
+  if (trimmed.includes('drive.google.com') || gDriveMatch) {
+    const fileId = gDriveMatch ? gDriveMatch[1] : '';
+    if (fileId) {
+      // Direct high-speed CDN image link (lh3.googleusercontent.com)
+      const directImageCdn = `https://lh3.googleusercontent.com/d/${fileId}`;
+      const embedPreview = `https://drive.google.com/file/d/${fileId}/preview`;
+      return {
+        rawUrl: trimmed,
+        directUrl: directImageCdn,
+        embedUrl: embedPreview,
+        provider: 'Google Drive',
+        mediaType: trimmed.toLowerCase().match(/\.(mp4|webm|mov|m4v)/) ? 'video' : 'image',
+        detectedId: fileId
+      };
+    }
+  }
+
+  // 2. YouTube Links
+  // Examples:
+  // - https://www.youtube.com/watch?v=dQw4w9WgXcQ
+  // - https://youtu.be/dQw4w9WgXcQ
+  // - https://www.youtube.com/embed/dQw4w9WgXcQ
+  const ytMatch = trimmed.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  if (ytMatch) {
+    const videoId = ytMatch[1];
+    return {
+      rawUrl: trimmed,
+      directUrl: `https://www.youtube.com/watch?v=${videoId}`,
+      embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&rel=0`,
+      provider: 'YouTube',
+      mediaType: 'video',
+      detectedId: videoId
+    };
+  }
+
+  // 3. Dropbox Links
+  // Examples:
+  // - https://www.dropbox.com/s/xyz123/image.png?dl=0
+  if (trimmed.includes('dropbox.com')) {
+    const directDropbox = trimmed
+      .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+      .replace('?dl=0', '')
+      .replace('&dl=0', '');
+    return {
+      rawUrl: trimmed,
+      directUrl: directDropbox.includes('?') ? `${directDropbox}&raw=1` : `${directDropbox}?raw=1`,
+      embedUrl: directDropbox,
+      provider: 'Dropbox',
+      mediaType: trimmed.toLowerCase().match(/\.(mp4|webm|mov)/) ? 'video' : 'image'
+    };
+  }
+
+  // 4. Imgur Links
+  // Examples:
+  // - https://imgur.com/a/xyz or https://imgur.com/xyz
+  if (trimmed.includes('imgur.com') && !trimmed.includes('i.imgur.com')) {
+    const imgurId = trimmed.split('/').pop()?.split('.')[0] || '';
+    if (imgurId) {
+      return {
+        rawUrl: trimmed,
+        directUrl: `https://i.imgur.com/${imgurId}.png`,
+        embedUrl: `https://i.imgur.com/${imgurId}.png`,
+        provider: 'Imgur',
+        mediaType: 'image',
+        detectedId: imgurId
+      };
+    }
+  }
+
+  // 5. Direct Image/Video URLs
+  const isVideo = Boolean(trimmed.match(/\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i));
+  const isAudio = Boolean(trimmed.match(/\.(mp3|wav|m4a|aac|ogg)(\?.*)?$/i));
+  const isImage = Boolean(trimmed.match(/\.(jpg|jpeg|png|webp|gif|svg|avif)(\?.*)?$/i));
+
+  return {
+    rawUrl: trimmed,
+    directUrl: trimmed,
+    embedUrl: trimmed,
+    provider: 'Direct Link',
+    mediaType: isVideo ? 'video' : isAudio ? 'audio' : isImage ? 'image' : 'link'
+  };
+};
+
+export const DEFAULT_SITE_APP_CONFIG: SiteAppConfig = {
+  // App Version & Distribution Hub
+  appVersion: "8.7.5",
+  appBuildNumber: "108",
+  minAndroidVersion: "Android 7.0 (Nougat) or higher",
+  lastUpdatedDate: "March 2025",
+  apkDownloadUrl: "https://play.google.com/store/apps/details?id=com.lesslegal.app",
+  playStoreUrl: "https://play.google.com/store/apps/details?id=com.lesslegal.app",
+  forceUpdate: false,
+  updateTitleHi: "नया संस्करण 8.7.5 उपलब्ध है!",
+  updateTitleEn: "New Version 8.7.5 is Available!",
+  updateNotesHi: "• नए BNS, BNSS और BSA बेयर एक्ट्स जोड़े गए\n• तेज PDF मर्ज व कंप्रेस टूल्स\n• केस डायरी रिमाइंडर फिक्स किए गए",
+  updateNotesEn: "• Added new BNS, BNSS and BSA bare acts\n• Faster PDF merge and compression\n• Improved Case Diary hearing reminders",
+
+  // Live Announcement & Top Alert Banner
+  announcementActive: true,
+  announcementBadgeHi: "विशेष ऑफ़र ✨",
+  announcementBadgeEn: "SPECIAL PASS ✨",
+  announcementTextHi: "लेस लीगल लाइफटाइम पास • मात्र ₹99 एकमुश्त • कोई सब्सक्रिप्शन नहीं",
+  announcementTextEn: "Less Legal Lifetime Pass • ₹99 One-Time Access • No Subscriptions",
+  announcementButtonTextHi: "ऑफ़र लें",
+  announcementButtonTextEn: "Get Pass",
+  announcementLink: "premium",
+  announcementType: "deal",
+
+  // Cloud Media & Promotional Showcase
+  bannerActive: false,
+  bannerTitle: "Less Legal Flagship Suite",
+  bannerSubtitle: "कानूनी पेशेवरों और नागरिकों के लिए ऑल-इन-वन डिजिटल असिस्टेंट",
+  bannerImageUrl: "",
+  bannerVideoUrl: "",
+  bannerLink: "features",
+  bannerTag: "New Release",
+
+  // Pricing & Contact Settings
+  lifetimePassPrice: "₹99",
+  lifetimePassOfferNotice: "लाइफटाइम पास मात्र ₹99 में सीमित समय के लिए उपलब्ध है",
+  supportPhone: "",
+  supportEmail: "support@lesscreation.com",
+  supportWhatsApp: "",
+  maintenanceMode: false,
+  maintenanceMessage: "वेबसाइट पर कुछ देर के लिए अपग्रेड कार्य चल रहा है। कृपया कुछ समय बाद पुनः प्रयास करें।",
+
+  // Metadata
+  lastUpdated: new Date().toISOString(),
+  updatedBy: "System"
+};
+
 const STORAGE_KEY_CONTACTS = 'less_legal_contact_submissions';
 const STORAGE_KEY_DELETIONS = 'less_legal_deletion_requests';
+const STORAGE_KEY_SITE_CONFIG = 'less_legal_site_app_config';
+const STORAGE_KEY_CUSTOM_APPS = 'less_legal_custom_apps_list';
+const STORAGE_KEY_CUSTOM_NOTICES = 'less_legal_custom_notices_list';
+const STORAGE_KEY_SOCIAL_CHANNELS = 'less_legal_social_channels_list';
+
+// Clean Initial Datasets (Only real items created via Admin Control Panel will be displayed)
+export const DEFAULT_CUSTOM_APPS: CustomAppItem[] = [];
+
+// Clean Initial Notices (Only real notices created via Admin Control Panel will be displayed)
+export const DEFAULT_CUSTOM_NOTICES: CustomNoticeItem[] = [];
+
+// Default Social Channels
+export const DEFAULT_SOCIAL_CHANNELS: SocialChannelLink[] = [
+  {
+    id: 'social-yt',
+    title: 'YouTube Channel',
+    handle: '@LessLegalOfficial',
+    url: 'https://www.youtube.com',
+    platform: 'youtube',
+    badge: 'Video Guides & Legal Tips',
+    isActive: true,
+    order: 1
+  },
+  {
+    id: 'social-tg',
+    title: 'Telegram Community',
+    handle: 't.me/LessLegalAdvocates',
+    url: 'https://t.me',
+    platform: 'telegram',
+    badge: 'Daily Bare Acts & Judgments',
+    isActive: true,
+    order: 2
+  },
+  {
+    id: 'social-wa',
+    title: 'WhatsApp Helpline & Group',
+    handle: '+91 99999 99999',
+    url: 'https://wa.me',
+    platform: 'whatsapp',
+    badge: 'Instant Support Desk',
+    isActive: true,
+    order: 3
+  },
+  {
+    id: 'social-in',
+    title: 'Instagram',
+    handle: '@lesslegal.app',
+    url: 'https://instagram.com',
+    platform: 'instagram',
+    badge: 'Legal Bytes & Infographics',
+    isActive: true,
+    order: 4
+  }
+];
+
 // Initial seed data is empty so only real submissions are shown
 const INITIAL_DELETION_REQUESTS: DeletionRequest[] = [];
 const INITIAL_CONTACT_SUBMISSIONS: ContactSubmission[] = [];
 
 export const adminStorage = {
+  // Site & App Configuration (Real-time Firestore sync)
+  getSiteAppConfig: (): SiteAppConfig => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY_SITE_CONFIG);
+      if (!data) {
+        localStorage.setItem(STORAGE_KEY_SITE_CONFIG, JSON.stringify(DEFAULT_SITE_APP_CONFIG));
+        return DEFAULT_SITE_APP_CONFIG;
+      }
+      const parsed = JSON.parse(data);
+      return { ...DEFAULT_SITE_APP_CONFIG, ...parsed };
+    } catch {
+      return DEFAULT_SITE_APP_CONFIG;
+    }
+  },
+
+  fetchSiteAppConfigFromCloud: async (): Promise<SiteAppConfig> => {
+    const local = adminStorage.getSiteAppConfig();
+    try {
+      const docRef = doc(db, 'app_config', 'website_settings');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const cloudData = docSnap.data() as Partial<SiteAppConfig>;
+        const merged: SiteAppConfig = { ...local, ...cloudData };
+        localStorage.setItem(STORAGE_KEY_SITE_CONFIG, JSON.stringify(merged));
+        return merged;
+      } else {
+        // Create initial default doc in cloud
+        await setDoc(docRef, DEFAULT_SITE_APP_CONFIG, { merge: true });
+      }
+    } catch (err) {
+      console.warn('Could not fetch site config from Firestore:', err);
+    }
+    return local;
+  },
+
+  saveSiteAppConfig: async (configUpdates: Partial<SiteAppConfig>, updatedByEmail?: string): Promise<SiteAppConfig> => {
+    const current = adminStorage.getSiteAppConfig();
+    const updated: SiteAppConfig = {
+      ...current,
+      ...configUpdates,
+      lastUpdated: new Date().toISOString(),
+      updatedBy: updatedByEmail || current.updatedBy || 'Admin'
+    };
+
+    // Save locally for instant rendering
+    try {
+      localStorage.setItem(STORAGE_KEY_SITE_CONFIG, JSON.stringify(updated));
+    } catch (e) {
+      console.error('Failed to save site config locally:', e);
+    }
+
+    // Save to Firebase Firestore document app_config/website_settings
+    try {
+      const docRef = doc(db, 'app_config', 'website_settings');
+      await setDoc(docRef, updated, { merge: true });
+    } catch (err) {
+      console.warn('Firestore setDoc failed for site app config:', err);
+    }
+
+    // Trigger local storage event for cross-tab reactivity
+    window.dispatchEvent(new Event('less_legal_site_config_updated'));
+
+    return updated;
+  },
+
+  subscribeToSiteAppConfig: (callback: (config: SiteAppConfig) => void): (() => void) => {
+    // Initial emission from local storage
+    callback(adminStorage.getSiteAppConfig());
+
+    // Listen to Firestore real-time updates
+    try {
+      const docRef = doc(db, 'app_config', 'website_settings');
+      const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data() as Partial<SiteAppConfig>;
+          const merged: SiteAppConfig = { ...DEFAULT_SITE_APP_CONFIG, ...cloudData };
+          localStorage.setItem(STORAGE_KEY_SITE_CONFIG, JSON.stringify(merged));
+          callback(merged);
+        }
+      }, (error) => {
+        console.warn('Real-time site config subscription notice:', error);
+      });
+
+      // Also listen to local window event
+      const localListener = () => {
+        callback(adminStorage.getSiteAppConfig());
+      };
+      window.addEventListener('less_legal_site_config_updated', localListener);
+
+      return () => {
+        unsubscribe();
+        window.removeEventListener('less_legal_site_config_updated', localListener);
+      };
+    } catch (err) {
+      console.warn('Failed to subscribe to site app config:', err);
+      return () => {};
+    }
+  },
+
+  // =========================================================
+  // DYNAMIC APPS & PRODUCTS SHOWCASE MANAGEMENT
+  // =========================================================
+  getCustomApps: (): CustomAppItem[] => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY_CUSTOM_APPS);
+      if (!data) return [];
+      const parsed: CustomAppItem[] = JSON.parse(data);
+      if (!Array.isArray(parsed)) return [];
+      // Filter out any legacy mock demo items
+      const cleaned = parsed.filter(item => 
+        item.id && 
+        !item.id.includes('app-less-legal-flagship') && 
+        !item.id.includes('app-bare-acts-ai') && 
+        !item.id.includes('app-case-diary-pro') && 
+        !item.id.includes('app-land-calculator')
+      );
+      return cleaned;
+    } catch {
+      return [];
+    }
+  },
+
+  fetchCustomAppsFromCloud: async (): Promise<CustomAppItem[]> => {
+    const local = adminStorage.getCustomApps();
+    try {
+      const docRef = doc(db, 'app_config', 'custom_apps_list');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const cloudData = docSnap.data();
+        if (cloudData && Array.isArray(cloudData.apps)) {
+          // Clean any legacy mock items
+          const cleaned = cloudData.apps.filter((item: CustomAppItem) => 
+            item.id && 
+            !item.id.includes('app-less-legal-flagship') && 
+            !item.id.includes('app-bare-acts-ai') && 
+            !item.id.includes('app-case-diary-pro') && 
+            !item.id.includes('app-land-calculator')
+          );
+          localStorage.setItem(STORAGE_KEY_CUSTOM_APPS, JSON.stringify(cleaned));
+          return cleaned;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch custom apps from cloud:', err);
+    }
+    return local;
+  },
+
+  saveCustomApp: async (appData: Omit<CustomAppItem, 'createdAt' | 'updatedAt'> & { id?: string }): Promise<CustomAppItem> => {
+    const currentList = adminStorage.getCustomApps();
+    const isNew = !appData.id || !currentList.some(a => a.id === appData.id);
+    const appId = appData.id || `app-${Date.now()}`;
+    const now = new Date().toISOString();
+
+    const fullAppItem: CustomAppItem = {
+      id: appId,
+      nameHi: appData.nameHi || '',
+      nameEn: appData.nameEn || '',
+      taglineHi: appData.taglineHi || '',
+      taglineEn: appData.taglineEn || '',
+      descriptionHi: appData.descriptionHi || '',
+      descriptionEn: appData.descriptionEn || '',
+      category: appData.category || 'Utility Tool',
+      badge: appData.badge || 'New Release',
+      iconUrl: appData.iconUrl || '',
+      bannerUrl: appData.bannerUrl || '',
+      version: appData.version || '1.0.0',
+      downloadUrl: appData.downloadUrl || '',
+      playStoreUrl: appData.playStoreUrl || '',
+      webUrl: appData.webUrl || '',
+      rating: appData.rating || '4.9 ★',
+      downloadsCount: appData.downloadsCount || '10,000+',
+      priceTag: appData.priceTag || 'Free',
+      features: Array.isArray(appData.features) ? appData.features : [],
+      status: appData.status || 'live',
+      isFeatured: Boolean(appData.isFeatured),
+      isActive: appData.isActive !== false,
+      order: appData.order || (currentList.length + 1),
+      createdAt: isNew ? now : (currentList.find(a => a.id === appId)?.createdAt || now),
+      updatedAt: now
+    };
+
+    let updatedList: CustomAppItem[];
+    if (isNew) {
+      updatedList = [...currentList, fullAppItem];
+    } else {
+      updatedList = currentList.map(item => item.id === appId ? fullAppItem : item);
+    }
+
+    // Sort by order ascending
+    updatedList.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    // Save locally
+    try {
+      localStorage.setItem(STORAGE_KEY_CUSTOM_APPS, JSON.stringify(updatedList));
+    } catch (e) {
+      console.error('Failed to save apps locally:', e);
+    }
+
+    // Save to Firestore doc
+    try {
+      const docRef = doc(db, 'app_config', 'custom_apps_list');
+      await setDoc(docRef, { apps: updatedList, updatedAt: now }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore setDoc custom apps error:', err);
+    }
+
+    window.dispatchEvent(new Event('less_legal_custom_apps_updated'));
+    return fullAppItem;
+  },
+
+  deleteCustomApp: async (appId: string): Promise<void> => {
+    const currentList = adminStorage.getCustomApps();
+    const updatedList = currentList.filter(item => item.id !== appId);
+
+    try {
+      localStorage.setItem(STORAGE_KEY_CUSTOM_APPS, JSON.stringify(updatedList));
+    } catch (e) {
+      console.error('Failed to delete custom app locally:', e);
+    }
+
+    try {
+      const docRef = doc(db, 'app_config', 'custom_apps_list');
+      await setDoc(docRef, { apps: updatedList, updatedAt: new Date().toISOString() }, { merge: true });
+    } catch (err) {
+      console.warn('Firestore delete custom app error:', err);
+    }
+
+    window.dispatchEvent(new Event('less_legal_custom_apps_updated'));
+  },
+
+  subscribeToCustomApps: (callback: (apps: CustomAppItem[]) => void): (() => void) => {
+    callback(adminStorage.getCustomApps());
+
+    try {
+      const docRef = doc(db, 'app_config', 'custom_apps_list');
+      const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          if (cloudData && Array.isArray(cloudData.apps)) {
+            localStorage.setItem(STORAGE_KEY_CUSTOM_APPS, JSON.stringify(cloudData.apps));
+            callback(cloudData.apps);
+          }
+        }
+      }, (err) => {
+        console.warn('Custom apps real-time snapshot notice:', err);
+      });
+
+      const localListener = () => {
+        callback(adminStorage.getCustomApps());
+      };
+      window.addEventListener('less_legal_custom_apps_updated', localListener);
+
+      return () => {
+        unsubscribe();
+        window.removeEventListener('less_legal_custom_apps_updated', localListener);
+      };
+    } catch {
+      return () => {};
+    }
+  },
+
+  // =========================================================
+  // DYNAMIC NOTICE BOARD & LEGAL FLASH ALERTS
+  // =========================================================
+  getCustomNotices: (): CustomNoticeItem[] => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY_CUSTOM_NOTICES);
+      if (!data) return [];
+      const parsed: CustomNoticeItem[] = JSON.parse(data);
+      if (!Array.isArray(parsed)) return [];
+      const cleaned = parsed.filter(item => 
+        item.id && 
+        !item.id.includes('notice-bns-update') && 
+        !item.id.includes('notice-pass-offer')
+      );
+      return cleaned;
+    } catch {
+      return [];
+    }
+  },
+
+  fetchCustomNoticesFromCloud: async (): Promise<CustomNoticeItem[]> => {
+    const local = adminStorage.getCustomNotices();
+    try {
+      const docRef = doc(db, 'app_config', 'custom_notices_list');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const cloudData = docSnap.data();
+        if (cloudData && Array.isArray(cloudData.notices)) {
+          const cleaned = cloudData.notices.filter((item: CustomNoticeItem) => 
+            item.id && 
+            !item.id.includes('notice-bns-update') && 
+            !item.id.includes('notice-pass-offer')
+          );
+          localStorage.setItem(STORAGE_KEY_CUSTOM_NOTICES, JSON.stringify(cleaned));
+          return cleaned;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch custom notices from cloud:', err);
+    }
+    return local;
+  },
+
+  saveCustomNotice: async (noticeData: Omit<CustomNoticeItem, 'id'> & { id?: string }): Promise<CustomNoticeItem> => {
+    const list = adminStorage.getCustomNotices();
+    const noticeId = noticeData.id || `notice-${Date.now()}`;
+    const fullNotice: CustomNoticeItem = {
+      id: noticeId,
+      titleHi: noticeData.titleHi || '',
+      titleEn: noticeData.titleEn || '',
+      contentHi: noticeData.contentHi || '',
+      contentEn: noticeData.contentEn || '',
+      tag: noticeData.tag || 'Urgent',
+      type: noticeData.type || 'info',
+      link: noticeData.link || '',
+      linkText: noticeData.linkText || '',
+      isActive: noticeData.isActive !== false,
+      date: noticeData.date || 'Active'
+    };
+
+    const exists = list.some(n => n.id === noticeId);
+    const updated = exists ? list.map(n => n.id === noticeId ? fullNotice : n) : [fullNotice, ...list];
+
+    try {
+      localStorage.setItem(STORAGE_KEY_CUSTOM_NOTICES, JSON.stringify(updated));
+    } catch (e) {
+      console.error(e);
+    }
+
+    try {
+      const docRef = doc(db, 'app_config', 'custom_notices_list');
+      await setDoc(docRef, { notices: updated, updatedAt: new Date().toISOString() }, { merge: true });
+    } catch (err) {
+      console.warn(err);
+    }
+
+    window.dispatchEvent(new Event('less_legal_notices_updated'));
+    return fullNotice;
+  },
+
+  deleteCustomNotice: async (noticeId: string): Promise<void> => {
+    const list = adminStorage.getCustomNotices();
+    const updated = list.filter(n => n.id !== noticeId);
+    try {
+      localStorage.setItem(STORAGE_KEY_CUSTOM_NOTICES, JSON.stringify(updated));
+    } catch (e) {
+      console.error(e);
+    }
+    try {
+      const docRef = doc(db, 'app_config', 'custom_notices_list');
+      await setDoc(docRef, { notices: updated, updatedAt: new Date().toISOString() }, { merge: true });
+    } catch (err) {
+      console.warn(err);
+    }
+    window.dispatchEvent(new Event('less_legal_notices_updated'));
+  },
+
+  subscribeToCustomNotices: (callback: (notices: CustomNoticeItem[]) => void): (() => void) => {
+    callback(adminStorage.getCustomNotices());
+
+    try {
+      const docRef = doc(db, 'app_config', 'custom_notices_list');
+      const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          if (cloudData && Array.isArray(cloudData.notices)) {
+            localStorage.setItem(STORAGE_KEY_CUSTOM_NOTICES, JSON.stringify(cloudData.notices));
+            callback(cloudData.notices);
+          }
+        }
+      }, () => {});
+
+      const localListener = () => {
+        callback(adminStorage.getCustomNotices());
+      };
+      window.addEventListener('less_legal_notices_updated', localListener);
+
+      return () => {
+        unsubscribe();
+        window.removeEventListener('less_legal_notices_updated', localListener);
+      };
+    } catch {
+      return () => {};
+    }
+  },
+
+  // =========================================================
+  // SOCIAL & COMMUNITY ECOSYSTEM LINKS
+  // =========================================================
+  getSocialChannels: (): SocialChannelLink[] => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY_SOCIAL_CHANNELS);
+      if (!data) {
+        localStorage.setItem(STORAGE_KEY_SOCIAL_CHANNELS, JSON.stringify(DEFAULT_SOCIAL_CHANNELS));
+        return DEFAULT_SOCIAL_CHANNELS;
+      }
+      const parsed: SocialChannelLink[] = JSON.parse(data);
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_SOCIAL_CHANNELS;
+    } catch {
+      return DEFAULT_SOCIAL_CHANNELS;
+    }
+  },
+
+  saveSocialChannels: async (channels: SocialChannelLink[]): Promise<void> => {
+    try {
+      localStorage.setItem(STORAGE_KEY_SOCIAL_CHANNELS, JSON.stringify(channels));
+    } catch (e) {
+      console.error(e);
+    }
+
+    try {
+      const docRef = doc(db, 'app_config', 'social_channels_list');
+      await setDoc(docRef, { channels, updatedAt: new Date().toISOString() }, { merge: true });
+    } catch (err) {
+      console.warn(err);
+    }
+
+    window.dispatchEvent(new Event('less_legal_social_channels_updated'));
+  },
+
+  subscribeToSocialChannels: (callback: (channels: SocialChannelLink[]) => void): (() => void) => {
+    callback(adminStorage.getSocialChannels());
+    try {
+      const docRef = doc(db, 'app_config', 'social_channels_list');
+      const unsubscribe = onSnapshot(docRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const cloudData = docSnap.data();
+          if (cloudData && Array.isArray(cloudData.channels)) {
+            localStorage.setItem(STORAGE_KEY_SOCIAL_CHANNELS, JSON.stringify(cloudData.channels));
+            callback(cloudData.channels);
+          }
+        }
+      }, () => {});
+
+      const localListener = () => {
+        callback(adminStorage.getSocialChannels());
+      };
+      window.addEventListener('less_legal_social_channels_updated', localListener);
+
+      return () => {
+        unsubscribe();
+        window.removeEventListener('less_legal_social_channels_updated', localListener);
+      };
+    } catch {
+      return () => {};
+    }
+  },
   // Contact Submissions
   getContactSubmissions: (): ContactSubmission[] => {
     try {

@@ -247,7 +247,7 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      <div className="min-h-screen flex flex-col relative bg-gradient-to-br from-[#EBF2FA] via-[#F4F8FD] to-[#EDF3FA] dark:from-[#08080C] dark:via-[#0D0F14] dark:to-[#121620] text-slate-900 dark:text-[#F5F2EE] font-sans selection:bg-[#2563EB] selection:text-white transition-colors duration-300 overflow-x-hidden">
+      <div className="min-h-screen flex flex-col relative bg-gradient-to-br from-[#EBF2FA] via-[#F4F8FD] to-[#EDF3FA] dark:from-[#090D1A] dark:via-[#0B0F1D] dark:to-[#101526] text-slate-900 dark:text-[#F5F2EE] font-sans selection:bg-[#2563EB] selection:text-white transition-colors duration-300 overflow-x-hidden">
         
         {/* Animated Smoke Background */}
         <SmokeBackground />

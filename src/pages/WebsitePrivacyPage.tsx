@@ -66,7 +66,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
         </div>
         <button
           onClick={() => onNavigate('app-privacy')}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E02636] hover:bg-[#c91e2e] text-white text-xs font-bold whitespace-nowrap cursor-pointer shrink-0 shadow-md transition-all"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-bold whitespace-nowrap cursor-pointer shrink-0 shadow-md transition-all"
         >
           <span>{isHindi ? "Less Legal ऐप गोपनीयता नीति देखें" : "View Less Legal App Privacy Policy"}</span>
           <ArrowUpRight className="w-4 h-4" />
@@ -76,7 +76,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
       {/* Summary Highlight Box */}
       <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 backdrop-blur-xl">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <Lock className="w-4 h-4 text-[#E02636]" />
+          <Lock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>{isHindi ? "वेबसाइट गोपनीयता सारांश" : "Website Privacy Summary"}</span>
         </div>
         <p className="leading-relaxed font-medium">
@@ -171,7 +171,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
             {isHindi ? "4. वेबसाइट सर्वर एवं सुरक्षा (Cloudflare/Cloud Run)" : "4. Hosting, CDN & Cloudflare Security"}
           </h2>
           <div className="flex items-start gap-3 bg-slate-50 dark:bg-white/5 p-5 rounded-2xl border border-slate-200/80 dark:border-white/10">
-            <Server className="w-5 h-5 text-[#E02636] shrink-0 mt-0.5" />
+            <Server className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
             <div className="space-y-1 text-xs sm:text-sm">
               <strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "सुरक्षित नेटवर्क इन्फ्रास्ट्रक्चर" : "Secure Infrastructure Layer"}</strong>
               <p className="font-medium leading-relaxed">
@@ -206,7 +206,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
               : "For questions regarding this website privacy policy or to request removal of your contact form entries, contact us at:"}
           </p>
           {hasEmail && (
-            <p className="pt-1 font-bold text-[#E02636]">
+            <p className="pt-1 font-bold text-blue-600 dark:text-blue-400">
               <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="hover:underline">
                 {SITE_CONFIG.supportEmail}
               </a>

@@ -225,7 +225,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
             <span>{isHindi ? "7 कार्य दिवसों में पूर्ण निष्कासन" : "Complete Purge within 7 Days"}</span>
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <Database className="w-3.5 h-3.5 text-[#E02636] shrink-0" />
+            <Database className="w-3.5 h-3.5 text-blue-500 shrink-0" />
             <span>{isHindi ? "डेटा का स्थायी विलोपन" : "Permanent Data Removal"}</span>
           </span>
         </div>
@@ -241,7 +241,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
             onClick={() => setActiveTab('submit')}
             className={`flex-1 py-3 px-3 sm:px-5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold whitespace-nowrap ${
               activeTab === 'submit'
-                ? 'bg-[#E02636] text-white shadow-md font-black'
+                ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-md font-black'
                 : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -272,7 +272,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
         {activeTab === 'submit' && (
           <div className="space-y-6">
             <div className="flex items-center gap-3 border-b border-slate-100 dark:border-white/10 pb-4">
-              <div className="w-10 h-10 rounded-2xl bg-red-100/80 dark:bg-red-950/40 text-[#E02636] flex items-center justify-center shrink-0 border border-red-200/80 dark:border-red-900/40">
+              <div className="w-10 h-10 rounded-2xl bg-blue-100/80 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-200/80 dark:border-blue-900/40">
                 <ShieldAlert className="w-5 h-5" />
               </div>
               <div>
@@ -336,7 +336,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                         setActiveTab('check-status');
                         handleSearchStatus();
                       }}
-                      className="px-5 py-2.5 rounded-full bg-[#E02636] hover:bg-[#c91e2e] text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap"
+                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-xs shadow-md transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap"
                     >
                       <Search className="w-3.5 h-3.5" />
                       <span className="whitespace-nowrap">{isHindi ? "लाइव स्थिति चेक करें" : "Check Live Status"}</span>
@@ -356,7 +356,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="e.g. advocate.name@gmail.com"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                       />
                     </div>
 
@@ -370,7 +370,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
                         placeholder="e.g. User UID or +91..."
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all font-mono"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono"
                       />
                     </div>
                   </div>
@@ -385,7 +385,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                       value={reason}
                       onChange={(e) => setReason(e.target.value)}
                       placeholder={isHindi ? "आप अपना खाता क्यों हटाना चाहते हैं..." : "Tell us why you wish to delete your account..."}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all resize-y"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-y"
                     />
                   </div>
 
@@ -425,7 +425,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                       className={`w-full sm:w-auto px-7 py-3.5 rounded-full font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap ${
                         rateLimitInfo.isLimited
                           ? 'bg-slate-300 dark:bg-slate-700 text-slate-500 cursor-not-allowed opacity-60'
-                          : 'bg-[#E02636] hover:bg-[#c91e2e] text-white'
+                          : 'bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white'
                       }`}
                     >
                       {isSubmitting ? (
@@ -458,7 +458,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                           setSearchQuery(email);
                           handleSearchStatus();
                         }}
-                        className="text-xs font-bold text-[#E02636] hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                        className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer whitespace-nowrap"
                       >
                         <Search className="w-3.5 h-3.5" />
                         <span className="whitespace-nowrap">{isHindi ? "मौजूदा अनुरोध की स्थिति देखें" : "Track Existing Request Status"}</span>
@@ -510,7 +510,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="e.g. advocate.name@gmail.com or DEL-ABC1234"
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#E02636] transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                     />
                     <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
@@ -556,7 +556,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                       <span>{isHindi ? `कुल विलोपन रिकॉर्ड्स: ${deletionResults.length}` : `Found ${deletionResults.length} Deletion Record(s)`}</span>
                       <button 
                         onClick={() => handleSearchStatus()}
-                        className="text-[11px] text-[#E02636] hover:underline flex items-center gap-1 cursor-pointer font-bold whitespace-nowrap"
+                        className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 cursor-pointer font-bold whitespace-nowrap"
                       >
                         <RefreshCw className="w-3 h-3" />
                         <span className="whitespace-nowrap">{isHindi ? "रिफ्रेश करें" : "Refresh"}</span>
@@ -604,7 +604,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                           {/* Workflow Progress Bar */}
                           <div className="p-4 rounded-xl bg-white dark:bg-black/30 border border-slate-200/80 dark:border-white/5 space-y-3">
                             <div className="font-bold text-[11px] text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                              <ShieldCheck className="w-3.5 h-3.5 text-[#E02636]" />
+                              <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                               <span>{isHindi ? "अनुरोध समाधान प्रगति (Status Progress)" : "Request Status Progress"}</span>
                             </div>
 
@@ -689,7 +689,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       {/* In-App Instant Deletion Box */}
       <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg backdrop-blur-xl space-y-3 relative z-10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <Smartphone className="w-4 h-4 text-[#E02636] shrink-0" />
+          <Smartphone className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
           <span>{isHindi ? "ऐप में तुरंत खाता हटाएं (In-App Deletion Flow)" : "In-App Instant Account Deletion Flow"}</span>
         </div>
         <p className="leading-relaxed font-medium">
@@ -698,7 +698,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
             : "If you currently have the Less Legal app installed on your phone, you can instantly purge your account directly in the app:"}
         </p>
         <div className="bg-slate-100/90 dark:bg-white/5 p-4 rounded-2xl font-mono text-xs text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-white/10 font-bold flex items-center gap-2 overflow-x-auto">
-          <span className="text-[#E02636]">▶</span>
+          <span className="text-blue-600 dark:text-blue-400">▶</span>
           <span className="whitespace-nowrap">
             {isHindi 
               ? "Less Legal खोलें → सेटिंग्स (Settings) → खाता (Account) → खाता एवं डेटा डिलीट करें (Delete Account & Data)" 
@@ -726,7 +726,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
         {/* Card 2: Google Drive & Local Files */}
         <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg backdrop-blur-xl space-y-3">
           <h3 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
-            <HardDrive className="w-4 h-4 text-[#E02636] shrink-0" />
+            <HardDrive className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
             <span>{isHindi ? "गूगल ड्राइव बैकअप एवं लोकल स्टोरेज" : "Google Drive Backups & Local Storage"}</span>
           </h3>
           <div className="space-y-2.5 text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
@@ -760,7 +760,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
         {hasEmail && (
           <div className="pt-3 border-t border-slate-100 dark:border-white/10 flex flex-wrap items-center justify-between gap-2">
             <span className="font-semibold text-slate-600 dark:text-slate-300">{isHindi ? "सहायता या प्रश्न के लिए संपर्क करें:" : "Questions or need manual assistance?"}</span>
-            <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="font-bold text-[#E02636] hover:underline flex items-center gap-1">
+            <a href={`mailto:${SITE_CONFIG.supportEmail}`} className="font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
               <Mail className="w-3.5 h-3.5" />
               <span>{SITE_CONFIG.supportEmail}</span>
             </a>
@@ -772,10 +772,10 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10 text-xs font-bold">
         <button
           onClick={() => onNavigate('app-privacy')}
-          className="text-slate-700 dark:text-slate-300 hover:text-[#E02636] dark:hover:text-red-400 inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+          className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 cursor-pointer transition-colors"
         >
           <span>{isHindi ? "Less Legal ऐप गोपनीयता नीति देखें" : "View Less Legal App Privacy Policy"}</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-[#E02636]" />
+          <ArrowUpRight className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
         </button>
         <button
           onClick={() => onNavigate('privacy')}
