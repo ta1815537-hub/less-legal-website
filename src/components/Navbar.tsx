@@ -89,9 +89,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => handleNavClick((siteConfig.announcementButtonRoute as PageRoute) || 'premium')}
-                className="gold-shimmer-button text-[9px] sm:text-[11px] px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-black cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0 flex items-center gap-1"
+                className="red-shimmer-button text-[9px] sm:text-[11px] px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-black cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0 flex items-center gap-1 text-white"
               >
-                <Sparkles className="w-3 h-3 fill-amber-950 shrink-0" />
+                <Sparkles className="w-3 h-3 fill-white text-white shrink-0" />
                 <span>{siteConfig.announcementButtonText || (language === 'hi' ? 'ऑफ़र लें' : 'Get Pass')}</span>
               </button>
             </div>

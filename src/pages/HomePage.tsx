@@ -687,11 +687,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="flex flex-col items-center justify-center bg-white/80 dark:bg-black/40 border border-slate-200 dark:border-[#E5BA55]/20 rounded-2xl p-4 sm:p-5 w-full lg:w-72 shrink-0 space-y-3 shadow-xs">
+          <div className="flex flex-col items-center justify-center bg-red-50/20 dark:bg-red-950/10 border-2 border-red-500/30 dark:border-red-500/20 rounded-2xl p-4 sm:p-5 w-full lg:w-72 shrink-0 space-y-3 shadow-[0_10px_30px_rgba(239,68,68,0.1)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-bl-lg uppercase tracking-wider">
+              {language === 'hi' ? 'बचत ₹800' : 'SAVE ₹800'}
+            </div>
             <div className="text-center">
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xs text-slate-400 line-through font-bold">₹329</span>
-                <span className="bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-black px-1.5 py-0.5 rounded uppercase">70% OFF</span>
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-xs text-red-500 dark:text-red-400 line-through decoration-red-500 decoration-2 font-bold">₹899</span>
+                <span className="bg-red-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md shadow-xs animate-pulse">89.9% OFF</span>
               </div>
               <div className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">
                 ₹99 <span className="text-xs text-slate-500 font-bold">/ {language === 'hi' ? 'एक बार' : 'Lifetime'}</span>
@@ -700,10 +703,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
             <button
               onClick={() => onNavigate('premium')}
-              className="gold-shimmer-button w-full py-2.5 rounded-xl uppercase tracking-wider text-xs font-black cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+              className="red-shimmer-button w-full py-2.5 px-2 rounded-xl uppercase tracking-wider text-[10px] sm:text-xs font-black cursor-pointer shadow-md flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap overflow-hidden"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-amber-950 shrink-0" />
-              <span>{language === 'hi' ? 'प्रीमियम पास लें' : 'Get Lifetime Pass'}</span>
+              <Sparkles className="w-3.5 h-3.5 fill-white text-white shrink-0" />
+              <span className="whitespace-nowrap">{language === 'hi' ? 'प्रीमियम पास लें' : 'Get Lifetime Pass'}</span>
             </button>
           </div>
         </div>

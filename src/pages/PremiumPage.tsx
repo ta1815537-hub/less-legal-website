@@ -28,6 +28,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
   // 120 Days countdown timer for the Lifetime Pass
   const [timeLeft, setTimeLeft] = React.useState({ days: 120, hours: 14, minutes: 28, seconds: 45 });
+  const [targetTimestamp, setTargetTimestamp] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     const STORAGE_KEY = 'less_legal_promo_target_120d_v1';
@@ -39,12 +40,16 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
       localStorage.setItem(STORAGE_KEY, newTarget.toString());
       targetTime = newTarget.toString();
     }
+    
+    setTargetTimestamp(parseInt(targetTime));
 
     const interval = setInterval(() => {
       const difference = parseInt(targetTime!) - Date.now();
       if (difference <= 0) {
         const newTarget = Date.now() + ONE_HUNDRED_TWENTY_DAYS_MS;
         localStorage.setItem(STORAGE_KEY, newTarget.toString());
+        targetTime = newTarget.toString();
+        setTargetTimestamp(newTarget);
       } else {
         const d = Math.floor(difference / (1000 * 60 * 60 * 24));
         const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -56,6 +61,39 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const formattedTargetDate = React.useMemo(() => {
+    if (!targetTimestamp) return '';
+    const date = new Date(targetTimestamp);
+    
+    const monthsHi = [
+      'जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 
+      'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'
+    ];
+    const weekdaysHi = [
+      'रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'
+    ];
+    
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const weekdayHi = weekdaysHi[date.getDay()];
+    const monthHi = monthsHi[date.getMonth()];
+    
+    if (language === 'hi') {
+      return `${day} ${monthHi} ${year} (${weekdayHi})`;
+    }
+    
+    const monthsEn = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    const weekdaysEn = [
+      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ];
+    const weekdayEn = weekdaysEn[date.getDay()];
+    const monthEn = monthsEn[date.getMonth()];
+    return `${day} ${monthEn} ${year} (${weekdayEn})`;
+  }, [targetTimestamp, language]);
 
   const handleOpenAppOrDownload = () => {
     launchLessLegalApp('premium');
@@ -173,14 +211,14 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
         <ScrollReveal direction="up" delay={0.12} className="h-full">
           <div className="relative h-full">
             {/* Discount Badge */}
-            <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-[#E5BA55] to-amber-500 text-slate-950 text-[11px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md whitespace-nowrap z-20 border border-white/10">
-              70% OFF
+            <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-red-500 via-pink-600 to-amber-500 text-white text-[12px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-[0_4px_12px_rgba(239,68,68,0.4)] whitespace-nowrap z-20 border border-white/20 animate-bounce">
+              🔥 89.9% OFF (LIMITED TIME)
             </div>
 
             <motion.div 
-              whileHover={{ y: -4 }} 
+              whileHover={{ y: -5 }} 
               transition={{ type: "spring", stiffness: 300, damping: 20 }} 
-              className="p-6 sm:p-9 rounded-3xl border-2 border-[#E5BA55]/35 dark:border-[#E5BA55]/25 shadow-[0_20px_50px_rgba(229,186,85,0.15)] flex flex-col justify-between relative bg-gradient-to-br from-white/95 via-amber-50/20 to-indigo-50/10 dark:from-[#111827]/95 dark:via-[#1e1405]/30 dark:to-[#1E293B]/90 h-full backdrop-blur-2xl transition-all duration-300 hover:shadow-[0_28px_60px_rgba(229,186,85,0.22)] hover:-translate-y-1.5"
+              className="p-6 sm:p-9 rounded-3xl border-2 border-red-500/30 dark:border-red-500/50 shadow-[0_20px_50px_rgba(239,68,68,0.08)] dark:shadow-[0_0_40px_rgba(239,68,68,0.22)] flex flex-col justify-between relative bg-gradient-to-br from-white via-red-50/20 to-amber-50/10 dark:from-[#090506] dark:via-[#150709] dark:to-[#0D0B10] h-full backdrop-blur-2xl transition-all duration-300 hover:shadow-[0_28px_60px_rgba(239,68,68,0.15)] dark:hover:shadow-[0_0_55px_rgba(239,68,68,0.38)] hover:-translate-y-1.5"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -197,13 +235,44 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 </h2>
                 
                 {/* Price Display */}
-                <div className="flex items-baseline gap-3 my-4">
-                  <span className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight">₹99</span>
-                  <span className="text-lg font-semibold text-slate-500 dark:text-slate-400">/ {isHindi ? 'लाइफटाइम' : 'Lifetime'}</span>
-                  <span className="text-base font-semibold text-slate-400 line-through ml-1">₹329</span>
-                  <span className="text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-500/10 dark:bg-amber-900/40 px-2.5 py-1 rounded-lg border border-amber-500/20 dark:border-amber-800/20 whitespace-nowrap">
-                    {isHindi ? '70% छूट' : '70% OFF'}
-                  </span>
+                <div className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-[#21090D] dark:via-[#140406] dark:to-[#1C0609] border-2 border-red-500/30 dark:border-red-500/50 rounded-2xl p-4 sm:p-5 my-5 relative overflow-hidden shadow-inner dark:shadow-[inset_0_1px_24px_rgba(239,68,68,0.18)]">
+                  <div className="absolute top-0 right-0 bg-red-600 text-white text-[9.5px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-2xl">
+                    {isHindi ? '🔥 सबसे बड़ी बचत' : '🔥 BIGGEST SAVING'}
+                  </div>
+                  
+                  <div className="flex items-center gap-2 text-xs font-extrabold text-red-500 dark:text-red-400 uppercase tracking-wider mb-1.5">
+                    <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-ping shrink-0" />
+                    {isHindi ? 'सीमित समय का विशेष प्रस्ताव' : 'Limited Time Special Launch Deal'}
+                  </div>
+
+                  <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight drop-shadow-sm">₹99</span>
+                      <span className="text-sm font-bold text-slate-500 dark:text-slate-400">/ {isHindi ? 'आजीवन (Lifetime)' : 'Lifetime'}</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg sm:text-xl font-bold text-red-500/80 dark:text-red-400/80 line-through decoration-red-600 decoration-2">
+                        ₹899
+                      </span>
+                      <span className="text-xs sm:text-sm font-black text-white bg-red-500 px-2.5 py-1 rounded-lg shadow-sm whitespace-nowrap">
+                        {isHindi ? '89.9% की भारी छूट' : '89.9% OFF'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] sm:text-xs font-black text-slate-700 dark:text-slate-200 mt-3 flex flex-wrap items-center gap-1.5 leading-relaxed">
+                    <span>⚡</span> 
+                    <span>
+                      {isHindi 
+                        ? `आप बचा रहे हैं पूरे ₹800! (मूल मूल्य ₹899 इस तिथि से लागू होगा:` 
+                        : `You are saving a massive ₹800! (Original price ₹899 applies on:`}
+                    </span>
+                    <span className="text-red-600 dark:text-red-400 font-extrabold underline decoration-wavy underline-offset-2 animate-pulse bg-red-500/10 dark:bg-red-500/20 px-2.5 py-0.5 rounded-md text-[11.5px] sm:text-xs">
+                      {formattedTargetDate || '...'}
+                    </span>
+                    <span>)</span>
+                  </p>
                 </div>
 
                 <p className="text-xs font-bold text-blue-600 dark:text-blue-400 mb-3">
@@ -327,13 +396,13 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 <button
                   id="btn-get-lifetime-pass-main"
                   onClick={handleOpenAppOrDownload}
-                  className="w-full py-4 px-6 rounded-2xl gold-shimmer-button text-[#1e1302] text-sm font-black shadow-[0_12px_30px_rgba(229,186,85,0.4)] whitespace-nowrap flex items-center justify-center gap-2.5 cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full py-3.5 px-3 sm:px-6 rounded-2xl red-shimmer-button text-white text-xs sm:text-sm font-black shadow-[0_12px_30px_rgba(239,68,68,0.35)] whitespace-nowrap flex items-center justify-center gap-1.5 sm:gap-2.5 cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
                 >
-                  <Sparkles className="w-4 h-4 shrink-0 fill-[#1e1302] text-[#1e1302]" />
+                  <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 fill-white text-white" />
                   <span className="whitespace-nowrap font-black">
-                    {isHindi ? 'लाइफटाइम पास प्राप्त करें — ₹99' : 'Get Lifetime Pass — ₹99'}
+                    {isHindi ? 'लाइफटाइम पास लें — ₹99' : 'Get Lifetime Pass — ₹99'}
                   </span>
-                  <ArrowRight className="w-4 h-4 shrink-0 text-[#1e1302]" />
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-white" />
                 </button>
 
                 {/* Immediate Trust Badges */}
