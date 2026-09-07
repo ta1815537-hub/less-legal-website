@@ -352,6 +352,19 @@ export default {
       });
     }
 
+    // Direct handler for AdMob app-ads.txt
+    if (url.pathname === '/app-ads.txt') {
+      const appAdsContent = "google.com, pub-1498346612325823, DIRECT, f08c47fec0942fa0\n";
+      return new Response(appAdsContent, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'public, max-age=86400',
+          ...corsHeaders
+        }
+      });
+    }
+
     // Direct redirection for Android App Links browser fallback
     if (url.pathname.startsWith('/app')) {
       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.lesslegal.app';
