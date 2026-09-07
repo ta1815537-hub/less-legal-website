@@ -80,6 +80,22 @@ export interface SocialChannelLink {
   order: number;
 }
 
+export interface JobApplication {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  roleId: string;
+  roleTitle?: string;
+  portfolioUrl?: string;
+  experience: string;
+  aboutYou?: string;
+  status: 'New' | 'Reviewed' | 'Shortlisted' | 'Contacted' | 'Rejected' | 'Archived';
+  submittedAt: string;
+  adminNotes?: string;
+  firestoreDocId?: string;
+}
+
 export interface SiteAppConfig {
   // App Version & Distribution Hub
   appVersion: string;
@@ -122,6 +138,11 @@ export interface SiteAppConfig {
   supportWhatsApp: string;
   maintenanceMode: boolean;
   maintenanceMessage: string;
+
+  // Careers & Hiring Portal Controls
+  hiringPortalStatus: 'maintenance' | 'open' | 'closed';
+  hiringMaintenanceMessageHi: string;
+  hiringMaintenanceMessageEn: string;
 
   // Metadata
   lastUpdated: string;
@@ -281,6 +302,11 @@ export const DEFAULT_SITE_APP_CONFIG: SiteAppConfig = {
   maintenanceMode: false,
   maintenanceMessage: "वेबसाइट पर कुछ देर के लिए अपग्रेड कार्य चल रहा है। कृपया कुछ समय बाद पुनः प्रयास करें।",
 
+  // Careers & Hiring Portal Controls (Default: Maintenance / Locked)
+  hiringPortalStatus: "maintenance",
+  hiringMaintenanceMessageHi: "हायरिंग व आवेदन सर्वर वर्तमान में मेंटेनेंस पर है। नए आवेदन कुछ समय के लिए रोके गए हैं। सीधे संपर्क हेतु support@lesscreation.com पर ईमेल करें।",
+  hiringMaintenanceMessageEn: "Hiring application server is currently under maintenance. Submissions are temporarily paused. For direct inquiries, email support@lesscreation.com.",
+
   // Metadata
   lastUpdated: new Date().toISOString(),
   updatedBy: "System"
@@ -288,6 +314,7 @@ export const DEFAULT_SITE_APP_CONFIG: SiteAppConfig = {
 
 const STORAGE_KEY_CONTACTS = 'less_legal_contact_submissions';
 const STORAGE_KEY_DELETIONS = 'less_legal_deletion_requests';
+const STORAGE_KEY_JOB_APPLICATIONS = 'less_creation_job_applications';
 const STORAGE_KEY_SITE_CONFIG = 'less_legal_site_app_config';
 const STORAGE_KEY_CUSTOM_APPS = 'less_legal_custom_apps_list';
 const STORAGE_KEY_CUSTOM_NOTICES = 'less_legal_custom_notices_list';
@@ -347,6 +374,19 @@ export const DEFAULT_SOCIAL_CHANNELS: SocialChannelLink[] = [
 const INITIAL_DELETION_REQUESTS: DeletionRequest[] = [];
 const INITIAL_CONTACT_SUBMISSIONS: ContactSubmission[] = [];
 
+const sanitizeConfigEmail = (config: SiteAppConfig): SiteAppConfig => {
+  const cleanEmail = (text?: string) => {
+    if (!text) return text;
+    return text.replace(/\b[A-Za-z0-9._%+-]+@(?:gmail\.com|googlemail\.com)\b/gi, 'support@lesscreation.com');
+  };
+  return {
+    ...config,
+    supportEmail: (config.supportEmail && !config.supportEmail.includes('gmail')) ? config.supportEmail : 'support@lesscreation.com',
+    hiringMaintenanceMessageHi: cleanEmail(config.hiringMaintenanceMessageHi) || DEFAULT_SITE_APP_CONFIG.hiringMaintenanceMessageHi,
+    hiringMaintenanceMessageEn: cleanEmail(config.hiringMaintenanceMessageEn) || DEFAULT_SITE_APP_CONFIG.hiringMaintenanceMessageEn,
+  };
+};
+
 export const adminStorage = {
   // Site & App Configuration (Real-time Firestore sync)
   getSiteAppConfig: (): SiteAppConfig => {
@@ -357,7 +397,8 @@ export const adminStorage = {
         return DEFAULT_SITE_APP_CONFIG;
       }
       const parsed = JSON.parse(data);
-      return { ...DEFAULT_SITE_APP_CONFIG, ...parsed };
+      const sanitized = sanitizeConfigEmail({ ...DEFAULT_SITE_APP_CONFIG, ...parsed });
+      return sanitized;
     } catch {
       return DEFAULT_SITE_APP_CONFIG;
     }
@@ -445,6 +486,14 @@ export const adminStorage = {
       console.warn('Failed to subscribe to site app config:', err);
       return () => {};
     }
+  },
+
+  listenSiteAppConfig: (callback: (config: SiteAppConfig) => void): (() => void) => {
+    return adminStorage.subscribeToSiteAppConfig(callback);
+  },
+
+  updateSiteAppConfig: async (configUpdates: Partial<SiteAppConfig>, updatedByEmail?: string): Promise<SiteAppConfig> => {
+    return adminStorage.saveSiteAppConfig(configUpdates, updatedByEmail);
   },
 
   // =========================================================
@@ -1292,6 +1341,157 @@ export const adminStorage = {
     } catch (err) {
       console.warn('Firebase Auth custom claim verification failed:', err);
       return false;
+    }
+  },
+
+  // ==========================================
+  // CAREERS & HIRING APPLICATIONS SYSTEM
+  // ==========================================
+  getJobApplications: (): JobApplication[] => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY_JOB_APPLICATIONS);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  },
+
+  saveJobApplication: async (appData: Omit<JobApplication, 'id' | 'submittedAt' | 'status'>): Promise<JobApplication> => {
+    const list = adminStorage.getJobApplications();
+    const newId = 'APP-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+    const newApp: JobApplication = {
+      ...appData,
+      id: newId,
+      status: 'New',
+      submittedAt: new Date().toISOString()
+    };
+
+    // Save locally
+    list.unshift(newApp);
+    try {
+      localStorage.setItem(STORAGE_KEY_JOB_APPLICATIONS, JSON.stringify(list));
+    } catch {
+      // ignore
+    }
+
+    // Save to Firestore
+    try {
+      const docRef = await addDoc(collection(db, 'job_applications'), {
+        id: newApp.id,
+        fullName: newApp.fullName,
+        email: newApp.email,
+        phone: newApp.phone,
+        roleId: newApp.roleId,
+        roleTitle: newApp.roleTitle || '',
+        portfolioUrl: newApp.portfolioUrl || '',
+        experience: newApp.experience,
+        aboutYou: newApp.aboutYou || '',
+        status: newApp.status,
+        submittedAt: newApp.submittedAt,
+        adminNotes: ''
+      });
+      newApp.firestoreDocId = docRef.id;
+    } catch (err) {
+      console.warn('Firestore job application save skipped / fallback:', err);
+    }
+
+    return newApp;
+  },
+
+  updateJobApplicationStatus: async (id: string, status: JobApplication['status'], adminNotes?: string): Promise<void> => {
+    const list = adminStorage.getJobApplications();
+    const index = list.findIndex(item => item.id === id);
+    if (index === -1) return;
+
+    list[index].status = status;
+    if (adminNotes !== undefined) {
+      list[index].adminNotes = adminNotes;
+    }
+
+    const docId = list[index].firestoreDocId || list[index].id;
+
+    try {
+      localStorage.setItem(STORAGE_KEY_JOB_APPLICATIONS, JSON.stringify(list));
+    } catch {
+      // ignore
+    }
+
+    if (docId) {
+      try {
+        await updateDoc(doc(db, 'job_applications', docId), {
+          status,
+          ...(adminNotes !== undefined ? { adminNotes } : {})
+        });
+      } catch (err) {
+        console.warn('Firestore job application update failed:', err);
+      }
+    }
+  },
+
+  deleteJobApplication: async (id: string): Promise<void> => {
+    const list = adminStorage.getJobApplications();
+    const target = list.find(item => item.id === id);
+    const filtered = list.filter(item => item.id !== id);
+
+    try {
+      localStorage.setItem(STORAGE_KEY_JOB_APPLICATIONS, JSON.stringify(filtered));
+    } catch {
+      // ignore
+    }
+
+    if (target) {
+      const docId = target.firestoreDocId || target.id;
+      try {
+        await deleteDoc(doc(db, 'job_applications', docId));
+      } catch (err) {
+        console.warn('Firestore job application delete failed:', err);
+      }
+    }
+  },
+
+  listenJobApplications: (callback: (apps: JobApplication[]) => void): (() => void) => {
+    try {
+      const q = query(collection(db, 'job_applications'), orderBy('submittedAt', 'desc'));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const cloudApps: JobApplication[] = [];
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          cloudApps.push({
+            id: data.id || docSnap.id,
+            firestoreDocId: docSnap.id,
+            fullName: data.fullName || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            roleId: data.roleId || '',
+            roleTitle: data.roleTitle || '',
+            portfolioUrl: data.portfolioUrl || '',
+            experience: data.experience || '',
+            aboutYou: data.aboutYou || '',
+            status: data.status || 'New',
+            submittedAt: data.submittedAt || new Date().toISOString(),
+            adminNotes: data.adminNotes || ''
+          });
+        });
+
+        if (cloudApps.length > 0) {
+          try {
+            localStorage.setItem(STORAGE_KEY_JOB_APPLICATIONS, JSON.stringify(cloudApps));
+          } catch {
+            // ignore
+          }
+          callback(cloudApps);
+        } else {
+          callback(adminStorage.getJobApplications());
+        }
+      }, (err) => {
+        console.warn('Firestore job applications listener fallback to local:', err);
+        callback(adminStorage.getJobApplications());
+      });
+
+      return unsubscribe;
+    } catch {
+      callback(adminStorage.getJobApplications());
+      return () => {};
     }
   }
 };

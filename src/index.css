@@ -145,19 +145,9 @@
 }
 
 /* =========================================================
-   UNIVERSAL ANIMATED RUNNING BORDER FOR ALL CARDS
+   CRISP HIGH-COLOUR STATIC BORDER SYSTEM FOR ALL CARDS & TABS
+   (Animated borders completely removed for smooth 60fps scrolling)
    ========================================================= */
-@keyframes card-border-flow-spin {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
 .glass-card,
 .ultra-glass-card,
@@ -167,73 +157,57 @@
 .card-animated-border {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  border: 1.5px solid rgba(37, 99, 235, 0.42) !important;
+  box-shadow: 0 12px 36px -8px rgba(37, 99, 235, 0.14), 
+              0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.3s ease,
+              background-color 0.25s ease;
 }
 
-/* Continuous running animated border overlay matching studio blue theme */
+.dark .glass-card,
+.dark .ultra-glass-card,
+.dark .glass-panel-gradient,
+.dark .glass-panel-crimson,
+.dark .animated-card,
+.dark .card-animated-border {
+  border: 1.5px solid rgba(56, 189, 248, 0.48) !important;
+  box-shadow: 0 16px 42px -10px rgba(0, 0, 0, 0.75), 
+              0 0 24px -4px rgba(37, 99, 235, 0.22);
+}
+
+.glass-card:hover,
+.ultra-glass-card:hover,
+.glass-panel-gradient:hover,
+.glass-panel-crimson:hover,
+.animated-card:hover,
+.card-animated-border:hover {
+  border-color: rgba(37, 99, 235, 0.78) !important;
+  box-shadow: 0 20px 48px -8px rgba(37, 99, 235, 0.24);
+}
+
+.dark .glass-card:hover,
+.dark .ultra-glass-card:hover,
+.dark .glass-panel-gradient:hover,
+.dark .glass-panel-crimson:hover,
+.dark .animated-card:hover,
+.dark .card-animated-border:hover {
+  border-color: rgba(56, 189, 248, 0.85) !important;
+  box-shadow: 0 24px 54px -10px rgba(0, 0, 0, 0.85), 
+              0 0 32px -2px rgba(56, 189, 248, 0.35);
+}
+
+/* Zero animated running pseudo-elements on cards and tabs */
 .glass-card::before,
 .ultra-glass-card::before,
 .glass-panel-gradient::before,
 .glass-panel-crimson::before,
 .animated-card::before,
 .card-animated-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: linear-gradient(
-    90deg,
-    rgba(37, 99, 235, 0.45) 0%,
-    rgba(56, 189, 248, 0.95) 25%,
-    rgba(99, 102, 241, 0.8) 50%,
-    rgba(56, 189, 248, 0.95) 75%,
-    rgba(37, 99, 235, 0.45) 100%
-  );
-  background-size: 250% 250%;
-  animation: card-border-flow-spin 3.5s ease infinite;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0.85;
-  transition: opacity 0.3s ease, padding 0.3s ease;
-}
-
-.dark .glass-card::before,
-.dark .ultra-glass-card::before,
-.dark .glass-panel-gradient::before,
-.dark .glass-panel-crimson::before,
-.dark .animated-card::before,
-.dark .card-animated-border::before {
-  background: linear-gradient(
-    90deg,
-    rgba(59, 130, 246, 0.6) 0%,
-    rgba(56, 189, 248, 1) 25%,
-    rgba(129, 140, 248, 0.85) 50%,
-    rgba(56, 189, 248, 1) 75%,
-    rgba(59, 130, 246, 0.6) 100%
-  );
-  background-size: 250% 250%;
-  animation: card-border-flow-spin 3.5s ease infinite;
-  opacity: 0.9;
-}
-
-.glass-card:hover::before,
-.ultra-glass-card:hover::before,
-.glass-panel-gradient:hover::before,
-.glass-panel-crimson:hover::before,
-.animated-card:hover::before,
-.card-animated-border:hover::before {
-  opacity: 1;
-  padding: 2px;
-  animation-duration: 2.2s;
+  display: none !important;
+  content: none !important;
+  animation: none !important;
 }
 
 /* Smoked / Elevated Interactive Cards with Light Blue Glass Shadow */
@@ -635,44 +609,28 @@
   }
 }
 
-/* High-Fi Animated Border Frame for Colorful Headline Text */
+/* High-Colour Static Border Frame for Headline Text */
 .headline-border-frame {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px;
+  padding: 2.5px;
   border-radius: 1.15rem;
   overflow: hidden;
-  background: transparent;
+  background: linear-gradient(135deg, #2563EB, #38BDF8);
+  border: 1.5px solid rgba(37, 99, 235, 0.6) !important;
   max-width: 100%;
-  box-shadow: 0 8px 24px -4px rgba(194, 31, 47, 0.25);
+  box-shadow: 0 4px 20px -2px rgba(37, 99, 235, 0.25);
   contain: paint;
   isolation: isolate;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
   transition: all 0.3s ease;
 }
 
 .headline-border-frame::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    #2563EB 60deg,
-    #38BDF8 120deg,
-    #818CF8 180deg,
-    #38BDF8 240deg,
-    #2563EB 300deg,
-    transparent 360deg
-  );
-  animation: border-beam-spin 4s linear infinite;
-  will-change: transform;
-  z-index: 1;
+  display: none !important;
+  content: none !important;
+  animation: none !important;
 }
 
 .headline-border-inner {
@@ -825,23 +783,18 @@
 .animated-founder-border {
   position: relative;
   border-radius: 1.5rem;
-  padding: 4px;
-  background: linear-gradient(
-    90deg,
-    #C21F2F,
-    #E03A3E,
-    #D8BD82,
-    #FFD700,
-    #3B82F6,
-    #10B981,
-    #C21F2F
-  );
-  background-size: 400% 400%;
-  animation: rotating-border-glow 4s linear infinite;
+  padding: 3px;
+  background: linear-gradient(135deg, #2563EB 0%, #38BDF8 50%, #818CF8 100%);
+  border: 2px solid rgba(37, 99, 235, 0.6) !important;
+  box-shadow: 0 10px 30px -4px rgba(37, 99, 235, 0.3);
   overflow: hidden;
   isolation: isolate;
   contain: paint;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+.dark .animated-founder-border {
+  border: 2px solid rgba(56, 189, 248, 0.7) !important;
+  box-shadow: 0 12px 35px -4px rgba(56, 189, 248, 0.35);
 }
 
 /* Active Click & Hold Micro Interaction Feedback */

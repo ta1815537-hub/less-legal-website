@@ -161,10 +161,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     <div className="space-y-10 sm:space-y-14 py-2 sm:py-4 overflow-hidden transition-colors duration-300 pb-16">
       
       {/* 1. HERO SECTION: LESS CREATION PARENT BRAND */}
-      <section className="relative text-slate-900 dark:text-white pt-1 sm:pt-4 pb-6 sm:pb-10 overflow-hidden">
+      <section className="relative text-slate-900 dark:text-white pt-1 sm:pt-4 pb-6 sm:pb-10 overflow-hidden min-h-[540px] sm:min-h-[580px] flex items-center">
         <HeroAmbientGlow />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 space-y-6 sm:space-y-10">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 space-y-6 sm:space-y-10 w-full">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center">
             
@@ -258,6 +258,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
 
         </div>
+
+        {/* Seamless Soft Bottom Shadow & Blend - Eliminates any visible hard cut */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-28 sm:h-36 bg-gradient-to-t from-[#F4F8FD] via-[#F4F8FD]/50 to-transparent dark:from-[#0B0F1D] dark:via-[#0B0F1D]/50 dark:to-transparent pointer-events-none z-[5]" 
+          aria-hidden="true"
+        />
       </section>
 
       {/* Dynamic Flash Notice Board */}

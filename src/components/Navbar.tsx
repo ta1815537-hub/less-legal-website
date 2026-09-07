@@ -4,7 +4,7 @@ import { SITE_CONFIG } from '../config';
 import { 
   Layers, Sparkles, Moon, Sun, Globe, Search, Download,
   X, Home, Scale, BookOpen, Info, User, 
-  MessageSquare, ChevronRight, ArrowRight, Smartphone
+  MessageSquare, ChevronRight, ArrowRight, Smartphone, Briefcase
 } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
@@ -283,255 +283,196 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile Polished Navigation Panel (Restored & Ultra-Smooth) */}
+      {/* Mobile Polished Navigation Panel (Redesigned Ultra-Luxury Side Glass Sheet) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Click-away backdrop overlay */}
-            <div
-              className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+            {/* Click-away backdrop overlay with smooth blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 bg-black/60 lg:hidden backdrop-blur-sm"
               onClick={() => setMobileMenuOpen(false)}
             />
 
             <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.16, ease: "easeOut" }}
+              initial={{ opacity: 0, y: -12, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.97 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               style={{ willChange: "transform, opacity" }}
-              className="lg:hidden absolute top-full left-3 right-3 sm:left-4 sm:right-4 mt-2 p-4 rounded-[24px] bg-white dark:bg-[#0C101A] border border-slate-200/80 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.25)] space-y-3 z-50 overflow-hidden"
+              className="lg:hidden absolute top-full left-3 right-3 sm:left-4 sm:right-4 mt-2 p-3.5 sm:p-5 rounded-[26px] bg-gradient-to-b from-white/98 via-slate-50/95 to-white/98 dark:from-[#0E1322]/98 dark:via-[#090D18]/98 dark:to-[#060812]/98 backdrop-blur-3xl border border-slate-200/90 dark:border-white/12 shadow-[0_24px_64px_rgba(0,0,0,0.35),0_4px_16px_rgba(37,99,235,0.12)] space-y-3 z-50 overflow-hidden"
             >
-              {/* Top brand gradient accent line */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-sky-500 to-amber-500" />
+              {/* Luxury Top Laser Edge */}
+              <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-blue-600 via-sky-400 via-amber-400 to-indigo-600" />
 
-              {/* Navigation List */}
-              <div className="flex flex-col divide-y divide-slate-100 dark:divide-white/5">
+              {/* Navigation List - Ordered: Home -> Founder -> Careers -> About -> Contact */}
+              <div className="flex flex-col space-y-1.5 pt-1">
                 
                 {/* 1. Home */}
                 <button
                   id="mobile-nav-home"
                   onClick={() => handleNavClick('home')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
                     currentRoute === 'home'
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-500/18 border border-blue-500/30 shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
                   }`}
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <Home className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                    <span className="whitespace-nowrap truncate">{isHindi ? 'होम' : 'Home'}</span>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                </button>
-
-                {/* 2. Less Legal Flagship */}
-                <button
-                  id="mobile-nav-less-legal"
-                  onClick={() => handleNavClick('less-legal')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
-                    currentRoute === 'less-legal' || currentRoute === 'less-legal-features'
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <Scale className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                    <span className="whitespace-nowrap font-extrabold text-slate-900 dark:text-white">Less Legal</span>
-                    <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 uppercase tracking-wide shrink-0">
-                      {isHindi ? 'फ्लैगशिप' : 'Flagship'}
-                    </span>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                </button>
-
-                {/* 3. Download App Direct Button */}
-                <button
-                  id="mobile-nav-download"
-                  onClick={() => handleNavClick('download')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
-                    currentRoute === 'download'
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                    <span className="whitespace-nowrap truncate">{isHindi ? 'ऐप डाउनलोड करें' : 'Download App'}</span>
-                    <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
-                      v8.7.5
-                    </span>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                </button>
-
-                {/* 4. Products Accordion / Submenu */}
-                <div className="py-1">
-                  <button
-                    id="mobile-nav-products-accordion"
-                    onClick={() => setProductsSubmenuOpen(!productsSubmenuOpen)}
-                    className="w-full py-2 px-3 rounded-xl text-left text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5"
-                  >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <Layers className="w-4 h-4 text-blue-500 shrink-0" />
-                      <span className="whitespace-nowrap truncate">{isHindi ? 'उत्पाद व इकोसिस्टम' : 'All Products'}</span>
-                      <span className="text-[10px] font-black px-2 py-0.2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
-                        {SITE_CONFIG.products.length}
-                      </span>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
+                      currentRoute === 'home'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20'
+                    }`}>
+                      <Home className="w-4 h-4" />
                     </div>
-                    <span className={`text-slate-400 text-xs transition-transform duration-200 ${productsSubmenuOpen ? 'rotate-90' : ''}`}>
-                      ›
-                    </span>
-                  </button>
-
-                  {/* Products Submenu Items */}
-                  <AnimatePresence>
-                    {productsSubmenuOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.16 }}
-                        className="pl-4 pr-1 py-1 space-y-1 overflow-hidden"
-                      >
-                        {/* Less Legal Flagship */}
-                        <button
-                          id="mobile-nav-sub-less-legal"
-                          onClick={() => handleNavClick('less-legal')}
-                          className="w-full py-2 px-3 rounded-xl text-left text-xs font-semibold flex items-center justify-between transition-colors border cursor-pointer bg-blue-500/5 dark:bg-blue-500/10 text-slate-800 dark:text-slate-100 hover:bg-blue-500/10 border-blue-500/15"
-                        >
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 shrink-0" />
-                            <span className="font-bold text-slate-900 dark:text-white whitespace-nowrap">Less Legal App</span>
-                          </div>
-                          <span className="text-[10px] text-blue-600 dark:text-blue-400 font-extrabold whitespace-nowrap">{isHindi ? 'पेज देखें' : 'View'} →</span>
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-
-                {/* 5. About Less Creation */}
-                <button
-                  id="mobile-nav-about"
-                  onClick={() => handleNavClick('about')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
-                    currentRoute === 'about'
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <Info className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
-                    <span className="whitespace-nowrap truncate">{isHindi ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}</span>
+                    <span className="whitespace-nowrap font-bold">{isHindi ? 'होम' : 'Home'}</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${currentRoute === 'home' ? 'text-blue-500 translate-x-0.5' : 'group-hover:translate-x-0.5'}`} />
                 </button>
 
-                {/* 6. Founder */}
+                {/* 2. Founder */}
                 <button
                   id="mobile-nav-founder"
                   onClick={() => handleNavClick('founder')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
                     currentRoute === 'founder'
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                      ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 dark:bg-indigo-500/18 border border-indigo-500/30 shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
                   }`}
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <User className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" />
-                    <span className="whitespace-nowrap truncate">{isHindi ? 'संस्थापक (अनुराग गुरौली)' : 'Founder (Anurag Gurauli)'}</span>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
+                      currentRoute === 'founder'
+                        ? 'bg-indigo-600 text-white shadow-md'
+                        : 'bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20'
+                    }`}>
+                      <User className="w-4 h-4" />
+                    </div>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="whitespace-nowrap font-bold">{isHindi ? 'संस्थापक' : 'Founder'}</span>
+                      <span className="text-[10px] text-slate-400 font-semibold hidden xs:inline truncate">
+                        (अनुराग गुरौली)
+                      </span>
+                    </div>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shrink-0 uppercase tracking-wide">
+                    Creator
+                  </span>
                 </button>
 
-                {/* 7. Resources */}
+                {/* 3. Careers & Hiring (NEW) */}
                 <button
-                  id="mobile-nav-resources"
-                  onClick={() => handleNavClick('resources')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
-                    currentRoute === 'resources'
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                  id="mobile-nav-careers"
+                  onClick={() => handleNavClick('careers')}
+                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
+                    currentRoute === 'careers'
+                      ? 'text-violet-600 dark:text-violet-400 bg-violet-500/10 dark:bg-violet-500/18 border border-violet-500/30 shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
                   }`}
                 >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <BookOpen className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span className="whitespace-nowrap truncate">{isHindi ? 'संसाधन और टूल्स' : 'Resources & Tools'}</span>
-                    <span className="text-[9.5px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
-                      Hub
-                    </span>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
+                      currentRoute === 'careers'
+                        ? 'bg-violet-600 text-white shadow-md'
+                        : 'bg-violet-500/10 dark:bg-violet-500/15 text-violet-600 dark:text-violet-400 border border-violet-500/20'
+                    }`}>
+                      <Briefcase className="w-4 h-4" />
+                    </div>
+                    <span className="whitespace-nowrap font-bold">{isHindi ? 'करियर व जॉब्स' : 'Careers & Jobs'}</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 uppercase tracking-wide flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                      <span>{isHindi ? 'हायरिंग' : 'Hiring'}</span>
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                  </div>
                 </button>
 
-                {/* 8. Premium */}
+                {/* 4. About Less Creation (Placed just above Contact as requested) */}
                 <button
-                  id="mobile-nav-premium-link"
-                  onClick={() => handleNavClick('premium')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
-                    currentRoute === 'premium'
-                      ? 'text-amber-600 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/30'
-                      : 'text-amber-700 dark:text-amber-300 hover:text-amber-800 hover:bg-amber-500/10'
+                  id="mobile-nav-about"
+                  onClick={() => handleNavClick('about')}
+                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
+                    currentRoute === 'about'
+                      ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 dark:bg-sky-500/18 border border-sky-500/30 shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
                   }`}
                 >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-                    <span className="whitespace-nowrap truncate">{isHindi ? 'प्रीमियम पास' : 'Premium Lifetime'}</span>
-                    <span className="text-[9.5px] font-black px-1.5 py-0.2 rounded-md bg-amber-500/20 text-amber-800 dark:text-amber-300 shrink-0">
-                      ₹99
-                    </span>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
+                      currentRoute === 'about'
+                        ? 'bg-sky-600 text-white shadow-md'
+                        : 'bg-sky-500/10 dark:bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/20'
+                    }`}>
+                      <Info className="w-4 h-4" />
+                    </div>
+                    <span className="whitespace-nowrap font-bold">{isHindi ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}</span>
                   </div>
-                  <span className="text-amber-600 dark:text-amber-400 text-xs font-bold">→</span>
+                  <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 shrink-0 uppercase tracking-wide">
+                    Studio
+                  </span>
                 </button>
 
-                {/* 9. Contact */}
+                {/* 5. Contact (Directly under About) */}
                 <button
                   id="mobile-nav-contact"
                   onClick={() => handleNavClick('contact')}
-                  className={`py-2.5 px-3 rounded-xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
                     currentRoute === 'contact'
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50/80 dark:bg-blue-500/10'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                      ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/18 border border-emerald-500/30 shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
                   }`}
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                    <span className="whitespace-nowrap truncate">{isHindi ? 'संपर्क सहायता' : 'Contact Support'}</span>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
+                      currentRoute === 'contact'
+                        ? 'bg-emerald-600 text-white shadow-md'
+                        : 'bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                    }`}>
+                      <MessageSquare className="w-4 h-4" />
+                    </div>
+                    <span className="whitespace-nowrap font-bold">{isHindi ? 'संपर्क सहायता' : 'Contact Support'}</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0 uppercase tracking-wide">
+                    24/7
+                  </span>
                 </button>
               </div>
 
-              {/* Bottom Controls Row: Language, Theme, and Premium CTA */}
-              <div className="pt-2 border-t border-slate-100 dark:border-white/10 space-y-2">
-                <div className="grid grid-cols-2 gap-2">
-                  {/* Language Switch */}
-                  <button
-                    onClick={toggleLanguage}
-                    className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors"
-                  >
-                    <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-                    <span className="whitespace-nowrap">{language === 'hi' ? 'English' : 'हिन्दी'}</span>
-                  </button>
-
-                  {/* Theme Toggle */}
-                  <button
-                    onClick={toggleTheme}
-                    className="py-2 px-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-1.5 cursor-pointer hover:bg-slate-200/60 dark:hover:bg-white/10 transition-colors"
-                  >
-                    {globalIsDark ? <Sun className="w-3.5 h-3.5 text-amber-400 shrink-0" /> : <Moon className="w-3.5 h-3.5 text-slate-700 shrink-0" />}
-                    <span className="whitespace-nowrap">{globalIsDark ? 'Light' : 'Dark'}</span>
-                  </button>
-                </div>
-
-                {/* Full-width Premium CTA */}
+              {/* Ultra-Modern Twin Utility Controls: Language & Theme */}
+              <div className="pt-2.5 border-t border-slate-200/80 dark:border-white/10 grid grid-cols-2 gap-2">
+                {/* Language Switch */}
                 <button
-                  id="mobile-premium-bottom-cta"
-                  onClick={() => handleNavClick('premium')}
-                  className="w-full py-2.5 px-4 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-600 hover:brightness-110 shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-98"
+                  id="mobile-nav-lang-btn"
+                  onClick={toggleLanguage}
+                  className="py-2.5 px-3 rounded-2xl text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100/90 dark:bg-white/6 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-2 cursor-pointer hover:bg-slate-200/70 dark:hover:bg-white/12 transition-all active:scale-98 shadow-xs"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
-                  <span className="whitespace-nowrap truncate">{isHindi ? 'लेस लीगल लाइफटाइम पास लें — ₹99' : 'Get Less Legal Lifetime Pass — ₹99'}</span>
+                  <Globe className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                  <span className="whitespace-nowrap font-extrabold">{language === 'hi' ? 'English (EN)' : 'हिन्दी (HI)'}</span>
+                </button>
+
+                {/* Theme Switch */}
+                <button
+                  id="mobile-nav-theme-btn"
+                  onClick={toggleTheme}
+                  className="py-2.5 px-3 rounded-2xl text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100/90 dark:bg-white/6 border border-slate-200/80 dark:border-white/10 flex items-center justify-center gap-2 cursor-pointer hover:bg-slate-200/70 dark:hover:bg-white/12 transition-all active:scale-98 shadow-xs"
+                >
+                  {globalIsDark ? (
+                    <>
+                      <Sun className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span className="whitespace-nowrap font-extrabold text-amber-300">Light Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-4 h-4 text-blue-600 shrink-0" />
+                      <span className="whitespace-nowrap font-extrabold text-slate-700">Dark Mode</span>
+                    </>
+                  )}
                 </button>
               </div>
 

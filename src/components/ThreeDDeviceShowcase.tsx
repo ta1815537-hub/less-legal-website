@@ -15,24 +15,34 @@ export const ThreeDDeviceShowcase: React.FC<ThreeDDeviceShowcaseProps> = ({
   const isHindi = language === 'hi';
 
   return (
-    <div className="relative w-full flex items-center justify-center select-none overflow-visible py-2">
+    <div 
+      className="relative w-full flex items-center justify-center select-none overflow-visible py-2"
+      style={{ touchAction: 'pan-y' }}
+    >
       
       {/* Ambient Backlight */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10 overflow-hidden">
-        <div className="w-[300px] h-[300px] sm:w-[460px] sm:h-[460px] rounded-full bg-gradient-to-tr from-blue-500/15 via-sky-400/10 to-transparent dark:from-blue-600/20 dark:via-indigo-900/15 to-transparent blur-[70px] sm:blur-[90px]" />
+        <div className="w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] rounded-full bg-gradient-to-tr from-blue-500/15 via-sky-400/10 to-transparent dark:from-blue-600/20 dark:via-indigo-900/15 to-transparent blur-[50px] sm:blur-[70px] pointer-events-none" />
       </div>
 
       {/* Composite Showcase Layout */}
-      <div className="relative flex flex-col lg:flex-row items-center justify-center gap-6 xl:gap-8 w-full max-w-2xl">
+      <div 
+        className="relative flex flex-col lg:flex-row items-center justify-center gap-6 xl:gap-8 w-full max-w-2xl"
+        style={{ touchAction: 'pan-y' }}
+      >
         
         {/* Smartphone Device Stage */}
-        <div className="relative flex flex-col items-center justify-center">
+        <div 
+          className="relative flex flex-col items-center justify-center"
+          style={{ touchAction: 'pan-y' }}
+        >
           
           {/* Device Frame */}
           <motion.div
             initial={{ y: 0 }}
             animate={{ y: [-3, 3, -3] }}
             transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+            style={{ willChange: 'transform', transform: 'translate3d(0,0,0)', touchAction: 'pan-y' }}
             className="relative w-[215px] h-[440px] sm:w-[245px] sm:h-[500px] md:w-[265px] md:h-[540px] rounded-[2.8rem] sm:rounded-[3.2rem] bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 p-[6px] sm:p-[7px] shadow-[0_25px_60px_-15px_rgba(30,58,138,0.25),0_12px_28px_-8px_rgba(0,0,0,0.35)] border-2 border-slate-700/60 z-20"
           >
             {/* Bezel Rim Reflection */}

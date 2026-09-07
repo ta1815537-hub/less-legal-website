@@ -15,10 +15,10 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeK
   return (
     <motion.div
       key={routeKey}
-      initial={{ opacity: 0, y: 15, scale: 0.98 }}
+      initial={{ opacity: 0, y: 16, scale: 0.985 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -10, scale: 0.98 }}
-      transition={{ duration: 0.6, ease: EASING_SMOOTH }}
+      exit={{ opacity: 0, y: -10, scale: 0.985 }}
+      transition={{ duration: 0.75, ease: EASING_SMOOTH }}
       className="w-full flex-1"
       style={{ willChange: "opacity, transform" }}
     >
@@ -57,7 +57,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   className = '',
   delay = 0,
   direction = 'up',
-  distance = 24,
+  distance = 28,
 }) => {
   const getInitialPosition = () => {
     switch (direction) {
@@ -69,12 +69,15 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     }
   };
 
+  // Graceful flow delay ensuring elements glide into front screen with relaxed regal pacing
+  const flowDelay = delay > 0 ? delay : 0.08;
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.93, ...getInitialPosition() }}
+      initial={{ opacity: 0, scale: 0.98, ...getInitialPosition() }}
       whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-      viewport={{ once: false, margin: '-10% 0px -10% 0px' }}
-      transition={{ duration: 1.0, delay, ease: EASING_SMOOTH }}
+      viewport={{ once: true, margin: '-30px 0px -30px 0px' }}
+      transition={{ duration: 1.25, delay: flowDelay, ease: EASING_SMOOTH }}
       className={className}
     >
       {children}
@@ -92,7 +95,7 @@ interface StaggerContainerProps {
 export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   children,
   className = '',
-  staggerDelay = 0.12,
+  staggerDelay = 0.18,
 }) => {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -100,7 +103,7 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
       opacity: 1,
       transition: {
         staggerChildren: staggerDelay,
-        delayChildren: 0.1,
+        delayChildren: 0.15,
       },
     },
   };
@@ -110,7 +113,7 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: false, margin: '-8% 0px -8% 0px' }}
+      viewport={{ once: true, margin: '-30px 0px -30px 0px' }}
       className={className}
     >
       {children}
@@ -124,12 +127,12 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string; in
   interactive = false,
 }) => {
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30, scale: 0.92 },
+    hidden: { opacity: 0, y: 32, scale: 0.975 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { duration: 0.8, ease: EASING_SMOOTH },
+      transition: { duration: 1.15, ease: EASING_SMOOTH },
     },
   };
 
@@ -137,19 +140,23 @@ export const StaggerItem: React.FC<{ children: ReactNode; className?: string; in
     <motion.div 
       variants={itemVariants} 
       className={className}
-      whileHover={interactive ? { y: -6, scale: 1.015, transition: { duration: 0.3, ease: "easeOut" } } : undefined}
+      whileHover={interactive ? { y: -5, scale: 1.01, transition: { duration: 0.35, ease: EASING_SMOOTH } } : undefined}
     >
       {children}
     </motion.div>
   );
 };
 
-// 5. HERO AMBIENT BACKGROUND GLOW (Studio Sky-Blue, Gold & Glossy Stage Floor)
+// 5. HERO AMBIENT BACKGROUND GLOW (Studio Sky-Blue, Gold & Ambient Stage Floor)
 export const HeroAmbientGlow: React.FC = () => {
   return (
     <div 
       className="absolute inset-0 pointer-events-none overflow-hidden -z-10 select-none"
-      style={{ contain: 'strict' }}
+      style={{
+        contain: 'paint',
+        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%)',
+      }}
     >
       {/* Soft Sky Blue / Powder Blue Atmospheric Lighting (Center-Left) */}
       <div 
@@ -166,9 +173,9 @@ export const HeroAmbientGlow: React.FC = () => {
         className="absolute top-1/3 right-[15%] sm:right-[22%] w-[24rem] sm:w-[34rem] h-[24rem] sm:h-[34rem] bg-gradient-to-bl from-[#93C5FD]/45 via-[#C7D2FE]/30 to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-70"
       />
 
-      {/* Glossy Floor Surface Highlight ("Jamin" reflection plane) */}
+      {/* Seamless Soft Floor Transition */}
       <div 
-        className="absolute bottom-0 left-0 right-0 h-48 sm:h-64 bg-gradient-to-t from-white/70 via-white/30 to-transparent dark:from-[#0B0D13]/90 dark:via-[#0B0D13]/40 dark:to-transparent pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-48 sm:h-64 bg-gradient-to-t from-transparent via-transparent to-transparent pointer-events-none"
       />
 
       {/* Architectural Studio Grid Overlay */}

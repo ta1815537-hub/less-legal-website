@@ -2,6 +2,7 @@ export type PageRoute =
   | 'home'
   | 'about'
   | 'founder'
+  | 'careers'
   | 'features'
   | 'less-legal'
   | 'less-legal-features'

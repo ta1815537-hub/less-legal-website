@@ -16,7 +16,8 @@ import {
   ArrowRight, 
   Smartphone, 
   Layers, 
-  Lock 
+  Lock,
+  Briefcase
 } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { useLanguage } from '../context/LanguageContext';
@@ -214,6 +215,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     >
                       <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                       <span>Founder (Anurag Gurauli)</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('careers')}
+                      className="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                    >
+                      <Briefcase className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                      <span>Careers & Hiring</span>
+                      <span className="text-[9.5px] px-1.5 py-0.2 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">Hiring</span>
                     </button>
                   </li>
                 </ul>

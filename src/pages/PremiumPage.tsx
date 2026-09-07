@@ -26,15 +26,16 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // Sync countdown timer with the Navbar top banner & Homepage
-  const [timeLeft, setTimeLeft] = React.useState({ hours: 38, minutes: 47, seconds: 12 });
+  // 120 Days countdown timer for the Lifetime Pass
+  const [timeLeft, setTimeLeft] = React.useState({ days: 120, hours: 14, minutes: 28, seconds: 45 });
 
   React.useEffect(() => {
-    const STORAGE_KEY = 'less_legal_promo_target_v3_38h';
+    const STORAGE_KEY = 'less_legal_promo_target_120d_v1';
     let targetTime = localStorage.getItem(STORAGE_KEY);
+    const ONE_HUNDRED_TWENTY_DAYS_MS = (120 * 24 * 3600 + 14 * 3600 + 28 * 60 + 45) * 1000;
     
     if (!targetTime) {
-      const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
+      const newTarget = Date.now() + ONE_HUNDRED_TWENTY_DAYS_MS;
       localStorage.setItem(STORAGE_KEY, newTarget.toString());
       targetTime = newTarget.toString();
     }
@@ -42,13 +43,14 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
     const interval = setInterval(() => {
       const difference = parseInt(targetTime!) - Date.now();
       if (difference <= 0) {
-        const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
+        const newTarget = Date.now() + ONE_HUNDRED_TWENTY_DAYS_MS;
         localStorage.setItem(STORAGE_KEY, newTarget.toString());
       } else {
-        const h = Math.floor(difference / (1000 * 60 * 60));
+        const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((difference % (1000 * 60)) / 1000);
-        setTimeLeft({ hours: h, minutes: m, seconds: s });
+        setTimeLeft({ days: d, hours: h, minutes: m, seconds: s });
       }
     }, 1000);
 
@@ -251,24 +253,71 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                   </div>
                 </div>
 
-                {/* Live Countdown Urgency Timer */}
-                <div className="bg-[#1C1405] border border-[#E5BA55]/30 rounded-2xl p-4 my-5 flex flex-col sm:flex-row items-center justify-between gap-3 select-none">
-                  <div className="text-center sm:text-left">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-[#E5BA55] block animate-pulse">
-                      ⚡ SPECIAL DISCOUNT CLOSES SOON:
-                    </span>
-                    <span className="text-[11px] font-bold text-slate-300 block mt-0.5">
-                      {isHindi ? 'लाइफटाइम पास विशेष छूट समाप्त हो रही है:' : 'Lifetime pass special price ends in:'}
-                    </span>
-                  </div>
+                {/* Live Countdown Urgency Timer (120 Days Luxury Cyber-Gold Edition) */}
+                <div className="relative overflow-hidden rounded-2xl p-4 sm:p-5 my-5 bg-gradient-to-br from-[#120E06] via-[#1A1408] to-[#0D0B05] border border-[#E5BA55]/40 shadow-[0_12px_32px_rgba(229,186,85,0.15)] select-none">
+                  {/* Subtle golden ambient flare */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none -mr-10 -mt-10" />
                   
-                  {/* Countdown Box */}
-                  <div className="flex items-center gap-1.5 bg-black/40 border border-[#E5BA55]/20 px-2.5 py-1 rounded-xl font-mono text-xs font-black text-amber-400 shrink-0">
-                    <span className="text-[#E5BA55]">{timeLeft.hours.toString().padStart(2, '0')}h</span>
-                    <span className="animate-pulse text-[#E5BA55]">:</span>
-                    <span className="text-[#E5BA55]">{timeLeft.minutes.toString().padStart(2, '0')}m</span>
-                    <span className="animate-pulse text-[#E5BA55]">:</span>
-                    <span className="text-[#E03A3E]">{timeLeft.seconds.toString().padStart(2, '0')}s</span>
+                  <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+                    {/* Urgency Badge & Copy */}
+                    <div className="text-center md:text-left space-y-1">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E5BA55]/15 border border-[#E5BA55]/30 text-[#E5BA55] text-[10px] font-black uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                        <span>{isHindi ? '⚡ विशेष परिचयात्मक छूट' : '⚡ LIMITED INTRODUCTORY OFFER'}</span>
+                      </div>
+                      <div className="text-xs sm:text-sm font-bold text-slate-200">
+                        {isHindi ? 'लाइफटाइम पास ₹99 विशेष मूल्य समाप्त होने में शेष:' : 'Lifetime access ₹99 special rate closes in:'}
+                      </div>
+                    </div>
+                    
+                    {/* Luxury 4-Tile Countdown Display */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                      {/* Days Tile */}
+                      <div className="flex flex-col items-center justify-center min-w-[52px] sm:min-w-[58px] py-1.5 px-2 rounded-xl bg-black/60 border border-[#E5BA55]/35 shadow-inner">
+                        <span className="font-mono text-base sm:text-lg font-black text-[#F5D580] tracking-tight leading-none">
+                          {timeLeft.days.toString().padStart(3, '0')}
+                        </span>
+                        <span className="text-[9px] font-extrabold uppercase text-[#B8943F] mt-0.5 tracking-wider">
+                          {isHindi ? 'दिन' : 'Days'}
+                        </span>
+                      </div>
+
+                      <span className="text-[#E5BA55] font-black text-sm animate-pulse -mt-2">:</span>
+
+                      {/* Hours Tile */}
+                      <div className="flex flex-col items-center justify-center min-w-[44px] sm:min-w-[48px] py-1.5 px-1.5 rounded-xl bg-black/60 border border-[#E5BA55]/35 shadow-inner">
+                        <span className="font-mono text-base sm:text-lg font-black text-[#F5D580] tracking-tight leading-none">
+                          {timeLeft.hours.toString().padStart(2, '0')}
+                        </span>
+                        <span className="text-[9px] font-extrabold uppercase text-[#B8943F] mt-0.5 tracking-wider">
+                          {isHindi ? 'घंटे' : 'Hrs'}
+                        </span>
+                      </div>
+
+                      <span className="text-[#E5BA55] font-black text-sm animate-pulse -mt-2">:</span>
+
+                      {/* Minutes Tile */}
+                      <div className="flex flex-col items-center justify-center min-w-[44px] sm:min-w-[48px] py-1.5 px-1.5 rounded-xl bg-black/60 border border-[#E5BA55]/35 shadow-inner">
+                        <span className="font-mono text-base sm:text-lg font-black text-[#F5D580] tracking-tight leading-none">
+                          {timeLeft.minutes.toString().padStart(2, '0')}
+                        </span>
+                        <span className="text-[9px] font-extrabold uppercase text-[#B8943F] mt-0.5 tracking-wider">
+                          {isHindi ? 'मिनट' : 'Min'}
+                        </span>
+                      </div>
+
+                      <span className="text-[#E5BA55] font-black text-sm animate-pulse -mt-2">:</span>
+
+                      {/* Seconds Tile */}
+                      <div className="flex flex-col items-center justify-center min-w-[44px] sm:min-w-[48px] py-1.5 px-1.5 rounded-xl bg-black/70 border border-amber-400/50 shadow-inner">
+                        <span className="font-mono text-base sm:text-lg font-black text-amber-300 tracking-tight leading-none">
+                          {timeLeft.seconds.toString().padStart(2, '0')}
+                        </span>
+                        <span className="text-[9px] font-extrabold uppercase text-amber-400/90 mt-0.5 tracking-wider">
+                          {isHindi ? 'सेकंड' : 'Sec'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

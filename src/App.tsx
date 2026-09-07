@@ -10,6 +10,7 @@ import { LessLegalPage } from './pages/LessLegalPage';
 import { FeaturesPage } from './pages/FeaturesPage';
 import { ResourcesPage } from './pages/ResourcesPage';
 import { FounderPage } from './pages/FounderPage';
+import { CareersPage } from './pages/CareersPage';
 import { PremiumPage } from './pages/PremiumPage';
 import { ContactPage } from './pages/ContactPage';
 import { WebsitePrivacyPage } from './pages/WebsitePrivacyPage';
@@ -38,6 +39,10 @@ function getRouteFromLocation(): PageRoute {
     case 'about-less-creation': return 'about';
     case 'founder':
     case 'founder-and-creator': return 'founder';
+    case 'careers':
+    case 'career':
+    case 'jobs':
+    case 'hiring': return 'careers';
     case 'less-legal':
     case 'lesslegal': return 'less-legal';
     case 'less-legal/features':
@@ -112,6 +117,11 @@ export default function App() {
         title = 'Anurag Gurauli - Founder of Less Legal & Less Creation'; 
         description = 'Meet Anurag Gurauli, the founder of Less Legal and Less Creation. Discover the vision behind this trending new smart app for legal information and tools.';
         path = 'founder'; 
+        break;
+      case 'careers': 
+        title = 'Careers & Hiring | Less Creation Technology Studio'; 
+        description = 'Join Less Creation to build lightweight, purpose-driven digital products. Explore open roles in Android, React, UI/UX, and legal research.';
+        path = 'careers'; 
         break;
       case 'resources':
         title = 'Resources & Legal Tools Hub | Less Creation';
@@ -225,6 +235,7 @@ export default function App() {
     else if (route === 'resources') targetPath = '/resources';
     else if (route === 'about') targetPath = '/about';
     else if (route === 'founder') targetPath = '/founder';
+    else if (route === 'careers') targetPath = '/careers';
     else if (route === 'premium') targetPath = '/premium';
     else if (route === 'contact') targetPath = '/contact';
     else if (route === 'download') targetPath = '/download';
@@ -264,6 +275,7 @@ export default function App() {
               {(currentRoute === 'less-legal-features' || currentRoute === 'features') && <FeaturesPage onNavigate={navigateTo} />}
               {currentRoute === 'about' && <AboutPage onNavigate={navigateTo} />}
               {currentRoute === 'founder' && <FounderPage onNavigate={navigateTo} />}
+              {currentRoute === 'careers' && <CareersPage onNavigate={navigateTo} />}
               {currentRoute === 'resources' && <ResourcesPage onNavigate={navigateTo} />}
               {currentRoute === 'premium' && <PremiumPage onNavigate={navigateTo} />}
               {currentRoute === 'contact' && <ContactPage onNavigate={navigateTo} />}

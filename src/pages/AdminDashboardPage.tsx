@@ -5,7 +5,7 @@ import {
   Search, Filter, CheckCircle2, Clock, AlertCircle, RefreshCw, 
   Download, ArrowLeft, LogOut, FileText, ChevronRight, MessageSquare, 
   Sparkles, Check, X, Tag, Edit3, ShieldAlert, Phone, AlertTriangle,
-  Globe, Smartphone
+  Globe, Smartphone, Briefcase
 } from 'lucide-react';
 import { 
   GoogleAuthProvider,
@@ -19,8 +19,9 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { HeroAmbientGlow } from '../components/MotionWrappers';
 import { useLanguage } from '../context/LanguageContext';
-import { adminStorage, ContactSubmission, DeletionRequest } from '../utils/adminStorage';
+import { adminStorage, ContactSubmission, DeletionRequest, JobApplication } from '../utils/adminStorage';
 import { AdminWebsiteControlPanel } from '../components/AdminWebsiteControlPanel';
+import { AdminHiringControlPanel } from '../components/AdminHiringControlPanel';
 
 interface AdminDashboardPageProps {
   onNavigate: (route: PageRoute) => void;
@@ -42,8 +43,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const [authError, setAuthError] = useState<string | null>(null);
   const [authSuccessMsg, setAuthSuccessMsg] = useState<string | null>(null);
 
-  // Tab State - Includes new master website & app control center
-  const [activeTab, setActiveTab] = useState<'website_control' | 'deletions' | 'contacts' | 'settings'>('website_control');
+  // Tab State - Includes new master website & app control center, hiring and candidates
+  const [activeTab, setActiveTab] = useState<'website_control' | 'hiring' | 'deletions' | 'contacts' | 'settings'>('website_control');
 
   // Security & Inactivity Session State (15 Minutes = 900 Seconds)
   const INACTIVITY_TIMEOUT_SECONDS = 15 * 60;
@@ -53,6 +54,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   // Data State
   const [deletions, setDeletions] = useState<DeletionRequest[]>([]);
   const [contacts, setContacts] = useState<ContactSubmission[]>([]);
+  const [jobApplications, setJobApplications] = useState<JobApplication[]>(adminStorage.getJobApplications());
 
   // Refresh & Toast State
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -301,9 +303,15 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       console.warn('Realtime deletions listener warning:', err);
     });
 
+    // Listen to job applications real-time
+    const unsubApps = adminStorage.listenJobApplications((apps) => {
+      setJobApplications(apps);
+    });
+
     return () => {
       unsubContacts();
       unsubDeletions();
+      unsubApps();
     };
   }, [isAuthenticated]);
 
@@ -821,6 +829,18 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           </button>
 
           <button
+            onClick={() => setActiveTab('hiring')}
+            className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'hiring' 
+                ? 'bg-blue-600 text-white shadow-sm' 
+                : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            <Briefcase className="w-4 h-4 shrink-0" />
+            <span className="whitespace-nowrap">{isHindi ? "💼 हायरिंग व उम्मीदवार" : "💼 Hiring & Candidates"} ({jobApplications.length})</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('deletions')}
             className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'deletions' 
@@ -872,6 +892,18 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       {activeTab === 'website_control' && (
         <AdminWebsiteControlPanel 
           adminEmail={adminUser?.email || ''} 
+          onShowToast={(msg, type) => {
+            setRefreshToast(msg);
+            setToastType(type);
+            setTimeout(() => setRefreshToast(null), 5000);
+          }}
+        />
+      )}
+
+      {/* HIRING & CANDIDATES CONTROL TAB */}
+      {activeTab === 'hiring' && (
+        <AdminHiringControlPanel
+          adminEmail={adminUser?.email || ''}
           onShowToast={(msg, type) => {
             setRefreshToast(msg);
             setToastType(type);

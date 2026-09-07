@@ -21,7 +21,7 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
       whileHover={{ scale: 1.06, y: -3 }}
       whileTap={{ scale: 0.94 }}
       transition={{ type: "spring", stiffness: 380, damping: 24 }}
-      className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-40 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-slate-900/90 dark:bg-[#0B0F19]/95 text-white border border-blue-500/35 dark:border-blue-400/40 shadow-xl shadow-blue-900/25 dark:shadow-black/60 backdrop-blur-xl flex items-center gap-2 sm:gap-2.5 cursor-pointer transition-all duration-300 group hover:border-blue-400 hover:shadow-blue-500/20 active:scale-95"
+      className="fixed bottom-[calc(env(safe-area-inset-bottom,0px)+5.5rem)] right-4 sm:bottom-24 sm:right-6 z-40 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full bg-slate-900/90 dark:bg-[#0B0F19]/95 text-white border-2 border-blue-500/40 dark:border-blue-400/50 shadow-xl shadow-blue-900/25 dark:shadow-black/60 backdrop-blur-xl flex items-center gap-2 sm:gap-2.5 cursor-pointer transition-all duration-300 group hover:border-blue-400 hover:shadow-blue-500/20 active:scale-95"
       aria-label="Less Support / सहायता संपर्क"
       title={isHindi ? "सहायता एवं संपर्क / Less Support" : "Customer Support / Less Support"}
     >
