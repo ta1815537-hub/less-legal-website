@@ -87,14 +87,14 @@ export default function App() {
 
   // Sync title, description, and canonical link for SEO based on route
   useEffect(() => {
-    let title = 'Less Creation | Technology & Digital Product Studio';
-    let description = "Less Creation builds simple, useful and affordable digital products designed to solve real-world problems. Discover Less Legal, our flagship Android product, and explore what we're creating.";
+    let title = 'Less Creation | Technology that makes difficult things simple.';
+    let description = 'Less Creation is a digital product studio founded by CEO Anurag Gurauli. Discover Less Legal, the first flagship Android legal utility app & advocacy portal by Less Creation.';
     let path = '';
 
     switch (currentRoute) {
       case 'home': 
-        title = 'Less Creation | Technology & Digital Product Studio'; 
-        description = "Less Creation builds simple, useful and affordable digital products designed to solve real-world problems. Discover Less Legal, our flagship Android product, and explore what we're creating.";
+        title = 'Less Creation | Technology that makes difficult things simple.'; 
+        description = 'Less Creation is a digital product studio founded by CEO Anurag Gurauli. Discover Less Legal, the first flagship Android legal utility app & advocacy portal by Less Creation.';
         path = ''; 
         break;
       case 'less-legal':
