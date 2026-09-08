@@ -892,6 +892,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       {activeTab === 'website_control' && (
         <AdminWebsiteControlPanel 
           adminEmail={adminUser?.email || ''} 
+          onNavigate={onNavigate}
           onShowToast={(msg, type) => {
             setRefreshToast(msg);
             setToastType(type);

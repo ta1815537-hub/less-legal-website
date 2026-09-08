@@ -22,15 +22,18 @@ import {
   ConvertedCloudMedia 
 } from '../utils/adminStorage';
 import { useLanguage } from '../context/LanguageContext';
+import { PageRoute } from '../types';
 import { AdminArticlesControlPanel } from './AdminArticlesControlPanel';
 
 interface AdminWebsiteControlPanelProps {
   adminEmail?: string;
+  onNavigate?: (route: PageRoute, params?: { slug?: string; tag?: string; category?: string; authorSlug?: string }) => void;
   onShowToast: (message: string, type: 'success' | 'error') => void;
 }
 
 export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> = ({ 
   adminEmail,
+  onNavigate,
   onShowToast 
 }) => {
   const { language } = useLanguage();
@@ -586,6 +589,7 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
       {activeSection === 'articles' && (
         <AdminArticlesControlPanel 
           adminEmail={adminEmail} 
+          onNavigate={onNavigate}
           onShowToast={onShowToast} 
         />
       )}

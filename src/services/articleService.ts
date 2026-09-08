@@ -9,12 +9,11 @@ import {
   query, 
   where, 
   orderBy, 
-  onSnapshot, 
-  increment,
+  limit,
   serverTimestamp 
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { Article, ArticleAuthor, ArticleCategory, ArticleStatus } from '../types';
+import { Article, ArticleSummary, ArticleAuthor, ArticleCategory, ArticleStatus } from '../types';
 
 // Default Author (Website LT Logo & Less Creation Editorial)
 export const DEFAULT_AUTHOR: ArticleAuthor = {
@@ -38,9 +37,6 @@ export const DEFAULT_CATEGORIES: ArticleCategory[] = [
   { id: 'general', name: 'General', slug: 'general', description: 'General announcements, studio updates, and editorial essays.', order: 8 }
 ];
 
-// Initial Seed Articles (Empty so only original published articles appear)
-export const INITIAL_SEED_ARTICLES: Article[] = [];
-
 // Helper to sanitize local storage keys
 const LOCAL_ARTICLES_KEY = 'less_creation_articles_store';
 const LOCAL_CATEGORIES_KEY = 'less_creation_categories_store';
@@ -48,6 +44,12 @@ const LOCAL_CATEGORIES_KEY = 'less_creation_categories_store';
 class ArticleService {
   private localArticlesCache: Article[] = [];
   private localCategoriesCache: ArticleCategory[] = [];
+  
+  // In-memory session cache to avoid repeated Firestore reads
+  private inMemorySummariesCache: ArticleSummary[] | null = null;
+  private inMemoryFullArticles = new Map<string, Article>();
+  private lastFetchTime = 0;
+  private readonly CACHE_TTL_MS = 2 * 60 * 1000; // 2 minute in-memory cache
 
   constructor() {
     this.initLocalStore();
@@ -84,115 +86,175 @@ class ArticleService {
     }
   }
 
-  // Sync initial seed articles to Firestore if remote collection is empty
-  async syncInitialArticlesToCloud(): Promise<void> {
-    try {
-      const snap = await getDocs(collection(db, 'articles'));
-      if (snap.empty) {
-        for (const art of INITIAL_SEED_ARTICLES) {
-          await setDoc(doc(db, 'articles', art.id), {
-            ...art,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-          });
-        }
-      }
-    } catch (err) {
-      console.warn('Sync seed articles to cloud warning (using local fallback):', err);
-    }
+  // Invalidate in-memory caches
+  public invalidateCache(): void {
+    this.inMemorySummariesCache = null;
+    this.inMemoryFullArticles.clear();
+    this.lastFetchTime = 0;
   }
 
-  // Fetch Public Published Articles
-  async getPublicArticles(filters?: {
+  // Fetch Public Published Article Summaries (Lightweight - No Full Markdown Content Downloaded for Listing)
+  async getPublicArticleSummaries(filters?: {
     category?: string;
     tag?: string;
     search?: string;
     authorSlug?: string;
-  }): Promise<Article[]> {
-    let list: Article[] = [];
+  }): Promise<ArticleSummary[]> {
+    const now = Date.now();
+    let summaries: ArticleSummary[] = [];
 
-    try {
-      const q = query(
-        collection(db, 'articles'),
-        where('status', '==', 'published'),
-        orderBy('publishedAt', 'desc')
-      );
-      const snap = await getDocs(q);
-      
-      if (!snap.empty) {
-        snap.forEach((d) => {
-          const data = d.data() as Article;
-          list.push({ ...data, firestoreDocId: d.id });
-        });
-      } else {
-        list = this.localArticlesCache.filter(a => a.status === 'published');
+    // Check In-Memory Cache if fresh
+    if (this.inMemorySummariesCache && (now - this.lastFetchTime < this.CACHE_TTL_MS)) {
+      summaries = [...this.inMemorySummariesCache];
+    } else {
+      try {
+        const q = query(
+          collection(db, 'articles'),
+          where('status', '==', 'published'),
+          orderBy('publishedAt', 'desc')
+        );
+        const snap = await getDocs(q);
+        
+        if (!snap.empty) {
+          const list: ArticleSummary[] = [];
+          snap.forEach((d) => {
+            const data = d.data() as Article;
+            // Store full article in cache if needed
+            this.inMemoryFullArticles.set(data.slug, { ...data, firestoreDocId: d.id });
+            
+            // Extract lightweight summary projection
+            const { content, ...summary } = data;
+            list.push({ ...summary, firestoreDocId: d.id });
+          });
+          this.inMemorySummariesCache = list;
+          this.lastFetchTime = now;
+          summaries = list;
+        } else {
+          // Fallback to local storage cache
+          summaries = this.localArticlesCache
+            .filter(a => a.status === 'published')
+            .map(({ content, ...rest }) => rest);
+          this.inMemorySummariesCache = summaries;
+        }
+      } catch (err) {
+        console.warn('Error fetching Firestore articles, using local fallback:', err);
+        summaries = this.localArticlesCache
+          .filter(a => a.status === 'published')
+          .map(({ content, ...rest }) => rest);
+        this.inMemorySummariesCache = summaries;
       }
-    } catch (err) {
-      console.warn('Error fetching Firestore articles, using local fallback:', err);
-      list = this.localArticlesCache.filter(a => a.status === 'published');
     }
 
-    // Apply Client Filters
+    // Apply Client-Side Filters
+    let filtered = [...summaries];
+
     if (filters) {
       const { category, tag, search, authorSlug } = filters;
 
-      if (category && category.trim()) {
+      if (category && category.trim() && category !== 'ALL') {
         const catNorm = category.trim().toLowerCase();
-        list = list.filter(a => 
+        filtered = filtered.filter(a => 
           a.category.toLowerCase() === catNorm || 
           a.category.toLowerCase().replace(/\s+/g, '-') === catNorm
         );
       }
 
-      if (tag && tag.trim()) {
+      if (tag && tag.trim() && tag !== 'ALL') {
         const tagNorm = tag.trim().toLowerCase().replace(/^#/, '');
-        list = list.filter(a => 
+        filtered = filtered.filter(a => 
           a.tags.some(t => t.toLowerCase() === tagNorm || t.toLowerCase().replace(/^#/, '') === tagNorm)
         );
       }
 
       if (authorSlug && authorSlug.trim()) {
         const authorNorm = authorSlug.trim().toLowerCase();
-        list = list.filter(a => a.authorSlug.toLowerCase() === authorNorm);
+        filtered = filtered.filter(a => a.authorSlug.toLowerCase() === authorNorm);
       }
 
       if (search && search.trim()) {
         const qStr = search.trim().toLowerCase();
-        list = list.filter(a => 
+        filtered = filtered.filter(a => 
           a.title.toLowerCase().includes(qStr) ||
           a.excerpt.toLowerCase().includes(qStr) ||
           a.category.toLowerCase().includes(qStr) ||
-          a.tags.some(t => t.toLowerCase().includes(qStr)) ||
-          a.content.toLowerCase().includes(qStr)
+          a.tags.some(t => t.toLowerCase().includes(qStr))
         );
       }
     }
 
-    return list.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    return filtered.sort((a, b) => new Date(b.publishedAt || b.createdAt).getTime() - new Date(a.publishedAt || a.createdAt).getTime());
   }
 
-  // Fetch Article by Slug
-  async getArticleBySlug(slug: string): Promise<Article | null> {
+  // Alias for backward compatibility
+  async getPublicArticles(filters?: {
+    category?: string;
+    tag?: string;
+    search?: string;
+    authorSlug?: string;
+  }): Promise<Article[]> {
+    const summaries = await this.getPublicArticleSummaries(filters);
+    return summaries as Article[];
+  }
+
+  // Fetch Full Article by Slug or ID (Downloads content only for the specific single article)
+  async getArticleBySlug(slugOrId: any): Promise<Article | null> {
+    if (!slugOrId) return null;
+    let cleanSlug = '';
+    if (typeof slugOrId === 'string') {
+      cleanSlug = slugOrId.trim();
+    } else if (typeof slugOrId === 'object') {
+      cleanSlug = (slugOrId.slug || slugOrId.id || '').toString().trim();
+    }
+    if (!cleanSlug) return null;
+
+    // Check In-Memory full article cache first
+    if (this.inMemoryFullArticles.has(cleanSlug)) {
+      return this.inMemoryFullArticles.get(cleanSlug)!;
+    }
+
     try {
-      const q = query(collection(db, 'articles'), where('slug', '==', slug.trim()));
-      const snap = await getDocs(q);
-      if (!snap.empty) {
-        const docSnap = snap.docs[0];
+      // 1. Query by slug
+      const qSlug = query(collection(db, 'articles'), where('slug', '==', cleanSlug), limit(1));
+      const snapSlug = await getDocs(qSlug);
+      if (!snapSlug.empty) {
+        const docSnap = snapSlug.docs[0];
         const data = docSnap.data() as Article;
-        return { ...data, firestoreDocId: docSnap.id };
+        const fullArticle = { ...data, firestoreDocId: docSnap.id };
+        this.inMemoryFullArticles.set(cleanSlug, fullArticle);
+        if (fullArticle.slug) this.inMemoryFullArticles.set(fullArticle.slug, fullArticle);
+        if (fullArticle.id) this.inMemoryFullArticles.set(fullArticle.id, fullArticle);
+        return fullArticle;
+      }
+
+      // 2. Query by ID if not found by slug
+      const qId = query(collection(db, 'articles'), where('id', '==', cleanSlug), limit(1));
+      const snapId = await getDocs(qId);
+      if (!snapId.empty) {
+        const docSnap = snapId.docs[0];
+        const data = docSnap.data() as Article;
+        const fullArticle = { ...data, firestoreDocId: docSnap.id };
+        this.inMemoryFullArticles.set(cleanSlug, fullArticle);
+        if (fullArticle.slug) this.inMemoryFullArticles.set(fullArticle.slug, fullArticle);
+        if (fullArticle.id) this.inMemoryFullArticles.set(fullArticle.id, fullArticle);
+        return fullArticle;
       }
     } catch (err) {
       console.warn('Error fetching article by slug from Firestore:', err);
     }
 
-    // Local fallback
-    const local = this.localArticlesCache.find(a => a.slug === slug.trim());
-    return local || null;
+    // Local fallback by slug or ID
+    const local = this.localArticlesCache.find(a => a.slug === cleanSlug || a.id === cleanSlug);
+    if (local) {
+      this.inMemoryFullArticles.set(cleanSlug, local);
+      return local;
+    }
+
+    return null;
   }
 
-  // Related Articles
-  async getRelatedArticles(currentArticle: Article, limitCount = 3): Promise<Article[]> {
-    const all = await this.getPublicArticles();
+  // Related Articles (Uses in-memory summaries or limited fetch)
+  async getRelatedArticles(currentArticle: { id: string; slug: string; category: string; tags: string[] }, limitCount = 3): Promise<ArticleSummary[]> {
+    const all = await this.getPublicArticleSummaries();
     return all
       .filter(a => a.id !== currentArticle.id && a.slug !== currentArticle.slug)
       .filter(a => 
@@ -237,6 +299,10 @@ class ArticleService {
     const readingTimeMinutes = Math.max(1, Math.ceil((article.content || '').split(/\s+/).length / 200));
     const readingTimeFormatted = `${readingTimeMinutes} min read`;
 
+    const publishedAtDate = article.publishedAt && article.publishedAt.trim()
+      ? (article.publishedAt.includes('T') ? article.publishedAt : new Date(article.publishedAt).toISOString())
+      : (article.status === 'published' ? nowIso : '');
+
     const fullArticle: Article = {
       id,
       title: article.title || 'Untitled Article',
@@ -244,8 +310,8 @@ class ArticleService {
       excerpt: article.excerpt || '',
       content: article.content || '',
       featuredImage: article.featuredImage || '',
-      category: article.category || 'General',
-      tags: article.tags || [],
+      category: article.category || 'Digital Safety',
+      tags: article.tags || ['DigitalSafety'],
       authorId: article.authorId || DEFAULT_AUTHOR.id,
       authorName: article.authorName || DEFAULT_AUTHOR.name,
       authorRole: article.authorRole || DEFAULT_AUTHOR.role,
@@ -253,11 +319,9 @@ class ArticleService {
       authorBio: article.authorBio || DEFAULT_AUTHOR.bio,
       authorSlug: article.authorSlug || DEFAULT_AUTHOR.slug,
       status: article.status || 'draft',
-      publishedAt: article.publishedAt || (article.status === 'published' ? nowIso : ''),
+      publishedAt: publishedAtDate,
       updatedAt: nowIso,
       readingTime: article.readingTime || readingTimeFormatted,
-      viewCount: article.viewCount || 0,
-      uniqueViewCount: article.uniqueViewCount || 0,
       createdAt: article.createdAt || nowIso,
       isFeatured: !!article.isFeatured,
       isPublished: article.status === 'published',
@@ -266,7 +330,10 @@ class ArticleService {
       canonicalUrl: article.canonicalUrl || `https://lesscreation.com/articles/${slug}`
     };
 
-    // Update local cache
+    // Invalidate in-memory caches
+    this.invalidateCache();
+
+    // Update local storage cache
     const existingIndex = this.localArticlesCache.findIndex(a => a.id === id || a.slug === slug);
     if (existingIndex >= 0) {
       this.localArticlesCache[existingIndex] = fullArticle;
@@ -287,6 +354,8 @@ class ArticleService {
 
   // Delete Article (Admin)
   async deleteArticle(id: string): Promise<void> {
+    this.invalidateCache();
+
     this.localArticlesCache = this.localArticlesCache.filter(a => a.id !== id);
     localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
 
@@ -294,104 +363,6 @@ class ArticleService {
       await deleteDoc(doc(db, 'articles', id));
     } catch (err) {
       console.error('Error deleting article from Firestore:', err);
-    }
-  }
-
-  // Record Deduplicated Article View Count
-  async recordArticleView(articleId: string, slug: string): Promise<void> {
-    const storageKey = `less_creation_viewed_art_${slug}`;
-    const now = Date.now();
-    const lastViewedStr = localStorage.getItem(storageKey);
-    let isUnique = false;
-
-    if (!lastViewedStr) {
-      isUnique = true;
-      localStorage.setItem(storageKey, String(now));
-    } else {
-      const lastViewedTime = parseInt(lastViewedStr, 10);
-      // If last viewed more than 24 hours ago, count as new unique view
-      if (now - lastViewedTime > 24 * 60 * 60 * 1000) {
-        isUnique = true;
-        localStorage.setItem(storageKey, String(now));
-      }
-    }
-
-    // Update local cache view count
-    const target = this.localArticlesCache.find(a => a.id === articleId || a.slug === slug);
-    if (target) {
-      target.viewCount = (target.viewCount || 0) + 1;
-      if (isUnique) target.uniqueViewCount = (target.uniqueViewCount || 0) + 1;
-      localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
-    }
-
-    // Safely update Firestore view count via atomic increment
-    try {
-      const articleRef = doc(db, 'articles', articleId);
-      const updates: any = { viewCount: increment(1) };
-      if (isUnique) updates.uniqueViewCount = increment(1);
-      await updateDoc(articleRef, updates);
-    } catch (err) {
-      console.warn('Error recording view count in Firestore:', err);
-    }
-  }
-
-  // Send Presence Heartbeat for "Reading Now"
-  async sendPresenceHeartbeat(articleId: string, visitorId: string): Promise<void> {
-    if (!articleId || !visitorId) return;
-    const presenceDocId = `${articleId}_${visitorId}`;
-    const expiresAt = Date.now() + 90 * 1000; // 90 second TTL
-
-    try {
-      await setDoc(doc(db, 'article_presence', presenceDocId), {
-        articleId,
-        visitorId,
-        lastSeen: Date.now(),
-        expiresAt
-      });
-    } catch (err) {
-      console.warn('Presence heartbeat warning:', err);
-    }
-  }
-
-  // Listen to Active Readers Count Real-time
-  subscribeActiveReaders(articleId: string, callback: (count: number) => void): () => void {
-    try {
-      const q = query(collection(db, 'article_presence'), where('articleId', '==', articleId));
-      return onSnapshot(q, (snapshot) => {
-        const now = Date.now();
-        let activeCount = 0;
-        snapshot.forEach((d) => {
-          const data = d.data();
-          if (data.expiresAt && data.expiresAt > now) {
-            activeCount++;
-          }
-        });
-        callback(Math.max(1, activeCount));
-      }, () => {
-        callback(1);
-      });
-    } catch {
-      callback(1);
-      return () => {};
-    }
-  }
-
-  // Article Useful Feedback Counter
-  async recordArticleFeedback(articleId: string, isUseful: boolean): Promise<void> {
-    const target = this.localArticlesCache.find(a => a.id === articleId);
-    if (target) {
-      if (isUseful) target.usefulYesCount = (target.usefulYesCount || 0) + 1;
-      else target.usefulNoCount = (target.usefulNoCount || 0) + 1;
-      localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
-    }
-
-    try {
-      const ref = doc(db, 'articles', articleId);
-      await updateDoc(ref, {
-        [isUseful ? 'usefulYesCount' : 'usefulNoCount']: increment(1)
-      });
-    } catch (err) {
-      console.warn('Feedback update warning:', err);
     }
   }
 

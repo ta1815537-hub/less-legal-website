@@ -55,8 +55,8 @@ export interface Article {
   publishedAt: string;
   updatedAt: string;
   readingTime: string;
-  viewCount: number;
-  uniqueViewCount: number;
+  viewCount?: number;
+  uniqueViewCount?: number;
   createdAt: string;
   createdBy?: string;
   updatedBy?: string;
@@ -69,6 +69,8 @@ export interface Article {
   usefulNoCount?: number;
   firestoreDocId?: string;
 }
+
+export type ArticleSummary = Omit<Article, 'content'>;
 
 export interface ArticleCategory {
   id: string;

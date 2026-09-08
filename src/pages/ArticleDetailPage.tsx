@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { PageRoute, Article } from '../types';
+import { PageRoute, Article, ArticleSummary } from '../types';
 import { 
-  ArrowLeft, Clock, Eye, Calendar, Share2, Copy, Check, 
-  ThumbsUp, ThumbsDown, BookOpen, Sparkles, User, Tag, 
-  ChevronRight, MessageCircle, AlertTriangle, ShieldCheck 
+  ArrowLeft, Clock, Calendar, Share2, Copy, Check, 
+  ThumbsUp, ThumbsDown, BookOpen, User, Tag, 
+  ChevronRight, AlertTriangle 
 } from 'lucide-react';
-import { HeroAmbientGlow } from '../components/MotionWrappers';
 import { useLanguage } from '../context/LanguageContext';
 import { articleService } from '../services/articleService';
 
 interface ArticleDetailPageProps {
-  slug: string;
+  slug?: string;
   onNavigate: (route: PageRoute, params?: { slug?: string; tag?: string; category?: string; authorSlug?: string }) => void;
 }
 
@@ -18,23 +17,28 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
+  // Extract slug from prop or fallback to URL pathname/hash/search
+  const effectiveSlug = React.useMemo(() => {
+    if (typeof slug === 'string' && slug.trim()) return slug.trim();
+    if (typeof slug === 'object' && slug !== null) {
+      const obj = slug as any;
+      if (obj.slug) return String(obj.slug).trim();
+      if (obj.id) return String(obj.id).trim();
+    }
+    const pathMatch = window.location.pathname.match(/^\/articles\/([^\/]+)$/i) || window.location.pathname.match(/^\/article\/([^\/]+)$/i);
+    if (pathMatch) return decodeURIComponent(pathMatch[1]);
+    const hashMatch = window.location.hash.match(/^#\/?articles\/([^\/]+)$/i) || window.location.hash.match(/^#\/?article\/([^\/]+)$/i);
+    if (hashMatch) return decodeURIComponent(hashMatch[1]);
+    const sp = new URLSearchParams(window.location.search);
+    return sp.get('slug') || sp.get('article') || '';
+  }, [slug]);
+
   const [article, setArticle] = useState<Article | null>(null);
-  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<ArticleSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [copiedShare, setCopiedShare] = useState<boolean>(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(false);
-  const [activeReadersCount, setActiveReadersCount] = useState<number>(1);
-
-  // Generate session visitorId for live reader presence
-  const [visitorId] = useState<string>(() => {
-    let id = sessionStorage.getItem('less_creation_visitor_id');
-    if (!id) {
-      id = `v_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-      sessionStorage.setItem('less_creation_visitor_id', id);
-    }
-    return id;
-  });
 
   // Track scroll reading progress bar
   useEffect(() => {
@@ -50,19 +54,24 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch article data and record view
+  // Fetch single full article data by slug
   useEffect(() => {
     let isMounted = true;
+    if (!effectiveSlug) {
+      setArticle(null);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
 
-    articleService.getArticleBySlug(slug).then(async (fetched) => {
+    articleService.getArticleBySlug(effectiveSlug).then(async (fetched) => {
       if (isMounted) {
         if (fetched) {
           setArticle(fetched);
           setLoading(false);
 
-          // Record view & fetch related
-          articleService.recordArticleView(fetched.id, fetched.slug);
+          // Fetch related articles
           const related = await articleService.getRelatedArticles(fetched, 3);
           if (isMounted) setRelatedArticles(related);
         } else {
@@ -70,39 +79,21 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
           setLoading(false);
         }
       }
+    }).catch((err) => {
+      console.error('Error fetching article:', err);
+      if (isMounted) {
+        setArticle(null);
+        setLoading(false);
+      }
     });
 
     return () => { isMounted = false; };
-  }, [slug]);
-
-  // Presence Heartbeat & Active Readers Listener
-  useEffect(() => {
-    if (!article) return;
-
-    // Send initial heartbeat
-    articleService.sendPresenceHeartbeat(article.id, visitorId);
-
-    // Heartbeat interval every 45s
-    const heartbeatInterval = setInterval(() => {
-      articleService.sendPresenceHeartbeat(article.id, visitorId);
-    }, 45000);
-
-    // Subscribe to active readers count
-    const unsubPresence = articleService.subscribeActiveReaders(article.id, (count) => {
-      setActiveReadersCount(count);
-    });
-
-    return () => {
-      clearInterval(heartbeatInterval);
-      unsubPresence();
-    };
-  }, [article, visitorId]);
+  }, [effectiveSlug]);
 
   // Sync Dynamic SEO Metadata & Article JSON-LD Structured Data
   useEffect(() => {
     if (!article) return;
 
-    const originalTitle = document.title;
     const pageTitle = article.seoTitle || `${article.title} | Less Creation`;
     document.title = pageTitle;
 
@@ -113,7 +104,6 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    const origDesc = metaDesc.getAttribute('content') || '';
     metaDesc.setAttribute('content', article.seoDescription || article.excerpt);
 
     // Canonical URL
@@ -149,52 +139,55 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       "@type": "BlogPosting",
       "headline": article.title,
       "description": article.excerpt,
+      "datePublished": article.publishedAt || article.createdAt,
+      "dateModified": article.updatedAt || article.publishedAt || article.createdAt,
       "author": {
-        "@type": "Person",
-        "name": article.authorName,
-        "jobTitle": article.authorRole
+        "@type": "Organization",
+        "name": "Less Creation Editorial",
+        "url": "https://lesscreation.com"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Less Creation",
-        "url": "https://lesscreation.com",
-        "logo": "https://lesscreation.com/app_logo_512x512-3.png"
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://lesscreation.com/Logo.png"
+        }
       },
-      "datePublished": article.publishedAt,
-      "dateModified": article.updatedAt || article.publishedAt,
-      "mainEntityOfPage": targetUrl
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": targetUrl
+      }
     };
 
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'article-jsonld';
-    script.text = JSON.stringify(jsonLd);
-    document.head.appendChild(script);
+    let scriptTag = document.getElementById('json-ld-article-posting') as HTMLScriptElement;
+    if (!scriptTag) {
+      scriptTag = document.createElement('script');
+      scriptTag.id = 'json-ld-article-posting';
+      scriptTag.type = 'application/ld+json';
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.text = JSON.stringify(jsonLd);
 
     return () => {
-      document.title = originalTitle;
-      if (origDesc) metaDesc?.setAttribute('content', origDesc);
-      const existingScript = document.getElementById('article-jsonld');
-      if (existingScript) existingScript.remove();
+      const el = document.getElementById('json-ld-article-posting');
+      if (el) el.remove();
     };
   }, [article]);
 
-  // Share Actions
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : `https://lesscreation.com/articles/${slug}`;
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(currentUrl);
-    setCopiedShare(true);
-    setTimeout(() => setCopiedShare(false), 3000);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(currentUrl);
+      setCopiedShare(true);
+      setTimeout(() => setCopiedShare(false), 2500);
+    }
   };
 
   const handleShareWhatsApp = () => {
-    const text = encodeURIComponent(`*${article?.title}*\n\n${article?.excerpt}\n\nRead full article: ${currentUrl}`);
+    const text = encodeURIComponent(`*${article?.title}*\n\nRead this essay on Less Creation:\n${currentUrl}`);
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-  };
-
-  const handleShareFacebook = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`, '_blank');
   };
 
   const handleShareX = () => {
@@ -207,10 +200,24 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
     window.open(`https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${text}`, '_blank');
   };
 
-  const handleFeedback = (isUseful: boolean) => {
+  const handleFeedback = (_isUseful: boolean) => {
     if (!article || feedbackSubmitted) return;
-    articleService.recordArticleFeedback(article.id, isUseful);
     setFeedbackSubmitted(true);
+  };
+
+  // Format Display Date cleanly
+  const formatArticleDate = (isoString?: string) => {
+    if (!isoString) return '';
+    try {
+      const date = new Date(isoString);
+      return date.toLocaleDateString(isHindi ? 'hi-IN' : 'en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    } catch {
+      return isoString;
+    }
   };
 
   // Render Formatted Article Content Parser
@@ -224,7 +231,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       // Heading 2 (## Heading)
       if (trimmed.startsWith('## ')) {
         return (
-          <h2 key={idx} className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white pt-6 pb-2 tracking-tight border-b border-slate-200/60 dark:border-white/10">
+          <h2 key={idx} className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white pt-6 pb-2 tracking-tight border-b border-slate-200 dark:border-white/10">
             {trimmed.replace(/^##\s+/, '')}
           </h2>
         );
@@ -233,7 +240,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       // Heading 3 (### Heading)
       if (trimmed.startsWith('### ')) {
         return (
-          <h3 key={idx} className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 pt-4 pb-1 tracking-tight">
+          <h3 key={idx} className="text-lg sm:text-xl font-bold text-slate-800 dark:text-slate-100 pt-4 pb-1 tracking-tight">
             {trimmed.replace(/^###\s+/, '')}
           </h3>
         );
@@ -242,7 +249,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       // Blockquote / Callout (> Quote)
       if (trimmed.startsWith('> ')) {
         return (
-          <blockquote key={idx} className="my-6 p-5 sm:p-6 rounded-2xl bg-blue-500/10 dark:bg-blue-950/40 border-l-4 border-blue-600 dark:border-blue-400 text-slate-800 dark:text-slate-200 text-sm sm:text-base italic leading-relaxed shadow-2xs">
+          <blockquote key={idx} className="my-5 p-4 sm:p-5 rounded-lg bg-blue-50/80 dark:bg-blue-950/30 border-l-4 border-blue-600 dark:border-blue-400 text-slate-800 dark:text-slate-200 text-sm sm:text-base italic leading-relaxed">
             {trimmed.replace(/^>\s+/, '').replace(/\*\*(.*?)\*\*/g, '$1')}
           </blockquote>
         );
@@ -250,14 +257,14 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
 
       // Horizontal Divider (---)
       if (trimmed === '---') {
-        return <hr key={idx} className="my-8 border-slate-200 dark:border-white/10" />;
+        return <hr key={idx} className="my-6 border-slate-200 dark:border-white/10" />;
       }
 
       // Bullet List
       if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
         const items = trimmed.split(/\n/).map(line => line.replace(/^[-*]\s+/, ''));
         return (
-          <ul key={idx} className="my-4 space-y-2.5 list-disc list-inside text-slate-700 dark:text-[#B8B3AF] text-sm sm:text-base leading-relaxed">
+          <ul key={idx} className="my-4 space-y-2 list-disc list-inside text-slate-700 dark:text-[#C5C0BC] text-base sm:text-lg leading-relaxed">
             {items.map((item, i) => (
               <li key={i} className="pl-1">
                 <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(item) }} />
@@ -271,7 +278,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       if (/^\d+\.\s+/.test(trimmed)) {
         const items = trimmed.split(/\n/).map(line => line.replace(/^\d+\.\s+/, ''));
         return (
-          <ol key={idx} className="my-4 space-y-2.5 list-decimal list-inside text-slate-700 dark:text-[#B8B3AF] text-sm sm:text-base leading-relaxed">
+          <ol key={idx} className="my-4 space-y-2 list-decimal list-inside text-slate-700 dark:text-[#C5C0BC] text-base sm:text-lg leading-relaxed">
             {items.map((item, i) => (
               <li key={i} className="pl-1">
                 <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(item) }} />
@@ -285,15 +292,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       if (trimmed.startsWith('```')) {
         const code = trimmed.replace(/^```[a-z]*\n?/, '').replace(/\n?```$/, '');
         return (
-          <pre key={idx} className="my-6 p-4 rounded-2xl bg-slate-900 text-emerald-400 font-mono text-xs sm:text-sm overflow-x-auto border border-slate-800 shadow-inner">
+          <pre key={idx} className="my-5 p-4 rounded-lg bg-slate-900 text-emerald-400 font-mono text-xs sm:text-sm overflow-x-auto border border-slate-800">
             <code>{code}</code>
           </pre>
         );
       }
 
-      // Regular Paragraph
+      // Regular Paragraph (Optimal readability: 18px body, 1.65 line-height)
       return (
-        <p key={idx} className="text-slate-700 dark:text-[#B8B3AF] text-base sm:text-lg leading-relaxed sm:leading-loose">
+        <p key={idx} className="text-slate-700 dark:text-[#D1CCC8] text-base sm:text-[18px] leading-relaxed sm:leading-[1.75]">
           <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(trimmed) }} />
         </p>
       );
@@ -303,44 +310,40 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
   // Helper for inline markdown bolding & links
   const formatInlineMarkdown = (text: string) => {
     return text
-      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-extrabold text-slate-900 dark:text-white">$1</strong>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900 dark:text-white">$1</strong>')
       .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 font-semibold">$1</a>');
   };
 
   if (loading) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center space-y-4 relative">
-        <HeroAmbientGlow />
-        <div className="relative z-10 flex flex-col items-center space-y-3 bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-[28px] p-8 shadow-sm">
-          <BookOpen className="w-8 h-8 text-blue-600 animate-pulse" />
-          <p className="text-sm font-semibold text-slate-600 dark:text-[#B8B3AF]">
-            {isHindi ? "संपादकीय लेख लोड हो रहा है..." : "Loading editorial article..."}
-          </p>
-        </div>
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center space-y-3">
+        <BookOpen className="w-8 h-8 text-blue-600 animate-pulse" />
+        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+          {isHindi ? "संपादकीय लेख लोड हो रहा है..." : "Loading editorial article..."}
+        </p>
       </div>
     );
   }
 
   if (!article) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center space-y-4 relative">
-        <HeroAmbientGlow />
-        <div className="relative z-10 max-w-md bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-[28px] p-8 shadow-sm space-y-4">
-          <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto" />
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center space-y-4">
+        <div className="max-w-md p-6 border border-slate-200 dark:border-white/10 rounded-xl space-y-4 bg-white dark:bg-[#0E131F]">
+          <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto" />
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
             {isHindi ? "लेख नहीं मिला" : "Article Not Found"}
           </h2>
-          <p className="text-xs text-slate-500 dark:text-[#B8B3AF]">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {isHindi 
               ? "यह लेख हटाया जा चुका है या इसका लिंक अमान्य है।" 
               : "The requested article could not be found or has been unpublished."}
           </p>
           <button
             onClick={() => onNavigate('articles')}
-            className="px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700 transition-all cursor-pointer inline-flex items-center gap-2"
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors cursor-pointer inline-flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>{isHindi ? "लेख सूची पर वापस जाएं" : "Back to Articles"}</span>
+            <span>{isHindi ? "सभी लेख देखें" : "Back to Articles"}</span>
           </button>
         </div>
       </div>
@@ -348,121 +351,115 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
   }
 
   return (
-    <div className="relative min-h-screen pb-24 overflow-hidden">
-      <HeroAmbientGlow />
-
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0A0D14] text-slate-900 dark:text-[#F5F2EE] transition-colors duration-200 pb-20">
+      
       {/* Sticky Top Scroll Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-slate-200/50 dark:bg-white/10 z-50">
+      <div className="fixed top-0 left-0 w-full h-1 bg-slate-200/60 dark:bg-white/10 z-50">
         <div 
-          className="h-full bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-400 transition-all duration-150 ease-out" 
+          className="h-full bg-blue-600 dark:bg-blue-400 transition-all duration-150 ease-out" 
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-10 z-10">
+      {/* EDITORIAL READING COLUMN (Max-width 720px for 60-75 character line length) */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
         
-        {/* Back Navigation Bar */}
+        {/* Navigation Bar */}
         <div className="flex items-center justify-between">
           <button
             onClick={() => onNavigate('articles')}
-            className="px-4 py-2 rounded-full bg-white/90 dark:bg-[#121622]/80 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-2 transition-all shadow-2xs hover:shadow-sm cursor-pointer"
+            className="px-3 py-1.5 rounded-md bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <span>{isHindi ? "सभी लेख (Back)" : "Back to Articles"}</span>
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>{isHindi ? "सभी लेख" : "Back to Articles"}</span>
           </button>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span>{activeReadersCount} {isHindi ? "लाइव पाठक" : "Reading Now"}</span>
-            </span>
-          </div>
+          <span className="text-[11px] font-mono text-slate-400">
+            {article.readingTime}
+          </span>
         </div>
 
-        {/* HERO HEADER SECTION - Unwrapped on background */}
-        <div className="space-y-6 border-b border-slate-200/80 dark:border-white/10 pb-8">
-          <div className="flex flex-wrap items-center gap-3">
+        {/* HERO ARTICLE HEADER (With Date & Category Prominently at Top) */}
+        <header className="space-y-3.5 border-b border-slate-200 dark:border-white/10 pb-6">
+          
+          {/* Category and Prominent Publication Date */}
+          <div className="flex flex-wrap items-center gap-2.5 text-xs">
             <button
               onClick={() => onNavigate('articles', { category: article.category })}
-              className="px-3.5 py-1 rounded-full bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-colors cursor-pointer"
+              className="px-2.5 py-0.5 rounded bg-blue-600 text-white font-bold text-[11px] hover:bg-blue-700 transition-colors cursor-pointer"
             >
               {article.category}
             </button>
 
-            <span className="text-xs font-mono text-slate-500 dark:text-slate-400 flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5" />
-              {new Date(article.publishedAt || article.createdAt).toLocaleDateString('en-US', {
-                month: 'short', day: 'numeric', year: 'numeric'
-              })}
+            <span className="text-slate-400 dark:text-slate-500">•</span>
+
+            <span className="font-mono text-slate-600 dark:text-slate-300 font-semibold flex items-center gap-1 text-[11px]">
+              <Calendar className="w-3.5 h-3.5 text-blue-500" />
+              {formatArticleDate(article.publishedAt || article.createdAt)}
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight leading-snug sm:leading-snug">
+          {/* Article Title */}
+          <h1 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-snug sm:leading-snug">
             {article.title}
           </h1>
 
-          <p className="text-base sm:text-xl text-slate-600 dark:text-[#B8B3AF] font-medium leading-relaxed border-l-4 border-blue-600 dark:border-blue-400 pl-4 py-1">
+          {/* Subtitle / Excerpt */}
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#B8B3AF] leading-relaxed border-l-3 border-blue-600 pl-3.5 py-0.5">
             {article.excerpt}
           </p>
 
-          {/* Author & Reading Metrics Bar - Sleek horizontal bar on background */}
-          <div className="pt-2 flex flex-wrap items-center justify-between gap-4 text-xs">
-            <div className="flex items-center gap-3">
-              <div 
-                onClick={() => onNavigate('author-detail', { authorSlug: article.authorSlug })}
-                className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center font-bold text-blue-600 dark:text-blue-400 overflow-hidden cursor-pointer hover:scale-105 transition-transform"
-              >
-                <img src={article.authorImage || '/Logo.png'} alt={article.authorName} className="w-full h-full object-cover" />
+          {/* Attribution Bar */}
+          <div className="flex items-center justify-between pt-3 text-xs text-slate-500 dark:text-slate-400">
+            <div className="flex items-center gap-2.5 pointer-events-none select-none">
+              <div className="w-7 h-7 rounded bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center overflow-hidden shrink-0 pointer-events-none select-none">
+                <img src="/Logo.png" alt="Less Creation" className="w-full h-full object-cover pointer-events-none select-none" />
               </div>
-
-              <div>
-                <button
-                  onClick={() => onNavigate('author-detail', { authorSlug: article.authorSlug })}
-                  className="block font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
-                >
-                  {article.authorName || 'Less Creation Editorial'}
-                </button>
-                <span className="text-[11px] text-slate-500 dark:text-[#B8B3AF]">{article.authorRole || 'Editorial & Research Team'}</span>
+              <div className="pointer-events-none select-none">
+                <span className="block font-bold text-slate-900 dark:text-white text-xs">
+                  By Less Team
+                </span>
+                <span className="text-[10px] text-slate-400">Published by Less Creation</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 font-mono text-slate-500 dark:text-[#B8B3AF] text-[11px]">
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-blue-500" />
-                {article.readingTime}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Eye className="w-3.5 h-3.5 text-emerald-500" />
-                {article.viewCount} views
-              </span>
-            </div>
+            <span className="font-mono text-[11px] flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5 text-blue-500" />
+              {article.readingTime}
+            </span>
           </div>
-        </div>
+
+        </header>
 
         {/* Featured Image if Available */}
         {article.featuredImage && (
-          <div className="rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/10 h-64 sm:h-96 w-full shadow-xs">
-            <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover" />
+          <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 h-56 sm:h-80 w-full bg-slate-100 dark:bg-white/5">
+            <img 
+              src={article.featuredImage} 
+              alt={article.title} 
+              className="w-full h-full object-cover" 
+              loading="eager"
+            />
           </div>
         )}
 
-        {/* MAIN EDITORIAL ARTICLE CONTENT - Open flow on page background */}
-        <article className="prose dark:prose-invert max-w-none space-y-6 pt-2">
+        {/* MAIN EDITORIAL ARTICLE CONTENT (Open directly on background) */}
+        <article className="space-y-5 pt-2">
           {renderFormattedContent(article.content)}
         </article>
 
         {/* Article Tags */}
         {article.tags && article.tags.length > 0 && (
-          <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5 mr-2">
-              <Tag className="w-3.5 h-3.5" />
-              <span>Article Tags:</span>
+          <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center gap-1.5">
+            <span className="text-xs font-bold text-slate-400 flex items-center gap-1 mr-1">
+              <Tag className="w-3 h-3" />
+              <span>Tags:</span>
             </span>
             {article.tags.map((tag) => (
               <button
                 key={tag}
                 onClick={() => onNavigate('articles', { tag })}
-                className="px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all cursor-pointer"
+                className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 transition-colors cursor-pointer"
               >
                 #{tag}
               </button>
@@ -470,167 +467,114 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
           </div>
         )}
 
-        {/* "WAS THIS ARTICLE USEFUL?" FEEDBACK & SOCIAL SHARING */}
-        <div className="py-6 border-y border-slate-200/80 dark:border-white/10 space-y-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            
-            {/* Feedback Widget */}
-            <div className="space-y-2 text-center sm:text-left">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                {isHindi ? "क्या यह लेख आपके लिए उपयोगी रहा?" : "Was this article useful?"}
-              </h4>
-              <div className="flex items-center gap-3 justify-center sm:justify-start">
-                <button
-                  onClick={() => handleFeedback(true)}
-                  disabled={feedbackSubmitted}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
-                    feedbackSubmitted
-                      ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
-                      : 'bg-slate-100 dark:bg-white/5 hover:bg-emerald-500/10 text-slate-700 dark:text-slate-300'
-                  }`}
-                >
-                  <ThumbsUp className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>{isHindi ? "हाँ (Yes)" : "Yes"}</span>
-                </button>
+        {/* FEEDBACK & SOCIAL SHARING BAR */}
+        <div className="py-5 border-y border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          
+          {/* Feedback Widget */}
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+              {isHindi ? "क्या यह लेख उपयोगी रहा?" : "Was this article useful?"}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleFeedback(true)}
+                disabled={feedbackSubmitted}
+                className={`px-3 py-1 rounded-md text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                  feedbackSubmitted
+                    ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/30'
+                    : 'bg-slate-100 dark:bg-white/5 hover:bg-emerald-500/10 text-slate-700 dark:text-slate-300'
+                }`}
+              >
+                <ThumbsUp className="w-3 h-3 text-emerald-500" />
+                <span>{isHindi ? "हाँ" : "Yes"}</span>
+              </button>
 
-                <button
-                  onClick={() => handleFeedback(false)}
-                  disabled={feedbackSubmitted}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
-                    feedbackSubmitted
-                      ? 'bg-rose-500/15 border border-rose-500/30 text-rose-600 dark:text-rose-400'
-                      : 'bg-slate-100 dark:bg-white/5 hover:bg-rose-500/10 text-slate-700 dark:text-slate-300'
-                  }`}
-                >
-                  <ThumbsDown className="w-3.5 h-3.5 text-rose-500" />
-                  <span>{isHindi ? "नहीं (No)" : "No"}</span>
-                </button>
-              </div>
-              {feedbackSubmitted && (
-                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold animate-in fade-in">
-                  {isHindi ? "आपकी प्रतिक्रिया के लिए धन्यवाद!" : "Thank you for your feedback!"}
-                </p>
-              )}
-            </div>
-
-            {/* Social Share Controls */}
-            <div className="space-y-2 text-center sm:text-right">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-end gap-1.5">
-                <Share2 className="w-3.5 h-3.5 text-blue-500" />
-                <span>{isHindi ? "लेख साझा करें" : "Share Article"}</span>
-              </h4>
-
-              <div className="flex items-center gap-2 justify-center sm:justify-end">
-                <button
-                  onClick={handleCopyLink}
-                  title="Copy Article Link"
-                  className="p-2 rounded-lg bg-slate-100 dark:bg-white/5 hover:bg-blue-600 hover:text-white text-slate-700 dark:text-slate-300 transition-all cursor-pointer relative"
-                >
-                  {copiedShare ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                </button>
-
-                <button
-                  onClick={handleShareWhatsApp}
-                  title="Share on WhatsApp"
-                  className="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-[11px] font-bold transition-all cursor-pointer"
-                >
-                  WhatsApp
-                </button>
-
-                <button
-                  onClick={handleShareTelegram}
-                  title="Share on Telegram"
-                  className="px-2.5 py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30 text-[11px] font-bold transition-all cursor-pointer"
-                >
-                  Telegram
-                </button>
-
-                <button
-                  onClick={handleShareX}
-                  title="Share on X"
-                  className="px-2.5 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-900 dark:text-white text-[11px] font-bold transition-all cursor-pointer"
-                >
-                  X
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* AUTHOR PROFILE FOOTER - Unwrapped editorial sign-off */}
-        <div className="p-5 rounded-2xl bg-blue-500/5 dark:bg-white/5 border border-blue-500/10 dark:border-white/10 space-y-3">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
-            <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold overflow-hidden shrink-0">
-              <img src={article.authorImage || '/Logo.png'} alt={article.authorName} className="w-full h-full object-cover" />
-            </div>
-
-            <div className="space-y-1 flex-1">
-              <div className="flex flex-wrap items-center justify-center sm:justify-between gap-2">
-                <div>
-                  <h4 className="text-sm font-extrabold text-slate-900 dark:text-white">
-                    {article.authorName || 'Less Creation Editorial'}
-                  </h4>
-                  <p className="text-[11px] font-medium text-blue-600 dark:text-blue-400">{article.authorRole || 'Editorial & Research Team'}</p>
-                </div>
-
-                <button
-                  onClick={() => onNavigate('author-detail', { authorSlug: article.authorSlug })}
-                  className="text-[11px] font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 inline-flex items-center gap-1 cursor-pointer"
-                >
-                  <span>{isHindi ? "लेखक प्रोफ़ाइल" : "Author Profile"}</span>
-                  <ChevronRight className="w-3 h-3" />
-                </button>
-              </div>
-
-              <p className="text-xs text-slate-600 dark:text-[#B8B3AF] leading-relaxed">
-                {article.authorBio || 'Official editorial, research, and technical publication team at Less Creation.'}
-              </p>
+              <button
+                onClick={() => handleFeedback(false)}
+                disabled={feedbackSubmitted}
+                className={`px-3 py-1 rounded-md text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                  feedbackSubmitted
+                    ? 'bg-rose-500/10 text-rose-600 border border-rose-500/30'
+                    : 'bg-slate-100 dark:bg-white/5 hover:bg-rose-500/10 text-slate-700 dark:text-slate-300'
+                }`}
+              >
+                <ThumbsDown className="w-3 h-3 text-rose-500" />
+                <span>{isHindi ? "नहीं" : "No"}</span>
+              </button>
             </div>
           </div>
+
+          {/* Social Share Controls */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-bold text-slate-400 mr-1 flex items-center gap-1">
+              <Share2 className="w-3 h-3 text-blue-500" />
+              <span>Share:</span>
+            </span>
+
+            <button
+              onClick={handleCopyLink}
+              title="Copy Link"
+              className="p-1.5 rounded-md bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-colors cursor-pointer"
+            >
+              {copiedShare ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            </button>
+
+            <button
+              onClick={handleShareWhatsApp}
+              className="px-2.5 py-1 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-colors cursor-pointer"
+            >
+              WhatsApp
+            </button>
+
+            <button
+              onClick={handleShareTelegram}
+              className="px-2.5 py-1 rounded-md bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/30 text-xs font-bold transition-colors cursor-pointer"
+            >
+              Telegram
+            </button>
+
+            <button
+              onClick={handleShareX}
+              className="px-2.5 py-1 rounded-md bg-slate-200 dark:bg-white/10 hover:bg-slate-300 text-slate-900 dark:text-white text-xs font-bold transition-colors cursor-pointer"
+            >
+              X
+            </button>
+          </div>
+
         </div>
 
         {/* RELATED ARTICLES ("CONTINUE READING") */}
         {relatedArticles.length > 0 && (
-          <div className="pt-10 space-y-6">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-3">
-              <BookOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <span>{isHindi ? "आगे पढ़ें (Continue Reading)" : "Continue Reading"}</span>
+          <section className="space-y-3 pt-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
+              <BookOpen className="w-3.5 h-3.5 text-blue-500" />
+              <span>{isHindi ? "संबंधित लेख (Continue Reading)" : "Continue Reading"}</span>
             </h3>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="divide-y divide-slate-200 dark:divide-white/10 border-y border-slate-200 dark:border-white/10">
               {relatedArticles.map((rel) => (
                 <div
                   key={rel.id}
                   onClick={() => onNavigate('article-detail', { slug: rel.slug })}
-                  className="p-5 rounded-[20px] bg-white/90 dark:bg-[#121622]/90 backdrop-blur-xl border border-white/80 dark:border-white/10 hover:border-blue-500/40 shadow-2xs hover:shadow-md transition-all cursor-pointer space-y-3"
+                  className="py-3 flex items-center justify-between gap-3 group cursor-pointer hover:text-blue-600 transition-colors"
                 >
-                  <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-bold">
-                    {rel.category}
-                  </span>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 hover:text-blue-600 transition-colors">
-                    {rel.title}
-                  </h4>
-                  <span className="text-[11px] font-mono text-slate-400 block">
-                    {rel.readingTime}
-                  </span>
+                  <div className="space-y-0.5 min-w-0">
+                    <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
+                      {rel.category}
+                    </span>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                      {rel.title}
+                    </h4>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
-        {/* FINAL LESS CREATION BRANDING SIGNATURE */}
-        <div className="pt-8 text-center border-t border-slate-200/80 dark:border-white/10 space-y-1">
-          <p className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
-            Published by Less Creation
-          </p>
-          <p className="text-[11px] text-slate-400">
-            Written & Edited by {article.authorName} • Simpler Tool, Greater Impact.
-          </p>
-        </div>
-
       </div>
+
     </div>
   );
 };

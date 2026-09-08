@@ -106,16 +106,39 @@ function getRouteFromLocation(): PageRoute {
   }
 }
 
+function getSlugFromLocation(): string | undefined {
+  const pathname = window.location.pathname;
+  const match = pathname.match(/^\/articles\/([^\/]+)$/i) || pathname.match(/^\/article\/([^\/]+)$/i);
+  if (match) return decodeURIComponent(match[1]);
+
+  const hash = window.location.hash;
+  const hashMatch = hash.match(/^#\/?articles\/([^\/]+)$/i) || hash.match(/^#\/?article\/([^\/]+)$/i);
+  if (hashMatch) return decodeURIComponent(hashMatch[1]);
+
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has('slug')) return decodeURIComponent(searchParams.get('slug') || '');
+  if (searchParams.has('article')) return decodeURIComponent(searchParams.get('article') || '');
+  return undefined;
+}
+
+function getAuthorSlugFromLocation(): string | undefined {
+  const pathname = window.location.pathname;
+  const match = pathname.match(/^\/author(?:s)?\/([^\/]+)$/i);
+  if (match) return decodeURIComponent(match[1]);
+
+  const hash = window.location.hash;
+  const hashMatch = hash.match(/^#\/?author(?:s)?\/([^\/]+)$/i);
+  if (hashMatch) return decodeURIComponent(hashMatch[1]);
+
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has('author')) return decodeURIComponent(searchParams.get('author') || '');
+  return undefined;
+}
+
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>(getRouteFromLocation);
-  const [activeArticleSlug, setActiveArticleSlug] = useState<string | undefined>(() => {
-    const match = window.location.pathname.match(/^\/articles\/([^\/]+)$/i);
-    return match ? match[1] : undefined;
-  });
-  const [activeAuthorSlug, setActiveAuthorSlug] = useState<string | undefined>(() => {
-    const match = window.location.pathname.match(/^\/author(?:s)?\/([^\/]+)$/i);
-    return match ? match[1] : undefined;
-  });
+  const [activeArticleSlug, setActiveArticleSlug] = useState<string | undefined>(getSlugFromLocation);
+  const [activeAuthorSlug, setActiveAuthorSlug] = useState<string | undefined>(getAuthorSlugFromLocation);
 
   // Sync title, description, and canonical link for SEO based on route
   useEffect(() => {
@@ -263,7 +286,15 @@ export default function App() {
   // Sync route on popstate and hashchange
   useEffect(() => {
     const handleLocationChange = () => {
-      setCurrentRoute(getRouteFromLocation());
+      const nextRoute = getRouteFromLocation();
+      setCurrentRoute(nextRoute);
+      if (nextRoute === 'article-detail') {
+        const slug = getSlugFromLocation();
+        if (slug) setActiveArticleSlug(slug);
+      } else if (nextRoute === 'author-detail') {
+        const author = getAuthorSlugFromLocation();
+        if (author) setActiveAuthorSlug(author);
+      }
       try {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch {
@@ -280,19 +311,33 @@ export default function App() {
     };
   }, []);
 
-  const navigateTo = (route: PageRoute, param?: string) => {
+  const navigateTo = (route: PageRoute, param?: any) => {
+    let slugParam = '';
+    let authorSlugParam = '';
+    if (typeof param === 'string') {
+      slugParam = param.trim();
+      authorSlugParam = param.trim();
+    } else if (param && typeof param === 'object') {
+      slugParam = (param.slug || param.id || '').toString().trim();
+      authorSlugParam = (param.authorSlug || '').toString().trim();
+    }
+
+    if (route === 'article-detail' && slugParam) {
+      setActiveArticleSlug(slugParam);
+    } else if (route === 'author-detail' && authorSlugParam) {
+      setActiveAuthorSlug(authorSlugParam);
+    }
+
     setCurrentRoute(route);
     
     // Update path using history API for clean direct URLs
     let targetPath = '/';
     if (route === 'home') targetPath = '/';
     else if (route === 'articles') targetPath = '/articles';
-    else if (route === 'article-detail' && param) {
-      setActiveArticleSlug(param);
-      targetPath = `/articles/${param}`;
-    } else if (route === 'author-detail' && param) {
-      setActiveAuthorSlug(param);
-      targetPath = `/authors/${param}`;
+    else if (route === 'article-detail' && slugParam) {
+      targetPath = `/articles/${slugParam}`;
+    } else if (route === 'author-detail' && authorSlugParam) {
+      targetPath = `/authors/${authorSlugParam}`;
     }
     else if (route === 'tools') targetPath = '/tools';
     else if (route === 'less-legal') targetPath = '/less-legal';
