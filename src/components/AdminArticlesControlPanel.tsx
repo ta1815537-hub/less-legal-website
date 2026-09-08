@@ -5,13 +5,15 @@ import {
 import { 
   BookOpen, Plus, Search, Filter, Edit3, Trash2, Copy, Eye, 
   Sparkles, CheckCircle2, Clock, AlertTriangle, RefreshCw, Save, 
-  X, Tag, Calendar, User, Globe, Share2, Layers, 
-  Check, ArrowLeft, ExternalLink, Type, List, ListOrdered, Quote, Code, Heading
+  X, Tag, Calendar, User, Globe, Share2, Layers, PenTool,
+  Check, ArrowLeft, ExternalLink, Type, List, ListOrdered, Quote, Code, Heading,
+  Image as ImageIcon, Link as LinkIcon
 } from 'lucide-react';
 import { 
   articleService, DEFAULT_AUTHOR, DEFAULT_CATEGORIES 
 } from '../services/articleService';
 import { useLanguage } from '../context/LanguageContext';
+import { getDirectCloudImageUrl, convertCloudStorageUrl } from '../utils/adminStorage';
 
 interface AdminArticlesControlPanelProps {
   adminEmail?: string;
@@ -81,8 +83,32 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
     }
   };
 
+  const [isPurgingDemos, setIsPurgingDemos] = useState(false);
+  const handlePurgeDemos = async () => {
+    setIsPurgingDemos(true);
+    try {
+      const purged = await articleService.removeAllDemoArticles();
+      onShowToast(
+        isHindi 
+          ? `डेमो लेख साफ़ कर दिए गए (${purged} हटाए गए)` 
+          : `Demo articles purged (${purged} removed)`, 
+        'success'
+      );
+      await loadAdminArticles();
+    } catch (err) {
+      console.error('Purge error:', err);
+      onShowToast('Failed to purge demo articles', 'error');
+    } finally {
+      setIsPurgingDemos(false);
+    }
+  };
+
   useEffect(() => {
-    loadAdminArticles();
+    // Run cleanup on mount to ensure demo articles never show
+    articleService.removeAllDemoArticles().finally(() => {
+      loadAdminArticles();
+    });
+
     const unsubscribe = articleService.subscribeToArticles((data) => {
       setArticles(data);
       setLoading(false);
@@ -324,6 +350,18 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
             </button>
           )}
 
+          {activeSubTab === 'list' && (
+            <button
+              onClick={handlePurgeDemos}
+              disabled={isPurgingDemos}
+              className="px-2.5 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-xs font-bold transition-colors cursor-pointer inline-flex items-center gap-1.5"
+              title={isHindi ? "सभी डेमो और हार्डकोडेड लेख साफ़ करें" : "Purge demo articles from Database"}
+            >
+              <Trash2 className={`w-3.5 h-3.5 ${isPurgingDemos ? 'animate-spin text-rose-600' : ''}`} />
+              <span className="hidden sm:inline">{isHindi ? "डेमो हटाएं" : "Purge Demos"}</span>
+            </button>
+          )}
+
           <button
             onClick={loadAdminArticles}
             disabled={loading}
@@ -417,21 +455,39 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                       <tr key={art.id} className="hover:bg-slate-50/70 dark:hover:bg-white/5 transition-colors">
                         
                         <td className="py-3 px-4 max-w-sm">
-                          <button
-                            onClick={() => {
-                              if (onNavigate) onNavigate('article-detail', { slug: art.slug });
-                              else setPreviewArticle(art);
-                            }}
-                            className="text-left group/title block w-full focus:outline-none"
-                            title="Open Article in Reading Mode"
-                          >
-                            <div className="font-bold text-slate-900 dark:text-white group-hover/title:text-blue-600 dark:group-hover/title:text-blue-400 transition-colors truncate">
-                              {art.title}
+                          <div className="flex items-center gap-3">
+                            {/* Article Banner Thumbnail */}
+                            <div className="w-14 aspect-video rounded-md bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shrink-0 overflow-hidden flex items-center justify-center">
+                              {art.featuredImage ? (
+                                <img
+                                  src={getDirectCloudImageUrl(art.featuredImage)}
+                                  alt=""
+                                  referrerPolicy="no-referrer"
+                                  className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900"
+                                  onError={(e) => {
+                                    (e.target as HTMLElement).style.display = 'none';
+                                  }}
+                                />
+                              ) : (
+                                <BookOpen className="w-4 h-4 text-slate-400" />
+                              )}
                             </div>
-                            <div className="text-[11px] font-mono text-slate-400 truncate">
-                              /{art.slug}
-                            </div>
-                          </button>
+                            <button
+                              onClick={() => {
+                                if (onNavigate) onNavigate('article-detail', { slug: art.slug });
+                                else setPreviewArticle(art);
+                              }}
+                              className="text-left group/title block min-w-0 flex-1 focus:outline-none"
+                              title="Open Article in Reading Mode"
+                            >
+                              <div className="font-bold text-slate-900 dark:text-white group-hover/title:text-blue-600 dark:group-hover/title:text-blue-400 transition-colors truncate">
+                                {art.title}
+                              </div>
+                              <div className="text-[11px] font-mono text-slate-400 truncate">
+                                /{art.slug}
+                              </div>
+                            </button>
+                          </div>
                         </td>
 
                         <td className="py-3 px-3 whitespace-nowrap">
@@ -510,25 +566,45 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
               <div className="md:hidden divide-y divide-slate-100 dark:divide-white/5">
                 {filteredArticles.map((art) => (
                   <div key={art.id} className="p-3.5 space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="space-y-0.5">
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 mr-1.5">
-                          {art.category}
-                        </span>
-                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          art.status === 'published' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'
-                        }`}>
-                          {art.status}
-                        </span>
-                        <button
-                          onClick={() => {
-                            if (onNavigate) onNavigate('article-detail', { slug: art.slug });
-                            else setPreviewArticle(art);
-                          }}
-                          className="font-bold text-xs text-slate-900 dark:text-white pt-1 text-left block w-full hover:text-blue-600 dark:hover:text-blue-400"
-                        >
-                          {art.title}
-                        </button>
+                    <div className="flex items-start justify-between gap-2.5">
+                      <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                        {/* Mobile Thumbnail */}
+                        <div className="w-14 aspect-video rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shrink-0 overflow-hidden flex items-center justify-center">
+                          {art.featuredImage ? (
+                            <img
+                              src={getDirectCloudImageUrl(art.featuredImage)}
+                              alt=""
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <BookOpen className="w-4 h-4 text-slate-400" />
+                          )}
+                        </div>
+                        <div className="space-y-0.5 min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                              {art.category}
+                            </span>
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
+                              art.status === 'published' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'
+                            }`}>
+                              {art.status}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (onNavigate) onNavigate('article-detail', { slug: art.slug });
+                              else setPreviewArticle(art);
+                            }}
+                            className="font-bold text-xs text-slate-900 dark:text-white pt-0.5 text-left block w-full hover:text-blue-600 dark:hover:text-blue-400 truncate"
+                          >
+                            {art.title}
+                          </button>
+                        </div>
                       </div>
                     </div>
 
@@ -782,18 +858,83 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                 </label>
               </div>
 
-              {/* FEATURED IMAGE URL */}
-              <div className="p-3.5 rounded-xl bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 space-y-2">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                  {isHindi ? "मुख्य छवि URL (Featured Image URL)" : "Featured Image (Optional URL)"}
-                </label>
-                <input
-                  type="url"
-                  value={formArticle.featuredImage || ''}
-                  onChange={(e) => setFormArticle(prev => ({ ...prev, featuredImage: e.target.value }))}
-                  placeholder="https://..."
-                  className="w-full px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                />
+              {/* FEATURED / BANNER IMAGE URL WITH CLOUD DRIVE CONVERTER */}
+              <div className="p-3.5 rounded-xl bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                    <ImageIcon className="w-3.5 h-3.5 text-blue-500" />
+                    <span>{isHindi ? "कवर / बैनर छवि (Google Drive समर्थित)" : "Banner Image (Google Drive link supported)"}</span>
+                  </label>
+                  {formArticle.featuredImage && (
+                    <button
+                      type="button"
+                      onClick={() => setFormArticle(prev => ({ ...prev, featuredImage: '' }))}
+                      className="text-[10px] text-rose-500 hover:underline cursor-pointer"
+                    >
+                      {isHindi ? "हटाएं" : "Clear"}
+                    </button>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={formArticle.featuredImage || ''}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      // Auto convert Google Drive or Dropbox link on input
+                      const converted = convertCloudStorageUrl(val);
+                      setFormArticle(prev => ({ ...prev, featuredImage: converted }));
+                    }}
+                    placeholder={isHindi ? "Google Drive लिंक या https://... इमेज URL" : "Paste Google Drive link or https://..."}
+                    className="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                {/* Cloud Provider Detection Badge */}
+                {formArticle.featuredImage && (
+                  <div className="flex items-center gap-1.5 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    <span>
+                      {formArticle.featuredImage.includes('drive.google.com') || formArticle.featuredImage.includes('googleusercontent.com')
+                        ? (isHindi ? "Google Drive डायरेक्ट CDN लिंक सक्रिय" : "Google Drive Direct CDN converted")
+                        : (isHindi ? "इमेज लिंक मान्य" : "Direct image link active")}
+                    </span>
+                  </div>
+                )}
+
+                {/* Live Banner Image Preview */}
+                {formArticle.featuredImage && (
+                  <div className="space-y-1.5">
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                      {isHindi ? "लाइव बैनर प्रीव्यू" : "Live Banner Preview"}:
+                    </div>
+                    <div className="relative aspect-video rounded-lg overflow-hidden border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/5 flex items-center justify-center">
+                      <img
+                        src={getDirectCloudImageUrl(formArticle.featuredImage)}
+                        alt="Article Banner Preview"
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent && !parent.querySelector('.img-err-tip')) {
+                            const errDiv = document.createElement('div');
+                            errDiv.className = 'img-err-tip p-3 text-center text-[11px] text-amber-600 dark:text-amber-400 space-y-1';
+                            errDiv.innerHTML = '<p class="font-bold">⚠️ छवि लोड नहीं हो सकी</p><p class="text-[10px] text-slate-400">कृपया गूगल ड्राइव में फाइल की शेयरिंग को "Anyone with the link can view" करें।</p>';
+                            parent.appendChild(errDiv);
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Friendly instruction tip */}
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed bg-slate-50 dark:bg-white/5 p-2 rounded-lg border border-slate-200/50 dark:border-white/5">
+                  💡 <strong>Google Drive टिप:</strong> {isHindi ? "गूगल ड्राइव में इमेज पर राइट-क्लिक करें > Share > General Access को 'Anyone with the link' पर सेट करें, फिर लिंक कॉपी करके यहां पेस्ट कर दें।" : "Right-click image in Google Drive > Share > Set 'Anyone with the link' can view > Copy Link and paste here."}
+                </p>
               </div>
 
               {/* TAGS MANAGEMENT */}
@@ -835,16 +976,17 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
 
               {/* AUTHOR ATTRIBUTION SETTINGS */}
               <div className="p-3.5 rounded-xl bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded bg-blue-100 dark:bg-blue-950 border border-blue-200 flex items-center justify-center overflow-hidden shrink-0">
-                    <img src={formArticle.authorImage || '/Logo.png'} alt="LT" className="w-full h-full object-cover" />
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/25 flex items-center justify-center shrink-0">
+                    <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
                     <span className="text-xs font-bold block text-slate-900 dark:text-white">
                       {formArticle.authorName || 'Less Creation Editorial'}
                     </span>
-                    <span className="text-[10px] text-slate-400">
-                      By Less Team (Attribution)
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 font-medium">
+                      <PenTool className="w-2.5 h-2.5 text-blue-500" />
+                      By Less Team
                     </span>
                   </div>
                 </div>
@@ -884,6 +1026,16 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">
                 {previewArticle.title}
               </h2>
+              {previewArticle.featuredImage && (
+                <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 aspect-video w-full bg-slate-100 dark:bg-white/5 flex items-center justify-center">
+                  <img 
+                    src={getDirectCloudImageUrl(previewArticle.featuredImage)} 
+                    alt={previewArticle.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900"
+                  />
+                </div>
+              )}
               <p className="text-xs text-slate-500 italic border-l-2 border-blue-600 pl-3">
                 {previewArticle.excerpt}
               </p>

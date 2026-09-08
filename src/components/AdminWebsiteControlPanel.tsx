@@ -158,7 +158,12 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
   const handleSaveSiteConfigToCloud = async () => {
     setIsSaving(true);
     try {
-      await adminStorage.saveSiteAppConfig(config, adminEmail || 'Admin');
+      const sanitizedConfig: SiteAppConfig = {
+        ...config,
+        bannerImageUrl: config.bannerImageUrl ? convertCloudStorageUrl(config.bannerImageUrl).directUrl : config.bannerImageUrl,
+        bannerVideoUrl: config.bannerVideoUrl ? convertCloudStorageUrl(config.bannerVideoUrl).directUrl : config.bannerVideoUrl
+      };
+      await adminStorage.saveSiteAppConfig(sanitizedConfig, adminEmail || 'Admin');
       onShowToast(
         isHindi 
           ? 'वेबसाइट सेटिंग्स सफलतापूर्वक सहेजी गईं! पूरी वेबसाइट पर बदलाव तुरंत लाइव हैं।' 
@@ -758,16 +763,37 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
 
                 {/* Banner / Screenshot URL */}
                 <div className="space-y-1.5 md:col-span-2">
-                  <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    {isHindi ? "ऐप स्क्रीनशॉट / बैनर छवि URL (वैकल्पिक)" : "Banner / Screenshot URL (Optional)"}
-                  </label>
-                  <input
-                    type="text"
-                    value={appForm.bannerUrl || ''}
-                    onChange={(e) => setAppForm(prev => ({ ...prev, bannerUrl: e.target.value }))}
-                    placeholder="Google Drive link or https://.../banner.png"
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-hidden"
-                  />
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {isHindi ? "ऐप स्क्रीनशॉट / बैनर छवि URL (Google Drive समर्थित)" : "Banner / Screenshot URL (Google Drive Supported)"}
+                    </label>
+                    {appForm.bannerUrl && (
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
+                        {convertCloudStorageUrl(appForm.bannerUrl).provider !== 'Direct Link' 
+                          ? `${convertCloudStorageUrl(appForm.bannerUrl).provider} Converted` 
+                          : 'Direct Link'}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex gap-2.5">
+                    <input
+                      type="text"
+                      value={appForm.bannerUrl || ''}
+                      onChange={(e) => setAppForm(prev => ({ ...prev, bannerUrl: e.target.value }))}
+                      placeholder="Google Drive link or https://.../banner.png"
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-hidden"
+                    />
+                    {appForm.bannerUrl && (
+                      <div className="w-16 h-10 rounded-xl overflow-hidden bg-slate-900 shrink-0 border border-white/20 flex items-center justify-center">
+                        <img 
+                          src={convertCloudStorageUrl(appForm.bannerUrl).directUrl} 
+                          alt="Banner Preview" 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover" 
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Version & Price */}
@@ -1537,16 +1563,37 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                      {isHindi ? "बैनर इमेज URL (Google Drive / Dropbox / Direct Link)" : "Banner Image URL"}
-                    </label>
-                    <input
-                      type="text"
-                      value={config.bannerImageUrl || ''}
-                      onChange={(e) => handleFieldChange('bannerImageUrl', e.target.value)}
-                      placeholder="https://drive.google.com/file/d/... or https://..."
-                      className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
-                    />
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                        {isHindi ? "बैनर इमेज URL (Google Drive / Dropbox / Direct Link)" : "Banner Image URL"}
+                      </label>
+                      {config.bannerImageUrl && (
+                        <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
+                          {convertCloudStorageUrl(config.bannerImageUrl).provider !== 'Direct Link' 
+                            ? `${convertCloudStorageUrl(config.bannerImageUrl).provider} Converted` 
+                            : 'Direct Link'}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-2.5">
+                      <input
+                        type="text"
+                        value={config.bannerImageUrl || ''}
+                        onChange={(e) => handleFieldChange('bannerImageUrl', e.target.value)}
+                        placeholder="https://drive.google.com/file/d/... or https://..."
+                        className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                      />
+                      {config.bannerImageUrl && (
+                        <div className="w-14 h-9 rounded-lg overflow-hidden bg-slate-900 shrink-0 border border-white/20 flex items-center justify-center">
+                          <img 
+                            src={convertCloudStorageUrl(config.bannerImageUrl).directUrl} 
+                            alt="Banner Preview" 
+                            referrerPolicy="no-referrer"
+                            className="w-full h-full object-cover" 
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="space-y-1.5">

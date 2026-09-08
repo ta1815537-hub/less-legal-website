@@ -2,10 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { PageRoute, ArticleSummary } from '../types';
 import { 
   Search, Tag, Clock, Calendar, Sparkles, BookOpen, 
-  ChevronRight, RefreshCw, X, ArrowRight 
+  ChevronRight, RefreshCw, X, ArrowRight, PenTool 
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { articleService, DEFAULT_CATEGORIES } from '../services/articleService';
+import { getDirectCloudImageUrl } from '../utils/adminStorage';
 
 interface ArticlesPageProps {
   onNavigate: (route: PageRoute, params?: { slug?: string; tag?: string; category?: string; authorSlug?: string }) => void;
@@ -298,11 +299,12 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
                   {/* Bottom Attribution */}
                   <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-white/5 text-xs text-slate-500 dark:text-slate-400 pointer-events-none select-none">
                     <div className="flex items-center gap-2 pointer-events-none select-none">
-                      <div className="w-5 h-5 rounded bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center overflow-hidden shrink-0 pointer-events-none select-none">
-                        <img src="/Logo.png" alt="LT" className="w-full h-full object-cover pointer-events-none select-none" />
+                      <div className="w-5 h-5 rounded-md bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/25 flex items-center justify-center shrink-0 pointer-events-none select-none">
+                        <BookOpen className="w-3 h-3 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300 text-xs pointer-events-none select-none">
+                      <span className="font-semibold text-slate-700 dark:text-slate-300 text-xs pointer-events-none select-none flex items-center gap-1">
                         By Less Team
+                        <PenTool className="w-2.5 h-2.5 text-blue-500/70" />
                       </span>
                     </div>
 
@@ -321,12 +323,13 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
                 </div>
 
                 {/* Featured Thumbnail */}
-                <div className="md:col-span-5 h-44 sm:h-52 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
+                <div className="md:col-span-5 aspect-video rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
                   {featuredArticle.featuredImage ? (
                     <img 
-                      src={featuredArticle.featuredImage} 
+                      src={getDirectCloudImageUrl(featuredArticle.featuredImage)} 
                       alt={featuredArticle.title} 
-                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" 
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900 group-hover:scale-102 transition-transform duration-300" 
                       loading="eager"
                     />
                   ) : (
@@ -363,12 +366,13 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
                   >
                     
                     {/* Optional Thumbnail / Category Badge */}
-                    <div className="w-full sm:w-28 sm:h-20 shrink-0 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
+                    <div className="w-full sm:w-36 aspect-video shrink-0 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
                       {article.featuredImage ? (
                         <img 
-                          src={article.featuredImage} 
+                          src={getDirectCloudImageUrl(article.featuredImage)} 
                           alt={article.title} 
-                          className="w-full h-28 sm:h-full object-cover group-hover:scale-105 transition-transform" 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900 group-hover:scale-105 transition-transform" 
                           loading="lazy"
                         />
                       ) : (
@@ -406,8 +410,9 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
                       </p>
 
                       {/* Metadata Attribution Bar */}
-                      <div className="flex items-center gap-3 pt-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                        <span className="font-semibold text-slate-700 dark:text-slate-300">
+                      <div className="flex items-center gap-2.5 pt-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                          <BookOpen className="w-3 h-3 text-blue-500" />
                           By Less Team
                         </span>
                         <span>•</span>

@@ -8,7 +8,9 @@ import {
   Smartphone, 
   Layers, 
   Lock,
-  BookOpen
+  BookOpen,
+  Info,
+  User
 } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { useLanguage } from '../context/LanguageContext';
@@ -129,7 +131,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </h3>
                   <div className="w-6 h-0.5 bg-blue-600 rounded-full mt-1.5" />
                 </div>
-                <ul className="space-y-2 text-xs font-semibold">
+                 <ul className="space-y-2 text-xs font-semibold">
                   <li>
                     <button
                       onClick={() => onNavigate('tools')}
@@ -141,18 +143,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </li>
                   <li>
                     <button
-                      onClick={() => onNavigate('less-legal')}
-                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
-                    >
-                      <Smartphone className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                      <span className="font-bold text-slate-900 dark:text-white">Less Legal</span>
-                      <span className="text-[9px] px-1 py-0.2 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold">Flagship</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button
                       onClick={() => onNavigate('premium')}
-                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer text-left"
+                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer text-left font-bold"
                     >
                       <Crown className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                       <span>{isHindi ? 'लाइफटाइम पास (₹99)' : 'Lifetime Pass (₹99)'}</span>
@@ -160,11 +152,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </li>
                   <li>
                     <button
-                      onClick={() => onNavigate('less-legal-features')}
+                      onClick={() => onNavigate('about')}
                       className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
                     >
-                      <LayoutGrid className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>{isHindi ? 'स्मार्ट टूल्स कैटलॉग' : 'Smart Utilities Catalog'}</span>
+                      <Info className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>{isHindi ? 'हमारे बारे में' : 'About Us'}</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => onNavigate('founder')}
+                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                    >
+                      <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>{isHindi ? 'संस्थापक' : 'Founder & Creator'}</span>
                     </button>
                   </li>
                 </ul>

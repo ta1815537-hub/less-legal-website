@@ -478,7 +478,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       {/* 2. CATEGORY PILLS BAR (SINGLE-LINE INFINITE SMOOTH SCROLL MARQUEE) */}
       <section className="relative z-10 w-full overflow-hidden py-1 sm:py-2 rounded-2xl bg-blue-500/5 dark:bg-blue-950/10 border border-blue-200/20 dark:border-blue-900/10">
         <div className="relative w-full overflow-hidden select-none mask-edges-x">
-          <div className="flex animate-marquee-left pause-on-hover gap-3 whitespace-nowrap py-1">
+          <div className="flex w-max animate-marquee-left pause-on-hover gap-3 whitespace-nowrap py-1">
             {/* First Set of Categories */}
             {filterCategories.map((cat, index) => {
               const isActive = selectedCategory === cat.key;

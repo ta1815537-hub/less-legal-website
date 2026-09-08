@@ -11,17 +11,36 @@ import {
   orderBy, 
   limit,
   onSnapshot,
-  serverTimestamp 
+  serverTimestamp,
+  increment 
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { Article, ArticleSummary, ArticleAuthor, ArticleCategory, ArticleStatus } from '../types';
+import { getDirectCloudImageUrl } from '../utils/adminStorage';
 
-// Default Author (Website LT Logo & Less Creation Editorial)
+// Demo articles to exclude and remove permanently
+export const DEMO_ARTICLE_IDS = [
+  'digital-arrest-fraud-awareness-guide', 
+  'on-device-privacy-legal-tools-future', 
+  'practical-guide-bare-acts-citizen-rights'
+];
+
+export const isDemoArticle = (article: { id?: string; slug?: string; title?: string } | null | undefined): boolean => {
+  if (!article) return false;
+  const id = (article.id || '').toLowerCase();
+  const slug = (article.slug || '').toLowerCase();
+  const title = (article.title || '').toLowerCase();
+  if (DEMO_ARTICLE_IDS.includes(id) || DEMO_ARTICLE_IDS.includes(slug)) return true;
+  if (id.startsWith('demo_') || id.startsWith('demo-') || slug.startsWith('demo-') || title.includes('[demo]') || title.startsWith('demo:')) return true;
+  return false;
+};
+
+// Default Author (Less Creation Editorial & Editorial Team)
 export const DEFAULT_AUTHOR: ArticleAuthor = {
   id: 'less-creation-editorial',
   name: 'Less Creation Editorial',
   role: 'Editorial & Research Team',
-  image: '/Logo.png',
+  image: '',
   bio: 'Official editorial, research, and technical publication team at Less Creation.',
   slug: 'less-creation-editorial'
 };
@@ -61,13 +80,8 @@ class ArticleService {
       const storedArticles = localStorage.getItem(LOCAL_ARTICLES_KEY);
       if (storedArticles) {
         const parsed: Article[] = JSON.parse(storedArticles);
-        // Filter out legacy demo seed articles
-        const seedIds = [
-          'digital-arrest-fraud-awareness-guide', 
-          'on-device-privacy-legal-tools-future', 
-          'practical-guide-bare-acts-citizen-rights'
-        ];
-        this.localArticlesCache = parsed.filter(a => !seedIds.includes(a.id));
+        // Filter out all demo / seed articles
+        this.localArticlesCache = parsed.filter(a => !isDemoArticle(a));
         localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
       } else {
         this.localArticlesCache = [];
@@ -97,7 +111,7 @@ class ArticleService {
   // Real-time Firestore Subscription for Admin Dashboard & Live Updates
   public subscribeToArticles(callback: (articles: Article[]) => void): (() => void) {
     // 1. Return current local cached items immediately
-    callback(this.localArticlesCache);
+    callback(this.localArticlesCache.filter(a => !isDemoArticle(a)));
 
     // 2. Set up Firestore onSnapshot subscription
     try {
@@ -106,23 +120,24 @@ class ArticleService {
         const list: Article[] = [];
         snapshot.forEach((d) => {
           const data = d.data() as Article;
+          if (isDemoArticle(data) || DEMO_ARTICLE_IDS.includes(d.id)) {
+            // Permanently clean up demo documents if found
+            deleteDoc(doc(db, 'articles', d.id)).catch(() => {});
+            return;
+          }
           list.push({ ...data, firestoreDocId: d.id });
         });
 
-        if (list.length > 0) {
-          list.sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime());
-          this.localArticlesCache = list;
-          try {
-            localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(list));
-          } catch {}
-          this.invalidateCache();
-          callback(list);
-        } else {
-          callback(this.localArticlesCache);
-        }
+        list.sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime());
+        this.localArticlesCache = list;
+        try {
+          localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(list));
+        } catch {}
+        this.invalidateCache();
+        callback(list);
       }, (err) => {
         console.warn('Real-time articles subscription snapshot warning:', err);
-        callback(this.localArticlesCache);
+        callback(this.localArticlesCache.filter(a => !isDemoArticle(a)));
       });
 
       // Also listen to window local event for instant in-tab/cross-component updates
@@ -188,6 +203,7 @@ class ArticleService {
           const list: ArticleSummary[] = [];
           snap.forEach((d) => {
             const data = d.data() as Article;
+            if (isDemoArticle(data) || DEMO_ARTICLE_IDS.includes(d.id)) return;
             // Store full article in cache if needed
             this.inMemoryFullArticles.set(data.slug, { ...data, firestoreDocId: d.id });
             
@@ -201,14 +217,14 @@ class ArticleService {
         } else {
           // Fallback to local storage cache
           summaries = this.localArticlesCache
-            .filter(a => a.status === 'published')
+            .filter(a => a.status === 'published' && !isDemoArticle(a))
             .map(({ content, ...rest }) => rest);
           this.inMemorySummariesCache = summaries;
         }
       } catch (err) {
         console.warn('Error fetching Firestore articles, using local fallback:', err);
         summaries = this.localArticlesCache
-          .filter(a => a.status === 'published')
+          .filter(a => a.status === 'published' && !isDemoArticle(a))
           .map(({ content, ...rest }) => rest);
         this.inMemorySummariesCache = summaries;
       }
@@ -382,15 +398,25 @@ class ArticleService {
       if (!snap.empty) {
         snap.forEach((d) => {
           const data = d.data() as Article;
+          if (isDemoArticle(data) || DEMO_ARTICLE_IDS.includes(d.id)) {
+            // Permanently remove demo articles from Firestore
+            deleteDoc(doc(db, 'articles', d.id)).catch(() => {});
+            return;
+          }
           list.push({ ...data, firestoreDocId: d.id });
         });
       } else {
-        list = this.localArticlesCache;
+        list = this.localArticlesCache.filter(a => !isDemoArticle(a));
       }
     } catch (err) {
       console.warn('Error fetching admin articles from Firestore, using local fallback:', err);
-      list = this.localArticlesCache;
+      list = this.localArticlesCache.filter(a => !isDemoArticle(a));
     }
+
+    this.localArticlesCache = list;
+    try {
+      localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(list));
+    } catch {}
 
     return list.sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime());
   }
@@ -413,13 +439,16 @@ class ArticleService {
       ? (article.publishedAt.includes('T') ? article.publishedAt : new Date(article.publishedAt).toISOString())
       : (article.status === 'published' ? nowIso : '');
 
+    // Auto-convert Google Drive or other cloud storage link to high-speed direct CDN URL
+    const convertedFeaturedImage = article.featuredImage ? getDirectCloudImageUrl(article.featuredImage) : '';
+
     const fullArticle: Article = {
       id,
       title: article.title || 'Untitled Article',
       slug,
       excerpt: article.excerpt || '',
       content: article.content || '',
-      featuredImage: article.featuredImage || '',
+      featuredImage: convertedFeaturedImage,
       category: article.category || 'Digital Safety',
       tags: article.tags || ['DigitalSafety'],
       authorId: article.authorId || DEFAULT_AUTHOR.id,
@@ -487,6 +516,156 @@ class ArticleService {
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new Event('less_creation_articles_updated'));
     }
+  }
+
+  // Vote Article Useful (Atomic increment, optimized for Firebase Spark / Free Tier)
+  async voteArticleUseful(articleId: string, isYes: boolean): Promise<{ yesCount: number, noCount: number }> {
+    // 1. Get existing counts or default to 0
+    const localIndex = this.localArticlesCache.findIndex(a => a.id === articleId);
+    let yesCount = 0;
+    let noCount = 0;
+
+    if (localIndex >= 0) {
+      const art = this.localArticlesCache[localIndex];
+      yesCount = art.usefulYesCount || 0;
+      noCount = art.usefulNoCount || 0;
+      
+      if (isYes) yesCount++;
+      else noCount++;
+      
+      this.localArticlesCache[localIndex] = {
+        ...art,
+        usefulYesCount: yesCount,
+        usefulNoCount: noCount,
+        updatedAt: new Date().toISOString()
+      };
+      
+      try {
+        localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
+      } catch {}
+      this.invalidateCache();
+    }
+
+    // 2. Save atomically to Firestore
+    try {
+      const docRef = doc(db, 'articles', articleId);
+      const updateData: any = {
+        [isYes ? 'usefulYesCount' : 'usefulNoCount']: increment(1),
+        updatedAt: new Date().toISOString()
+      };
+      await updateDoc(docRef, updateData);
+    } catch (err) {
+      console.warn('Error voting article in Firestore, counts updated locally:', err);
+    }
+
+    // 3. Trigger local update event
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('less_creation_articles_updated'));
+    }
+
+    return { yesCount, noCount };
+  }
+
+  // Real-time subscription to a single article by its slug or ID
+  public subscribeToArticle(slugOrId: string, callback: (article: Article | null) => void): (() => void) {
+    try {
+      // 1. Return local cached article immediately
+      const local = this.localArticlesCache.find(
+        a => a.slug === slugOrId || a.id === slugOrId || (a.slug && a.slug.toLowerCase() === slugOrId.toLowerCase())
+      );
+      if (local) {
+        callback(local);
+      }
+
+      // 2. Set up Firestore query snapshot subscription (we query by slug or direct ID)
+      const q = query(collection(db, 'articles'), where('slug', '==', slugOrId));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        if (!snapshot.empty) {
+          const d = snapshot.docs[0];
+          const data = d.data() as Article;
+          const fullArticle = { ...data, firestoreDocId: d.id };
+          
+          // Update local cache & full article cache
+          this.inMemoryFullArticles.set(slugOrId, fullArticle);
+          const idx = this.localArticlesCache.findIndex(a => a.id === fullArticle.id);
+          if (idx >= 0) {
+            this.localArticlesCache[idx] = fullArticle;
+          } else {
+            this.localArticlesCache.push(fullArticle);
+          }
+          try {
+            localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
+          } catch {}
+
+          callback(fullArticle);
+        } else {
+          // Try fetching directly by ID
+          const directRef = doc(db, 'articles', slugOrId);
+          const unsubDoc = onSnapshot(directRef, (docSnap) => {
+            if (docSnap.exists()) {
+              const data = docSnap.data() as Article;
+              const fullArticle = { ...data, firestoreDocId: docSnap.id };
+              
+              this.inMemoryFullArticles.set(slugOrId, fullArticle);
+              const idx = this.localArticlesCache.findIndex(a => a.id === fullArticle.id);
+              if (idx >= 0) {
+                this.localArticlesCache[idx] = fullArticle;
+              } else {
+                this.localArticlesCache.push(fullArticle);
+              }
+              try {
+                localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
+              } catch {}
+
+              callback(fullArticle);
+            } else {
+              callback(null);
+            }
+          }, () => {
+            callback(local || null);
+          });
+          return;
+        }
+      }, (err) => {
+        console.warn('Subscription to single article failed:', err);
+        callback(local || null);
+      });
+
+      return unsubscribe;
+    } catch (e) {
+      console.warn('Failed to subscribe to article:', e);
+      return () => {};
+    }
+  }
+
+  // Purge all demo / placeholder articles from both LocalStorage and Firestore
+  async removeAllDemoArticles(): Promise<number> {
+    let count = 0;
+    const initialLen = this.localArticlesCache.length;
+    this.localArticlesCache = this.localArticlesCache.filter(a => !isDemoArticle(a));
+    count += (initialLen - this.localArticlesCache.length);
+    try {
+      localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
+    } catch {}
+    this.invalidateCache();
+
+    try {
+      const snap = await getDocs(collection(db, 'articles'));
+      for (const d of snap.docs) {
+        const data = d.data() as Article;
+        if (isDemoArticle(data) || DEMO_ARTICLE_IDS.includes(d.id)) {
+          await deleteDoc(doc(db, 'articles', d.id));
+          count++;
+        }
+      }
+    } catch (err) {
+      console.warn('Error purging demo articles from Firestore:', err);
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('less_creation_articles_updated'));
+    }
+    return count;
   }
 
   // Categories Management

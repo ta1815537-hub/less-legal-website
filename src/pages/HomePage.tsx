@@ -11,6 +11,7 @@ import {
   Shield, Server, Award, Cpu, RefreshCw, KeyRound, ExternalLink, HelpCircle
 } from 'lucide-react';
 import { LTLogo } from '../components/LTLogo';
+import { AppLogo } from '../components/AppLogo';
 import { ThreeDDeviceShowcase } from '../components/ThreeDDeviceShowcase';
 import { 
   ScrollReveal, StaggerContainer, 
@@ -161,13 +162,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const faqs = t.home.faqs;
 
   return (
-    <div className="space-y-10 sm:space-y-14 py-2 sm:py-4 overflow-hidden transition-colors duration-300 pb-2 sm:pb-4">
+    <div className="flex flex-col gap-6 sm:gap-8 py-2 overflow-hidden transition-colors duration-300 pb-2">
       
       {/* 1. HERO SECTION: LESS CREATION PARENT BRAND */}
-      <section className="relative text-slate-900 dark:text-white pt-1 sm:pt-4 pb-6 sm:pb-10 overflow-hidden min-h-[540px] sm:min-h-[580px] flex items-center">
+      <section className="relative text-slate-900 dark:text-white pt-2 sm:pt-4 pb-4 sm:pb-6 overflow-hidden flex items-center">
         <HeroAmbientGlow />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 space-y-6 sm:space-y-10 w-full">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 space-y-5 sm:space-y-7 w-full">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center">
             
@@ -176,13 +177,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-7 space-y-5 sm:space-y-7 text-center sm:text-left flex flex-col items-center sm:items-start"
+              className="lg:col-span-7 space-y-4 sm:space-y-6 text-center sm:text-left flex flex-col items-center sm:items-start"
             >
-              <div className="flex flex-col gap-2.5 sm:gap-3.5 items-center sm:items-start w-full">
+              <div className="flex flex-col gap-2.5 sm:gap-3 items-center sm:items-start w-full">
                 
                 {/* Brand Studio Pill */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 dark:bg-blue-900/30 border border-blue-200/90 dark:border-blue-700/40 text-blue-700 dark:text-blue-300 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-2xs backdrop-blur-md">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100/90 dark:bg-white/5 border border-slate-200/90 dark:border-white/10 text-slate-800 dark:text-slate-200 text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-xs backdrop-blur-md">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-sky-400" />
                   <span>{t.home.heroBadge || "LESS CREATION • TECHNOLOGY & PRODUCT STUDIO"}</span>
                 </div>
 
@@ -269,14 +270,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         />
       </section>
 
-      {/* Dynamic Promo Banner & Flash Notice Board */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-        <DynamicPromoBanner onNavigate={onNavigate} />
-        <DynamicNoticeBoard onNavigate={onNavigate} />
-      </div>
+      {/* Dynamic Promo Banner & Flash Notice Board (rendered directly without phantom spacing) */}
+      <DynamicPromoBanner onNavigate={onNavigate} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" />
+      <DynamicNoticeBoard onNavigate={onNavigate} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" />
 
       {/* Task-First Discovery & Search Hub */}
-      <section id="task-discovery-hub" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 scroll-mt-28">
+      <section id="task-discovery-hub" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3 scroll-mt-28">
         <div className="bg-gradient-to-br from-blue-50/40 via-sky-50/10 to-transparent dark:from-blue-950/10 dark:via-transparent dark:to-transparent border border-blue-100/50 dark:border-white/5 rounded-3xl p-6 sm:p-10 shadow-xs space-y-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-blue-500/[0.03] dark:bg-blue-500/[0.02] rounded-full blur-3xl pointer-events-none" />
           
@@ -336,9 +335,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Product Body */}
             <div className="space-y-4">
               <div className="flex items-center gap-3.5">
-                <div className="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md shrink-0">
-                  <Scale className="w-7 h-7" />
-                </div>
+                <AppLogo className="w-14 h-14 shadow-md shrink-0" showShadow={false} />
                 <div>
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
                     {t.home.flagshipTitle || "Less Legal"}
@@ -400,51 +397,37 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 3. LESS LEGAL FLAGSHIP SHOWCASE & LIVE SIMULATOR */}
-      <section id="flagship-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/15 dark:bg-blue-900/40 border border-blue-500/30 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-bold">
-            <Smartphone className="w-4 h-4" />
-            <span>{t.home.simBadge}</span>
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            {t.home.simTitle}
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
-            {t.home.simSub}
-          </p>
-        </ScrollReveal>
-
-        {/* Simulator Tabs Header */}
-        <div className="overflow-hidden w-full pb-2 mask-edges-x max-w-7xl mx-auto px-1">
-          <div ref={simTabRef} className="flex items-center overflow-x-auto no-scrollbar w-full select-none cursor-grab">
-            {[...Array(4)].map((_, arrayIdx) => (
-              <div key={arrayIdx} className="flex items-center gap-2 pr-2 shrink-0">
-                {[
-                  { id: 'diary', icon: Calendar, label: t.home.simDiary, iconColor: 'text-blue-600 dark:text-blue-400' },
-                  { id: 'converter', icon: Compass, label: t.home.simConverter, iconColor: 'text-blue-600 dark:text-blue-400' },
-                  { id: 'pdf', icon: FileText, label: t.home.simPdf, iconColor: 'text-blue-600 dark:text-blue-400' },
-                  { id: 'whatsapp', icon: MessageSquare, label: t.home.simWhatsapp, iconColor: 'text-[#25D366]' }
-                ].map((tab) => (
-                  <button
-                    key={`${tab.id}-${arrayIdx}`}
-                    onClick={() => setSimTab(tab.id as typeof simTab)}
-                    className={`shrink-0 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap badge-one-line border active-click-scale ${
-                      simTab === tab.id
-                        ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-500 shadow-[0_4px_15px_rgba(59,130,246,0.25)]'
-                        : 'bg-white/90 dark:bg-[#111827]/90 backdrop-blur-md text-slate-700 dark:text-slate-300 border-blue-200/50 dark:border-slate-800 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-500/10 shadow-xs'
-                    }`}
-                  >
-                    <tab.icon className={`w-4 h-4 shrink-0 ${tab.iconColor}`} />
-                    <span className="whitespace-nowrap badge-one-line">{tab.label}</span>
-                  </button>
-                ))}
-              </div>
+      <section id="flagship-section" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6 scroll-mt-28 overflow-hidden">
+        {/* Simulator Tabs Header - Compact & non-repeating to guarantee 100% centering of the simulator */}
+        <div className="w-full max-w-3xl mx-auto pb-1 px-1">
+          <div 
+            ref={simTabRef} 
+            className="flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar w-full gap-2 py-2 select-none cursor-grab scroll-smooth"
+          >
+            {[
+              { id: 'diary', icon: Calendar, label: t.home.simDiary, iconColor: 'text-blue-600 dark:text-blue-400' },
+              { id: 'converter', icon: Compass, label: t.home.simConverter, iconColor: 'text-blue-600 dark:text-blue-400' },
+              { id: 'pdf', icon: FileText, label: t.home.simPdf, iconColor: 'text-blue-600 dark:text-blue-400' },
+              { id: 'whatsapp', icon: MessageSquare, label: t.home.simWhatsapp, iconColor: 'text-[#25D366]' }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setSimTab(tab.id as typeof simTab)}
+                className={`shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap border active-click-scale ${
+                  simTab === tab.id
+                    ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-500 shadow-[0_4px_12px_rgba(59,130,246,0.2)]'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-blue-200/40 dark:border-slate-800 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400/50 hover:bg-blue-500/10 shadow-xs'
+                }`}
+              >
+                <tab.icon className={`w-4 h-4 shrink-0 ${tab.iconColor}`} />
+                <span>{tab.label}</span>
+              </button>
             ))}
           </div>
         </div>
 
         {/* Simulator Frame Container */}
-        <div className="animated-card bg-white/95 dark:bg-[#111827]/95 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-500/30 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden">
+        <div className="animated-card bg-white/95 dark:bg-[#111827]/95 backdrop-blur-2xl rounded-3xl p-4 sm:p-8 border border-blue-500/25 dark:border-blue-500/30 shadow-[0_20px_50px_rgba(59,130,246,0.15)] max-w-4xl mx-auto relative overflow-hidden w-full">
           <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
 
           {/* Mock Header */}

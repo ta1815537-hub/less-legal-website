@@ -173,10 +173,13 @@ export const convertCloudStorageUrl = (rawUrl: string): ConvertedCloudMedia => {
   // 1. Google Drive Links
   // Examples:
   // - https://drive.google.com/file/d/1A2B3C4D5E6F/view?usp=sharing
+  // - https://drive.google.com/file/d/1A2B3C4D5E6F/view?usp=drive_link
   // - https://drive.google.com/open?id=1A2B3C4D5E6F
   // - https://drive.google.com/uc?id=1A2B3C4D5E6F
-  const gDriveMatch = trimmed.match(/(?:file\/d\/|id=|open\?id=)([a-zA-Z0-9_-]{15,})/);
-  if (trimmed.includes('drive.google.com') || gDriveMatch) {
+  // - https://drive.google.com/uc?export=view&id=1A2B3C4D5E6F
+  // - https://lh3.googleusercontent.com/d/1A2B3C4D5E6F
+  const gDriveMatch = trimmed.match(/(?:file\/d\/|\/d\/|id=|open\?id=|thumbnail\?id=)([a-zA-Z0-9_-]{15,})/);
+  if (trimmed.includes('drive.google.com') || trimmed.includes('googleusercontent.com') || gDriveMatch) {
     const fileId = gDriveMatch ? gDriveMatch[1] : '';
     if (fileId) {
       // Direct high-speed CDN image link (lh3.googleusercontent.com)
@@ -257,6 +260,16 @@ export const convertCloudStorageUrl = (rawUrl: string): ConvertedCloudMedia => {
     provider: 'Direct Link',
     mediaType: isVideo ? 'video' : isAudio ? 'audio' : isImage ? 'image' : 'link'
   };
+};
+
+/**
+ * Universal helper to get direct displayable CDN image URL from any cloud storage or image link
+ * (Google Drive, Dropbox, Imgur, or direct image URL).
+ */
+export const getDirectCloudImageUrl = (rawUrl?: string): string => {
+  if (!rawUrl || !rawUrl.trim()) return '';
+  const converted = convertCloudStorageUrl(rawUrl);
+  return converted.directUrl || rawUrl.trim();
 };
 
 export const DEFAULT_SITE_APP_CONFIG: SiteAppConfig = {

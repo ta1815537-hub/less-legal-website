@@ -12,7 +12,7 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const lastScrollY = useRef<number>(0);
 
@@ -20,17 +20,17 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // When at the very top, keep compact circular form
+      // When at the very top, stay full expanded pill
       if (currentScrollY <= 50) {
-        setIsExpanded(false);
-      } 
-      // Scrolling DOWN -> Expand to full size pill
-      else if (currentScrollY > lastScrollY.current + 8) {
         setIsExpanded(true);
       } 
-      // Scrolling UP -> Contract back to circle
-      else if (currentScrollY < lastScrollY.current - 8) {
+      // Scrolling DOWN -> Contract into circle
+      else if (currentScrollY > lastScrollY.current + 8) {
         setIsExpanded(false);
+      } 
+      // Scrolling UP -> Expand back into full pill
+      else if (currentScrollY < lastScrollY.current - 8) {
+        setIsExpanded(true);
       }
 
       lastScrollY.current = currentScrollY;

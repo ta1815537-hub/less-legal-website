@@ -44,6 +44,24 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
     return () => unsubscribe();
   }, []);
 
+  // Auto-close side panel when tapping anywhere on the screen outside drawer
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleOutsideTap = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement;
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const toggleBtn = document.getElementById('nav-mobile-toggle-btn');
+      if (drawer && !drawer.contains(target) && toggleBtn && !toggleBtn.contains(target)) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('pointerdown', handleOutsideTap, { passive: true });
+    return () => {
+      window.removeEventListener('pointerdown', handleOutsideTap);
+    };
+  }, [mobileMenuOpen]);
+
   const handleNavClick = (route: PageRoute) => {
     onNavigate(route);
     setMobileMenuOpen(false);
@@ -61,19 +79,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
     { label: isHindi ? 'होम' : 'Home', route: 'home' },
     { label: isHindi ? 'लेख' : 'Articles', route: 'articles', badge: 'New' },
     { label: isHindi ? 'टूल्स' : 'Tools', route: 'tools', badge: `${TOTAL_TOOLS_COUNT}` },
-    { label: isHindi ? 'लेस लीगल' : 'Less Legal', route: 'less-legal', badge: isHindi ? 'फ्लैगशिप' : 'Flagship' },
     { label: isHindi ? 'लेस क्रिएशन' : 'About', route: 'about' },
     { label: isHindi ? 'संस्थापक' : 'Founder', route: 'founder' },
-    { label: isHindi ? 'संसाधन' : 'Resources', route: 'resources' },
     { label: isHindi ? 'प्रीमियम' : 'Premium', route: 'premium', badge: '₹99' },
     { label: isHindi ? 'संपर्क' : 'Contact', route: 'contact' },
   ];
 
   return (
     <>
-      {/* Top Promotional Announcement Bar */}
-      {siteConfig.announcementActive && (
-        <div className="fixed top-0 left-0 right-0 h-9 sm:h-10 z-[65] bg-gradient-to-r from-slate-950 via-[#0D2447] to-slate-950 border-b border-blue-500/25 flex items-center justify-center px-2 sm:px-4 text-white overflow-hidden select-none">
+      {/* Top Promotional Announcement Bar (Automatically hidden when mobile side panel is active to remove any top black strip) */}
+      {siteConfig.announcementActive && !mobileMenuOpen && (
+        <div className="fixed top-0 left-0 right-0 h-9 sm:h-10 z-[65] bg-gradient-to-r from-blue-900 via-indigo-950 to-blue-900 border-b border-blue-500/25 flex items-center justify-center px-2 sm:px-4 text-white overflow-hidden select-none">
           {/* Subtle royal blue shining line inside the banner */}
           <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(59,130,246,0.12),transparent)] bg-[length:200%_100%] animate-pulse pointer-events-none" />
           
@@ -109,9 +125,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
       {/* Scroll Progress Bar */}
       <motion.div
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
-        className="fixed top-9 sm:top-10 left-0 right-0 h-0.5 sm:h-1 z-[60] bg-gradient-to-r from-amber-400 via-blue-500 to-indigo-600 dark:from-[#D8BD82] dark:via-blue-500 dark:to-indigo-500"
+        className={`fixed left-0 right-0 h-0.5 sm:h-1 z-[60] bg-gradient-to-r from-amber-400 via-blue-500 to-indigo-600 dark:from-[#D8BD82] dark:via-blue-500 dark:to-indigo-500 transition-all duration-300 ${
+          siteConfig.announcementActive && !mobileMenuOpen ? 'top-9 sm:top-10' : 'top-0'
+        }`}
       />
-      <header className="fixed top-9 sm:top-10 z-50 w-full bg-white/40 dark:bg-[#090D1A]/60 backdrop-blur-xl border-b border-slate-200/40 dark:border-white/10 shadow-xs transition-all duration-300">
+      <header className={`fixed z-50 w-full bg-white/85 dark:bg-[#090D1A]/85 backdrop-blur-xl border-b border-slate-200/60 dark:border-white/10 shadow-xs transition-all duration-300 ${
+        siteConfig.announcementActive && !mobileMenuOpen ? 'top-9 sm:top-10' : 'top-0'
+      }`}>
         <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-4 xl:px-8">
         <div className="h-16 sm:h-20 flex items-center justify-between gap-2 lg:gap-3">
           
@@ -222,11 +242,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
 
               <motion.button
                 id="nav-mobile-features-icon"
-                onClick={() => handleNavClick('resources')}
+                onClick={() => handleNavClick('tools')}
                 whileTap={{ scale: 0.92 }}
                 className="p-2 rounded-xl bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25 dark:border-blue-500/30 cursor-pointer shrink-0 backdrop-blur-md"
-                aria-label="Resources & Tools"
-                title="Resources & Tools"
+                aria-label="Smart Tools"
+                title="Smart Tools"
               >
                 <Layers className="w-4 h-4" />
               </motion.button>
@@ -294,17 +314,19 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Click-away backdrop overlay with smooth blur */}
+            {/* Click-away backdrop overlay covering entire screen */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/60 lg:hidden backdrop-blur-sm"
+              className="fixed inset-0 z-40 bg-black/60 lg:hidden backdrop-blur-sm cursor-pointer"
               onClick={() => setMobileMenuOpen(false)}
+              onTouchStart={() => setMobileMenuOpen(false)}
             />
 
             <motion.div
+              id="mobile-nav-drawer"
               initial={{ opacity: 0, y: -12, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.97 }}

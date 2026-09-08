@@ -6,9 +6,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
-import { LessLegalPage } from './pages/LessLegalPage';
 import { FeaturesPage } from './pages/FeaturesPage';
-import { ResourcesPage } from './pages/ResourcesPage';
 import { FounderPage } from './pages/FounderPage';
 import { CareersPage } from './pages/CareersPage';
 import { PremiumPage } from './pages/PremiumPage';
@@ -27,6 +25,7 @@ import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { AuthorDetailPage } from './pages/AuthorDetailPage';
 import { LanguageProvider } from './context/LanguageContext';
 import { FloatingSupportButton } from './components/FloatingSupportButton';
+import { adminStorage } from './utils/adminStorage';
 
 // Helper to determine route from current window path, query param, or hash
 function getRouteFromLocation(): PageRoute {
@@ -139,6 +138,14 @@ export default function App() {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>(getRouteFromLocation);
   const [activeArticleSlug, setActiveArticleSlug] = useState<string | undefined>(getSlugFromLocation);
   const [activeAuthorSlug, setActiveAuthorSlug] = useState<string | undefined>(getAuthorSlugFromLocation);
+  const [siteConfig, setSiteConfig] = useState(adminStorage.getSiteAppConfig());
+
+  useEffect(() => {
+    const unsubscribe = adminStorage.subscribeToSiteAppConfig((updated) => {
+      setSiteConfig(updated);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Sync title, description, and canonical link for SEO based on route
   useEffect(() => {
@@ -381,7 +388,7 @@ export default function App() {
         <Navbar currentRoute={currentRoute} onNavigate={navigateTo} />
 
         {/* Main Page Route Content with Smooth Transitions */}
-        <main className="flex-1 flex flex-col pt-[104px] sm:pt-[124px]">
+        <main className={`flex-1 flex flex-col ${siteConfig.announcementActive ? 'pt-[100px] sm:pt-[120px]' : 'pt-16 sm:pt-20'}`}>
           <AnimatePresence mode="wait">
             <PageTransition routeKey={currentRoute}>
               {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}
@@ -389,12 +396,10 @@ export default function App() {
               {currentRoute === 'article-detail' && <ArticleDetailPage slug={activeArticleSlug} onNavigate={navigateTo} />}
               {currentRoute === 'author-detail' && <AuthorDetailPage authorSlug={activeAuthorSlug} onNavigate={navigateTo} />}
               {currentRoute === 'tools' && <ToolsDirectoryPage onNavigate={navigateTo} />}
-              {currentRoute === 'less-legal' && <LessLegalPage onNavigate={navigateTo} />}
               {(currentRoute === 'less-legal-features' || currentRoute === 'features') && <FeaturesPage onNavigate={navigateTo} />}
               {currentRoute === 'about' && <AboutPage onNavigate={navigateTo} />}
               {currentRoute === 'founder' && <FounderPage onNavigate={navigateTo} />}
               {currentRoute === 'careers' && <CareersPage onNavigate={navigateTo} />}
-              {currentRoute === 'resources' && <ResourcesPage onNavigate={navigateTo} />}
               {currentRoute === 'premium' && <PremiumPage onNavigate={navigateTo} />}
               {currentRoute === 'contact' && <ContactPage onNavigate={navigateTo} />}
               {currentRoute === 'privacy' && <WebsitePrivacyPage onNavigate={navigateTo} />}
@@ -412,8 +417,8 @@ export default function App() {
         {/* Footer with Mandatory Direct Policy Links (Hidden on Admin Dashboard for a clean dedicated console experience) */}
         {currentRoute !== 'admin' && <Footer onNavigate={navigateTo} />}
 
-        {/* Floating Less Support Button (Elevated bottom-right, automatically hidden on Contact, Account Delete, and Admin Dashboard pages) */}
-        {currentRoute !== 'contact' && currentRoute !== 'app-delete-account' && currentRoute !== 'admin' && (
+        {/* Floating Less Support Button (Elevated bottom-right, automatically hidden on Contact, Account Delete, Admin Dashboard, and Article Read pages) */}
+        {currentRoute !== 'contact' && currentRoute !== 'app-delete-account' && currentRoute !== 'admin' && currentRoute !== 'article-detail' && (
           <FloatingSupportButton onNavigate={navigateTo} />
         )}
 

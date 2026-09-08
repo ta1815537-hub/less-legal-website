@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { PageRoute, Article, ArticleSummary } from '../types';
 import { 
   ArrowLeft, Clock, Calendar, Share2, Copy, Check, 
   ThumbsUp, ThumbsDown, BookOpen, User, Tag, 
-  ChevronRight, AlertTriangle 
+  ChevronRight, AlertTriangle, PenTool 
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { articleService } from '../services/articleService';
+import { getDirectCloudImageUrl } from '../utils/adminStorage';
 
 interface ArticleDetailPageProps {
   slug?: string;
@@ -39,6 +41,16 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [copiedShare, setCopiedShare] = useState<boolean>(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(false);
+  const [userVote, setUserVote] = useState<'yes' | 'no' | null>(null);
+  const [particles, setParticles] = useState<{
+    id: number;
+    left: number;
+    emoji: string;
+    scale: number;
+    xOffset: number;
+    yDistance: number;
+    delay: number;
+  }[]>([]);
 
   // Track scroll reading progress bar
   useEffect(() => {
@@ -54,7 +66,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch single full article data by slug
+  // Real-time subscription to article data
   useEffect(() => {
     let isMounted = true;
     if (!effectiveSlug) {
@@ -65,7 +77,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
 
     setLoading(true);
 
-    articleService.getArticleBySlug(effectiveSlug).then(async (fetched) => {
+    const unsubscribe = articleService.subscribeToArticle(effectiveSlug, async (fetched) => {
       if (isMounted) {
         if (fetched) {
           setArticle(fetched);
@@ -74,20 +86,32 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
           // Fetch related articles
           const related = await articleService.getRelatedArticles(fetched, 3);
           if (isMounted) setRelatedArticles(related);
+
+          // Check if user already voted on this article
+          try {
+            const storedVotes = localStorage.getItem('voted_articles_registry');
+            if (storedVotes) {
+              const registry = JSON.parse(storedVotes);
+              if (registry[fetched.id]) {
+                setFeedbackSubmitted(true);
+                setUserVote(registry[fetched.id]);
+              } else {
+                setFeedbackSubmitted(false);
+                setUserVote(null);
+              }
+            }
+          } catch {}
         } else {
           setArticle(null);
           setLoading(false);
         }
       }
-    }).catch((err) => {
-      console.error('Error fetching article:', err);
-      if (isMounted) {
-        setArticle(null);
-        setLoading(false);
-      }
     });
 
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+      if (unsubscribe) unsubscribe();
+    };
   }, [effectiveSlug]);
 
   // Sync Dynamic SEO Metadata & Article JSON-LD Structured Data
@@ -200,9 +224,51 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
     window.open(`https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${text}`, '_blank');
   };
 
-  const handleFeedback = (_isUseful: boolean) => {
+  const handleFeedback = async (isUseful: boolean) => {
     if (!article || feedbackSubmitted) return;
+
+    const voteType = isUseful ? 'yes' : 'no';
+
+    // 1. Submit vote locally and in database
     setFeedbackSubmitted(true);
+    setUserVote(voteType);
+
+    // Update local voted registry to prevent multi-voting
+    try {
+      const storedVotes = localStorage.getItem('voted_articles_registry') || '{}';
+      const registry = JSON.parse(storedVotes);
+      registry[article.id] = voteType;
+      localStorage.setItem('voted_articles_registry', JSON.stringify(registry));
+    } catch (e) {
+      console.warn('Failed to save vote to local storage:', e);
+    }
+
+    // Call service to increment counts in Firestore
+    await articleService.voteArticleUseful(article.id, isUseful);
+
+    // 2. Spawn 12 Facebook/Instagram style floating particles
+    const emojis = isUseful 
+      ? ['❤️', '💖', '👍', '🔥', '✨', '❤️', '👍'] 
+      : ['👎', '💔', '😢', '👎', '💔', '👎', '😢'];
+
+    const newParticles = Array.from({ length: 12 }).map((_, i) => {
+      // Yes button is on the left (20-40% start left), No button is on the right (60-80% start left)
+      const startLeft = isUseful 
+        ? 22 + Math.random() * 15 // above Yes button
+        : 65 + Math.random() * 15; // above No button
+
+      return {
+        id: Date.now() + i + Math.random(),
+        left: startLeft,
+        emoji: emojis[Math.floor(Math.random() * emojis.length)],
+        scale: 0.7 + Math.random() * 0.8,
+        xOffset: -35 + Math.random() * 70, // sway
+        yDistance: 130 + Math.random() * 70, // float high
+        delay: i * 0.07, // stagger launch
+      };
+    });
+
+    setParticles((prev) => [...prev, ...newParticles]);
   };
 
   // Format Display Date cleanly
@@ -412,14 +478,15 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
           {/* Attribution Bar */}
           <div className="flex items-center justify-between pt-3 text-xs text-slate-500 dark:text-slate-400">
             <div className="flex items-center gap-2.5 pointer-events-none select-none">
-              <div className="w-7 h-7 rounded bg-blue-100 dark:bg-blue-950 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center overflow-hidden shrink-0 pointer-events-none select-none">
-                <img src="/Logo.png" alt="Less Creation" className="w-full h-full object-cover pointer-events-none select-none" />
+              <div className="w-7 h-7 rounded-lg bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/25 flex items-center justify-center overflow-hidden shrink-0 pointer-events-none select-none">
+                <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="pointer-events-none select-none">
-                <span className="block font-bold text-slate-900 dark:text-white text-xs">
-                  By Less Team
+                <span className="block font-bold text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
+                  <span>By Less Team</span>
+                  <PenTool className="w-2.5 h-2.5 text-blue-500" />
                 </span>
-                <span className="text-[10px] text-slate-400">Published by Less Creation</span>
+                <span className="text-[10px] text-slate-400">Editorial & Research Staff • Less Creation</span>
               </div>
             </div>
 
@@ -433,11 +500,12 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
 
         {/* Featured Image if Available */}
         {article.featuredImage && (
-          <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 h-56 sm:h-80 w-full bg-slate-100 dark:bg-white/5">
+          <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 aspect-video w-full bg-slate-100 dark:bg-white/5 flex items-center justify-center">
             <img 
-              src={article.featuredImage} 
+              src={getDirectCloudImageUrl(article.featuredImage)} 
               alt={article.title} 
-              className="w-full h-full object-cover" 
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900" 
               loading="eager"
             />
           </div>
@@ -468,39 +536,83 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
         )}
 
         {/* FEEDBACK & SOCIAL SHARING BAR */}
-        <div className="py-5 border-y border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="py-5 border-y border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-visible relative">
           
-          {/* Feedback Widget */}
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+          {/* Feedback Widget with floating particles container */}
+          <div className="flex items-center gap-3 relative overflow-visible w-full sm:w-auto">
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 shrink-0">
               {isHindi ? "क्या यह लेख उपयोगी रहा?" : "Was this article useful?"}
             </span>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleFeedback(true)}
-                disabled={feedbackSubmitted}
-                className={`px-3 py-1 rounded-md text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                  feedbackSubmitted
-                    ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/30'
-                    : 'bg-slate-100 dark:bg-white/5 hover:bg-emerald-500/10 text-slate-700 dark:text-slate-300'
-                }`}
-              >
-                <ThumbsUp className="w-3 h-3 text-emerald-500" />
-                <span>{isHindi ? "हाँ" : "Yes"}</span>
-              </button>
+            <div className="flex items-center gap-2 relative overflow-visible">
+              
+              {/* Floating Rising Particles System */}
+              <AnimatePresence>
+                {particles.map((p) => (
+                  <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, scale: 0.3, x: 0, y: 0 }}
+                    animate={{
+                      opacity: [0, 1, 1, 0],
+                      scale: [0.3, p.scale, p.scale, 0.5],
+                      x: [0, p.xOffset * 0.4, p.xOffset * 0.8, p.xOffset],
+                      y: -p.yDistance,
+                    }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      duration: 1.5,
+                      ease: "easeOut",
+                      delay: p.delay,
+                    }}
+                    onAnimationComplete={() => {
+                      setParticles((prev) => prev.filter((item) => item.id !== p.id));
+                    }}
+                    className="absolute pointer-events-none select-none z-50 text-xl"
+                    style={{ bottom: '28px', left: `${p.left}%` }}
+                  >
+                    {p.emoji}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
 
-              <button
-                onClick={() => handleFeedback(false)}
-                disabled={feedbackSubmitted}
-                className={`px-3 py-1 rounded-md text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                  feedbackSubmitted
-                    ? 'bg-rose-500/10 text-rose-600 border border-rose-500/30'
-                    : 'bg-slate-100 dark:bg-white/5 hover:bg-rose-500/10 text-slate-700 dark:text-slate-300'
-                }`}
-              >
-                <ThumbsDown className="w-3 h-3 text-rose-500" />
-                <span>{isHindi ? "नहीं" : "No"}</span>
-              </button>
+              {article && (
+                <>
+                  <button
+                    onClick={() => handleFeedback(true)}
+                    disabled={feedbackSubmitted}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all border active-click-scale shrink-0 cursor-pointer ${
+                      feedbackSubmitted
+                        ? userVote === 'yes'
+                          ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/40 shadow-xs'
+                          : 'bg-slate-50 dark:bg-[#111827]/40 text-slate-400 border-slate-200/50 dark:border-slate-800 opacity-60'
+                        : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5 shadow-xs'
+                    }`}
+                  >
+                    <ThumbsUp className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    <span>{isHindi ? "हाँ" : "Yes"}</span>
+                    <span className="px-1.5 py-0.2 text-[10px] rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-black shrink-0">
+                      {article.usefulYesCount || 0}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => handleFeedback(false)}
+                    disabled={feedbackSubmitted}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all border active-click-scale shrink-0 cursor-pointer ${
+                      feedbackSubmitted
+                        ? userVote === 'no'
+                          ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border-rose-500/40 shadow-xs'
+                          : 'bg-slate-50 dark:bg-[#111827]/40 text-slate-400 border-slate-200/50 dark:border-slate-800 opacity-60'
+                        : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-500/30 hover:bg-rose-500/5 shadow-xs'
+                    }`}
+                  >
+                    <ThumbsDown className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                    <span>{isHindi ? "नहीं" : "No"}</span>
+                    <span className="px-1.5 py-0.2 text-[10px] rounded-md bg-rose-500/10 text-rose-600 dark:text-rose-400 font-mono font-black shrink-0">
+                      {article.usefulNoCount || 0}
+                    </span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
