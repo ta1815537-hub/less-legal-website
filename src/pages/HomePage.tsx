@@ -186,12 +186,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                 {/* Primary Company Headline */}
                 <div className="w-full flex flex-col gap-1 mt-0.5">
-                  <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[3.8rem] font-black tracking-tight leading-[1.1] text-slate-900 dark:text-white">
-                    <span className="block text-slate-900 dark:text-slate-100">
-                      {isHindi ? t.home.heroTitlePart1 : "Technology that makes"}
+                  <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[4.2rem] font-black tracking-tight leading-[1.1] text-center sm:text-left">
+                    <span className="block bg-gradient-to-r from-slate-950 via-blue-700 to-indigo-600 dark:from-white dark:via-blue-400 dark:to-indigo-300 animate-text-gradient-flow text-transparent bg-clip-text">
+                      {isHindi ? t.home.heroTitlePart1 : "Simpler Tool"}
                     </span>
-                    <span className="block mt-0.5 text-blue-600 dark:text-blue-400">
-                      {isHindi ? t.home.heroTitlePart2 : "difficult things simple."}
+                    <span className="block mt-1 bg-gradient-to-r from-blue-600 via-purple-600 to-rose-500 dark:from-blue-400 dark:via-pink-500 dark:to-amber-400 animate-text-gradient-flow text-transparent bg-clip-text">
+                      {isHindi ? t.home.heroTitlePart2 : "Greater Impact."}
                     </span>
                   </h1>
                 </div>

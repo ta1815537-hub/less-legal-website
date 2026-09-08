@@ -1043,3 +1043,24 @@ body {
   animation: gold-sweep 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
+/* Premium Animated Shifting Text Gradient Class */
+.animate-text-gradient-flow {
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: text-gradient-shift 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes text-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
