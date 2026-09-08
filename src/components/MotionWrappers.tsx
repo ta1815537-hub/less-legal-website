@@ -160,17 +160,17 @@ export const HeroAmbientGlow: React.FC = () => {
     >
       {/* Soft Sky Blue / Powder Blue Atmospheric Lighting (Center-Left) */}
       <div 
-        className="vapor-orb-1 absolute -top-24 left-[5%] sm:left-[15%] w-[32rem] sm:w-[46rem] h-[32rem] sm:h-[46rem] bg-gradient-to-tr from-[#BFDBFE]/50 via-[#DBEAFE]/40 to-[#EFF6FF]/20 dark:from-[#1E3A8A]/25 dark:via-[#172554]/20 to-transparent rounded-full blur-[80px] sm:blur-[130px]"
+        className="vapor-orb-1 absolute -top-24 left-[5%] sm:left-[15%] w-[32rem] sm:w-[46rem] h-[32rem] sm:h-[46rem] bg-gradient-to-tr from-[#BFDBFE]/50 via-[#DBEAFE]/40 to-[#EFF6FF]/20 dark:from-[#2563EB]/35 dark:via-[#4F46E5]/20 dark:to-transparent rounded-full blur-[80px] sm:blur-[130px]"
       />
 
       {/* Warm Golden Sunlight Ambient Orb (Top Right) */}
       <div 
-        className="vapor-orb-2 absolute top-0 right-[2%] sm:right-[8%] w-[26rem] sm:w-[38rem] h-[26rem] sm:h-[38rem] bg-gradient-to-br from-[#FEF3C7]/40 via-[#FDE68A]/25 to-[#DBEAFE]/30 dark:from-[#78350F]/20 dark:via-[#854D0E]/15 to-transparent rounded-full blur-[70px] sm:blur-[110px]"
+        className="vapor-orb-2 absolute top-0 right-[2%] sm:right-[8%] w-[26rem] sm:w-[38rem] h-[26rem] sm:h-[38rem] bg-gradient-to-br from-[#FEF3C7]/40 via-[#FDE68A]/25 to-[#DBEAFE]/30 dark:from-[#F43F5E]/20 dark:via-[#EC4899]/15 dark:to-transparent rounded-full blur-[70px] sm:blur-[110px]"
       />
 
       {/* Luminous Periwinkle Backlight behind phone (Center Right) */}
       <div 
-        className="absolute top-1/3 right-[15%] sm:right-[22%] w-[24rem] sm:w-[34rem] h-[24rem] sm:h-[34rem] bg-gradient-to-bl from-[#93C5FD]/45 via-[#C7D2FE]/30 to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-70"
+        className="absolute top-1/3 right-[15%] sm:right-[22%] w-[24rem] sm:w-[34rem] h-[24rem] sm:h-[34rem] bg-gradient-to-bl from-[#93C5FD]/45 via-[#C7D2FE]/30 to-transparent dark:from-[#3B82F6]/30 dark:via-[#8B5CF6]/20 dark:to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-70"
       />
 
       {/* Seamless Soft Floor Transition */}

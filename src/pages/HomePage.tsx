@@ -187,10 +187,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 {/* Primary Company Headline */}
                 <div className="w-full flex flex-col gap-1 mt-0.5">
                   <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[4.2rem] font-black tracking-tight leading-[1.1] text-center sm:text-left">
-                    <span className="block bg-gradient-to-r from-slate-950 via-blue-700 to-indigo-600 dark:from-white dark:via-blue-400 dark:to-indigo-300 animate-text-gradient-flow text-transparent bg-clip-text">
+                    <span className="block hero-gradient-title-1 animate-text-gradient-flow">
                       {isHindi ? t.home.heroTitlePart1 : "Simpler Tool"}
                     </span>
-                    <span className="block mt-1 bg-gradient-to-r from-blue-600 via-purple-600 to-rose-500 dark:from-blue-400 dark:via-pink-500 dark:to-amber-400 animate-text-gradient-flow text-transparent bg-clip-text">
+                    <span className="block mt-1 hero-gradient-title-2 animate-text-gradient-flow">
                       {isHindi ? t.home.heroTitlePart2 : "Greater Impact."}
                     </span>
                   </h1>

@@ -1046,9 +1046,62 @@ body {
 /* Premium Animated Shifting Text Gradient Class */
 .animate-text-gradient-flow {
   background-size: 300% 300%;
-  background-clip: text;
-  -webkit-background-clip: text;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
   animation: text-gradient-shift 4.5s ease-in-out infinite alternate;
+}
+
+/* Explicit, Breathtaking High-Contrast Hero Gradients with Browser-Safe Fallbacks */
+.hero-gradient-title-1 {
+  color: #1D4ED8 !important; /* Extremely clean solid Indigo fallback for older/in-app browsers */
+}
+
+.dark .hero-gradient-title-1 {
+  color: #38BDF8 !important; /* Stunning Sky-blue fallback for dark mode */
+}
+
+.hero-gradient-title-2 {
+  color: #7C3AED !important; /* Royal Violet fallback */
+}
+
+.dark .hero-gradient-title-2 {
+  color: #F43F5E !important; /* Vibrant Rose fallback */
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .hero-gradient-title-1 {
+    background: linear-gradient(135deg, #090D1A 0%, #1D4ED8 45%, #4F46E5 80%, #3B82F6 100%);
+    background-size: 300% 300%;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+  
+  .dark .hero-gradient-title-1 {
+    background: linear-gradient(135deg, #FFFFFF 0%, #38BDF8 35%, #818CF8 75%, #60A5FA 100%) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+
+  .hero-gradient-title-2 {
+    background: linear-gradient(135deg, #2563EB 0%, #7C3AED 45%, #E11D48 80%, #F43F5E 100%);
+    background-size: 300% 300%;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+
+  .dark .hero-gradient-title-2 {
+    background: linear-gradient(135deg, #3B82F6 0%, #F43F5E 40%, #F59E0B 75%, #EC4899 100%) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
 }
 
 @keyframes text-gradient-shift {

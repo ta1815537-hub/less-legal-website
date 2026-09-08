@@ -96,13 +96,13 @@ export default function App() {
 
   // Sync title, description, and canonical link for SEO based on route
   useEffect(() => {
-    let title = 'Less Creation | Technology that makes difficult things simple.';
+    let title = 'Less Creation | Simpler Tool Greater Impact.';
     let description = 'Less Creation is a digital product studio founded by CEO Anurag Gurauli. Discover Less Legal, the first flagship Android legal utility app & advocacy portal by Less Creation.';
     let path = '';
 
     switch (currentRoute) {
       case 'home': 
-        title = 'Less Creation | Technology that makes difficult things simple.'; 
+        title = 'Less Creation | Simpler Tool Greater Impact.'; 
         description = 'Less Creation is a digital product studio founded by CEO Anurag Gurauli. Discover Less Legal, the first flagship Android legal utility app & advocacy portal by Less Creation.';
         path = ''; 
         break;
@@ -226,7 +226,11 @@ export default function App() {
   useEffect(() => {
     const handleLocationChange = () => {
       setCurrentRoute(getRouteFromLocation());
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch {
+        window.scrollTo(0, 0);
+      }
     };
 
     window.addEventListener('popstate', handleLocationChange);
@@ -268,7 +272,11 @@ export default function App() {
       }
     }
     
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    try {
+      window.scrollTo(0, 0);
+    } catch {
+      // Fallback
+    }
   };
 
   return (
