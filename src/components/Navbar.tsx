@@ -58,6 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
 
   const desktopNavLinks: { label: string; route: PageRoute; badge?: string }[] = [
     { label: isHindi ? 'होम' : 'Home', route: 'home' },
+    { label: isHindi ? 'लेख' : 'Articles', route: 'articles', badge: 'New' },
     { label: isHindi ? 'टूल्स' : 'Tools', route: 'tools', badge: '30+' },
     { label: isHindi ? 'लेस लीगल' : 'Less Legal', route: 'less-legal', badge: isHindi ? 'फ्लैगशिप' : 'Flagship' },
     { label: isHindi ? 'लेस क्रिएशन' : 'About', route: 'about' },
@@ -309,7 +310,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               {/* Luxury Top Laser Edge */}
               <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-blue-600 via-sky-400 via-amber-400 to-indigo-600" />
 
-              {/* Navigation List - Ordered: Home -> Founder -> Careers -> About -> Contact */}
+              {/* Navigation List - Ordered: Home -> Articles -> Tools -> Founder -> Careers -> About */}
               <div className="flex flex-col space-y-1.5 pt-1">
                 
                 {/* 1. Home */}
@@ -335,7 +336,35 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${currentRoute === 'home' ? 'text-blue-500 translate-x-0.5' : 'group-hover:translate-x-0.5'}`} />
                 </button>
 
-                {/* 2. Tools Ecosystem */}
+                {/* 2. Articles (लेख व संपादकीय) */}
+                <button
+                  id="mobile-nav-articles"
+                  onClick={() => handleNavClick('articles')}
+                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
+                    currentRoute === 'articles' || currentRoute === 'article-detail'
+                      ? 'text-sky-600 dark:text-sky-400 bg-sky-500/10 dark:bg-sky-500/18 border border-sky-500/30 shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
+                      currentRoute === 'articles' || currentRoute === 'article-detail'
+                        ? 'bg-sky-600 text-white shadow-md'
+                        : 'bg-sky-500/10 dark:bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/20'
+                    }`}>
+                      <BookOpen className="w-4 h-4" />
+                    </div>
+                    <span className="whitespace-nowrap font-bold">{isHindi ? 'लेख व संपादकीय' : 'Articles & Insights'}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 uppercase tracking-wide">
+                      {isHindi ? 'नया' : 'New'}
+                    </span>
+                    <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${(currentRoute === 'articles' || currentRoute === 'article-detail') ? 'text-sky-500 translate-x-0.5' : 'group-hover:translate-x-0.5'}`} />
+                  </div>
+                </button>
+
+                {/* 3. Tools Ecosystem */}
                 <button
                   id="mobile-nav-tools"
                   onClick={() => handleNavClick('tools')}
@@ -360,7 +389,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   </span>
                 </button>
 
-                {/* 2. Founder */}
+                {/* 4. Founder */}
                 <button
                   id="mobile-nav-founder"
                   onClick={() => handleNavClick('founder')}
@@ -390,7 +419,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   </span>
                 </button>
 
-                {/* 3. Careers & Hiring (NEW) */}
+                {/* 5. Careers & Hiring */}
                 <button
                   id="mobile-nav-careers"
                   onClick={() => handleNavClick('careers')}
@@ -419,7 +448,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   </div>
                 </button>
 
-                {/* 4. About Less Creation (Placed just above Contact as requested) */}
+                {/* 6. About Less Creation */}
                 <button
                   id="mobile-nav-about"
                   onClick={() => handleNavClick('about')}
@@ -441,31 +470,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   </div>
                   <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 shrink-0 uppercase tracking-wide">
                     Studio
-                  </span>
-                </button>
-
-                {/* 5. Contact (Directly under About) */}
-                <button
-                  id="mobile-nav-contact"
-                  onClick={() => handleNavClick('contact')}
-                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
-                    currentRoute === 'contact'
-                      ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/18 border border-emerald-500/30 shadow-xs'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
-                  }`}
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
-                      currentRoute === 'contact'
-                        ? 'bg-emerald-600 text-white shadow-md'
-                        : 'bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                    }`}>
-                      <MessageSquare className="w-4 h-4" />
-                    </div>
-                    <span className="whitespace-nowrap font-bold">{isHindi ? 'संपर्क सहायता' : 'Contact Support'}</span>
-                  </div>
-                  <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0 uppercase tracking-wide">
-                    24/7
                   </span>
                 </button>
               </div>

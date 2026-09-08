@@ -51,7 +51,7 @@ export const LessLegalPage: React.FC<LessLegalPageProps> = ({ onNavigate }) => {
     {
       icon: Calculator,
       title: isHindi ? 'कानूनी कैलकुलेटर व भूमि कनवर्टर' : 'Legal Calculators & Land Converters',
-      desc: isHindi ? 'कोर्ट फीस अनुमानक, लिमिटेशन अवधि गणक, बीघा, कनाल, गुंठा व एकड़ रूपांतरण।' : 'Court fee estimators, limitation period calculator, Bigha, Kanal, Guntha & Acre conversions.',
+      desc: isHindi ? 'जीएसटी, आयु गणक, बीघा, कनाल, गुंठा व एकड़ रूपांतरण।' : 'GST Calculator, age calculator, Bigha, Kanal, Guntha & Acre conversions.',
       color: 'purple'
     },
     {

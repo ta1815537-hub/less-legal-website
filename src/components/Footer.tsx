@@ -17,7 +17,8 @@ import {
   Smartphone, 
   Layers, 
   Lock,
-  Briefcase
+  Briefcase,
+  BookOpen
 } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { useLanguage } from '../context/LanguageContext';
@@ -185,6 +186,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div className="w-6 h-0.5 bg-blue-600 rounded-full mt-1.5" />
               </div>
               <ul className="space-y-2 text-xs font-semibold">
+                <li>
+                  <button
+                    onClick={() => onNavigate('articles')}
+                    className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left font-bold"
+                  >
+                    <BookOpen className="w-3.5 h-3.5 text-blue-500" />
+                    <span>{isHindi ? 'लेख एवं ब्लॉग (Articles)' : 'Articles & Editorial'}</span>
+                  </button>
+                </li>
                 <li>
                   <button
                     onClick={() => onNavigate('tools')}

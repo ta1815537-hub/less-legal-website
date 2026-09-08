@@ -20,7 +20,63 @@ export type PageRoute =
   | 'tools'
   | 'professionals'
   | 'templates'
-  | 'pricing';
+  | 'pricing'
+  | 'articles'
+  | 'article-detail'
+  | 'author-detail';
+
+export interface ArticleAuthor {
+  id: string;
+  name: string;
+  role: string;
+  image?: string;
+  bio: string;
+  slug: string;
+}
+
+export type ArticleStatus = 'draft' | 'published' | 'scheduled' | 'archived';
+
+export interface Article {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage?: string;
+  category: string;
+  tags: string[];
+  authorId: string;
+  authorName: string;
+  authorRole: string;
+  authorImage?: string;
+  authorBio?: string;
+  authorSlug: string;
+  status: ArticleStatus;
+  publishedAt: string;
+  updatedAt: string;
+  readingTime: string;
+  viewCount: number;
+  uniqueViewCount: number;
+  createdAt: string;
+  createdBy?: string;
+  updatedBy?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  canonicalUrl?: string;
+  isFeatured: boolean;
+  isPublished: boolean;
+  usefulYesCount?: number;
+  usefulNoCount?: number;
+  firestoreDocId?: string;
+}
+
+export interface ArticleCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  order?: number;
+}
 
 export interface NavItem {
   label: string;

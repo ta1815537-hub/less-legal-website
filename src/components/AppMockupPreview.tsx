@@ -223,7 +223,7 @@ export const AppMockupPreview: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                    Court fee estimations and regional land area conversions.
+                    GST calculations and regional land area conversions.
                   </p>
                 </div>
 
@@ -246,11 +246,11 @@ export const AppMockupPreview: React.FC = () => {
 
                 <div className="p-2.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 shadow-xs space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-slate-800 dark:text-slate-200">Court Fee Estimation</span>
+                    <span className="text-[10px] font-bold text-slate-800 dark:text-slate-200">GST Calculator</span>
                     <span className="text-[9px] font-semibold text-indigo-600">Calculator Hub</span>
                   </div>
                   <div className="text-[9px] text-slate-500 dark:text-slate-400">
-                    Calculate estimated court fee schedules based on suit valuation.
+                    Calculate GST schedules instantly.
                   </div>
                 </div>
               </div>
@@ -263,11 +263,11 @@ export const AppMockupPreview: React.FC = () => {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                       <Scale className="w-3.5 h-3.5 text-indigo-600" />
-                      Bare Acts & Legal Glossary
+                      Bare Acts
                     </span>
                   </div>
                   <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                    Statutory provisions, Latin maxims, and legal definitions.
+                    Statutory provisions.
                   </p>
                 </div>
 
@@ -287,8 +287,8 @@ export const AppMockupPreview: React.FC = () => {
                 </div>
 
                 <div className="p-2.5 bg-indigo-50/70 rounded-xl border border-indigo-100 text-[10px]">
-                  <div className="font-bold text-indigo-950">Latin Maxim: Res Judicata</div>
-                  <div className="text-[9px] text-indigo-800">A matter judged; a case in which there has been a final judgment.</div>
+                  <div className="font-bold text-indigo-950">Statutory Update</div>
+                  <div className="text-[9px] text-indigo-800">Latest civil procedure notifications available in the Bare Acts library.</div>
                 </div>
               </div>
             )}

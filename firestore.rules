@@ -27,15 +27,14 @@ service cloud.firestore {
     }
 
     // =========================================================
-    // GLOBAL ADMIN BYPASS ACCESS
-    // Admins have absolute full access to read/write any document
+    // GLOBAL ADMIN OVERRIDE
     // =========================================================
     match /{document=**} {
       allow read, write: if isAdmin();
     }
 
     // =========================================================
-    // CORE APP & WEBSITE COLLECTIONS
+    // CORE APP & USER COLLECTIONS
     // =========================================================
 
     match /admins/{adminId} {
@@ -135,8 +134,28 @@ service cloud.firestore {
     }
 
     // =========================================================
+    // ARTICLES & EDITORIAL SYSTEM SECURITY RULES
+    // =========================================================
+    match /articles/{articleId} {
+      allow read: if isAdmin() || resource.data.status == 'published' || resource.data.isPublished == true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || (
+        (resource.data.status == 'published' || resource.data.isPublished == true) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount', 'uniqueViewCount', 'usefulYesCount', 'usefulNoCount'])
+      );
+    }
+
+    match /article_categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /article_presence/{presenceId} {
+      allow read, create, update, delete: if true;
+    }
+
+    // =========================================================
     // CONSOLIDATED PUBLIC CONTENT COLLECTIONS
-    // Handles all standard legal contents in one elegant block
     // =========================================================
     match /{collectionName}/{documentId} {
       allow read: if collectionName in [
@@ -150,13 +169,6 @@ service cloud.firestore {
       ];
       allow write: if isAdmin();
     }
-
-    // =========================================================
-    // FALLBACK FOR UNKNOWN COLLECTIONS
-    // =========================================================
-    match /{document=**} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin();
-    }
   }
 }
+

@@ -22,6 +22,9 @@ import { DisclaimerPage } from './pages/DisclaimerPage';
 import { DownloadPage } from './pages/DownloadPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { ToolsDirectoryPage } from './pages/ToolsDirectoryPage';
+import { ArticlesPage } from './pages/ArticlesPage';
+import { ArticleDetailPage } from './pages/ArticleDetailPage';
+import { AuthorDetailPage } from './pages/AuthorDetailPage';
 import { LanguageProvider } from './context/LanguageContext';
 import { FloatingSupportButton } from './components/FloatingSupportButton';
 
@@ -41,7 +44,19 @@ function getRouteFromLocation(): PageRoute {
     return 'tools';
   }
 
+  if (target.toLowerCase().startsWith('author/') || target.toLowerCase().startsWith('authors/')) {
+    return 'author-detail';
+  }
+
+  if (target.toLowerCase().startsWith('articles/') && target.toLowerCase() !== 'articles' && target.toLowerCase() !== 'articles/') {
+    return 'article-detail';
+  }
+
   switch (target.toLowerCase()) {
+    case 'articles':
+    case 'article':
+    case 'editorial':
+    case 'blog': return 'articles';
     case 'about':
     case 'about-us':
     case 'about-less-creation': return 'about';
@@ -93,6 +108,14 @@ function getRouteFromLocation(): PageRoute {
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>(getRouteFromLocation);
+  const [activeArticleSlug, setActiveArticleSlug] = useState<string | undefined>(() => {
+    const match = window.location.pathname.match(/^\/articles\/([^\/]+)$/i);
+    return match ? match[1] : undefined;
+  });
+  const [activeAuthorSlug, setActiveAuthorSlug] = useState<string | undefined>(() => {
+    const match = window.location.pathname.match(/^\/author(?:s)?\/([^\/]+)$/i);
+    return match ? match[1] : undefined;
+  });
 
   // Sync title, description, and canonical link for SEO based on route
   useEffect(() => {
@@ -105,6 +128,21 @@ export default function App() {
         title = 'Less Creation | Simpler Tool Greater Impact.'; 
         description = 'Less Creation is a digital product studio founded by CEO Anurag Gurauli. Discover Less Legal, the first flagship Android legal utility app & advocacy portal by Less Creation.';
         path = ''; 
+        break;
+      case 'articles':
+        title = 'Articles & Insights | Less Creation Technology & Legal Publication';
+        description = 'Read high-impact articles, legal guides, software essays, and technology insights from Less Creation and Anurag Gurauli.';
+        path = 'articles';
+        break;
+      case 'article-detail':
+        title = activeArticleSlug ? `${activeArticleSlug.replace(/-/g, ' ')} | Less Creation` : 'Article | Less Creation';
+        description = 'Read in-depth editorial analysis and legal tech insights on Less Creation.';
+        path = activeArticleSlug ? `articles/${activeArticleSlug}` : 'articles';
+        break;
+      case 'author-detail':
+        title = activeAuthorSlug ? `${activeAuthorSlug.replace(/-/g, ' ')} | Author Profile` : 'Author Profile | Less Creation';
+        description = 'Explore articles and publications by author on Less Creation.';
+        path = activeAuthorSlug ? `authors/${activeAuthorSlug}` : 'articles';
         break;
       case 'less-legal':
         title = 'Less Legal: All-in-One Smart Legal App | Less Creation Flagship';
@@ -242,12 +280,20 @@ export default function App() {
     };
   }, []);
 
-  const navigateTo = (route: PageRoute) => {
+  const navigateTo = (route: PageRoute, param?: string) => {
     setCurrentRoute(route);
     
     // Update path using history API for clean direct URLs
     let targetPath = '/';
     if (route === 'home') targetPath = '/';
+    else if (route === 'articles') targetPath = '/articles';
+    else if (route === 'article-detail' && param) {
+      setActiveArticleSlug(param);
+      targetPath = `/articles/${param}`;
+    } else if (route === 'author-detail' && param) {
+      setActiveAuthorSlug(param);
+      targetPath = `/authors/${param}`;
+    }
     else if (route === 'tools') targetPath = '/tools';
     else if (route === 'less-legal') targetPath = '/less-legal';
     else if (route === 'less-legal-features' || route === 'features') targetPath = '/less-legal/features';
@@ -294,6 +340,9 @@ export default function App() {
           <AnimatePresence mode="wait">
             <PageTransition routeKey={currentRoute}>
               {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}
+              {currentRoute === 'articles' && <ArticlesPage onNavigate={navigateTo} />}
+              {currentRoute === 'article-detail' && <ArticleDetailPage slug={activeArticleSlug} onNavigate={navigateTo} />}
+              {currentRoute === 'author-detail' && <AuthorDetailPage authorSlug={activeAuthorSlug} onNavigate={navigateTo} />}
               {currentRoute === 'tools' && <ToolsDirectoryPage onNavigate={navigateTo} />}
               {currentRoute === 'less-legal' && <LessLegalPage onNavigate={navigateTo} />}
               {(currentRoute === 'less-legal-features' || currentRoute === 'features') && <FeaturesPage onNavigate={navigateTo} />}

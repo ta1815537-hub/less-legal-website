@@ -7,7 +7,7 @@ import { TextToolsView } from './implementations/TextToolsView';
 import { CalculatorToolsView } from './implementations/CalculatorToolsView';
 import { QrDigitalToolsView } from './implementations/QrDigitalToolsView';
 import { ProductivityToolsView } from './implementations/ProductivityToolsView';
-import { LegalToolsView } from './implementations/LegalToolsView';
+
 import { getToolBySlug } from '../../tools/toolRegistry';
 
 interface ToolDispatcherProps {
@@ -42,8 +42,7 @@ export const ToolDispatcher: React.FC<ToolDispatcherProps> = ({
         return <QrDigitalToolsView tool={tool} />;
       case 'productivity':
         return <ProductivityToolsView tool={tool} />;
-      case 'legal':
-        return <LegalToolsView tool={tool} />;
+
       default:
         return (
           <div className="p-8 text-center text-slate-500">

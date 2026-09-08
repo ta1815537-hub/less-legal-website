@@ -193,15 +193,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       icon: QrCode,
       tags: ['स्कैनर', 'क्यूआर जनरेटर', 'फाइल लिंकिंग', '+1']
     },
-    {
-      id: 'f-court-fees',
-      title: 'कोर्ट फीस एस्टिमेटर (Court Fee Estimator)',
-      category: 'Calculators & Converters',
-      description: 'वाद मूल्यांकन एवं राज्यवार कोर्ट फीस का तुरंत सटीक अनुमान लगाएं।',
-      themeColor: 'rose',
-      icon: Calculator,
-      tags: ['मूल्यांकन', 'न्यायिक स्टाम्प', 'राज्य दरें', '+1']
-    },
+
     {
       id: 'f-legal-drafts',
       title: 'कानूनी ड्राफ्ट्स (Legal Drafts)',

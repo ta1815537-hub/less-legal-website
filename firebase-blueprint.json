@@ -187,6 +187,37 @@
           "description": "Transaction timestamp"
         }
       }
+    },
+    "articles": {
+      "title": "Editorial Articles & Insights",
+      "description": "Published editorial articles, technology insights, and guides",
+      "properties": {
+        "title": { "type": "string", "description": "Article title" },
+        "slug": { "type": "string", "description": "SEO friendly unique URL slug" },
+        "excerpt": { "type": "string", "description": "Short article abstract/summary" },
+        "content": { "type": "string", "description": "Full article body content" },
+        "category": { "type": "string", "description": "Primary article category" },
+        "tags": { "type": "array", "description": "Article tags array" },
+        "authorName": { "type": "string", "description": "Author full name" },
+        "authorRole": { "type": "string", "description": "Author title or role" },
+        "authorSlug": { "type": "string", "description": "Author profile slug" },
+        "status": { "type": "string", "description": "draft | published | scheduled | archived" },
+        "readingTime": { "type": "string", "description": "Reading time estimate e.g. 5 min read" },
+        "viewCount": { "type": "number", "description": "Total view count" },
+        "uniqueViewCount": { "type": "number", "description": "Unique visitor view count" },
+        "isFeatured": { "type": "boolean", "description": "Featured article flag" },
+        "isPublished": { "type": "boolean", "description": "Published state flag" }
+      }
+    },
+    "article_presence": {
+      "title": "Article Presence Readers",
+      "description": "Lightweight presence heartbeat tracking active live readers",
+      "properties": {
+        "articleId": { "type": "string", "description": "Article document ID" },
+        "visitorId": { "type": "string", "description": "Session visitor identifier" },
+        "lastSeen": { "type": "number", "description": "Heartbeat epoch timestamp" },
+        "expiresAt": { "type": "number", "description": "Expiration epoch timestamp" }
+      }
     }
   }
 }

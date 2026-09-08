@@ -6,7 +6,7 @@ import {
   HelpCircle, Info, ChevronRight, Save, ToggleLeft, ToggleRight,
   Download, Phone, Mail, MessageSquare, AlertTriangle, Globe,
   Plus, Trash2, Edit3, MoveUp, MoveDown, Layers, Megaphone,
-  Share2, Star, Tag, KeyRound, CheckSquare, X
+  Share2, Star, Tag, KeyRound, CheckSquare, X, BookOpen
 } from 'lucide-react';
 import { 
   adminStorage, 
@@ -22,6 +22,7 @@ import {
   ConvertedCloudMedia 
 } from '../utils/adminStorage';
 import { useLanguage } from '../context/LanguageContext';
+import { AdminArticlesControlPanel } from './AdminArticlesControlPanel';
 
 interface AdminWebsiteControlPanelProps {
   adminEmail?: string;
@@ -35,8 +36,8 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // Master Section State (7 Powerful Control Sections)
-  const [activeSection, setActiveSection] = useState<'custom_apps' | 'app' | 'notices' | 'announcement' | 'social' | 'media' | 'pricing'>('custom_apps');
+  // Master Section State (8 Control Sections)
+  const [activeSection, setActiveSection] = useState<'articles' | 'custom_apps' | 'app' | 'notices' | 'announcement' | 'social' | 'media' | 'pricing'>('articles');
 
   // Config States
   const [config, setConfig] = useState<SiteAppConfig>(adminStorage.getSiteAppConfig());
@@ -402,9 +403,30 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
         </div>
       </div>
 
-      {/* 7 Section Navigation Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
+      {/* 8 Section Navigation Tabs */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
         
+        {/* TAB 0: Editorial Articles & Insights Manager */}
+        <button
+          onClick={() => setActiveSection('articles')}
+          className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer space-y-1 ${
+            activeSection === 'articles'
+              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-600/20'
+              : 'bg-white/95 dark:bg-[#121622]/90 text-slate-700 dark:text-slate-300 border-white/80 dark:border-white/10 hover:border-blue-500/40'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <BookOpen className="w-4 h-4" />
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-extrabold ${activeSection === 'articles' ? 'bg-white/20 text-white' : 'bg-blue-500/10 text-blue-600'}`}>
+              Articles
+            </span>
+          </div>
+          <div className="font-black text-xs truncate">{isHindi ? "✍️ लेख प्रबंधन" : "✍️ Articles Hub"}</div>
+          <div className={`text-[10px] truncate ${activeSection === 'articles' ? 'text-blue-100' : 'text-slate-500'}`}>
+            {isHindi ? "संपादकीय एवं ब्लॉग" : "Editorial & Essays"}
+          </div>
+        </button>
+
         {/* TAB 1: Dynamic Custom Apps Manager */}
         <button
           onClick={() => setActiveSection('custom_apps')}
@@ -557,6 +579,16 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
         </button>
 
       </div>
+
+      {/* =========================================================================
+          SECTION 0: EDITORIAL ARTICLES & INSIGHTS MANAGER
+          ========================================================================= */}
+      {activeSection === 'articles' && (
+        <AdminArticlesControlPanel 
+          adminEmail={adminEmail} 
+          onShowToast={onShowToast} 
+        />
+      )}
 
       {/* =========================================================================
           SECTION 1: DYNAMIC APPS & PRODUCTS SHOWCASE MANAGER (TOP REQUESTED)
