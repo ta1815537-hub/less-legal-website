@@ -12,6 +12,7 @@ import { EASING_SPRING } from './MotionWrappers';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 import { adminStorage, SiteAppConfig } from '../utils/adminStorage';
+import { TOTAL_TOOLS_COUNT } from '../tools/toolRegistry';
 
 interface NavbarProps {
   currentRoute: PageRoute;
@@ -59,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   const desktopNavLinks: { label: string; route: PageRoute; badge?: string }[] = [
     { label: isHindi ? 'होम' : 'Home', route: 'home' },
     { label: isHindi ? 'लेख' : 'Articles', route: 'articles', badge: 'New' },
-    { label: isHindi ? 'टूल्स' : 'Tools', route: 'tools', badge: '30+' },
+    { label: isHindi ? 'टूल्स' : 'Tools', route: 'tools', badge: `${TOTAL_TOOLS_COUNT}` },
     { label: isHindi ? 'लेस लीगल' : 'Less Legal', route: 'less-legal', badge: isHindi ? 'फ्लैगशिप' : 'Flagship' },
     { label: isHindi ? 'लेस क्रिएशन' : 'About', route: 'about' },
     { label: isHindi ? 'संस्थापक' : 'Founder', route: 'founder' },
@@ -78,23 +79,27 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
           
           <div className="max-w-[1400px] w-full flex items-center justify-between sm:justify-center gap-1.5 sm:gap-6 text-xs font-semibold">
             {/* Offer text - Guaranteed single line on all mobile screens */}
-            <div className="flex items-center gap-1 shrink min-w-0">
+            <div className="flex items-center gap-1.5 shrink min-w-0">
               <span className="text-xs text-amber-400 shrink-0">✨</span>
-              <span className="text-[10px] sm:text-xs font-extrabold text-sky-300 dark:text-sky-200 tracking-wide uppercase whitespace-nowrap truncate max-w-[200px] sm:max-w-none">
+              <span className="text-[10px] sm:text-xs font-extrabold text-sky-300 dark:text-sky-200 tracking-wide uppercase whitespace-nowrap truncate max-w-[220px] sm:max-w-none">
                 {language === 'hi' 
-                  ? (siteConfig.announcementTextHindi || 'लेस लीगल लाइफटाइम पास • मात्र ₹99 एकमुश्त • कोई सब्सक्रिप्शन नहीं')
-                  : (siteConfig.announcementTextEnglish || 'Less Legal Lifetime Pass • ₹99 One-Time Access • No Subscriptions')}
+                  ? (siteConfig.announcementTextHi || siteConfig.announcementTextHindi || 'लेस लीगल लाइफटाइम पास • मात्र ₹99 एकमुश्त • कोई सब्सक्रिप्शन नहीं')
+                  : (siteConfig.announcementTextEn || siteConfig.announcementTextEnglish || 'Less Legal Lifetime Pass • ₹99 One-Time Access • No Subscriptions')}
               </span>
             </div>
 
             {/* Action Button */}
             <div className="flex items-center gap-2 shrink-0">
               <button
-                onClick={() => handleNavClick((siteConfig.announcementButtonRoute as PageRoute) || 'premium')}
+                onClick={() => handleNavClick((siteConfig.announcementLink as PageRoute) || (siteConfig.announcementButtonRoute as PageRoute) || 'premium')}
                 className="red-shimmer-button text-[9px] sm:text-[11px] px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider font-black cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap shrink-0 flex items-center gap-1 text-white"
               >
                 <Sparkles className="w-3 h-3 fill-white text-white shrink-0" />
-                <span>{siteConfig.announcementButtonText || (language === 'hi' ? 'ऑफ़र लें' : 'Get Pass')}</span>
+                <span>
+                  {language === 'hi'
+                    ? (siteConfig.announcementButtonTextHi || siteConfig.announcementButtonText || 'ऑफ़र लें')
+                    : (siteConfig.announcementButtonTextEn || siteConfig.announcementButtonText || 'Get Pass')}
+                </span>
               </button>
             </div>
           </div>
@@ -382,10 +387,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                     }`}>
                       <Layers className="w-4 h-4" />
                     </div>
-                    <span className="whitespace-nowrap font-bold">{isHindi ? '30+ टूल्स व यूटिलिटीज' : '30+ Tools & Utilities'}</span>
+                    <span className="whitespace-nowrap font-bold">{isHindi ? `${TOTAL_TOOLS_COUNT} स्मार्ट टूल्स` : `${TOTAL_TOOLS_COUNT} Utilities`}</span>
                   </div>
-                  <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0 uppercase tracking-wide">
-                    30+ Free
+                  <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/30 shrink-0 uppercase tracking-wide">
+                    {TOTAL_TOOLS_COUNT} {isHindi ? 'टूल्स' : 'Tools'}
                   </span>
                 </button>
 

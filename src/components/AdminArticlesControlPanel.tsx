@@ -68,15 +68,14 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
 
   const [tagInput, setTagInput] = useState<string>('');
 
-  // Load All Articles for Admin
+  // Load All Articles for Admin with real-time live updates
   const loadAdminArticles = async () => {
     setLoading(true);
     try {
       const data = await articleService.getAllArticlesForAdmin();
       setArticles(data);
     } catch (err) {
-      console.error('Error loading admin articles:', err);
-      onShowToast(isHindi ? 'लेख लोड करने में त्रुटि हुई' : 'Error loading articles', 'error');
+      console.error('Failed to load admin articles:', err);
     } finally {
       setLoading(false);
     }
@@ -84,6 +83,14 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
 
   useEffect(() => {
     loadAdminArticles();
+    const unsubscribe = articleService.subscribeToArticles((data) => {
+      setArticles(data);
+      setLoading(false);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // Title & Slug Auto-sync

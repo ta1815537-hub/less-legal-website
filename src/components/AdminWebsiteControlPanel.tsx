@@ -1452,6 +1452,120 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
             </div>
           </div>
 
+          {/* HOME PROMOTIONAL HERO BANNER SETTINGS */}
+          <div className="pt-6 border-t border-slate-200 dark:border-white/10 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Sparkles className="w-5 h-5 text-amber-500" />
+                <div>
+                  <h4 className="text-sm font-black text-slate-900 dark:text-white">
+                    {isHindi ? "होमपेज प्रोमोशनल बैनर कार्ड (Hero Showcase Banner)" : "Homepage Promotional Showcase Banner"}
+                  </h4>
+                  <p className="text-[11px] text-slate-500">
+                    {isHindi ? "होमपेज पर नोटिस बोर्ड के ठीक ऊपर बड़ा प्रोमोशनल इमेज/वीडियो कार्ड प्रदर्शित करें।" : "Show a prominent promo banner card with image/video on the homepage."}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleFieldChange('bannerActive', !config.bannerActive)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  config.bannerActive
+                    ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30'
+                    : 'bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300'
+                }`}
+              >
+                {config.bannerActive ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
+                <span>{config.bannerActive ? (isHindi ? "सक्रिय (ON)" : "Active") : (isHindi ? "निष्क्रिय (OFF)" : "Off")}</span>
+              </button>
+            </div>
+
+            {config.bannerActive && (
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {isHindi ? "बैनर टैग / बैज (Badge)" : "Banner Tag / Badge"}
+                    </label>
+                    <input
+                      type="text"
+                      value={config.bannerTag || ''}
+                      onChange={(e) => handleFieldChange('bannerTag', e.target.value)}
+                      placeholder="e.g. Special Announcement or New Release"
+                      className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {isHindi ? "क्लिक पर जाने वाला पेज / लिंक" : "Action Link / Route"}
+                    </label>
+                    <input
+                      type="text"
+                      value={config.bannerLink || ''}
+                      onChange={(e) => handleFieldChange('bannerLink', e.target.value)}
+                      placeholder="e.g. premium, features, tools, or https://..."
+                      className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {isHindi ? "बैनर मुख्य शीर्षक (Title)" : "Banner Main Title"}
+                    </label>
+                    <input
+                      type="text"
+                      value={config.bannerTitle || ''}
+                      onChange={(e) => handleFieldChange('bannerTitle', e.target.value)}
+                      placeholder="e.g. Less Legal Flagship Suite"
+                      className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-black text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {isHindi ? "बैनर उपशीर्षक / विवरण (Subtitle)" : "Banner Subtitle"}
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={config.bannerSubtitle || ''}
+                      onChange={(e) => handleFieldChange('bannerSubtitle', e.target.value)}
+                      placeholder="e.g. कानूनी पेशेवरों और नागरिकों के लिए ऑल-इन-वन डिजिटल असिस्टेंट"
+                      className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {isHindi ? "बैनर इमेज URL (Google Drive / Dropbox / Direct Link)" : "Banner Image URL"}
+                    </label>
+                    <input
+                      type="text"
+                      value={config.bannerImageUrl || ''}
+                      onChange={(e) => handleFieldChange('bannerImageUrl', e.target.value)}
+                      placeholder="https://drive.google.com/file/d/... or https://..."
+                      className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      {isHindi ? "बैनर वीडियो URL (YouTube / Direct Video Link)" : "Banner Video URL (Optional)"}
+                    </label>
+                    <input
+                      type="text"
+                      value={config.bannerVideoUrl || ''}
+                      onChange={(e) => handleFieldChange('bannerVideoUrl', e.target.value)}
+                      placeholder="https://www.youtube.com/watch?v=... or https://..."
+                      className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex justify-end">
             <button
               onClick={handleSaveSiteConfigToCloud}
@@ -1459,7 +1573,7 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
               className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-md"
             >
               <Save className="w-4 h-4" />
-              <span>{isHindi ? "बैनर सेटिंग्स सहेजें" : "Save Banner Settings"}</span>
+              <span>{isHindi ? "घोषणा व बैनर सेटिंग्स सहेजें" : "Save Announcement & Banner"}</span>
             </button>
           </div>
 

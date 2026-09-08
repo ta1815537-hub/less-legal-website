@@ -335,7 +335,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-black text-slate-900 dark:text-white tracking-tight leading-[1.05]">
-              Explore <span className="text-blue-600 dark:text-blue-400">30+</span> Integrated <span className="text-[#2563EB] dark:text-[#3B82F6]">Utilities</span>
+              Explore Smart Integrated <span className="text-[#2563EB] dark:text-[#3B82F6]">Utilities</span>
             </h1>
 
             {/* Subtitle */}
@@ -714,7 +714,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                 Less Legal Official Utility Suite
               </div>
               <div className="text-sm font-bold text-slate-800 dark:text-white">
-                All 30+ Tools Verified & Maintained by Less Creation
+                All Smart Tools Verified & Maintained by Less Creation
               </div>
             </div>
             <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg">

@@ -169,51 +169,26 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
       <HeroAmbientGlow />
       
       {/* Top Header & Breadcrumb */}
-      <ScrollReveal direction="up" className="max-w-3xl mx-auto text-center space-y-4 relative z-10">
+      <ScrollReveal direction="up" className="max-w-2xl mx-auto text-center space-y-3 relative z-10">
         <div className="flex items-center justify-center">
           <motion.button
             whileHover={{ x: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => onNavigate('home')}
-            className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-xs backdrop-blur-md"
+            className="text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-xs backdrop-blur-md"
           >
             <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
             <span className="whitespace-nowrap">{t.common.backToHome}</span>
           </motion.button>
         </div>
 
-        {/* Live Status Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/5 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-semibold tracking-wide text-slate-800 dark:text-slate-200 shadow-2xs">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span className="whitespace-nowrap">{isHindi ? 'सक्रिय सहायता केंद्र • Less Support Desk' : 'Active Support Desk • Less Support'}</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
           {t.contactPage.title}
         </h1>
 
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-2xl mx-auto">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-lg mx-auto">
           {t.contactPage.subtitle}
         </p>
-
-        {/* SLA Guarantee Strip */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-            <span>{isHindi ? '24-48 व्यावसायिक घंटे में समाधान' : '24-48 Business Hours Turnaround'}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-            <span>{isHindi ? 'गोपनीय व सुरक्षित सहायता' : 'Confidential & Safe Support'}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <Tag className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-            <span>{isHindi ? 'ऑर्डर / टिकट ट्रैकिंग समर्थित' : 'Order & Ticket Tracking'}</span>
-          </span>
-        </div>
       </ScrollReveal>
 
       {/* Main Grid Section */}
@@ -371,18 +346,18 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           <div className="p-4 sm:p-8 rounded-[24px] sm:rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-xl">
             
             {/* Top Sleek Switcher Tabs - Symmetrical 2-Column Responsive Grid */}
-            <div className="grid grid-cols-2 rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1 sm:p-1.5 border border-slate-200/80 dark:border-white/10 gap-1 sm:gap-1.5 w-full">
+            <div className="grid grid-cols-2 rounded-xl sm:rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1 border border-slate-200/80 dark:border-white/10 gap-1 w-full">
               <button
                 type="button"
                 onClick={() => setActiveTab('submit')}
-                className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
+                className={`w-full min-w-0 py-2.5 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center select-none ${
                   activeTab === 'submit'
-                    ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-md font-black'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
+                    ? 'bg-blue-600 text-white shadow-md font-black'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
                 }`}
               >
-                <Send className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-                <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+                <Send className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-xs sm:text-sm tracking-tight truncate leading-tight font-black">
                   {isHindi ? "सहायता अनुरोध" : "Submit Request"}
                 </span>
               </button>
@@ -395,14 +370,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     handleSearchStatus();
                   }
                 }}
-                className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
+                className={`w-full min-w-0 py-2.5 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center select-none ${
                   activeTab === 'check-status'
-                    ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-md font-black'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md font-black'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
                 }`}
               >
-                <FileSearch className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+                <FileSearch className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-xs sm:text-sm tracking-tight truncate leading-tight font-black">
                   {isHindi ? "स्थिति जांचें" : "Check Status"}
                 </span>
               </button>

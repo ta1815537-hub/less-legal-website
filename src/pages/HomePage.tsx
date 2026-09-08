@@ -22,7 +22,9 @@ import { useLanguage } from '../context/LanguageContext';
 import { sanitizePhoneNumber, isRateLimited, isSafeUrl } from '../utils/security';
 import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
 import { DynamicNoticeBoard } from '../components/DynamicNoticeBoard';
+import { DynamicPromoBanner } from '../components/DynamicPromoBanner';
 import { TaskDiscoveryWidget } from '../components/tools/TaskDiscoveryWidget';
+import { TOTAL_TOOLS_COUNT } from '../tools/toolRegistry';
 
 interface HomePageProps {
   onNavigate: (route: PageRoute) => void;
@@ -267,8 +269,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         />
       </section>
 
-      {/* Dynamic Flash Notice Board */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Dynamic Promo Banner & Flash Notice Board */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+        <DynamicPromoBanner onNavigate={onNavigate} />
         <DynamicNoticeBoard onNavigate={onNavigate} />
       </div>
 
@@ -287,8 +290,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
               {isHindi 
-                ? '30+ मुफ्त व 100% सुरक्षित टूल्स। आपकी फाइलें और डेटा पूरी तरह आपके डिवाइस पर सुरक्षित रहते हैं, कभी किसी सर्वर पर अपलोड नहीं होते।'
-                : 'Over 30+ browser-based utilities that process files 100% privately on your device. Zero mandatory sign-ups, zero server uploads, absolute security.'}
+                ? `${TOTAL_TOOLS_COUNT} मुफ्त व 100% सुरक्षित टूल्स। आपकी फाइलें और डेटा पूरी तरह आपके डिवाइस पर सुरक्षित रहते हैं, कभी किसी सर्वर पर अपलोड नहीं होते।`
+                : `${TOTAL_TOOLS_COUNT} browser-based utilities that process files 100% privately on your device. Zero mandatory sign-ups, zero server uploads, absolute security.`}
             </p>
           </ScrollReveal>
 
@@ -707,8 +710,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl font-medium leading-relaxed">
               {language === 'hi'
-                ? 'सभी 30+ टूल्स, केस डायरी, बेयर एक्ट्स और भविष्य के अपडेट्स का स्थायी लाभ। कोई आवर्ती शुल्क नहीं।'
-                : 'Unlock all 30+ smart tools, case diary, custom Bare Acts & free lifetime upgrades with a one-time pass.'}
+                ? 'सभी आवश्यक टूल्स, केस डायरी, बेयर एक्ट्स और भविष्य के अपडेट्स का स्थायी लाभ। कोई आवर्ती शुल्क नहीं।'
+                : 'Unlock all smart tools, case diary, custom Bare Acts & free lifetime upgrades with a one-time pass.'}
             </p>
           </div>
 

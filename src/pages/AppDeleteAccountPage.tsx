@@ -183,70 +183,47 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
     <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-4 sm:pb-6 space-y-8 overflow-hidden">
       <HeroAmbientGlow />
       
-      {/* Top Breadcrumb & Header */}
-      <ScrollReveal direction="up" className="space-y-4 relative z-10 text-center max-w-3xl mx-auto">
+      {/* Top Breadcrumb & Minimal Clean Header */}
+      <ScrollReveal direction="up" className="space-y-3 relative z-10 text-center max-w-2xl mx-auto">
         <div className="flex items-center justify-center">
           <motion.button
             whileHover={{ x: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => onNavigate('home')}
-            className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-xs backdrop-blur-md"
+            className="text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-xs backdrop-blur-md"
           >
             <ArrowLeft className="w-3.5 h-3.5 text-blue-500 shrink-0" />
             <span className="whitespace-nowrap">{isHindi ? "होम पर वापस जाएं" : "Back to Home"}</span>
           </motion.button>
         </div>
 
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs">
-            <Trash2 className="w-3.5 h-3.5 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "Less Legal — डेटा सुरक्षा एवं विलोपन" : "Less Legal — Account & Data Deletion"}</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-            {isHindi ? "अपना Less Legal खाता और डेटा हटाएं" : "Delete Your Less Legal Account & Data"}
-          </h1>
-        </div>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+          {isHindi ? "खाता एवं डेटा विलोपन अनुरोध" : "Account & Data Deletion"}
+        </h1>
         
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-lg mx-auto leading-relaxed font-medium">
           {isHindi
-            ? "हम आपके डेटा स्वामित्व और गोपनीयता का सम्मान करते हैं। यदि आपने Less Legal एंड्रॉइड ऐप अनइंस्टॉल भी कर दिया है, तो भी आप इस वेब पोर्टल का उपयोग करके अपने खाते को हटाने का अनुरोध कर सकते हैं या अपने विलोपन अनुरोध की स्थिति ट्रैक कर सकते हैं।"
-            : "We respect your data ownership and privacy. Even if you have already uninstalled the Less Legal Android app from your phone, you can request permanent deletion or track the live status of your deletion request anytime."}
+            ? "अपने खाते और डेटा को स्थायी रूप से हटाने का अनुरोध सबमिट करें या अपने अनुरोध की स्थिति जांचें।"
+            : "Submit a request to permanently purge your account records or track an existing request."}
         </p>
-
-        {/* Security Feature Highlights */}
-        <div className="pt-1 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-            <span>{isHindi ? "Google Play डेटा सुरक्षा अनुपालन" : "Google Play Data Safety Compliant"}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <Clock className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-            <span>{isHindi ? "7 कार्य दिवसों में पूर्ण निष्कासन" : "Complete Purge within 7 Days"}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 whitespace-nowrap">
-            <Database className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-            <span>{isHindi ? "डेटा का स्थायी विलोपन" : "Permanent Data Removal"}</span>
-          </span>
-        </div>
       </ScrollReveal>
 
-      {/* Main Interactive Box with Dual Switcher Tabs */}
-      <div className="p-4 sm:p-8 rounded-[24px] sm:rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl backdrop-blur-xl space-y-6 relative z-10">
+      {/* Main Interactive Box with Symmetrical Switcher Tabs */}
+      <div className="p-4 sm:p-7 rounded-[22px] sm:rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl backdrop-blur-xl space-y-6 relative z-10">
         
         {/* Modern Switcher Tabs - Symmetrical 2-Column Responsive Grid */}
-        <div className="grid grid-cols-2 rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1 sm:p-1.5 border border-slate-200/80 dark:border-white/10 gap-1 sm:gap-1.5 w-full">
+        <div className="grid grid-cols-2 rounded-xl sm:rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1 border border-slate-200/80 dark:border-white/10 gap-1 w-full">
           <button
             type="button"
             onClick={() => setActiveTab('submit')}
-            className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
+            className={`w-full min-w-0 py-2.5 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center select-none ${
               activeTab === 'submit'
-                ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-md font-black'
-                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
+                ? 'bg-blue-600 text-white shadow-md font-black'
+                : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
             }`}
           >
             <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
-            <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+            <span className="text-xs sm:text-sm tracking-tight truncate leading-tight font-black">
               {isHindi ? "विलोपन अनुरोध" : "Request Deletion"}
             </span>
           </button>
@@ -259,14 +236,14 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                 handleSearchStatus();
               }
             }}
-            className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
+            className={`w-full min-w-0 py-2.5 sm:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center select-none ${
               activeTab === 'check-status'
                 ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md font-black'
-                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
+                : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
             }`}
           >
             <FileSearch className="w-3.5 h-3.5 shrink-0" />
-            <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+            <span className="text-xs sm:text-sm tracking-tight truncate leading-tight font-black">
               {isHindi ? "स्थिति ट्रैक करें" : "Track Status"}
             </span>
           </button>

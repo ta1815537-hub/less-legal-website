@@ -174,8 +174,8 @@ export default function App() {
         break;
       case 'less-legal-features':
       case 'features':
-        title = 'Less Legal Features & 30+ Utilities Catalog | Less Creation';
-        description = 'Browse 30+ integrated utilities in Less Legal. Document scanner, legal calculators, case diary, land converters, and bare acts.';
+        title = 'Less Legal Features & Smart Utilities Catalog | Less Creation';
+        description = 'Browse integrated utilities in Less Legal. Document scanner, legal calculators, case diary, land converters, and bare acts.';
         path = 'less-legal/features';
         break;
       case 'about': 
@@ -200,7 +200,7 @@ export default function App() {
         break;
       case 'tools':
         title = 'Everyday Work Tools & Utilities | Less Creation';
-        description = 'Explore 30+ free, fast, browser-based everyday utilities. PDF tools, image compressors, word counter, EMI & GST calculators, QR generator by Less Creation.';
+        description = 'Explore free, fast, browser-based everyday utilities. PDF tools, image compressors, word counter, EMI & GST calculators, QR generator by Less Creation.';
         path = 'tools';
         break;
       case 'premium': 

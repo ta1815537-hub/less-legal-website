@@ -39,23 +39,34 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Load articles on mount & filter changes
+  // Load articles on mount & filter changes with live updates
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
 
-    articleService.getPublicArticleSummaries({
-      category: selectedCategory !== 'ALL' ? selectedCategory : undefined,
-      tag: selectedTag !== 'ALL' ? selectedTag : undefined,
-      search: debouncedSearch
-    }).then((data) => {
+    const loadData = async () => {
+      const data = await articleService.getPublicArticleSummaries({
+        category: selectedCategory !== 'ALL' ? selectedCategory : undefined,
+        tag: selectedTag !== 'ALL' ? selectedTag : undefined,
+        search: debouncedSearch
+      });
       if (isMounted) {
         setArticles(data);
         setLoading(false);
       }
+    };
+
+    loadData();
+
+    // Subscribe to live changes
+    const unsubscribe = articleService.subscribeToPublicSummaries(() => {
+      loadData();
     });
 
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
   }, [selectedCategory, selectedTag, debouncedSearch]);
 
   // Extract all unique tags

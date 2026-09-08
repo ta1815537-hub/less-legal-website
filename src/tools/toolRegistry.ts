@@ -560,6 +560,8 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
 
 ];
 
+export const TOTAL_TOOLS_COUNT = TOOLS_REGISTRY.length;
+
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
   return TOOLS_REGISTRY.find(t => t.slug === slug);
 }

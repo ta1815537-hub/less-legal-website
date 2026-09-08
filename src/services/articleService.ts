@@ -10,6 +10,7 @@ import {
   where, 
   orderBy, 
   limit,
+  onSnapshot,
   serverTimestamp 
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
@@ -91,6 +92,74 @@ class ArticleService {
     this.inMemorySummariesCache = null;
     this.inMemoryFullArticles.clear();
     this.lastFetchTime = 0;
+  }
+
+  // Real-time Firestore Subscription for Admin Dashboard & Live Updates
+  public subscribeToArticles(callback: (articles: Article[]) => void): (() => void) {
+    // 1. Return current local cached items immediately
+    callback(this.localArticlesCache);
+
+    // 2. Set up Firestore onSnapshot subscription
+    try {
+      const q = collection(db, 'articles');
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const list: Article[] = [];
+        snapshot.forEach((d) => {
+          const data = d.data() as Article;
+          list.push({ ...data, firestoreDocId: d.id });
+        });
+
+        if (list.length > 0) {
+          list.sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime());
+          this.localArticlesCache = list;
+          try {
+            localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(list));
+          } catch {}
+          this.invalidateCache();
+          callback(list);
+        } else {
+          callback(this.localArticlesCache);
+        }
+      }, (err) => {
+        console.warn('Real-time articles subscription snapshot warning:', err);
+        callback(this.localArticlesCache);
+      });
+
+      // Also listen to window local event for instant in-tab/cross-component updates
+      const localListener = () => {
+        callback(this.localArticlesCache);
+      };
+      window.addEventListener('less_creation_articles_updated', localListener);
+
+      return () => {
+        unsubscribe();
+        window.removeEventListener('less_creation_articles_updated', localListener);
+      };
+    } catch (e) {
+      console.warn('Failed to attach Firestore onSnapshot for articles:', e);
+      return () => {};
+    }
+  }
+
+  // Real-time Public Article Summaries Subscription
+  public subscribeToPublicSummaries(callback: (summaries: ArticleSummary[]) => void): (() => void) {
+    const emit = () => {
+      const pubSummaries = this.localArticlesCache
+        .filter(a => a.status === 'published')
+        .map(({ content, ...rest }) => rest);
+      callback(pubSummaries);
+    };
+
+    emit();
+
+    const unsub = this.subscribeToArticles((all) => {
+      const pubSummaries = all
+        .filter(a => a.status === 'published')
+        .map(({ content, ...rest }) => rest);
+      callback(pubSummaries);
+    });
+
+    return unsub;
   }
 
   // Fetch Public Published Article Summaries (Lightweight - No Full Markdown Content Downloaded for Listing)
@@ -394,6 +463,11 @@ class ArticleService {
       console.error('Error saving article to Firestore:', err);
     }
 
+    // Trigger local update event
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('less_creation_articles_updated'));
+    }
+
     return fullArticle;
   }
 
@@ -408,6 +482,10 @@ class ArticleService {
       await deleteDoc(doc(db, 'articles', id));
     } catch (err) {
       console.error('Error deleting article from Firestore:', err);
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('less_creation_articles_updated'));
     }
   }
 
