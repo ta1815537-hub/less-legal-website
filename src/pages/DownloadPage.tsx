@@ -76,7 +76,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-36 sm:pb-40 space-y-10 overflow-hidden">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-4 sm:pb-6 space-y-10 overflow-hidden">
       <HeroAmbientGlow />
       
       {/* Top Navigation & Breadcrumb */}

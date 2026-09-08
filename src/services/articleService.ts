@@ -212,8 +212,29 @@ class ArticleService {
       return this.inMemoryFullArticles.get(cleanSlug)!;
     }
 
+    // Check local storage cache next (super fast instant return)
+    const local = this.localArticlesCache.find(
+      a => a.slug === cleanSlug || a.id === cleanSlug || (a.slug && a.slug.toLowerCase() === cleanSlug.toLowerCase())
+    );
+    if (local && local.content) {
+      this.inMemoryFullArticles.set(cleanSlug, local);
+      return local;
+    }
+
     try {
-      // 1. Query by slug
+      // 1. Direct document get by ID
+      const directDocRef = doc(db, 'articles', cleanSlug);
+      const directDocSnap = await getDoc(directDocRef);
+      if (directDocSnap.exists()) {
+        const data = directDocSnap.data() as Article;
+        const fullArticle = { ...data, firestoreDocId: directDocSnap.id };
+        this.inMemoryFullArticles.set(cleanSlug, fullArticle);
+        if (fullArticle.slug) this.inMemoryFullArticles.set(fullArticle.slug, fullArticle);
+        if (fullArticle.id) this.inMemoryFullArticles.set(fullArticle.id, fullArticle);
+        return fullArticle;
+      }
+
+      // 2. Query by slug
       const qSlug = query(collection(db, 'articles'), where('slug', '==', cleanSlug), limit(1));
       const snapSlug = await getDocs(qSlug);
       if (!snapSlug.empty) {
@@ -226,7 +247,7 @@ class ArticleService {
         return fullArticle;
       }
 
-      // 2. Query by ID if not found by slug
+      // 3. Query by ID if not found by slug
       const qId = query(collection(db, 'articles'), where('id', '==', cleanSlug), limit(1));
       const snapId = await getDocs(qId);
       if (!snapId.empty) {
@@ -238,12 +259,32 @@ class ArticleService {
         if (fullArticle.id) this.inMemoryFullArticles.set(fullArticle.id, fullArticle);
         return fullArticle;
       }
+
+      // 4. Case-insensitive fallback across all articles in Firestore
+      const allDocsSnap = await getDocs(collection(db, 'articles'));
+      if (!allDocsSnap.empty) {
+        let matchDoc: Article | null = null;
+        allDocsSnap.forEach((d) => {
+          const dData = d.data() as Article;
+          if (
+            dData.slug === cleanSlug || 
+            dData.id === cleanSlug || 
+            (dData.slug && dData.slug.toLowerCase() === cleanSlug.toLowerCase()) ||
+            d.id === cleanSlug
+          ) {
+            matchDoc = { ...dData, firestoreDocId: d.id };
+          }
+        });
+        if (matchDoc) {
+          this.inMemoryFullArticles.set(cleanSlug, matchDoc);
+          return matchDoc;
+        }
+      }
     } catch (err) {
       console.warn('Error fetching article by slug from Firestore:', err);
     }
 
     // Local fallback by slug or ID
-    const local = this.localArticlesCache.find(a => a.slug === cleanSlug || a.id === cleanSlug);
     if (local) {
       this.inMemoryFullArticles.set(cleanSlug, local);
       return local;
@@ -341,6 +382,10 @@ class ArticleService {
       this.localArticlesCache.unshift(fullArticle);
     }
     localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
+
+    // Also populate in-memory map for instant viewing
+    this.inMemoryFullArticles.set(slug, fullArticle);
+    this.inMemoryFullArticles.set(id, fullArticle);
 
     // Save to Firestore
     try {

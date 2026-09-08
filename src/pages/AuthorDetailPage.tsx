@@ -34,7 +34,7 @@ export const AuthorDetailPage: React.FC<AuthorDetailPageProps> = ({ authorSlug, 
   const author = DEFAULT_AUTHOR; // Can extend if multiple authors added
 
   return (
-    <div className="relative min-h-screen pt-8 pb-24 overflow-hidden">
+    <div className="relative pt-4 sm:pt-8 pb-4 sm:pb-6 overflow-hidden">
       <HeroAmbientGlow />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 z-10">

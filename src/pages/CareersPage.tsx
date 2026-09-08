@@ -188,7 +188,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="py-4 sm:py-6 pb-4 sm:pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Background ambient lighting */}
       <HeroAmbientGlow />
 

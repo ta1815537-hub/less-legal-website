@@ -12,7 +12,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
 
   return (
-    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-16 space-y-8 overflow-hidden">
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-4 sm:pb-6 space-y-8 overflow-hidden">
       <HeroAmbientGlow />
       
       {/* Top Breadcrumb & Title */}

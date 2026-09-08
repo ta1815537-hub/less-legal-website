@@ -180,7 +180,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
   };
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-32 sm:pb-36 space-y-8 overflow-hidden">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-4 sm:pb-6 space-y-8 overflow-hidden">
       <HeroAmbientGlow />
       
       {/* Top Breadcrumb & Header */}
@@ -232,21 +232,23 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       </ScrollReveal>
 
       {/* Main Interactive Box with Dual Switcher Tabs */}
-      <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl backdrop-blur-xl space-y-6 relative z-10">
+      <div className="p-4 sm:p-8 rounded-[24px] sm:rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl backdrop-blur-xl space-y-6 relative z-10">
         
-        {/* Modern Switcher Tabs - Guaranteed Single Line */}
-        <div className="flex rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1.5 border border-slate-200/80 dark:border-white/10 gap-1">
+        {/* Modern Switcher Tabs - Symmetrical 2-Column Responsive Grid */}
+        <div className="grid grid-cols-2 rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1 sm:p-1.5 border border-slate-200/80 dark:border-white/10 gap-1 sm:gap-1.5 w-full">
           <button
             type="button"
             onClick={() => setActiveTab('submit')}
-            className={`flex-1 py-3 px-3 sm:px-5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold whitespace-nowrap ${
+            className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
               activeTab === 'submit'
                 ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-md font-black'
-                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
             }`}
           >
             <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "विलोपन अनुरोध जमा करें" : "Request Account Deletion"}</span>
+            <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+              {isHindi ? "विलोपन अनुरोध" : "Request Deletion"}
+            </span>
           </button>
 
           <button
@@ -257,14 +259,16 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
                 handleSearchStatus();
               }
             }}
-            className={`flex-1 py-3 px-3 sm:px-5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold whitespace-nowrap ${
+            className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
               activeTab === 'check-status'
                 ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md font-black'
-                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
             }`}
           >
             <FileSearch className="w-3.5 h-3.5 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "विलोपन स्थिति ट्रैक करें" : "Track Deletion Status"}</span>
+            <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+              {isHindi ? "स्थिति ट्रैक करें" : "Track Status"}
+            </span>
           </button>
         </div>
 

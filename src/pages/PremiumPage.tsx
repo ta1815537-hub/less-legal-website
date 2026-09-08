@@ -164,7 +164,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-24 sm:pb-28 space-y-12 overflow-hidden">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-4 sm:pb-6 space-y-12 overflow-hidden">
       <HeroAmbientGlow />
       
       {/* 13. HERO SECTION */}

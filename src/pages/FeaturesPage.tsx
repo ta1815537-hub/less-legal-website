@@ -303,7 +303,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
   });
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-16 space-y-8 sm:space-y-10 overflow-hidden">
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-4 sm:pb-6 space-y-8 sm:space-y-10 overflow-hidden">
       
       {/* Top Breadcrumb */}
       <div className="flex items-center justify-between relative z-10">

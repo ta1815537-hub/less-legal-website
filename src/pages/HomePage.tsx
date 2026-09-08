@@ -159,7 +159,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const faqs = t.home.faqs;
 
   return (
-    <div className="space-y-10 sm:space-y-14 py-2 sm:py-4 overflow-hidden transition-colors duration-300 pb-16">
+    <div className="space-y-10 sm:space-y-14 py-2 sm:py-4 overflow-hidden transition-colors duration-300 pb-2 sm:pb-4">
       
       {/* 1. HERO SECTION: LESS CREATION PARENT BRAND */}
       <section className="relative text-slate-900 dark:text-white pt-1 sm:pt-4 pb-6 sm:pb-10 overflow-hidden min-h-[540px] sm:min-h-[580px] flex items-center">

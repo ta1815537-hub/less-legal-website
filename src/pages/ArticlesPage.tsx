@@ -95,7 +95,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A0D14] text-slate-900 dark:text-[#F5F2EE] transition-colors duration-200">
+    <div className="w-full text-slate-900 dark:text-[#F5F2EE] transition-colors duration-200 pb-4 sm:pb-6">
       
       {/* COMPACT EDITORIAL HEADER */}
       <header className="border-b border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-[#0E131F]/90 backdrop-blur-md sticky top-14 z-20">
@@ -423,16 +423,6 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
         )}
 
       </main>
-
-      {/* COMPACT BRAND FOOTER AT THE BOTTOM */}
-      <footer className="border-t border-slate-200/80 dark:border-white/10 mt-12 py-6 text-center text-xs text-slate-500 dark:text-slate-400 space-y-1">
-        <p className="font-semibold text-slate-700 dark:text-slate-300">
-          Published by Less Creation Editorial
-        </p>
-        <p className="text-[11px] text-slate-400">
-          Practical technology essays, on-device computing, and digital literacy.
-        </p>
-      </footer>
 
     </div>
   );

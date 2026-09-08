@@ -351,7 +351,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0A0D14] text-slate-900 dark:text-[#F5F2EE] transition-colors duration-200 pb-20">
+    <div className="w-full text-slate-900 dark:text-[#F5F2EE] transition-colors duration-200 pb-4 sm:pb-6">
       
       {/* Sticky Top Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-slate-200/60 dark:bg-white/10 z-50">

@@ -679,11 +679,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
   // Render Admin Dashboard once authenticated with Firebase
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-20 space-y-8 overflow-hidden">
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 space-y-8 overflow-hidden">
       <HeroAmbientGlow />
 
-      {/* Top Header & Actions Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 relative z-10 pb-6 border-b border-white/80 dark:border-white/10">
+      {/* Top Header & Actions Bar - Ultra Responsive on Mobile, Tablet & Desktop */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10 pb-5 sm:pb-6 border-b border-white/80 dark:border-white/10">
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <button
@@ -693,36 +693,36 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>{isHindi ? "होम पेज" : "Back Home"}</span>
             </button>
-            <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-800/40 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" />
+            <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-800/40 flex items-center gap-1.5 whitespace-nowrap">
+              <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
               <span>Less Legal Admin Console</span>
             </span>
-            <span className="text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center gap-1 bg-white/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 px-2.5 py-0.5 rounded-full">
-              <User className="w-3 h-3 text-emerald-500" />
-              {adminUser?.email || 'admin@lesslegal.in'}
+            <span className="text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center gap-1 bg-white/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 px-2.5 py-0.5 rounded-full truncate max-w-[220px] sm:max-w-none">
+              <User className="w-3 h-3 text-emerald-500 shrink-0" />
+              <span className="truncate">{adminUser?.email || 'admin@lesslegal.in'}</span>
             </span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
             {isHindi ? "प्रशासनिक डैशबोर्ड" : "Administrative Management Console"}
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF]">
             {isHindi 
-              ? "सबमिट किए गए डेटा हटाने के अनुरोधों और सपोर्ट टिकट्स का प्रबंधन करें।" 
-              : "Review and manage account deletion requests and user contact submissions in real-time."}
+              ? "सबमिट किए गए डेटा हटाने के अनुरोधों, भर्ती आवेदनों और सपोर्ट टिकट्स का प्रबंधन करें।" 
+              : "Review and manage account deletion requests, hiring candidates, and user contact submissions in real-time."}
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
           {/* Live Inactivity Auto-Lock Countdown Badge */}
           <div 
             title={isHindi ? "15 मिनट की निष्क्रियता के बाद सत्र स्वतः लॉक हो जाएगा" : "Session automatically locks after 15 minutes of inactivity"}
-            className={`px-3 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 border transition-all ${
+            className={`flex-1 sm:flex-none justify-center px-3 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 border transition-all whitespace-nowrap ${
               remainingSeconds < 120 
                 ? 'bg-red-500/15 border-red-500/40 text-red-600 dark:text-red-400 animate-pulse' 
                 : 'bg-white/90 dark:bg-[#121622]/80 border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 backdrop-blur-md shadow-2xs'
             }`}
           >
-            <Clock className="w-3.5 h-3.5 text-amber-500" />
+            <Clock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
             <span>{isHindi ? "ऑटो-लॉक" : "Auto-Lock"}: {formatRemainingTime(remainingSeconds)}</span>
           </div>
 
@@ -730,27 +730,27 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           <button
             onClick={() => handleLogout(false)}
             title={isHindi ? "डैशबोर्ड को तुरंत लॉक करें" : "Lock Console Immediately"}
-            className="px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+            className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap"
           >
-            <Lock className="w-3.5 h-3.5" />
-            <span className="whitespace-nowrap">{isHindi ? "तत्काल लॉक करें" : "Lock Now"}</span>
+            <Lock className="w-3.5 h-3.5 shrink-0" />
+            <span>{isHindi ? "तत्काल लॉक" : "Lock Now"}</span>
           </button>
 
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="px-3.5 py-2 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-200/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50 shadow-2xs"
+            className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-200/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50 shadow-2xs whitespace-nowrap"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : ''}`} />
-            <span className="whitespace-nowrap">{isRefreshing ? (isHindi ? "अपडेट..." : "Refreshing...") : (isHindi ? "रिफ्रेश" : "Refresh")}</span>
+            <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${isRefreshing ? 'animate-spin text-blue-600' : ''}`} />
+            <span>{isRefreshing ? (isHindi ? "अपडेट..." : "Refreshing...") : (isHindi ? "रिफ्रेश" : "Refresh")}</span>
           </button>
 
           <button
             onClick={() => handleLogout(false)}
-            className="px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+            className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap"
           >
-            <LogOut className="w-3.5 h-3.5" />
-            <span className="whitespace-nowrap">{isHindi ? "लॉग आउट" : "Sign Out"}</span>
+            <LogOut className="w-3.5 h-3.5 shrink-0" />
+            <span>{isHindi ? "लॉग आउट" : "Sign Out"}</span>
           </button>
         </div>
       </div>

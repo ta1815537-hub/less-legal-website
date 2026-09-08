@@ -165,7 +165,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-32 sm:pb-36 space-y-8 overflow-hidden">
+    <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-4 sm:pb-6 space-y-8 overflow-hidden">
       <HeroAmbientGlow />
       
       {/* Top Header & Breadcrumb */}
@@ -368,21 +368,23 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
         {/* RIGHT COLUMN: Interactive Form & Status Tracker */}
         <ScrollReveal direction="up" delay={0.14} className="lg:col-span-7">
-          <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-xl">
+          <div className="p-4 sm:p-8 rounded-[24px] sm:rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-xl">
             
-            {/* Top Sleek Switcher Tabs - Single line guaranteed */}
-            <div className="flex rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1.5 border border-slate-200/80 dark:border-white/10 gap-1">
+            {/* Top Sleek Switcher Tabs - Symmetrical 2-Column Responsive Grid */}
+            <div className="grid grid-cols-2 rounded-2xl bg-slate-100/90 dark:bg-white/5 p-1 sm:p-1.5 border border-slate-200/80 dark:border-white/10 gap-1 sm:gap-1.5 w-full">
               <button
                 type="button"
                 onClick={() => setActiveTab('submit')}
-                className={`flex-1 py-3 px-3 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold whitespace-nowrap ${
+                className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
                   activeTab === 'submit'
                     ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-md font-black'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
                 }`}
               >
                 <Send className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-                <span className="whitespace-nowrap">{isHindi ? "सहायता अनुरोध भेजें" : "Submit Request"}</span>
+                <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+                  {isHindi ? "सहायता अनुरोध" : "Submit Request"}
+                </span>
               </button>
 
               <button
@@ -393,14 +395,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     handleSearchStatus();
                   }
                 }}
-                className={`flex-1 py-3 px-3 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 text-xs font-bold whitespace-nowrap ${
+                className={`w-full min-w-0 py-2.5 sm:py-3 px-1.5 sm:px-4 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none ${
                   activeTab === 'check-status'
                     ? 'bg-white dark:bg-[#1e2333] text-slate-900 dark:text-white shadow-md font-black'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-bold'
                 }`}
               >
                 <FileSearch className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                <span className="whitespace-nowrap">{isHindi ? "फॉर्म स्थिति जांचें" : "Check Form Status"}</span>
+                <span className="text-[11px] sm:text-xs tracking-tight truncate leading-tight font-black">
+                  {isHindi ? "स्थिति जांचें" : "Check Status"}
+                </span>
               </button>
             </div>
 

@@ -98,6 +98,31 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
       };
 
+      // Guard body styles against Google Translate unwanted top offset/height inflation
+      const cleanGoogleTranslateArtifacts = () => {
+        if (document.body.style.top && document.body.style.top !== '0px') {
+          document.body.style.top = '0px';
+        }
+        if (document.body.style.position && document.body.style.position !== 'static') {
+          document.body.style.position = 'static';
+        }
+        const skipElements = document.querySelectorAll('.skiptranslate, iframe[name="google_translate_element"], .VIpgJd-ZVi9od-ORHb-OEVmcd');
+        skipElements.forEach((el) => {
+          const htmlEl = el as HTMLElement;
+          if (htmlEl && htmlEl.style.display !== 'none') {
+            htmlEl.style.display = 'none';
+            htmlEl.style.visibility = 'hidden';
+            htmlEl.style.height = '0px';
+            htmlEl.style.width = '0px';
+            htmlEl.style.position = 'absolute';
+            htmlEl.style.top = '-99999px';
+          }
+        });
+      };
+
+      const observer = new MutationObserver(cleanGoogleTranslateArtifacts);
+      observer.observe(document.body, { attributes: true, childList: true, subtree: false });
+
       if (!document.getElementById('google-translate-script')) {
         const script = document.createElement('script');
         script.id = 'google-translate-script';
@@ -105,6 +130,10 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         script.async = true;
         document.body.appendChild(script);
       }
+
+      return () => {
+        observer.disconnect();
+      };
     }
   }, []);
 
@@ -124,7 +153,10 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   return (
     <LanguageContext.Provider value={value}>
       {children}
-      <div id="google_translate_element" className="hidden opacity-0 pointer-events-none fixed bottom-0 right-0 w-0 h-0 overflow-hidden" />
+      <div 
+        id="google_translate_element" 
+        style={{ display: 'none', position: 'absolute', top: '-99999px', left: '-99999px', width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none' }} 
+      />
     </LanguageContext.Provider>
   );
 };

@@ -409,11 +409,11 @@ export default function App() {
           </AnimatePresence>
         </main>
 
-        {/* Footer with Mandatory Direct Policy Links */}
-        <Footer onNavigate={navigateTo} />
+        {/* Footer with Mandatory Direct Policy Links (Hidden on Admin Dashboard for a clean dedicated console experience) */}
+        {currentRoute !== 'admin' && <Footer onNavigate={navigateTo} />}
 
-        {/* Floating Less Support Button (Elevated bottom-right, automatically hidden on Contact and Account Delete pages) */}
-        {currentRoute !== 'contact' && currentRoute !== 'app-delete-account' && (
+        {/* Floating Less Support Button (Elevated bottom-right, automatically hidden on Contact, Account Delete, and Admin Dashboard pages) */}
+        {currentRoute !== 'contact' && currentRoute !== 'app-delete-account' && currentRoute !== 'admin' && (
           <FloatingSupportButton onNavigate={navigateTo} />
         )}
 
