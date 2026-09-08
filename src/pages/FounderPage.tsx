@@ -5,7 +5,7 @@ import {
   Scale, ShieldCheck, ArrowRight, ArrowLeft, Sparkles, 
   Lightbulb, AlertCircle, Layers, Award, Target, CheckCircle2,
   ExternalLink, UserCheck, Briefcase, BookOpen, HeartHandshake,
-  Compass, ChevronRight
+  Compass, ChevronRight, Mail, Lock, Code2
 } from 'lucide-react';
 import { 
   ScrollReveal, StaggerContainer, StaggerItem, 
@@ -24,7 +24,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
   const [isHoveredLessLegal, setIsHoveredLessLegal] = useState(false);
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-20 space-y-12 sm:space-y-16 overflow-hidden">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-32 sm:pb-40 space-y-12 sm:space-y-16 overflow-hidden">
       <HeroAmbientGlow />
 
       {/* Top Breadcrumb & Return Action */}
@@ -33,15 +33,15 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           whileHover={{ x: -3 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap bg-white/95 dark:bg-[#111827]/90 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-sm hover:shadow-md backdrop-blur-xl"
+          className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-2 transition-all cursor-pointer whitespace-nowrap bg-white/95 dark:bg-[#111827]/90 border border-slate-200/80 dark:border-white/10 px-4 py-2 rounded-full shadow-sm hover:shadow-md backdrop-blur-xl shrink-0"
         >
           <ArrowLeft className="w-4 h-4 shrink-0 text-blue-600 dark:text-blue-400" />
-          <span>{t.common.backToHome}</span>
+          <span className="whitespace-nowrap">{t.common.backToHome}</span>
         </motion.button>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-[11px] font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">
-          <Scale className="w-3.5 h-3.5" />
-          <span>{isHindi ? "संस्थापक प्रोफ़ाइल" : "Founder & Leadership"}</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-[11px] font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap shrink-0">
+          <Scale className="w-3.5 h-3.5 shrink-0" />
+          <span className="whitespace-nowrap">{isHindi ? "संस्थापक प्रोफ़ाइल" : "Founder & Leadership"}</span>
         </div>
       </div>
 
@@ -151,17 +151,17 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
                 <button
                   onClick={() => onNavigate('download')}
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-black shadow-md shadow-blue-500/25 cursor-pointer transition-all hover:scale-[1.02] active:scale-95 flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-black shadow-md shadow-blue-500/25 cursor-pointer transition-all hover:scale-[1.02] active:scale-95 flex items-center gap-2 whitespace-nowrap shrink-0"
                 >
-                  <span>{t.nav.downloadApp}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span className="whitespace-nowrap">{t.nav.downloadApp}</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </button>
                 
                 <button
                   onClick={() => onNavigate('features')}
-                  className="px-6 py-3 rounded-xl bg-white/95 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-extrabold hover:bg-slate-100 dark:hover:bg-white/20 cursor-pointer transition-all shadow-xs hover:scale-[1.02] active:scale-95"
+                  className="px-6 py-3 rounded-xl bg-white/95 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-extrabold hover:bg-slate-100 dark:hover:bg-white/20 cursor-pointer transition-all shadow-xs hover:scale-[1.02] active:scale-95 whitespace-nowrap shrink-0"
                 >
-                  <span>{t.common.exploreFeatures}</span>
+                  <span className="whitespace-nowrap">{t.common.exploreFeatures}</span>
                 </button>
               </div>
 
@@ -172,42 +172,181 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       </ScrollReveal>
 
       {/* ================================================== */}
-      {/* 2. FOUNDER STORY — The Person Behind Less Creation */}
+      {/* 2. EXECUTIVE FOUNDER BIO & ARCHITECTURAL ETHOS      */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.06} className="relative z-10">
-        <div className="animated-card p-6 sm:p-10 md:p-12 rounded-[32px] bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-2xl">
+        <div className="animated-card p-6 sm:p-10 md:p-12 rounded-[32px] bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-xl space-y-8 backdrop-blur-2xl">
           
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-5">
+          {/* Executive Header & Credentials */}
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/80 dark:border-white/10 pb-6">
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-blue-500/10 dark:bg-blue-500/20 border border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 shadow-xs">
-                <Scale className="w-5 h-5" />
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shrink-0 shadow-lg shadow-blue-600/25 border border-white/20">
+                <Scale className="w-6 h-6 shrink-0" />
               </div>
               <div>
-                <h2 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-[10.5px] font-black uppercase tracking-wider mb-1">
+                  <Sparkles className="w-3 h-3 shrink-0" />
+                  <span>{isHindi ? "संस्थापक दृष्टिकोण एवं नेतृत्व" : "Executive Founder Profile & Leadership"}</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                   {t.founder.storyTitle}
                 </h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">
-                  {isHindi ? 'अधिवक्ता एवं डिजिटल आर्किटेक्ट दृष्टिकोण' : 'Advocate & Digital Architect Perspective'}
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-semibold mt-0.5">
+                  {isHindi 
+                    ? 'अधिवक्ता, इलाहाबाद उच्च न्यायालय • संस्थापक एवं मुख्य वास्तुकार, लेस क्रिएशन' 
+                    : 'Advocate, Allahabad High Court • Founder & Chief Architect, Less Creation'}
                 </p>
               </div>
             </div>
 
-            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[11px] font-bold text-slate-600 dark:text-slate-300">
-              <BookOpen className="w-3.5 h-3.5 text-blue-500" />
-              <span>{isHindi ? "वास्तविक अनुभव" : "Courtroom Grounding"}</span>
+            {/* Credential Badges */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[11px] font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap shadow-2xs">
+                <BookOpen className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                <span>{isHindi ? "सक्रिय वकालत" : "Active Jurisprudence"}</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 whitespace-nowrap shadow-2xs">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                <span>{isHindi ? "ऑन-डिवाइस प्राइवेसी" : "Client-Side Privacy"}</span>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-            <div className="p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/30 font-bold text-slate-900 dark:text-white">
-              {t.founder.storyP1}
+          {/* Core Executive Narrative */}
+          <div className="space-y-5 text-sm sm:text-base leading-relaxed">
+            {/* Primary Thesis Block */}
+            <div className="relative p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-transparent dark:from-blue-950/40 dark:via-indigo-950/20 dark:to-transparent border-l-4 border-blue-600 dark:border-blue-400 font-semibold text-slate-900 dark:text-white shadow-xs">
+              <p className="text-base sm:text-lg leading-relaxed">
+                {t.founder.storyP1}
+              </p>
             </div>
-            <p>{t.founder.storyP2}</p>
-            <p>{t.founder.storyP3}</p>
-            <div className="p-4 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/20 border border-emerald-500/30 font-bold text-emerald-700 dark:text-emerald-300">
-              {t.founder.storyP4}
+
+            {/* In-depth Institutional Observations */}
+            <p className="text-slate-700 dark:text-slate-300">
+              {t.founder.storyP2}
+            </p>
+
+            {/* Architectural Philosophy & Privacy Stance */}
+            <p className="text-slate-700 dark:text-slate-300">
+              {t.founder.storyP3}
+            </p>
+
+            {/* Flagship Product Conclusion */}
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent dark:from-emerald-950/30 dark:via-teal-950/15 dark:to-transparent border-l-4 border-emerald-500 dark:border-emerald-400 font-bold text-slate-900 dark:text-white shadow-xs">
+              <p className="text-sm sm:text-base leading-relaxed">
+                {t.founder.storyP4}
+              </p>
             </div>
           </div>
+
+          {/* 4-Pillar Executive Competency Matrix */}
+          <div className="pt-2">
+            <div className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4 text-center sm:text-left">
+              {isHindi ? "संस्थापक के मुख्य स्तंभ एवं कार्यक्षेत्र" : "Core Executive Pillars & Domains of Impact"}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Pillar 1 */}
+              <motion.div 
+                whileHover={{ y: -3 }}
+                className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2.5 shadow-2xs hover:shadow-md transition-all"
+              >
+                <div className="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shadow-2xs">
+                  <Scale className="w-4.5 h-4.5" />
+                </div>
+                <h3 className="text-xs font-black text-slate-900 dark:text-white">
+                  {isHindi ? "न्यायालयीन विधिक अभ्यास" : "Active Jurisprudence"}
+                </h3>
+                <p className="text-[11.5px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                  {isHindi 
+                    ? "इलाहाबाद उच्च न्यायालय में सक्रिय वकालत; अदालती प्रक्रियाओं और फाइलों की यथार्थ समझ।" 
+                    : "Active litigation before the Allahabad High Court; built from genuine procedural reality."}
+                </p>
+              </motion.div>
+
+              {/* Pillar 2 */}
+              <motion.div 
+                whileHover={{ y: -3 }}
+                className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2.5 shadow-2xs hover:shadow-md transition-all"
+              >
+                <div className="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-600 dark:text-sky-400 flex items-center justify-center shadow-2xs">
+                  <Code2 className="w-4.5 h-4.5" />
+                </div>
+                <h3 className="text-xs font-black text-slate-900 dark:text-white">
+                  {isHindi ? "स्वतंत्र सिस्टम आर्किटेक्चर" : "Independent Architecture"}
+                </h3>
+                <p className="text-[11.5px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                  {isHindi 
+                    ? "बिना किसी कॉर्पोरेट निर्भरता के स्व-विकसित कोडबेस; उच्च गति एवं शून्य ब्लोटवेयर।" 
+                    : "Zero external enterprise dependencies; engineered from first principles for peak velocity."}
+                </p>
+              </motion.div>
+
+              {/* Pillar 3 */}
+              <motion.div 
+                whileHover={{ y: -3 }}
+                className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2.5 shadow-2xs hover:shadow-md transition-all"
+              >
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-2xs">
+                  <ShieldCheck className="w-4.5 h-4.5" />
+                </div>
+                <h3 className="text-xs font-black text-slate-900 dark:text-white">
+                  {isHindi ? "संपूर्ण डेटा संप्रभुता" : "Absolute Data Sovereignty"}
+                </h3>
+                <p className="text-[11.5px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                  {isHindi 
+                    ? "100% ऑन-डिवाइस निष्पादन; उपयोगकर्ता डेटा का शून्य संग्रह, शून्य ट्रैकिंग या मुद्रीकरण।" 
+                    : "100% on-device computation; zero user data collection, zero telemetry, zero monetization."}
+                </p>
+              </motion.div>
+
+              {/* Pillar 4 */}
+              <motion.div 
+                whileHover={{ y: -3 }}
+                className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-2.5 shadow-2xs hover:shadow-md transition-all"
+              >
+                <div className="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center shadow-2xs">
+                  <CheckCircle2 className="w-4.5 h-4.5" />
+                </div>
+                <h3 className="text-xs font-black text-slate-900 dark:text-white">
+                  {isHindi ? "सुलभ एकमुश्त अभिगम्यता" : "Democratic Lifetime Access"}
+                </h3>
+                <p className="text-[11.5px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                  {isHindi 
+                    ? "शोषक मासिक शुल्कों को नकारते हुए निष्पक्ष, पारदर्शी व आजीवन सुलभता मॉडल।" 
+                    : "Rejecting aggressive recurring subscription traps in favor of clean, transparent value."}
+                </p>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Executive Direct Communication & Authenticity Seal */}
+          <div className="pt-4 border-t border-slate-200/80 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-slate-900 dark:bg-white/10 text-amber-400 flex items-center justify-center font-serif text-base font-bold shadow-sm shrink-0">
+                AG
+              </div>
+              <div className="text-left">
+                <div className="text-xs font-black text-slate-900 dark:text-white">
+                  Anurag Gurauli
+                </div>
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                  {isHindi ? "संस्थापक एवं अधिवक्ता, इलाहाबाद उच्च न्यायालय" : "Founder & Advocate, Allahabad High Court"}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <a 
+                href="mailto:support@lesscreation.com" 
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs whitespace-nowrap cursor-pointer shrink-0"
+              >
+                <Mail className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                <span>support@lesscreation.com</span>
+              </a>
+            </div>
+          </div>
+
         </div>
       </ScrollReveal>
 

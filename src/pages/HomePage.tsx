@@ -22,6 +22,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { sanitizePhoneNumber, isRateLimited, isSafeUrl } from '../utils/security';
 import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
 import { DynamicNoticeBoard } from '../components/DynamicNoticeBoard';
+import { TaskDiscoveryWidget } from '../components/tools/TaskDiscoveryWidget';
 
 interface HomePageProps {
   onNavigate: (route: PageRoute) => void;
@@ -270,6 +271,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <DynamicNoticeBoard onNavigate={onNavigate} />
       </div>
+
+      {/* Task-First Discovery & Search Hub */}
+      <section id="task-discovery-hub" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 scroll-mt-28">
+        <div className="bg-gradient-to-br from-blue-50/40 via-sky-50/10 to-transparent dark:from-blue-950/10 dark:via-transparent dark:to-transparent border border-blue-100/50 dark:border-white/5 rounded-3xl p-6 sm:p-10 shadow-xs space-y-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 -mt-24 -mr-24 w-96 h-96 bg-blue-500/[0.03] dark:bg-blue-500/[0.02] rounded-full blur-3xl pointer-events-none" />
+          
+          <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-900/30 border border-blue-500/20 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+              <span>{isHindi ? 'त्वरित ऑन-डिवाइस टूल्स' : 'SMART ON-DEVICE UTILITIES'}</span>
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+              {isHindi ? 'क्या काम करना है? बस खोजें और शुरू करें' : 'Describe your task to find the right tool instantly'}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl mx-auto leading-relaxed">
+              {isHindi 
+                ? '30+ मुफ्त व 100% सुरक्षित टूल्स। आपकी फाइलें और डेटा पूरी तरह आपके डिवाइस पर सुरक्षित रहते हैं, कभी किसी सर्वर पर अपलोड नहीं होते।'
+                : 'Over 30+ browser-based utilities that process files 100% privately on your device. Zero mandatory sign-ups, zero server uploads, absolute security.'}
+            </p>
+          </ScrollReveal>
+
+          <TaskDiscoveryWidget />
+        </div>
+      </section>
 
       {/* 2. PRODUCT ECOSYSTEM SECTION */}
       <section id="product-ecosystem" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">

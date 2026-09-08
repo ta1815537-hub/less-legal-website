@@ -16,7 +16,11 @@ export type PageRoute =
   | 'refund'
   | 'disclaimer'
   | 'download'
-  | 'admin';
+  | 'admin'
+  | 'tools'
+  | 'professionals'
+  | 'templates'
+  | 'pricing';
 
 export interface NavItem {
   label: string;
@@ -74,3 +78,105 @@ export interface RazorpayVerificationResponse {
   message?: string;
   error?: string;
 }
+
+// --- NEW ADDITIVE UTILITY ECOSYSTEM TYPES ---
+
+export type ToolCategory = 
+  | 'pdf'
+  | 'image'
+  | 'text'
+  | 'calculators'
+  | 'qr-digital'
+  | 'productivity'
+  | 'legal';
+
+export interface ToolDefinition {
+  id: string;
+  name: string;
+  nameHi?: string;
+  slug: string;
+  category: ToolCategory;
+  categoryLabel: string;
+  categoryLabelHi?: string;
+  description: string;
+  descriptionHi?: string;
+  iconName: string;
+  isPopular?: boolean;
+  isNew?: boolean;
+  isPro?: boolean;
+  tags: string[];
+  privacyNote?: string;
+  seoTitle: string;
+  seoDescription: string;
+  faq?: { question: string; answer: string }[];
+  relatedSlugs?: string[];
+  // Extended fields for Discovery Upgrade
+  synonyms?: string[];
+  intentPhrases?: string[];
+  cta?: string;
+  isFree?: boolean;
+  isPremium?: boolean;
+  privacyMode?: 'on-device' | 'server-side' | 'hybrid';
+}
+
+export interface ProfessionalListing {
+  id: string;
+  name: string;
+  category: 'Advocate' | 'Chartered Accountant' | 'Consultant' | 'Designer' | 'Developer' | 'Freelancer' | 'Documentation Pro' | 'Other';
+  title: string;
+  serviceArea: string;
+  experienceYears: number;
+  description: string;
+  isVerified?: boolean;
+  isFeatured?: boolean;
+  rating?: number;
+  reviewCount?: number;
+  skills: string[];
+  contactEmail?: string;
+  contactPhone?: string;
+  website?: string;
+  linkedin?: string;
+  status: 'active' | 'pending' | 'expired';
+}
+
+export interface DigitalProduct {
+  id: string;
+  title: string;
+  category: 'Legal Drafts' | 'Business Templates' | 'Productivity Packs' | 'Checklists' | 'Printables';
+  description: string;
+  format: string; // e.g., 'PDF + DOCX'
+  fileSize?: string;
+  price: number; // 0 for free
+  priceFormatted: string;
+  isPopular?: boolean;
+  features: string[];
+  sampleItems?: string[];
+  downloadUrl?: string;
+}
+
+export interface JobOpportunity {
+  id: string;
+  title: string;
+  organization: string;
+  type: 'Full-time' | 'Part-time' | 'Internship' | 'Freelance';
+  location: string;
+  stipendOrSalary: string;
+  description: string;
+  requirements: string[];
+  deadline: string;
+  applyEmailOrLink: string;
+  isFeatured?: boolean;
+  status: 'active' | 'closed';
+}
+
+export interface AffiliateResource {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  benefit: string;
+  url: string;
+  badge?: string;
+  disclosure: string;
+}
+

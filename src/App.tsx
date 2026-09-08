@@ -21,6 +21,7 @@ import { RefundPolicyPage } from './pages/RefundPolicyPage';
 import { DisclaimerPage } from './pages/DisclaimerPage';
 import { DownloadPage } from './pages/DownloadPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { ToolsDirectoryPage } from './pages/ToolsDirectoryPage';
 import { LanguageProvider } from './context/LanguageContext';
 import { FloatingSupportButton } from './components/FloatingSupportButton';
 
@@ -29,9 +30,16 @@ function getRouteFromLocation(): PageRoute {
   const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
   const hash = window.location.hash.replace(/^#\/?/, '');
   const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has('tool')) {
+    return 'tools';
+  }
   const pageParam = searchParams.get('page') || searchParams.get('route') || (searchParams.has('admin') ? 'admin' : '');
 
   const target = pageParam || hash || pathname;
+
+  if (target.toLowerCase().startsWith('tools') || target.toLowerCase().startsWith('tool/')) {
+    return 'tools';
+  }
 
   switch (target.toLowerCase()) {
     case 'about':
@@ -43,14 +51,15 @@ function getRouteFromLocation(): PageRoute {
     case 'career':
     case 'jobs':
     case 'hiring': return 'careers';
+    case 'tools':
+    case 'utilities': return 'tools';
     case 'less-legal':
     case 'lesslegal': return 'less-legal';
     case 'less-legal/features':
     case 'less-legal-features':
     case 'features': return 'less-legal-features';
     case 'resources':
-    case 'resources-and-tools':
-    case 'tools': return 'resources';
+    case 'resources-and-tools': return 'resources';
     case 'premium': return 'premium';
     case 'contact': return 'contact';
     case 'privacy':
@@ -127,6 +136,11 @@ export default function App() {
         title = 'Resources & Legal Tools Hub | Less Creation';
         description = 'Practical legal guides, citizen rights explanations, land measurement converters, bare acts references, and educational materials by Less Creation.';
         path = 'resources';
+        break;
+      case 'tools':
+        title = 'Everyday Work Tools & Utilities | Less Creation';
+        description = 'Explore 30+ free, fast, browser-based everyday utilities. PDF tools, image compressors, word counter, EMI & GST calculators, QR generator by Less Creation.';
+        path = 'tools';
         break;
       case 'premium': 
         title = 'Less Legal Permanent Lifetime Pass (₹99) | Less Creation'; 
@@ -230,6 +244,7 @@ export default function App() {
     // Update path using history API for clean direct URLs
     let targetPath = '/';
     if (route === 'home') targetPath = '/';
+    else if (route === 'tools') targetPath = '/tools';
     else if (route === 'less-legal') targetPath = '/less-legal';
     else if (route === 'less-legal-features' || route === 'features') targetPath = '/less-legal/features';
     else if (route === 'resources') targetPath = '/resources';
@@ -271,6 +286,7 @@ export default function App() {
           <AnimatePresence mode="wait">
             <PageTransition routeKey={currentRoute}>
               {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}
+              {currentRoute === 'tools' && <ToolsDirectoryPage onNavigate={navigateTo} />}
               {currentRoute === 'less-legal' && <LessLegalPage onNavigate={navigateTo} />}
               {(currentRoute === 'less-legal-features' || currentRoute === 'features') && <FeaturesPage onNavigate={navigateTo} />}
               {currentRoute === 'about' && <AboutPage onNavigate={navigateTo} />}

@@ -58,10 +58,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
 
   const desktopNavLinks: { label: string; route: PageRoute; badge?: string }[] = [
     { label: isHindi ? 'होम' : 'Home', route: 'home' },
+    { label: isHindi ? 'टूल्स' : 'Tools', route: 'tools', badge: '30+' },
     { label: isHindi ? 'लेस लीगल' : 'Less Legal', route: 'less-legal', badge: isHindi ? 'फ्लैगशिप' : 'Flagship' },
     { label: isHindi ? 'लेस क्रिएशन' : 'About', route: 'about' },
     { label: isHindi ? 'संस्थापक' : 'Founder', route: 'founder' },
-    { label: isHindi ? 'संसाधन व टूल्स' : 'Resources', route: 'resources' },
+    { label: isHindi ? 'संसाधन' : 'Resources', route: 'resources' },
     { label: isHindi ? 'प्रीमियम' : 'Premium', route: 'premium', badge: '₹99' },
     { label: isHindi ? 'संपर्क' : 'Contact', route: 'contact' },
   ];
@@ -332,6 +333,31 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                     <span className="whitespace-nowrap font-bold">{isHindi ? 'होम' : 'Home'}</span>
                   </div>
                   <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${currentRoute === 'home' ? 'text-blue-500 translate-x-0.5' : 'group-hover:translate-x-0.5'}`} />
+                </button>
+
+                {/* 2. Tools Ecosystem */}
+                <button
+                  id="mobile-nav-tools"
+                  onClick={() => handleNavClick('tools')}
+                  className={`w-full py-2.5 px-3 rounded-2xl text-left text-xs sm:text-sm font-bold flex items-center justify-between transition-all duration-200 cursor-pointer group ${
+                    currentRoute === 'tools'
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-500/18 border border-blue-500/30 shadow-xs'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5 border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${
+                      currentRoute === 'tools'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20'
+                    }`}>
+                      <Layers className="w-4 h-4" />
+                    </div>
+                    <span className="whitespace-nowrap font-bold">{isHindi ? '30+ टूल्स व यूटिलिटीज' : '30+ Tools & Utilities'}</span>
+                  </div>
+                  <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0 uppercase tracking-wide">
+                    30+ Free
+                  </span>
                 </button>
 
                 {/* 2. Founder */}
