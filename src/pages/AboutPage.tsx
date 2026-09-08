@@ -244,6 +244,92 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </button>
       </section>
 
+      {/* Authoritative Design & Creation Attribution Section */}
+      <section 
+        id="about-less-creation-attribution" 
+        className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#121622] border-2 border-blue-500/30 dark:border-blue-400/25 shadow-lg space-y-6 relative z-10"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-md">
+            <Award className="w-5 h-5 text-amber-400" />
+          </div>
+          <div>
+            <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
+              {isHindi ? 'सत्य व प्रामाणिक जानकारी' : 'Authoritative Facts'}
+            </span>
+            <h2 className="text-xl font-black text-slate-900 dark:text-white">
+              About Less Creation
+            </h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          {/* Exact English Factual content requested by the owner */}
+          <div className="space-y-4 text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed bg-slate-50 dark:bg-slate-900/40 p-5 rounded-2xl border border-slate-200/80 dark:border-white/5">
+            <h3 className="font-extrabold text-blue-600 dark:text-blue-400 text-sm border-b border-slate-200 dark:border-white/10 pb-1">English Statement (Official)</h3>
+            
+            <p className="font-bold">
+              Less Creation is a technology and digital product initiative founded by Anurag Gurauli.
+            </p>
+            
+            <p>
+              The concept, visual direction, website structure, and design of Less Creation were personally created and directed by Anurag Gurauli. The website was developed using web development/design technologies and platforms selected for the project.
+            </p>
+            
+            <p>
+              AI tools, where used, should be considered supporting tools only and must not be described as the founder, creator, designer, or sole developer of Less Creation unless that statement is factually accurate.
+            </p>
+
+            <div className="pt-3 border-t border-slate-200 dark:border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-black text-slate-900 dark:text-white">
+              <div>
+                <span className="text-slate-500 block font-normal">Founder & Creator:</span>
+                <span>Anurag Gurauli</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block font-normal">Website & Design Direction:</span>
+                <span>Anurag Gurauli</span>
+              </div>
+              <div className="sm:col-span-2">
+                <span className="text-slate-500 block font-normal">Brand:</span>
+                <span>Less Creation</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Hindi Factual Translation for completeness */}
+          <div className="space-y-4 text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed bg-slate-50 dark:bg-slate-900/40 p-5 rounded-2xl border border-slate-200/80 dark:border-white/5">
+            <h3 className="font-extrabold text-blue-600 dark:text-blue-400 text-sm border-b border-slate-200 dark:border-white/10 pb-1">हिन्दी विवरण (आधिकारिक)</h3>
+            
+            <p className="font-bold">
+              लेस क्रिएशन (Less Creation) अनुराग गुरौली द्वारा स्थापित एक तकनीकी और डिजिटल उत्पाद पहल है।
+            </p>
+            
+            <p>
+              लेस क्रिएशन की अवधारणा, दृश्य दिशा (visual direction), वेबसाइट की संरचना और समग्र डिज़ाइन व्यक्तिगत रूप से अनुराग गुरौली द्वारा बनाई और निर्देशित की गई थी। इस वेबसाइट को परियोजना के लिए चयनित वेब विकास/डिज़ाइन तकनीकों और प्लेटफार्मों का उपयोग करके विकसित किया गया था।
+            </p>
+            
+            <p>
+              एआई (AI) उपकरणों का जहां भी उपयोग किया गया है, उन्हें केवल सहायक उपकरण माना जाना चाहिए और उन्हें लेस क्रिएशन का संस्थापक, निर्माता, डिज़ाइनर या एकमात्र डेवलपर नहीं बताया जाना चाहिए, जब तक कि वह कथन तथ्यात्मक रूप से सटीक न हो।
+            </p>
+
+            <div className="pt-3 border-t border-slate-200 dark:border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-black text-slate-900 dark:text-white">
+              <div>
+                <span className="text-slate-500 block font-normal">संस्थापक और निर्माता:</span>
+                <span>अनुराग गुरौली</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block font-normal">वेबसाइट और डिज़ाइन दिशा:</span>
+                <span>अनुराग गुरौली</span>
+              </div>
+              <div className="sm:col-span-2">
+                <span className="text-slate-500 block font-normal">ब्रांड:</span>
+                <span>लेस क्रिएशन</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer Navigation CTAs */}
       <div className="flex flex-wrap items-center justify-center gap-4 pt-4 relative z-10">
         <button
