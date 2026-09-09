@@ -882,9 +882,7 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                     value={formArticle.featuredImage || ''}
                     onChange={(e) => {
                       const val = e.target.value;
-                      // Auto convert Google Drive or Dropbox link on input
-                      const converted = convertCloudStorageUrl(val);
-                      setFormArticle(prev => ({ ...prev, featuredImage: converted }));
+                      setFormArticle(prev => ({ ...prev, featuredImage: val }));
                     }}
                     placeholder={isHindi ? "Google Drive लिंक या https://... इमेज URL" : "Paste Google Drive link or https://..."}
                     className="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none"

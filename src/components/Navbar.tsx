@@ -176,9 +176,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 whileHover={{ scale: 1.05, rotate: 2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2, ease: EASING_SPRING }}
-                className="shrink-0 flex items-center justify-center pt-0.5 sm:pt-1"
+                className="shrink-0 flex items-center justify-center pt-1.5 sm:pt-2 md:pt-2.5"
               >
-                <LTLogo className="w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13" />
+                <LTLogo className="w-11 h-11 sm:w-13 sm:h-13 md:w-14 md:h-14" />
               </motion.div>
               <div className="flex flex-col justify-center min-w-0">
                 <div className="flex items-center gap-1 leading-none">
