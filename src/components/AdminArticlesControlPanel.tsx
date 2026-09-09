@@ -14,6 +14,7 @@ import {
 } from '../services/articleService';
 import { useLanguage } from '../context/LanguageContext';
 import { getDirectCloudImageUrl, convertCloudStorageUrl } from '../utils/adminStorage';
+import { ArticleRenderer } from './ArticleRenderer';
 
 interface AdminArticlesControlPanelProps {
   adminEmail?: string;
@@ -732,55 +733,140 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
               </div>
 
               {/* Markdown Content Editor */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between">
+              <div className="space-y-1.5">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                    {isHindi ? "लेख की मुख्य सामग्री (Markdown Content)*" : "Article Content (Markdown supported)*"}
+                    {isHindi ? "लेख की मुख्य सामग्री (Premium Editorial Content)*" : "Article Content (Premium Editorial Content)*"}
                   </label>
                   
-                  {/* Quick Format Tools */}
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={() => handleInsertFormatting('## ')}
-                      className="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 dark:bg-white/5 hover:bg-slate-200"
-                      title="Heading 2"
-                    >
-                      H2
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleInsertFormatting('### ')}
-                      className="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 dark:bg-white/5 hover:bg-slate-200"
-                      title="Heading 3"
-                    >
-                      H3
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleInsertFormatting('**', '**')}
-                      className="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 dark:bg-white/5 hover:bg-slate-200"
-                      title="Bold"
-                    >
-                      B
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleInsertFormatting('> ')}
-                      className="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 dark:bg-white/5 hover:bg-slate-200"
-                      title="Callout Quote"
-                    >
-                      "
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleInsertFormatting('- ')}
-                      className="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 dark:bg-white/5 hover:bg-slate-200"
-                      title="List"
-                    >
-                      •
-                    </button>
-                  </div>
+                  <span className="text-[10px] text-slate-400 font-mono">
+                    Markdown Format Supported
+                  </span>
+                </div>
+                
+                {/* Premium Upgraded Editor Toolbar */}
+                <div className="flex flex-wrap items-center gap-1 p-1.5 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-white/10 rounded-t-lg select-none">
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('# ')}
+                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Heading 1 / Title"
+                  >
+                    <Heading className="w-3 h-3 text-slate-400" />
+                    <span>H1</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('## ')}
+                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Heading 2 / Main Section"
+                  >
+                    <Heading className="w-3 h-3 text-slate-400" />
+                    <span>H2</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('### ')}
+                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Heading 3 / Sub-section"
+                  >
+                    <Heading className="w-3 h-3 text-slate-400" />
+                    <span>H3</span>
+                  </button>
+                  
+                  <div className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1 shrink-0" />
+                  
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('**', '**')}
+                    className="h-7 w-7 text-xs font-bold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Bold (**Text**)"
+                  >
+                    <span className="font-extrabold">B</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('*', '*')}
+                    className="h-7 w-7 text-xs font-serif italic rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Italic (*Text*)"
+                  >
+                    <span>I</span>
+                  </button>
+
+                  <div className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1 shrink-0" />
+
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('- ')}
+                    className="h-7 w-7 rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Bullet List (- Item)"
+                  >
+                    <List className="w-3.5 h-3.5 text-slate-500" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('1. ')}
+                    className="h-7 w-7 rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Numbered List (1. Item)"
+                  >
+                    <ListOrdered className="w-3.5 h-3.5 text-slate-500" />
+                  </button>
+
+                  <div className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1 shrink-0" />
+
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('> ')}
+                    className="h-7 w-7 rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Editorial Blockquote (> Quote)"
+                  >
+                    <Quote className="w-3.5 h-3.5 text-slate-500" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('> **महत्वपूर्ण सूचना:** ')}
+                    className="h-7 px-2 text-[9px] font-black rounded bg-amber-500/10 text-amber-600 border border-amber-500/25 hover:bg-amber-500/20 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Important Hindi Callout Box"
+                  >
+                    <AlertTriangle className="w-3 h-3 text-amber-500" />
+                    <span>Note (Hi)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('> **Note:** ')}
+                    className="h-7 px-2 text-[9px] font-black rounded bg-blue-500/10 text-blue-600 border border-blue-500/25 hover:bg-blue-500/20 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Important English Callout Box"
+                  >
+                    <AlertTriangle className="w-3 h-3 text-blue-500" />
+                    <span>Note (En)</span>
+                  </button>
+
+                  <div className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1 shrink-0" />
+
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('![Caption](', ')')}
+                    className="h-7 w-7 rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Insert Image (![Caption](Image URL))"
+                  >
+                    <ImageIcon className="w-3.5 h-3.5 text-slate-500" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('[Label](', ')')}
+                    className="h-7 w-7 rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Insert Link ([Label](URL))"
+                  >
+                    <LinkIcon className="w-3.5 h-3.5 text-slate-500" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('\n---\n')}
+                    className="h-7 px-1.5 text-[10px] font-bold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center justify-center cursor-pointer"
+                    title="Insert Section Divider (---)"
+                  >
+                    <span>---</span>
+                  </button>
                 </div>
 
                 <textarea
@@ -788,8 +874,8 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                   rows={14}
                   value={formArticle.content || ''}
                   onChange={(e) => setFormArticle(prev => ({ ...prev, content: e.target.value }))}
-                  placeholder="Write editorial content in Markdown format here... Use ## for headings, > for highlights, - for bullet lists."
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-mono leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none resize-y"
+                  placeholder="Write beautiful editorial article here... Use headings (## Section), callouts (> **Note:** text), bullets, and inline formatting tools above."
+                  className="w-full px-3.5 py-2.5 rounded-b-lg bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-mono leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none resize-y"
                 />
               </div>
 
@@ -1000,49 +1086,54 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
       {/* PREVIEW MODAL */}
       {previewArticle && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="max-w-2xl w-full max-h-[85vh] bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-2xl">
+          <div className="max-w-4xl w-full h-[90vh] bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-2xl">
             
-            <div className="p-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <div className="p-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between shrink-0 bg-slate-50 dark:bg-slate-900">
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-blue-600" />
-                <span className="text-xs font-bold uppercase tracking-wider">
-                  {previewArticle.category} • Preview
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-700 dark:text-slate-300">
+                  {previewArticle.category} • Editorial Preview Mode
                 </span>
               </div>
               <button
                 onClick={() => setPreviewArticle(null)}
-                className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-white"
+                className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto space-y-4">
-              <div className="text-xs font-mono text-slate-400">
-                {previewArticle.publishedAt ? new Date(previewArticle.publishedAt).toLocaleDateString() : 'Draft'}
-              </div>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                {previewArticle.title}
-              </h2>
-              {previewArticle.featuredImage && (
-                <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 aspect-video w-full bg-slate-100 dark:bg-white/5 flex items-center justify-center">
-                  <img 
-                    src={getDirectCloudImageUrl(previewArticle.featuredImage)} 
-                    alt={previewArticle.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900"
-                  />
-                </div>
-              )}
-              <p className="text-xs text-slate-500 italic border-l-2 border-blue-600 pl-3">
-                {previewArticle.excerpt}
-              </p>
-              <div className="prose dark:prose-invert text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
-                {previewArticle.content}
-              </div>
+            <div className="flex-1 overflow-y-auto">
+              <ArticleRenderer
+                title={previewArticle.title}
+                excerpt={previewArticle.excerpt}
+                content={previewArticle.content}
+                category={previewArticle.category}
+                publishedAt={previewArticle.publishedAt}
+                createdAt={previewArticle.createdAt}
+                readingTime={previewArticle.readingTime || '5 min read'}
+                featuredImage={previewArticle.featuredImage}
+                tags={previewArticle.tags}
+                onBack={undefined}
+                feedbackSystem={{
+                  usefulYesCount: 0,
+                  usefulNoCount: 0,
+                  userVote: null,
+                  feedbackSubmitted: false,
+                  onVote: () => {}
+                }}
+                socialShareSystem={{
+                  currentUrl: '#',
+                  onCopyLink: () => {},
+                  copiedShare: false,
+                  onShareWhatsApp: () => {},
+                  onShareTelegram: () => {},
+                  onShareX: () => {}
+                }}
+              />
             </div>
 
-            <div className="p-3 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 flex items-center justify-between gap-2">
+            <div className="p-3 border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 flex items-center justify-between gap-2 shrink-0">
               {onNavigate && (
                 <button
                   onClick={() => {
@@ -1050,15 +1141,15 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                     setPreviewArticle(null);
                     onNavigate('article-detail', { slug });
                   }}
-                  className="px-3.5 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-bold text-xs hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-lg bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Open in Full Reading Mode</span>
+                  <span>Open in Full Live Reader</span>
                 </button>
               )}
               <button
                 onClick={() => setPreviewArticle(null)}
-                className="ml-auto px-4 py-1.5 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-white font-bold text-xs transition-colors"
+                className="ml-auto px-4 py-1.5 rounded-lg bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-800 dark:text-white font-bold text-xs transition-colors cursor-pointer"
               >
                 Close Preview
               </button>
