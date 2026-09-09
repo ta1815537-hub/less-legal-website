@@ -64,28 +64,28 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             {/* Column 1: Brand & Taglines (Span 4 on Desktop) */}
             <div className="lg:col-span-4 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 p-2 shadow-2xs flex items-center justify-center shrink-0">
-                  <LTLogo className="w-8 h-8" />
+                <div className="shrink-0 flex items-center justify-center">
+                  <LTLogo className="w-10 h-10 sm:w-11 sm:h-11" />
                 </div>
                 <div>
                   <h2 className="text-xl font-black tracking-tight leading-none">
                     <span className="text-slate-900 dark:text-white">Less </span>
                     <span className="text-blue-600 dark:text-blue-400">Creation</span>
                   </h2>
-                  <p className="text-[11px] font-bold text-amber-600 dark:text-amber-400 mt-1">
-                    अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
+                  <p className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-amber-500 dark:text-amber-400 mt-1">
+                    WHERE LAW MEETS TECHNOLOGY
                   </p>
                 </div>
               </div>
 
               <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 leading-snug">
-                {isHindi ? "सरल तकनीक जो रोज़मर्रा के काम को आसान बनाती है।" : "Simple technology that makes everyday work easier."}
+                {isHindi ? "डिजिटल सुरक्षा, व्यावहारिक ज्ञान और उपयोगी तकनीक - एक सुरक्षित डिजिटल भविष्य के लिए।" : "Technology, awareness and practical digital knowledge for a safer, more informed digital world."}
               </p>
 
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                 {isHindi 
-                  ? "लेस क्रिएशन एक स्वतंत्र सॉफ्टवेयर और टेक्नोलॉजी स्टूडियो है। हम रोजमर्रा के कामों और उत्पादकता को आसान बनाने के लिए सरल, उपयोगी और सुरक्षित डिजिटल समाधान विकसित करते हैं।" 
-                  : "Less Creation is an independent software and technology studio. We design simple, secure, and highly private products to make everyday work and utility workflows accessible for everyone."}
+                  ? "लेस क्रिएशन एक टेक्नोलॉजी और डिजिटल जागरूकता ब्रांड है। हम लोगों को तकनीक समझने, डिजिटल जोखिमों को पहचानने और आत्मविश्वास के साथ डिजिटल दुनिया में नेविगेट करने में मदद करने के लिए व्यावहारिक डिजिटल उत्पाद और स्पष्ट, सुलभ ज्ञान साझा करते हैं।" 
+                  : "Less Creation is a technology and digital awareness brand. We build practical digital products and share clear, accessible knowledge to help people understand technology, recognize digital risks and navigate the digital world with greater confidence."}
               </p>
 
               {/* 4 compact badges */}
@@ -93,7 +93,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
                   <Layers className="w-3.5 h-3.5 text-blue-500 shrink-0" />
                   <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 leading-tight">
-                    Product Studio
+                    Digital Safety
                   </span>
                 </div>
 

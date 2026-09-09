@@ -9,7 +9,8 @@ export const LTLogo: React.FC<LTLogoProps> = ({
   className = "w-10 h-10", 
   size 
 }) => {
-  const [imgErr, setImgErr] = useState(false);
+  const [srcIndex, setSrcIndex] = useState(0);
+  const logoSources = ['/Picsart_logo.png', '/Web3.png', '/Web2.png', '/web.png', '/images/lg.png', '/Logo.png'];
   const style = size ? { width: size, height: size } : undefined;
 
   return (
@@ -17,12 +18,12 @@ export const LTLogo: React.FC<LTLogoProps> = ({
       className={`relative flex items-center justify-center shrink-0 ${className}`}
       style={style}
     >
-      {!imgErr ? (
+      {srcIndex < logoSources.length ? (
         <img 
-          src="/images/lg.png" 
+          src={logoSources[srcIndex]} 
           alt="Less Creation Logo" 
-          className="w-full h-full object-contain select-none drop-shadow-[0_0_12px_rgba(194,31,47,0.35)]"
-          onError={() => setImgErr(true)}
+          className="w-full h-full object-contain select-none mix-blend-multiply dark:mix-blend-normal"
+          onError={() => setSrcIndex((prev) => prev + 1)}
         />
       ) : (
         <svg 

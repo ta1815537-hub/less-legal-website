@@ -164,9 +164,12 @@ export interface TranslationSchema {
     whyTitle: string;
     whySubtitle: string;
     whyPillars: {
+      label?: string;
       title: string;
       desc: string;
     }[];
+    whyClosingTitle?: string;
+    whyClosingText?: string;
 
     // Mission
     missionBadge: string;
@@ -595,20 +598,20 @@ export const translations: Record<Language, TranslationSchema> = {
       flagshipProductLabel: "Flagship Legal App"
     },
     home: {
-      heroBadge: "Parent Technology & Product Studio",
-      heroTitle: "Simpler Tool Greater Impact.",
-      heroTitlePart1: "Simpler Tool",
-      heroTitlePart2: "Greater Impact.",
-      heroSubtitle: "Less Creation builds simple, useful and affordable digital products designed to solve real-world problems.",
+      heroBadge: "Advocate Anurag Gurauli's Mission",
+      heroTitle: "AI & Cyber Security Meets the Legal System",
+      heroTitlePart1: "AI & Cyber Security",
+      heroTitlePart2: "Legal System Fusion.",
+      heroSubtitle: "A visionary initiative by Founder Anurag Gurauli to navigate the expanding digital frontier—merging Artificial Intelligence and Cyber Security with Legal awareness to empower, safeguard, and guide citizens and legal professionals alike.",
       ctaExploreProducts: "Explore Products",
       ctaDiscoverLessLegal: "Discover Less Legal",
       ctaDownload: "Download Less Legal",
       ctaDemo: "Try Interactive Preview",
       ctaFeatures: "Explore All Tools",
-      trustFastEngine: "High-Performance Native",
-      trustPrivacy: "On-Device Privacy First",
-      trustToolsCount: "30+ Integrated Utilities",
-      trustAndroidReady: "Cross-Platform Ready",
+      trustFastEngine: "Interactive 3D Engine",
+      trustPrivacy: "On-Device Secure Privacy",
+      trustToolsCount: "AI & Cyber Safe Utilities",
+      trustAndroidReady: "Universal Citizen Guide",
       
       // Product Ecosystem
       ecosystemBadge: "PRODUCT ECOSYSTEM",
@@ -620,31 +623,38 @@ export const translations: Record<Language, TranslationSchema> = {
       upcomingBadge: "In Research & Development",
 
       // Why Less Creation
-      whyBadge: "ENGINEERING PHILOSOPHY",
+      whyBadge: "BRAND PHILOSOPHY & PURPOSE",
       whyTitle: "Why Less Creation",
-      whySubtitle: "Five foundational design and technology principles behind every product we craft.",
+      whySubtitle: "Technology should make people more capable, more informed, and safer in the digital world.",
       whyPillars: [
         {
-          title: "Simple by Design",
-          desc: "We remove friction, excessive layers, and clutter so users can accomplish their real-world goals immediately."
+          label: "01 · DIGITAL SAFETY",
+          title: "Digital Safety First",
+          desc: "We believe people should understand the risks that come with an increasingly connected world—from scams and phishing to emerging AI-powered threats."
         },
         {
-          title: "Useful in Real Life",
-          desc: "Engineered specifically to solve genuine, daily bottlenecks faced by professionals, advocates, and everyday citizens."
+          label: "02 · AWARENESS",
+          title: "Awareness Over Fear",
+          desc: "Cyber risks should not create panic. Clear, practical awareness can help people recognize suspicious activity and make safer decisions."
         },
         {
-          title: "Affordable Access",
-          desc: "Transparent, honest pricing with fair one-time lifetime options instead of aggressive recurring subscription models."
+          label: "03 · SIMPLICITY",
+          title: "Technology Made Understandable",
+          desc: "Complex technology should be easier to understand, whether someone is highly technical or simply trying to navigate everyday digital life."
         },
         {
-          title: "Built with Privacy in Mind",
-          desc: "On-device processing architecture ensures your documents, notes, and local files remain private on your hardware."
+          label: "04 · PRACTICAL KNOWLEDGE",
+          title: "Knowledge Into Action",
+          desc: "Useful information matters most when people can apply it. We focus on practical guidance, educational resources and solutions that help in real situations."
         },
         {
-          title: "Designed for Everyone",
-          desc: "High-contrast ergonomics and intuitive design that welcome both busy legal practitioners and first-time smartphone users."
+          label: "05 · RESPONSIBLE TECHNOLOGY",
+          title: "Responsible Innovation",
+          desc: "As technology and artificial intelligence advance, we aim to build and share technology responsibly—with usefulness, accessibility and awareness at the centre."
         }
       ],
+      whyClosingTitle: "Building for a Safer Digital Future.",
+      whyClosingText: "From practical digital tools to educational content, Less Creation focuses on making technology easier to understand, more useful in everyday life, and safer to navigate.",
 
       // Mission
       missionBadge: "OUR MISSION",
@@ -724,28 +734,28 @@ export const translations: Record<Language, TranslationSchema> = {
       faqSub: "Transparent information regarding our software, privacy model, and passes.",
       faqs: [
         {
-          q: "What is Less Creation and how does it relate to Less Legal?",
-          a: "Less Creation is the parent technology brand and product studio founded by Anurag Gurauli. Less Legal is its flagship software application, uniting practical legal reference tools, PDF utilities, and productivity features for legal professionals and citizens."
+          q: "What is Less Creation's primary objective?",
+          a: "Less Creation is a digital product studio and brand founded by Advocate Anurag Gurauli. Our primary objective is to make technology more useful, understandable, and safer for ordinary people, with a dedicated focus on digital safety, cyber security awareness, practical technology, and public education."
         },
         {
-          q: "Is Less Legal affiliated with the Government of India or any Court?",
-          a: "No. Less Legal is an entirely independent, private software utility application developed by Less Creation. It is not affiliated with, endorsed by, or operated by any government body or court authority. All reference materials provided are for educational and informational purposes."
+          q: "How does Less Creation help spread Cyber Security & Cyber Crime awareness?",
+          a: "We develop educational publications, guides, and practical tools designed to help citizens identify digital threats, prevent common cyber frauds (like fake customer care numbers), secure their online identity, and safely navigate the expanding digital frontier."
         },
         {
-          q: "Does the app require internet to access Bare Acts and Calculators?",
-          a: "No! All core 30+ utilities—including Bare Acts reference library, Land Area Converter, PDF Merger/Splitter, Case Diary, and Age Calculator—operate directly on your device with high speed and zero cloud tracking."
+          q: "What is the flagship product 'Less Legal' and who is it built for?",
+          a: "Less Legal is our flagship independent digital workspace. It brings together 30+ utility tools, a fully offline Bare Acts reference library, and legal calculators to empower practicing advocates, law clerks, students, and citizens with simple, accessible resources."
         },
         {
-          q: "How does the 'File Transfer (LessShare)' feature work?",
-          a: "LessShare establishes a direct device-to-device local Wi-Fi / Hotspot connection to send heavy PDFs and legal documents without uploading anything to cloud servers. It provides instant, confidential local transfers."
+          q: "Is Less Legal affiliated with the Government of India or the judiciary?",
+          a: "No. Less Legal is a completely independent, privately owned software application developed by Less Creation. It is not affiliated with, sponsored by, or endorsed by any government entity, ministry, or court. All reference materials are provided solely for educational and informational purposes."
         },
         {
-          q: "Are the Premium Passes auto-renewing subscriptions?",
-          a: "Never. Less Legal offers a single ₹99 Lifetime Pass (Special Offer) that permanently upgrades your registered Email ID to Premium status forever. It is a strict one-time purchase with no auto-debits, recurring fees, or hidden charges."
+          q: "How does Less Creation ensure user privacy and on-device security?",
+          a: "We build on a strict 'Privacy-by-Design' architecture. Features like PDF merging, splitting, land converters, and case diary planners execute entirely on your physical hardware without uploading confidential documents or private notes to remote cloud servers."
         },
         {
-          q: "What devices are supported by Less Legal?",
-          a: "Less Legal is fully optimized for Android smartphones and tablets running Android 7.0 (Nougat) and higher, supporting all modern screen resolutions and dark mode aesthetics."
+          q: "Are the premium passes inside the app recurring subscriptions?",
+          a: "Never. We believe in honest pricing. Upgrades like our ₹99 Lifetime Pass are strict one-time purchases linked forever to your email ID, with no auto-debits, recurring subscriptions, or hidden charges."
         }
       ]
     },
@@ -1129,20 +1139,20 @@ export const translations: Record<Language, TranslationSchema> = {
       flagshipProductLabel: "प्रमुख कानूनी ऐप"
     },
     home: {
-      heroBadge: "पैरेंट टेक्नोलॉजी एवं प्रोडक्ट स्टूडियो",
-      heroTitle: "सरल साधन बेहतर प्रभाव।",
-      heroTitlePart1: "सरल साधन",
-      heroTitlePart2: "बेहतर प्रभाव।",
-      heroSubtitle: "लेस क्रिएशन वास्तविक जीवन की समस्याओं को हल करने के लिए सरल, उपयोगी और सुलभ डिजिटल उत्पाद बनाता है।",
+      heroBadge: "एडवोकेट अनुराग गुरौली का विजनरी मिशन",
+      heroTitle: "AI और साइबर सुरक्षा का कानूनी प्रणाली से संगम",
+      heroTitlePart1: "AI और साइबर सुरक्षा",
+      heroTitlePart2: "कानूनी सुरक्षा संगम।",
+      heroSubtitle: "संस्थापक अनुराग गुरौली का एक दूरदर्शी मिशन जो तेजी से बढ़ती आर्टिफिशियल इंटेलिजेंस (AI) और साइबर सुरक्षा को आधुनिक कानूनी प्रणाली के साथ जोड़ता है—ताकि हर नागरिक और विधि पेशेवर को सरल, सुरक्षित और गोपनीय डिजिटल जागरूकता मिल सके।",
       ctaExploreProducts: "उत्पादों को देखें",
       ctaDiscoverLessLegal: "लेस लीगल जानें",
       ctaDownload: "डाउनलोड लेस लीगल",
       ctaDemo: "इंटरैक्टिव पूर्वावलोकन",
       ctaFeatures: "सभी टूल्स देखें",
-      trustFastEngine: "उच्च-प्रदर्शन नेटिव इंजन",
-      trustPrivacy: "पूर्ण ऑन-डिवाइस गोपनीयता",
-      trustToolsCount: "30+ एकीकृत उपयोगिताएँ",
-      trustAndroidReady: "आधुनिक एवं तेज़ अनुभव",
+      trustFastEngine: "इंटरैक्टिव 3D एआई इंजन",
+      trustPrivacy: "पूर्ण ऑन-डिवाइस डेटा सुरक्षा",
+      trustToolsCount: "सुरक्षित साइबर-विधिक साधन",
+      trustAndroidReady: "सार्वभौमिक विधिक जागरूकता",
 
       // Product Ecosystem
       ecosystemBadge: "उत्पाद पारिस्थितिकी तंत्र",
@@ -1154,31 +1164,38 @@ export const translations: Record<Language, TranslationSchema> = {
       upcomingBadge: "अनुसंधान एवं विकास में",
 
       // Why Less Creation
-      whyBadge: "इंजीनियरिंग दर्शन",
+      whyBadge: "ब्रांड दर्शन एवं उद्देश्य",
       whyTitle: "लेस क्रिएशन क्यों?",
-      whySubtitle: "वे पाँच आधारभूत सिद्धांत जो हमारे प्रत्येक उत्पाद के निर्माण को दिशा देते हैं।",
+      whySubtitle: "तकनीक को लोगों को अधिक सक्षम, अधिक सूचित और डिजिटल दुनिया में अधिक सुरक्षित बनाना चाहिए।",
       whyPillars: [
         {
-          title: "डिजाइन में सादगी (Simple by Design)",
-          desc: "हम अनावश्यक जटिलता और रुकावटों को हटाते हैं ताकि उपयोगकर्ता अपने मुख्य कार्य पर तुरंत ध्यान केंद्रित कर सकें।"
+          label: "01 · DIGITAL SAFETY",
+          title: "डिजिटल सुरक्षा सर्वोपरि",
+          desc: "हमारा मानना है कि लोगों को एक बढ़ती डिजिटल दुनिया से जुड़े जोखिमों को समझना चाहिए—ऑनलाइन घोटालों और फ़िशिंग से लेकर नए एआई-आधारित खतरों तक।"
         },
         {
-          title: "वास्तविक जीवन में उपयोगी (Useful in Real Life)",
-          desc: "अधिवक्ताओं, विधि छात्रों और नागरिकों द्वारा दैनिक रूप से सामना की जाने वाली व्यावहारिक समस्याओं को हल करने के लिए निर्मित।"
+          label: "02 · AWARENESS",
+          title: "डर नहीं, जागरूकता",
+          desc: "साइबर जोखिमों से घबराहट नहीं फैलनी चाहिए। स्पष्ट और व्यावहारिक जागरूकता लोगों को संदिग्ध गतिविधियों को पहचानने और सुरक्षित निर्णय लेने में मदद करती है।"
         },
         {
-          title: "सुलभ एवं किफायती (Affordable Access)",
-          desc: "आक्रामक आवर्ती सब्सक्रिप्शन के बजाय पारदर्शी और उचित लाइफटाइम पास विकल्प प्रदान करना।"
+          label: "03 · SIMPLICITY",
+          title: "सरल और समझने योग्य तकनीक",
+          desc: "जटिल तकनीक को समझना आसान होना चाहिए, चाहे कोई तकनीकी विशेषज्ञ हो या दैनिक डिजिटल जीवन में मार्गदर्शन की तलाश में हो।"
         },
         {
-          title: "गोपनीयता को प्राथमिकता (Built for Privacy)",
-          desc: "ऑन-डिवाइस आर्किटेक्चर यह सुनिश्चित करता है कि आपके दस्तावेज़, नोट्स और फाइलें आपके डिवाइस पर ही सुरक्षित रहें।"
+          label: "04 · PRACTICAL KNOWLEDGE",
+          title: "ज्ञान को क्रियान्वयन में बदलें",
+          desc: "उपयोगी जानकारी तभी मायने रखती है जब लोग उसे लागू कर सकें। हम व्यावहारिक मार्गदर्शन और वास्तविक समाधान प्रदान करने पर ध्यान केंद्रित करते हैं।"
         },
         {
-          title: "सभी के लिए सहज (Designed for Everyone)",
-          desc: "सहज और स्पष्ट इंटरफ़ेस जो कानूनी पेशेवरों के साथ-साथ आम उपयोगकर्ताओं के लिए भी आसान है।"
+          label: "05 · RESPONSIBLE TECHNOLOGY",
+          title: "ज़िम्मेदार नवाचार",
+          desc: "जैसे-जैसे तकनीक और कृत्रिम बुद्धिमत्ता आगे बढ़ रही है, हम उपयोगिता, पहुंच और जागरूकता को केंद्र में रखकर ज़िम्मेदारी से तकनीक विकसित करते हैं।"
         }
       ],
+      whyClosingTitle: "सुरक्षित डिजिटल भविष्य का निर्माण।",
+      whyClosingText: "व्यावहारिक डिजिटल टूल से लेकर शैक्षणिक सामग्री तक, लेस क्रिएशन का ध्यान तकनीक को आसान बनाने, दैनिक जीवन में अधिक उपयोगी बनाने और सुरक्षित रखने पर है।",
 
       // Mission
       missionBadge: "हमारा उद्देश्य",
@@ -1258,28 +1275,28 @@ export const translations: Record<Language, TranslationSchema> = {
       faqSub: "हमारे सॉफ्टवेयर, गोपनीयता मॉडल और पास से संबंधित पारदर्शी जानकारी।",
       faqs: [
         {
-          q: "लेस क्रिएशन क्या है और इसका लेस लीगल से क्या संबंध है?",
-          a: "लेस क्रिएशन एक टेक्नोलॉजी और डिजिटल प्रोडक्ट ब्रांड है जिसके संस्थापक अनुराग गुरौली हैं। लेस लीगल इसका प्रमुख (फ्लैगशिप) सॉफ्टवेयर एप्लिकेशन है जो कानूनी संदर्भ, पीडीएफ टूल्स और उत्पादकता सुविधाएँ प्रदान करता है।"
+          q: "लेस क्रिएशन (Less Creation) का मुख्य उद्देश्य क्या है?",
+          a: "लेस क्रिएशन एक डिजिटल प्रोडक्ट स्टूडियो है जिसकी स्थापना एडवोकेट अनुराग गुरौली द्वारा की गई है। हमारा मुख्य उद्देश्य तकनीक को आम लोगों के लिए अधिक उपयोगी, समझने में आसान और सुरक्षित बनाना है, जिसमें डिजिटल सुरक्षा, साइबर सुरक्षा जागरूकता, व्यावहारिक तकनीक और सार्वजनिक शिक्षा पर विशेष ध्यान दिया गया है।"
         },
         {
-          q: "क्या लेस लीगल भारत सरकार या किसी अदालत से संबद्ध है?",
-          a: "नहीं। लेस लीगल, लेस क्रिएशन द्वारा विकसित एक पूरी तरह से स्वतंत्र, निजी सॉफ्टवेयर उपयोगिता एप्लिकेशन है। यह किसी भी सरकारी संस्था या अदालत से संबद्ध या संचालित नहीं है। प्रदान की गई सभी संदर्भ सामग्री केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है।"
+          q: "लेस क्रिएशन साइबर सुरक्षा और साइबर क्राइम के प्रति लोगों को कैसे जागरूक करता है?",
+          a: "हम विभिन्न लेखों, गाइडों और व्यावहारिक साधनों का निर्माण करते हैं जो नागरिकों को ऑनलाइन धोखाधड़ी (जैसे फर्जी कस्टमर केयर नंबर), डिजिटल खतरों और साइबर अपराधों की पहचान करने, उनसे बचने तथा डिजिटल दुनिया में अपनी गोपनीयता सुरक्षित रखने में मदद करते हैं।"
         },
         {
-          q: "क्या बेयर एक्ट्स और कैलकुलेटर एक्सेस करने के लिए इंटरनेट की आवश्यकता है?",
-          a: "बिल्कुल नहीं! बेयर एक्ट्स संदर्भ लाइब्रेरी, भूमि क्षेत्रफल कनवर्टर, पीडीएफ मर्जर, केस डायरी और आयु कैलकुलेटर सहित सभी 30+ मुख्य टूल्स सीधे आपके फोन पर बिना इंटरनेट के चलते हैं।"
+          q: "फ्लैगशिप प्रोडक्ट 'लेस लीगल' क्या है और यह किसके लिए बनाया गया है?",
+          a: "लेस लीगल हमारा प्रमुख स्वतंत्र डिजिटल वर्कस्पेस है। यह अधिवक्ताओं, कानून के छात्रों और आम नागरिकों को सशक्त बनाने के लिए 30 से अधिक व्यावहारिक टूल्स, एक संपूर्ण ऑफलाइन बेयर एक्ट्स लाइब्रेरी और विधिक कैलकुलेटर को एक सरल, सुलभ और सुरक्षित मंच पर लाता है।"
         },
         {
-          q: "लेस-शेयर फ़ाइल ट्रांसफर सुविधा कैसे काम करती है?",
-          a: "लेस-शेयर सर्वर पर कुछ भी अपलोड किए बिना भारी पीडीएफ और कानूनी दस्तावेज़ भेजने के लिए डिवाइस-टू-डिवाइस स्थानीय वाई-फाई हॉटस्पॉट कनेक्शन स्थापित करता है। यह त्वरित, गोपनीय स्थानीय ट्रांसफर प्रदान करता है।"
+          q: "क्या लेस लीगल भारत सरकार या न्यायपालिका से संबद्ध है?",
+          a: "बिल्कुल नहीं। लेस लीगल, लेस क्रिएशन द्वारा विकसित एक पूर्णतः स्वतंत्र और निजी सॉफ्टवेयर एप्लिकेशन है। यह किसी भी सरकारी विभाग, मंत्रालय या अदालत से संबद्ध या समर्थित नहीं है। सभी संदर्भ सामग्रियां केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए प्रदान की जाती हैं।"
         },
         {
-          q: "क्या प्रीमियम पास स्वचालित रूप से नवीनीकृत होने वाले सब्सक्रिप्शन हैं?",
-          a: "कभी नहीं। लेस लीगल ₹99 का सिंगल लाइफटाइम पास (स्पेशल ऑफर) प्रदान करता है जो आपकी पंजीकृत ईमेल आईडी को हमेशा के लिए प्रीमियम बनाता है। यह एकमुश्त भुगतान है, इसमें कोई ऑटो-डेबिट या आवर्ती शुल्क नहीं है।"
+          q: "लेस क्रिएशन उपयोगकर्ता की गोपनीयता और ऑन-डिवाइस सुरक्षा कैसे सुनिश्चित करता है?",
+          a: "हम 'प्राइवेसी-बाय-डिजाइन' सिद्धांत का पालन करते हैं। पीडीएफ मर्ज/स्प्लिट, लैंड कनवर्टर और केस डायरी जैसी अधिकांश महत्वपूर्ण सुविधाएं सीधे आपके फोन पर चलती हैं, जिससे आपका संवेदनशील डेटा या निजी दस्तावेज किसी भी क्लाउड सर्वर पर अपलोड नहीं होते।"
         },
         {
-          q: "लेस लीगल किन उपकरणों द्वारा समर्थित है?",
-          a: "लेस लीगल एंड्रॉइड 7.0 (नौगट) और उच्चतर संस्करणों पर चलने वाले सभी एंड्रॉइड स्मार्टफोन और टैबलेट के लिए पूरी तरह से अनुकूलित है।"
+          q: "क्या ऐप के भीतर प्रीमियम पास के लिए कोई आवर्ती शुल्क (recurring subscription) लिया जाता है?",
+          a: "कभी नहीं। हम पूरी तरह से ईमानदार मूल्य निर्धारण में विश्वास करते हैं। हमारा ₹99 लाइफटाइम पास एकमुश्त भुगतान (one-time payment) है जो आपकी पंजीकृत ईमेल आईडी से हमेशा के लिए जुड़ जाता है। इसमें कोई ऑटो-डेबिट, छिपा हुआ चार्ज या मासिक शुल्क नहीं है।"
         }
       ]
     },

@@ -168,16 +168,16 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
         {/* Section 4 */}
         <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
           <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
-            {isHindi ? "4. वेबसाइट सर्वर एवं सुरक्षा (Cloudflare/Cloud Run)" : "4. Hosting, CDN & Cloudflare Security"}
+            {isHindi ? "4. नेटवर्क सुरक्षा एवं एन्क्रिप्शन" : "4. Network Security & TLS Encryption"}
           </h2>
           <div className="flex items-start gap-3 bg-slate-50 dark:bg-white/5 p-5 rounded-2xl border border-slate-200/80 dark:border-white/10">
             <Server className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
             <div className="space-y-1 text-xs sm:text-sm">
-              <strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "सुरक्षित नेटवर्क इन्फ्रास्ट्रक्चर" : "Secure Infrastructure Layer"}</strong>
+              <strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "सुरक्षित नेटवर्क प्रोटोकॉल" : "Secure Network Infrastructure"}</strong>
               <p className="font-medium leading-relaxed">
                 {isHindi
-                  ? "हमारी वेबसाइट क्लाउड-होस्टेड इन्फ्रास्ट्रक्चर पर चलती है और क्लाउडफ्लेयर (Cloudflare CDN) के माध्यम से सुरक्षित है। क्लाउडफ्लेयर सर्वर दुर्भावनापूर्ण बॉट ट्रैफ़िक और हमलों को रोकने के लिए अस्थायी आईपी डेटा प्रोसेस करता है।"
-                  : "Our website is hosted on secure cloud infrastructure and protected by Cloudflare CDN. Cloudflare processes transient request metadata strictly for threat intelligence, DDoS mitigation, and SSL/TLS encryption."}
+                  ? "हमारी वेबसाइट मानक नेटवर्क सुरक्षा प्रोटोकॉल और एंड-टू-एंड SSL/TLS एन्क्रिप्शन का उपयोग करती है ताकि आपके डेटा स्थानांतरण की गोपनीयता और प्रामाणिकता बनी रहे।"
+                  : "Our website employs standard SSL/TLS encryption protocols and network protection measures to ensure data privacy, integrity, and safe browsing for all visitors."}
               </p>
             </div>
           </div>

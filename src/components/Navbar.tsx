@@ -176,18 +176,19 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 whileHover={{ scale: 1.05, rotate: 2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2, ease: EASING_SPRING }}
-                className="p-1 sm:p-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs shrink-0"
+                className="shrink-0 flex items-center justify-center pt-0.5 sm:pt-1"
               >
-                <LTLogo className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" />
+                <LTLogo className="w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13" />
               </motion.div>
               <div className="flex flex-col justify-center min-w-0">
-                <div className="flex items-center gap-1">
-                  <span className="font-extrabold text-sm sm:text-base md:text-xl tracking-tight text-slate-900 dark:text-[#F5F2EE] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors whitespace-nowrap">
-                    {SITE_CONFIG.companyName || 'Less Creation'}
+                <div className="flex items-center gap-1 leading-none">
+                  <span className="text-base sm:text-lg md:text-xl font-black tracking-tight leading-none">
+                    <span className="text-slate-900 dark:text-white">Less </span>
+                    <span className="text-blue-600 dark:text-blue-400">Creation</span>
                   </span>
                 </div>
-                <p className="text-[8.5px] xs:text-[9.5px] sm:text-[11px] font-semibold text-amber-800 dark:text-[#D8BD82] whitespace-nowrap tracking-tight leading-tight">
-                  अप्राप्यं नाम नेहास्ति धीरस्य व्यवसायिनः
+                <p className="text-[8px] xs:text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-wider text-amber-500 dark:text-amber-400 whitespace-nowrap leading-tight mt-0.5">
+                  WHERE LAW MEETS TECHNOLOGY
                 </p>
               </div>
             </a>
