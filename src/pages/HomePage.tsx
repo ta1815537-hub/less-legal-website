@@ -154,7 +154,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const faqs = t.home.faqs;
 
   return (
-    <div className="flex flex-col gap-6 sm:gap-8 py-2 overflow-hidden transition-colors duration-300 pb-16 sm:pb-24">
+    <div className="flex flex-col gap-6 sm:gap-8 py-2 overflow-hidden transition-colors duration-300 pb-24 sm:pb-32">
       
       {/* 1. HERO SECTION: ADVOCATE ANURAG GURAULI VISION */}
       <section className="relative text-slate-900 dark:text-white pt-6 sm:pt-10 pb-8 sm:pb-12 overflow-hidden flex items-center rounded-3xl min-h-[400px] border border-slate-200/20 dark:border-white/5">
@@ -177,17 +177,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               transition={{ duration: 0.6 }}
               className="lg:col-span-7 space-y-6 text-left flex flex-col items-start min-w-0 w-full"
             >
-              <div className="flex flex-col gap-4 items-start w-full min-w-0">
+              <div className="flex flex-col gap-6 items-start w-full min-w-0 mt-4 sm:mt-6 mb-2 sm:mb-4">
                 
-                {/* 1. Tagline Badge (Guaranteed 1-Line on All Mobile Screens) */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 rounded-full bg-blue-500/10 dark:bg-blue-900/30 border border-blue-500/25 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-[9px] xs:text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap max-w-full overflow-hidden text-ellipsis">
-                  <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
-                  <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-                    {isHindi ? "प्रौद्योगिकी • डिजिटल सुरक्षा • जागरूकता" : "TECHNOLOGY • DIGITAL SAFETY • AWARENESS"}
-                  </span>
-                </div>
-
-                {/* 2. Main Headline */}
+                {/* 1. Main Headline */}
                 <div className="w-full flex flex-col gap-1.5">
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black tracking-tight leading-[1.12] text-slate-950 dark:text-white">
                     {isHindi ? "सुरक्षित डिजिटल जीवन के लिए " : "Smart Technology & "}
@@ -198,37 +190,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   </h1>
                 </div>
 
-                {/* 3. Short Supporting Text */}
-                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl font-medium">
+                {/* 2. Short Supporting Text */}
+                <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl font-medium mt-2">
                   {isHindi 
                     ? "लेस क्रिएशन आपको डिजिटल दुनिया में सुरक्षित रहने, साइबर खतरों को पहचानने और तकनीक को विश्वास के साथ समझने के लिए व्यावहारिक उपकरण और स्पष्ट ज्ञान प्रदान करता है।" 
                     : "Less Creation builds intelligent tools and shares clear, practical knowledge to help you confidently navigate technology, recognize cyber threats, and stay safe in the digital world."}
                 </p>
-              </div>
-
-              {/* 4. Only Two Clear CTAs side-by-side */}
-              <div className="flex flex-wrap items-center gap-3.5 w-full">
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('product-ecosystem');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold text-sm shadow-[0_10px_25px_rgba(37,99,235,0.25)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap flex items-center gap-2"
-                >
-                  <Shield className="w-4 h-4 shrink-0" />
-                  <span>{isHindi ? "लेस लीगल जानें" : "Explore Less Legal"}</span>
-                </button>
-                
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('homepage-articles');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-3.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white font-bold text-sm border border-slate-200 dark:border-white/10 shadow-sm hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap flex items-center gap-2"
-                >
-                  <BookOpen className="w-4 h-4 shrink-0 text-blue-500 dark:text-blue-400" />
-                  <span>{isHindi ? "लेख पढ़ें" : "Read Articles"}</span>
-                </button>
               </div>
             </motion.div>
 
@@ -252,78 +219,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         />
       </section>
 
-      {/* 4-COLUMN PREMIUM FEATURE HIGHLIGHTS */}
-      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 bg-white/60 dark:bg-slate-900/40 backdrop-blur-md rounded-3xl p-5 border border-slate-200/50 dark:border-white/5 shadow-xs">
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-100/50 dark:hover:bg-white/5 transition-all duration-300">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-              <Shield className="w-5 h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-black uppercase text-blue-600 dark:text-blue-400 tracking-wider">
-                {isHindi ? "डिजिटल सुरक्षा" : "Digital Safety"}
-              </div>
-              <div className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
-                {isHindi ? "सजग रहें" : "Be Aware"}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-100/50 dark:hover:bg-white/5 transition-all duration-300">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-              <Scale className="w-5 h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-wider">
-                {isHindi ? "विधिक ज्ञान" : "Legal Knowledge"}
-              </div>
-              <div className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
-                {isHindi ? "अधिकार जानें" : "Know Your Rights"}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-100/50 dark:hover:bg-white/5 transition-all duration-300">
-            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
-              <Zap className="w-5 h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">
-                {isHindi ? "व्यावहारिक साधन" : "Practical Tools"}
-              </div>
-              <div className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
-                {isHindi ? "सरल समाधान" : "Simpler Solutions"}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-100/50 dark:hover:bg-white/5 transition-all duration-300">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-              <Users className="w-5 h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 tracking-wider">
-                {isHindi ? "सभी के लिए" : "For Everyone"}
-              </div>
-              <div className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
-                {isHindi ? "सुरक्षित कल" : "A Safer Tomorrow"}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Dynamic Promo Banner & Flash Notice Board (rendered directly without phantom spacing) */}
-      <DynamicPromoBanner onNavigate={onNavigate} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" />
-      <DynamicNoticeBoard onNavigate={onNavigate} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" />
-
       {/* 2. DIGITAL SAFETY & LEGAL ARTICLES SECTION (FRONT & CENTERED) */}
       <section id="homepage-articles" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28 w-full overflow-hidden">
         <ScrollReveal direction="up" className="w-full text-center max-w-3xl mx-auto space-y-2.5">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-900/30 border border-blue-500/20 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider">
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>{isHindi ? 'साइबर सुरक्षा व कानूनी विश्लेषण' : 'DIGITAL SAFETY & LEGAL INSIGHTS'}</span>
-          </span>
+
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {isHindi ? 'ज्ञान जो आपको सुरक्षित रखे' : 'Knowledge That Keeps You Safe'}
           </h2>
@@ -618,16 +517,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 3. PRODUCT ECOSYSTEM SECTION */}
       <section id="product-ecosystem" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
         <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-900/30 border border-blue-500/20 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
-            <LayoutGrid className="w-3.5 h-3.5" />
-            <span>{t.home.ecosystemBadge || "PRODUCT ECOSYSTEM"}</span>
-          </span>
+
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.home.ecosystemTitle || "Products Built for Real-World Use"}
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto font-medium">
-            {t.home.ecosystemSub || "Purposeful digital applications crafted for clarity, utility, and everyday efficiency."}
-          </p>
+
         </ScrollReveal>
 
         {/* Dynamic Apps Showcase (Cards Managed via Admin Control Center) */}
@@ -644,9 +538,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <Sparkles className="w-3.5 h-3.5 fill-slate-950 shrink-0" />
                 <span>{t.home.flagshipBadge || "FLAGSHIP PRODUCT"}</span>
               </div>
-              <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/40 px-3 py-1 rounded-full border border-emerald-500/20">
-                {isHindi ? "सक्रिय उत्पाद • एंड्रॉइड ऐप" : "Active Product • Android App"}
-              </span>
             </div>
 
             {/* Product Body */}
@@ -657,9 +548,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
                     {t.home.flagshipTitle || "Less Legal"}
                   </h3>
-                  <p className="text-xs font-bold text-blue-600 dark:text-blue-400">
-                    {isHindi ? "ऑल-इन-वन स्मार्ट कानूनी वर्कस्पेस" : "All-in-One Smart Legal Workspace"}
-                  </p>
                 </div>
               </div>
 
@@ -670,7 +558,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               {/* Feature Chips */}
               <div className="flex flex-wrap gap-2 pt-2">
                 {[
-                  isHindi ? "बेयर एक्ट्स लाइब्रेरी" : "Bare Acts Library",
                   isHindi ? "पीडीएफ टूल्स सूट" : "PDF Suite",
                   isHindi ? "केस डायरी व प्लानर" : "Case Diary",
                   isHindi ? "क्षेत्रफल कनवर्टर" : "Area Converter",
@@ -703,20 +590,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <span>{isHindi ? "APK डाउनलोड करें" : "Download APK"}</span>
                 </button>
               </div>
-
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                {isHindi ? "निःशुल्क संस्करण + लाइफटाइम पास" : "Free Edition + Lifetime Pass"}
-              </span>
             </div>
           </div>
 
           {/* Permanent Lifetime Pass Banner Card (Preserved for monetization/Razorpay!) */}
           <div className="animated-card relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-slate-50 to-[#F1F5F9] dark:from-[#090D1A] dark:via-[#02040A] dark:to-[#0B0F19] text-slate-900 dark:text-white border-2 border-slate-200/90 dark:border-[#E5BA55]/40 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(229,186,85,0.12)] p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 select-none">
             <div className="space-y-3 flex-1 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 dark:border-[#E5BA55]/50 text-amber-700 dark:text-[#E5BA55] text-xs font-black uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 fill-amber-500 dark:fill-[#E5BA55]" />
-                <span>{language === 'hi' ? 'सीमित समय - लाइफटाइम पास' : 'LIMITED TIME - LIFETIME ACCESS'}</span>
-              </div>
               
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white leading-tight">
                 {language === 'hi' 
@@ -757,130 +636,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 4. WHY LESS CREATION: BRAND PHILOSOPHY & 5 PRINCIPLES */}
-      <section id="why-less-creation" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-900/30 border border-blue-500/20 dark:border-blue-700/40 text-blue-600 dark:text-blue-400 text-xs font-extrabold uppercase tracking-wider">
-            <Lightbulb className="w-3.5 h-3.5" />
-            <span>{t.home.whyBadge || "BRAND PHILOSOPHY & PURPOSE"}</span>
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.home.whyTitle || "Why Less Creation"}
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto font-medium">
-            {t.home.whySubtitle || "Technology should make people more capable, more informed, and safer in the digital world."}
-          </p>
-
-          {/* Visual Brand Relationship Chain */}
-          <div className="pt-2">
-            <div className="inline-flex flex-wrap items-center justify-center gap-2 py-2 px-4 rounded-2xl bg-blue-500/5 dark:bg-blue-950/40 border border-blue-500/15 dark:border-blue-800/30 text-[10px] sm:text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
-              <span className="text-blue-600 dark:text-blue-400 font-black">DIGITAL SAFETY</span>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span>AWARENESS</span>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span>KNOWLEDGE</span>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span>TECHNOLOGY</span>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span>PRODUCTS</span>
-              <ArrowRight className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-              <span className="text-amber-600 dark:text-amber-400 font-black tracking-wider">
-                LESS LEGAL (FLAGSHIP PRODUCT)
-              </span>
-            </div>
-          </div>
-        </ScrollReveal>
-
-        {/* 5 Brand Principles Grid */}
-        <div className="space-y-5">
-          {/* First Row: 3 Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {t.home.whyPillars.slice(0, 3).map((pillar, idx) => {
-              const icons = [ShieldCheck, Compass, Cpu];
-              const PillarIcon = icons[idx];
-              return (
-                <div 
-                  key={idx}
-                  className="animated-card p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#0B132B]/90 border border-slate-200/90 dark:border-blue-900/40 backdrop-blur-xl shadow-xs hover:border-blue-500/40 transition-all duration-300 flex flex-col justify-between space-y-4"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                        <PillarIcon className="w-5 h-5" />
-                      </div>
-                      <span className="text-[10px] font-mono font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-500/20">
-                        {pillar.label || `0${idx + 1} · PRINCIPLE`}
-                      </span>
-                    </div>
-                    <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white leading-snug">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                      {pillar.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Second Row: 2 Cards Centered */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:max-w-4xl lg:mx-auto">
-            {t.home.whyPillars.slice(3, 5).map((pillar, idx) => {
-              const icons = [BookOpen, Sparkles];
-              const PillarIcon = icons[idx];
-              const cardIdx = idx + 3;
-              return (
-                <div 
-                  key={cardIdx}
-                  className="animated-card p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#0B132B]/90 border border-slate-200/90 dark:border-blue-900/40 backdrop-blur-xl shadow-xs hover:border-blue-500/40 transition-all duration-300 flex flex-col justify-between space-y-4"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                        <PillarIcon className="w-5 h-5" />
-                      </div>
-                      <span className="text-[10px] font-mono font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-950/60 px-2.5 py-1 rounded-full border border-blue-500/20">
-                        {pillar.label || `0${cardIdx + 1} · PRINCIPLE`}
-                      </span>
-                    </div>
-                    <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white leading-snug">
-                      {pillar.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                      {pillar.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Section Closing Editorial Banner */}
-        <div className="rounded-2xl p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white border border-blue-500/30 shadow-lg text-center space-y-3 max-w-4xl mx-auto mt-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-[10px] font-black uppercase tracking-widest">
-            <Sparkles className="w-3 h-3" />
-            <span>OUR COMMITMENT</span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-black text-white">
-            {t.home.whyClosingTitle || "Building for a Safer Digital Future."}
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
-            {t.home.whyClosingText || "From practical digital tools to educational content, Less Creation focuses on making technology easier to understand, more useful in everyday life, and safer to navigate."}
-          </p>
-        </div>
-      </section>
-
       {/* 5. MISSION & MANIFESTO SECTION */}
       <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 scroll-mt-28">
         
         {/* Section Header directly on natural background */}
         <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/25 dark:border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-extrabold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{t.home.missionBadge || "OUR MANIFESTO & MISSION"}</span>
-          </span>
+
           <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.home.missionTitle || "Technology should not feel complicated."}
           </h2>
@@ -907,16 +668,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   <div className="text-xs font-black tracking-wider uppercase text-amber-400">
                     LESS CREATION MANIFESTO
                   </div>
-                  <div className="text-[10px] sm:text-[11px] text-amber-300 font-extrabold uppercase tracking-wider">
-                    TECHNOLOGY • AWARENESS • DIGITAL SAFETY
-                  </div>
+
                 </div>
               </div>
 
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-amber-400/30 text-amber-300 text-[11px] font-bold">
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-                <span>{isHindi ? "मार्गदर्शक सिद्धांत" : "Guiding Philosophy"}</span>
-              </div>
+
             </div>
 
             {/* Core Inspiring Quote Body */}
@@ -931,8 +687,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Footer Attribution */}
             <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400 relative z-10">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                <span className="font-semibold text-slate-300">{isHindi ? "मानव-केंद्रित सॉफ़्टवेयर निर्माण" : "Human-Centered Engineering Principle"}</span>
               </div>
               <div className="font-mono text-[11px] text-amber-400/80">
                 #BuildWithIntegrity
@@ -978,51 +732,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       </section>
 
-      {/* 6. TRUST & SECURITY SECTION */}
-      <section id="trust-security" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-900/30 border border-emerald-500/20 dark:border-emerald-700/40 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>{t.home.trustBadge || "TRUST & TECHNICAL INTEGRITY"}</span>
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.home.trustTitle || "Built on Real Security & Privacy"}
-          </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
-            {t.home.trustSub || "We only claim technical capabilities that are genuinely implemented in our software."}
-          </p>
-        </ScrollReveal>
-
-        {/* 4 Trust Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {t.home.trustCards.map((card, idx) => {
-            const icons = [Cpu, Lock, KeyRound, Server];
-            const CardIcon = icons[idx % icons.length];
-            return (
-              <div 
-                key={idx}
-                className="animated-card p-5 sm:p-6 rounded-3xl bg-white/90 dark:bg-[#111827]/90 border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl shadow-sm dark:shadow-black/40 space-y-3 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
-              >
-                <div className="space-y-2.5">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-                    <CardIcon className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                    {card.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {card.desc}
-                  </p>
-                </div>
-                <div className="pt-2 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{isHindi ? "सत्यापित सुरक्षा" : "Verified Standard"}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {/* Trust Section Removed to streamline layout */}
 
       {/* 7. FOUNDER PREVIEW SECTION */}
       <section id="founder-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-28">
@@ -1062,11 +772,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       
                       {/* Compact Bottom Identity Banner Positioned Lower */}
                       <div className="absolute bottom-2 inset-x-2.5 p-2 rounded-xl bg-slate-950/80 backdrop-blur-md border border-amber-500/30 text-center shadow-lg">
-                        <div className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-[8px] uppercase tracking-wider shadow-2xs">
-                          <Scale className="w-2.5 h-2.5 fill-slate-950 shrink-0" />
-                          <span>FOUNDER & ADVOCATE</span>
-                        </div>
-                        <h4 className="text-xs font-black text-white tracking-wide uppercase mt-0.5 leading-none">
+                        <h4 className="text-xs font-black text-white tracking-wide uppercase leading-none">
                           Anurag Gurauli
                         </h4>
                         <p className="text-[9px] text-amber-200/90 font-bold leading-none mt-0.5">
@@ -1082,11 +788,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div className="lg:col-span-7 flex flex-col justify-center space-y-5 text-center lg:text-left">
                 
                 <div className="space-y-3">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider mx-auto lg:mx-0 border border-blue-500/20 dark:border-blue-500/30 shadow-2xs">
-                    <Sparkles className="w-3.5 h-3.5 fill-current" />
-                    <span>{t.home.founderPreviewBadge || "MEET THE FOUNDER"}</span>
-                  </div>
-
                   <h3 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
                     {t.home.founderPreviewTitle || "Created by an Advocate for Real-World Utility"}
                   </h3>
@@ -1096,21 +797,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   </p>
                 </div>
 
-                {/* Key Pillars Badges */}
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-slate-200">
-                    <Scale className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-                    <span>{isHindi ? "इलाहाबाद उच्च न्यायालय अधिवक्ता" : "Allahabad High Court Advocate"}</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-slate-200">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                    <span>{isHindi ? "100% ऑन-डिवाइस डेटा सुरक्षा" : "On-Device Privacy First"}</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-slate-200">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                    <span>{isHindi ? "स्वतंत्र सॉफ्टवेयर आर्किटेक्ट" : "Independent Software Studio"}</span>
-                  </span>
-                </div>
+
 
                 {/* High Quality Quote Callout */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-indigo-50/40 to-transparent dark:from-[#131C31] dark:via-[#11192C] dark:to-transparent border border-blue-200/60 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-200 italic font-medium text-left relative shadow-2xs">
@@ -1155,15 +842,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 8. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
       <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 scroll-mt-28">
         <ScrollReveal direction="up" className="text-center space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-            {t.home.faqBadge}
-          </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {t.home.faqTitle}
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300">
-            {t.home.faqSub}
-          </p>
+
         </ScrollReveal>
 
         <div className="space-y-3">

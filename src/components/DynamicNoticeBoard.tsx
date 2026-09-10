@@ -69,23 +69,23 @@ export const DynamicNoticeBoard: React.FC<DynamicNoticeBoardProps> = ({
   };
 
   return (
-    <div className={`space-y-3 ${className}`}>
+    <div className={`space-y-2.5 ${className}`}>
       {visibleNotices.map((notice) => (
         <div
           key={notice.id}
-          className={`relative rounded-2xl p-4 border backdrop-blur-md flex items-start justify-between gap-3 shadow-xs transition-all ${getNoticeBorder(notice.type)}`}
+          className={`relative rounded-2xl p-3.5 sm:p-4 border backdrop-blur-md flex items-start justify-between gap-3 shadow-xs transition-all ${getNoticeBorder(notice.type)}`}
         >
-          <div className="flex items-start gap-3 min-w-0">
-            <div className="p-2 rounded-xl bg-white dark:bg-white/10 shrink-0 shadow-2xs">
+          <div className="flex items-start gap-3 min-w-0 flex-1">
+            <div className="p-2 rounded-xl bg-white dark:bg-white/10 shrink-0 shadow-2xs mt-0.5">
               {getNoticeIcon(notice.type)}
             </div>
 
-            <div className="space-y-1 min-w-0">
+            <div className="space-y-1 min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/80 dark:bg-white/10 text-slate-800 dark:text-slate-200 border border-black/5 dark:border-white/10">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/80 dark:bg-white/10 text-slate-800 dark:text-slate-200 border border-black/5 dark:border-white/10 whitespace-nowrap">
                   {notice.tag}
                 </span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">
                   {notice.date}
                 </span>
               </div>
@@ -94,7 +94,7 @@ export const DynamicNoticeBoard: React.FC<DynamicNoticeBoardProps> = ({
                 {isHindi ? notice.titleHi : notice.titleEn}
               </h4>
 
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
                 {isHindi ? notice.contentHi : notice.contentEn}
               </p>
 
@@ -102,10 +102,10 @@ export const DynamicNoticeBoard: React.FC<DynamicNoticeBoardProps> = ({
                 <div className="pt-1">
                   <button
                     onClick={() => onNavigate(notice.link as PageRoute)}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer whitespace-nowrap"
                   >
-                    <span>{notice.linkText || (isHindi ? "आगे पढ़ें" : "Learn More")}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span className="whitespace-nowrap">{notice.linkText || (isHindi ? "आगे पढ़ें" : "Learn More")}</span>
+                    <ArrowRight className="w-3.5 h-3.5 shrink-0" />
                   </button>
                 </div>
               )}

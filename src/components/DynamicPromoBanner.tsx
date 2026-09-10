@@ -55,7 +55,7 @@ export const DynamicPromoBanner: React.FC<DynamicPromoBannerProps> = ({
         transition={{ duration: 0.3 }}
         className={`w-full ${className}`}
       >
-        <div className="relative overflow-hidden rounded-[22px] sm:rounded-[26px] bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 text-white shadow-xl border border-blue-500/30 p-4 sm:p-7">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-950 text-white shadow-lg border border-blue-500/30 p-4 sm:p-6">
           {/* Subtle Ambient Light Effect */}
           <div className="absolute top-0 right-0 -mt-12 -mr-12 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 -mb-12 -ml-12 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
@@ -69,10 +69,10 @@ export const DynamicPromoBanner: React.FC<DynamicPromoBannerProps> = ({
             <X className="w-4 h-4" />
           </button>
 
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-5 sm:gap-8">
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-4 sm:gap-6">
             {/* Media side (Image or Video) */}
             {(convertedImg || convertedVideo) && (
-              <div className="w-full md:w-5/12 max-w-sm rounded-xl overflow-hidden bg-black/40 border border-white/15 shrink-0 shadow-lg">
+              <div className="w-full md:w-5/12 max-w-sm rounded-xl overflow-hidden bg-black/40 border border-white/15 shrink-0 shadow-md">
                 {convertedVideo ? (
                   <div className="relative aspect-video w-full">
                     <iframe
@@ -88,9 +88,8 @@ export const DynamicPromoBanner: React.FC<DynamicPromoBannerProps> = ({
                     src={convertedImg}
                     alt={config.bannerTitle || "Promotional Banner"}
                     referrerPolicy="no-referrer"
-                    className="w-full h-44 sm:h-52 object-cover object-center transform hover:scale-102 transition-transform duration-500"
+                    className="w-full h-40 sm:h-48 object-cover object-center transform hover:scale-102 transition-transform duration-500"
                     onError={(e) => {
-                      // Gracefully hide broken image
                       (e.target as HTMLElement).style.display = 'none';
                     }}
                   />
@@ -99,15 +98,15 @@ export const DynamicPromoBanner: React.FC<DynamicPromoBannerProps> = ({
             )}
 
             {/* Content side */}
-            <div className="flex-1 text-center md:text-left space-y-2.5 sm:space-y-3 min-w-0">
+            <div className="flex-1 text-center md:text-left space-y-2 sm:space-y-2.5 min-w-0">
               {config.bannerTag && (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/25 border border-blue-400/40 text-blue-300 text-[11px] font-black uppercase tracking-wider">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/25 border border-blue-400/40 text-blue-300 text-[10px] sm:text-[11px] font-black uppercase tracking-wider whitespace-nowrap">
                   <Sparkles className="w-3 h-3 text-amber-400 fill-amber-400 shrink-0" />
                   <span className="whitespace-nowrap">{config.bannerTag}</span>
                 </div>
               )}
 
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight">
+              <h3 className="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight">
                 {config.bannerTitle || (isHindi ? "विशेष अपडेट एवं घोषणा" : "Special Announcement")}
               </h3>
 
@@ -117,13 +116,13 @@ export const DynamicPromoBanner: React.FC<DynamicPromoBannerProps> = ({
                 </p>
               )}
 
-              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3">
+              <div className="pt-1.5 flex flex-wrap items-center justify-center md:justify-start gap-3">
                 <button
                   onClick={handleActionClick}
-                  className="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-md transition-all hover:scale-102"
+                  className="px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white text-xs sm:text-sm font-bold flex items-center gap-2 cursor-pointer shadow-md transition-all hover:scale-102 whitespace-nowrap"
                 >
-                  <span>{isHindi ? "विस्तार से देखें" : "Explore Now"}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span className="whitespace-nowrap">{isHindi ? "विस्तार से देखें" : "Explore Now"}</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </button>
               </div>
             </div>

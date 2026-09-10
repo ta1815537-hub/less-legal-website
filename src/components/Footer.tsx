@@ -87,38 +87,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   ? "लेस क्रिएशन एक टेक्नोलॉजी और डिजिटल जागरूकता ब्रांड है। हम लोगों को तकनीक समझने, डिजिटल जोखिमों को पहचानने और आत्मविश्वास के साथ डिजिटल दुनिया में नेविगेट करने में मदद करने के लिए व्यावहारिक डिजिटल उत्पाद और स्पष्ट, सुलभ ज्ञान साझा करते हैं।" 
                   : "Less Creation is a technology and digital awareness brand. We build practical digital products and share clear, accessible knowledge to help people understand technology, recognize digital risks and navigate the digital world with greater confidence."}
               </p>
-
-              {/* 4 compact badges */}
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
-                  <Layers className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                  <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 leading-tight">
-                    Digital Safety
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 leading-tight">
-                    Privacy Secure
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
-                  <Users className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                  <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 leading-tight">
-                    User First Always
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-white/5 border border-slate-200/70 dark:border-white/10 shadow-2xs">
-                  <Crown className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                  <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 leading-tight">
-                    Made for India
-                  </span>
-                </div>
-              </div>
             </div>
+
 
             {/* Links Columns: 2-Grid on Mobile & Tablet, 4-Grid on Desktop (Span 8 on Desktop) */}
             <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 items-start">
@@ -400,28 +370,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </button>
             </div>
 
-            {/* Trusted Utilities Tab / Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/15 dark:border-blue-400/15 shadow-2xs">
-              <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-              <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
-                {isHindi ? "भारतीय नागरिकों के लिए सुरक्षित उपयोगिताएँ" : "Trusted Utilities For Every Indian 🇮🇳"}
-              </span>
-            </div>
+
 
           </div>
 
-          {/* Very Bottom: Copyright & Flagship Product Statement (Sabse Niche) */}
-          <div className="pt-4 border-t border-slate-200/50 dark:border-white/5 text-center space-y-1.5">
+          {/* Very Bottom: Copyright Statement (Sabse Niche) */}
+          <div className="pt-4 border-t border-slate-200/50 dark:border-white/5 text-center">
             <p 
               onClick={handleSecretLockClick}
               className="text-xs font-bold select-none cursor-default text-slate-700 dark:text-slate-300 tracking-wide"
             >
               © 2026 Less Creation. All Rights Reserved.
-            </p>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-              {isHindi 
-                ? "लेस लीगल (Less Legal) लेस क्रिएशन का प्रमुख डिजिटल उत्पाद है। संस्थापक एवं निर्माता: अनुराग गुरौली।" 
-                : "Less Legal is the flagship digital product of Less Creation. Founded & created by Anurag Gurauli."}
             </p>
           </div>
 
