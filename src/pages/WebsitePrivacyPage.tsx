@@ -89,7 +89,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
       </div>
 
       {/* Summary Highlight Box */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-blue-500/20 dark:border-blue-500/30 shadow-sm space-y-2 relative z-10">
+      <div className="py-2 space-y-2 relative z-10">
         <div className="font-black text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-2">
           <Lock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>{isHindi ? "संक्षिप्त सार (Privacy Summary)" : "Privacy Practices Summary"}</span>
@@ -171,8 +171,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
         <div className="lg:col-span-3 space-y-6 text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
 
           {/* Section 1 */}
-          <section id="sec-1" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-1" className="py-2 space-y-2.5 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">1</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "1. परिचय एवं दायरा" : "1. Introduction & Scope"}
@@ -183,7 +183,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
                 ? "यह गोपनीयता नीति केवल हमारी आधिकारिक वेबसाइट (lesscreation.com) पर आने वाले उपयोगकर्ताओं, आगंतुकों और पंजीकृत उपयोगकर्ताओं के डेटा प्रसंस्करण प्रथाओं को नियंत्रित करती है।"
                 : "This Privacy Policy governs the data collection and processing practices strictly applicable to visitors and registered users browsing our official website at lesscreation.com."}
             </p>
-            <p className="bg-slate-50 dark:bg-slate-900/40 p-3.5 rounded-xl border border-slate-200/80 dark:border-white/5 font-medium">
+            <p className="py-1 font-medium text-slate-600 dark:text-slate-400">
               {isHindi
                 ? "नोट: हमारे एंड्रॉइड मोबाइल ऐप 'Less Legal' के लिए समर्पित ऐप प्राइवेसी पॉलिसी लागू होती है, जिसे आप ऐप सेटिंग्स या हमारे ऐप गोपनीयता पृष्ठ पर देख सकते हैं।"
                 : "Note: For disclosures regarding our flagship Android mobile app 'Less Legal', please review our dedicated App Privacy Policy."}
@@ -191,8 +191,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
           {/* Section 2 */}
-          <section id="sec-2" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-2" className="py-2 space-y-3 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">2</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "2. हम जो जानकारी एकत्र करते हैं" : "2. Information We Process"}
@@ -205,7 +205,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
             </p>
 
             <ul className="space-y-2">
-              <li className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1">
+              <li className="py-1.5 space-y-1">
                 <strong className="text-slate-900 dark:text-white font-bold flex items-center gap-1.5">
                   <UserCheck className="w-4 h-4 text-blue-600" />
                   <span>{isHindi ? "खाता जानकारी:" : "Authenticated Profile Data:"}</span>
@@ -217,7 +217,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
                 </p>
               </li>
 
-              <li className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1">
+              <li className="py-1.5 space-y-1">
                 <strong className="text-slate-900 dark:text-white font-bold flex items-center gap-1.5">
                   <Mail className="w-4 h-4 text-emerald-600" />
                   <span>{isHindi ? "संपर्क व सहायता फ़ॉर्म:" : "Contact & Support Form Entries:"}</span>
@@ -229,7 +229,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
                 </p>
               </li>
 
-              <li className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1">
+              <li className="py-1.5 space-y-1">
                 <strong className="text-slate-900 dark:text-white font-bold flex items-center gap-1.5">
                   <CreditCard className="w-4 h-4 text-amber-600" />
                   <span>{isHindi ? "भुगतान लेनदेन विवरण:" : "Payment Transaction Records:"}</span>
@@ -244,8 +244,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
           {/* Section 3 */}
-          <section id="sec-3" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-3" className="py-2 space-y-2.5 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">3</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "3. उपयोगकर्ता प्रमाणीकरण" : "3. User Authentication & Sign-In"}
@@ -259,8 +259,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
           {/* Section 4 */}
-          <section id="sec-4" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-4" className="py-2 space-y-2.5 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">4</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "4. सुरक्षित भुगतान प्रसंस्करण" : "4. Secure Payment Processing"}
@@ -274,8 +274,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
           {/* Section 5 */}
-          <section id="sec-5" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-5" className="py-2 space-y-2.5 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">5</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "5. लोकल स्टोरेज एवं प्राथमिकताएँ" : "5. Local Browser Storage & Preferences"}
@@ -289,8 +289,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
           {/* Section 6 */}
-          <section id="sec-6" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-6" className="py-2 space-y-2.5 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">6</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "6. सामग्री व व्यू मीट्रिक्स" : "6. Content & Anonymous View Metrics"}
@@ -304,8 +304,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
           {/* Section 7 */}
-          <section id="sec-7" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-7" className="py-2 space-y-3 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">7</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "7. डेटा विलोपन व खाता सुरक्षा" : "7. Data Deletion & Account Safety"}
@@ -328,8 +328,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
           {/* Section 8 */}
-          <section id="sec-8" className="p-5 sm:p-6 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-3 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-white/10 pb-2">
+          <section id="sec-8" className="py-2 space-y-3 scroll-mt-24">
+            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
               <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">8</span>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                 {isHindi ? "8. उपयोगकर्ता अधिकार व संपर्क" : "8. Your Rights & Support Contact"}
@@ -341,7 +341,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
                 : "If you have questions regarding this Privacy Policy or wish to submit a support request, please reach out to our official support channel:"}
             </p>
 
-            <div className="p-4 rounded-xl bg-blue-50/80 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800/40 space-y-1">
+            <div className="py-2 space-y-1">
               <span className="text-xs font-bold text-slate-900 dark:text-white block">
                 {isHindi ? "आधिकारिक समर्थन ईमेल:" : "Official Support Contact:"}
               </span>

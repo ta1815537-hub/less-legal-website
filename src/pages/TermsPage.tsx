@@ -46,7 +46,7 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Prominent Legal Advice Disclaimer in Terms */}
-      <div className="rounded-[28px] p-6 sm:p-8 bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 shadow-lg backdrop-blur-xl">
+      <div className="py-2 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
           <span>{t.termsPage.disclaimerBannerTitle}</span>
@@ -60,8 +60,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       <div className="space-y-6 text-sm leading-relaxed relative z-10 text-slate-600 dark:text-slate-300">
         
         {/* 1 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec1Title}
           </h2>
           <p className="font-medium">
@@ -70,8 +70,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 2 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec2Title}
           </h2>
           <p className="font-medium">
@@ -85,8 +85,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 3 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec3Title}
           </h2>
           <p className="font-medium">
@@ -100,8 +100,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 4 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec4Title}
           </h2>
           <p className="font-medium">
@@ -110,8 +110,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 5 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec5Title}
           </h2>
           <p className="font-medium">
@@ -120,8 +120,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 6 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec6Title}
           </h2>
           <p className="font-medium">
@@ -135,8 +135,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 7 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec7Title}
           </h2>
           <p className="font-medium">
@@ -145,8 +145,8 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 8 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.termsPage.sec8Title}
           </h2>
           <p className="font-medium">

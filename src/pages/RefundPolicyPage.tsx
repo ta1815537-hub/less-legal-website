@@ -17,20 +17,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
       
       {/* Top Breadcrumb & Title */}
       <div className="space-y-4 relative z-10 text-center sm:text-left">
-        <button
-          onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
-        >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-500" />
-          <span>{t.common.backToHome}</span>
-        </button>
-
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>{t.refundPolicyPage.badge}</span>
-          </div>
-
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.refundPolicyPage.title}
           </h1>
@@ -46,7 +33,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
       </div>
 
       {/* Overview Notice */}
-      <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 backdrop-blur-xl">
+      <div className="py-2 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 font-medium">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>{t.refundPolicyPage.summaryTitle}</span>
@@ -57,18 +44,18 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
       </div>
 
       {/* Refund Guidelines by Plan */}
-      <div className="space-y-6 relative z-10 text-slate-600 dark:text-slate-300">
+      <div className="space-y-4 relative z-10 text-slate-600 dark:text-slate-300">
         <h2 className="text-xl font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
           {t.refundPolicyPage.sec1Title}
         </h2>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 gap-4">
           
           {/* Plan 2 */}
-          <div className="p-6 rounded-[28px] bg-amber-500/5 dark:bg-amber-950/15 border border-amber-500/20 dark:border-amber-500/30 shadow-xl space-y-3 backdrop-blur-xl">
+          <div className="py-2 space-y-2">
             <div className="flex items-center justify-between">
               <h3 className="font-black text-slate-900 dark:text-white text-base">{t.refundPolicyPage.plan1yTitle}</h3>
-              <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/20 dark:border-amber-500/30">
+              <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 px-3 py-0.5 rounded-full border border-amber-500/20 dark:border-amber-500/30">
                 {t.refundPolicyPage.plan1yDuration}
               </span>
             </div>
@@ -90,7 +77,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
         </p>
 
         <div className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-          <div className="flex items-start gap-3 p-4 sm:p-5 rounded-2xl bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-sm backdrop-blur-xl">
+          <div className="flex items-start gap-3 py-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
             <div>
               <strong className="text-slate-900 dark:text-white font-bold block mb-1">{t.refundPolicyPage.cond1Title}</strong>
@@ -98,7 +85,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
             </div>
           </div>
 
-          <div className="flex items-start gap-3 p-4 sm:p-5 rounded-2xl bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-sm backdrop-blur-xl">
+          <div className="flex items-start gap-3 py-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
             <div>
               <strong className="text-slate-900 dark:text-white font-bold block mb-1">{t.refundPolicyPage.cond2Title}</strong>
@@ -113,7 +100,7 @@ export const RefundPolicyPage: React.FC<RefundPolicyPageProps> = ({ onNavigate }
         <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
           {t.refundPolicyPage.sec3Title}
         </h2>
-        <div className="p-6 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 backdrop-blur-xl font-medium">
+        <div className="py-2 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium">
           <p>
             {t.refundPolicyPage.sec3P1}
           </p>

@@ -189,13 +189,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {isHindi ? "" : " for a Safer Tomorrow."}
                   </h1>
                 </div>
-
-                {/* 2. Short Supporting Text */}
-                <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl font-medium mt-2">
-                  {isHindi 
-                    ? "लेस क्रिएशन आपको डिजिटल दुनिया में सुरक्षित रहने, साइबर खतरों को पहचानने और तकनीक को विश्वास के साथ समझने के लिए व्यावहारिक उपकरण और स्पष्ट ज्ञान प्रदान करता है।" 
-                    : "Less Creation builds intelligent tools and shares clear, practical knowledge to help you confidently navigate technology, recognize cyber threats, and stay safe in the digital world."}
-                </p>
               </div>
             </motion.div>
 
@@ -220,17 +213,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 2. DIGITAL SAFETY & LEGAL ARTICLES SECTION (FRONT & CENTERED) */}
-      <section id="homepage-articles" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28 w-full overflow-hidden">
-        <ScrollReveal direction="up" className="w-full text-center max-w-3xl mx-auto space-y-2.5">
+      <section id="homepage-articles" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-6 scroll-mt-28 w-full overflow-hidden">
+        <ScrollReveal direction="up" className="w-full text-center max-w-3xl mx-auto space-y-2">
 
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {isHindi ? 'ज्ञान जो आपको सुरक्षित रखे' : 'Knowledge That Keeps You Safe'}
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto font-medium">
-            {isHindi 
-              ? 'तेजी से बढ़ते एआई खतरों, ऑनलाइन फ्रॉड, डिजिटल अरेस्ट और नागरिक कानूनी अधिकारों पर सरल व व्यावहारिक संपादकीय लेख।' 
-              : 'Practical, verified editorial guides on cyber frauds, online security, digital arrest scams, and citizen legal protections.'}
-          </p>
         </ScrollReveal>
 
         {/* Category Filter Pills & Search Bar (Single Row, No Awkward Wrap) */}
@@ -637,17 +625,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 5. MISSION & MANIFESTO SECTION */}
-      <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 scroll-mt-28">
+      <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
         
         {/* Section Header directly on natural background */}
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
+        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2">
 
           <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.home.missionTitle || "Technology should not feel complicated."}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto">
-            {t.home.missionSubtitle || "At Less Creation, our focus is on making useful digital technology easier to understand, straightforward to navigate, and accessible to everyone."}
-          </p>
         </ScrollReveal>
 
         {/* Real Mission Message Card (Obsidian Gold & Warm Amber Luxury Aesthetic) */}

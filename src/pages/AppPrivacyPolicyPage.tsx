@@ -71,20 +71,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       
       {/* Top Breadcrumb & Header */}
       <div className="space-y-4 relative z-10 text-center sm:text-left">
-        <button
-          onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
-        >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-600 dark:text-blue-400" />
-          <span>{isHindi ? "होम पर वापस जाएं" : "Back to Home"}</span>
-        </button>
-
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
-            <Smartphone className="w-3.5 h-3.5" />
-            <span>{isHindi ? "Less Legal — एंड्रॉइड ऐप गोपनीयता नीति" : "Less Legal — Android Application Privacy Policy"}</span>
-          </div>
-
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {isHindi ? "Less Legal — गोपनीयता नीति" : "Less Legal — Privacy Policy"}
           </h1>
@@ -98,7 +85,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       </div>
 
       {/* Summary Highlight Box */}
-      <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10 backdrop-blur-xl">
+      <div className="py-2 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
           <Lock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>{isHindi ? "ऐप गोपनीयता के मुख्य सिद्धांत" : "Core App Privacy Principles"}</span>
@@ -119,31 +106,31 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
           </h2>
         </div>
 
-        <div className="overflow-x-auto rounded-[28px] border border-white/80 dark:border-white/10 bg-white/95 dark:bg-[#121622] backdrop-blur-xl shadow-xl">
+        <div className="overflow-x-auto border-t border-b border-slate-200/80 dark:border-white/10 py-2">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 dark:bg-white/5 text-slate-900 dark:text-white font-bold border-b border-slate-100 dark:border-white/10">
-                <th className="p-4 min-w-[150px] font-black">{isHindi ? "डेटा श्रेणी" : "Data Category"}</th>
-                <th className="p-4 min-w-[100px] font-black">{isHindi ? "संग्रहीत?" : "Collected?"}</th>
-                <th className="p-4 min-w-[200px] font-black">{isHindi ? "उद्देश्य" : "Purpose"}</th>
-                <th className="p-4 min-w-[180px] font-black">{isHindi ? "कहाँ प्रोसेस / संग्रहीत" : "Where Processed / Stored"}</th>
-                <th className="p-4 min-w-[100px] font-black">{isHindi ? "साझा?" : "Shared?"}</th>
-                <th className="p-4 min-w-[160px] font-black">{isHindi ? "अवधि" : "Retention Period"}</th>
+              <tr className="bg-slate-100/80 dark:bg-white/5 text-slate-900 dark:text-white font-bold border-b border-slate-200 dark:border-white/10">
+                <th className="p-3 min-w-[150px] font-black">{isHindi ? "डेटा श्रेणी" : "Data Category"}</th>
+                <th className="p-3 min-w-[100px] font-black">{isHindi ? "संग्रहीत?" : "Collected?"}</th>
+                <th className="p-3 min-w-[200px] font-black">{isHindi ? "उद्देश्य" : "Purpose"}</th>
+                <th className="p-3 min-w-[180px] font-black">{isHindi ? "कहाँ प्रोसेस / संग्रहीत" : "Where Processed / Stored"}</th>
+                <th className="p-3 min-w-[100px] font-black">{isHindi ? "साझा?" : "Shared?"}</th>
+                <th className="p-3 min-w-[160px] font-black">{isHindi ? "अवधि" : "Retention Period"}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-white/10 text-slate-600 dark:text-slate-300 font-medium">
+            <tbody className="divide-y divide-slate-200/60 dark:divide-white/10 text-slate-600 dark:text-slate-300 font-medium">
               {tableData.map((row, idx) => (
                 <tr key={idx} className="hover:bg-slate-50/60 dark:hover:bg-white/[0.02] transition-colors">
-                  <td className="p-4 font-bold text-slate-900 dark:text-white">{row.category}</td>
-                  <td className="p-4">
+                  <td className="p-3 font-bold text-slate-900 dark:text-white">{row.category}</td>
+                  <td className="p-3">
                     <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${row.collected.includes('Yes') || row.collected.includes('हाँ') ? 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300'}`}>
                       {row.collected}
                     </span>
                   </td>
-                  <td className="p-4">{row.purpose}</td>
-                  <td className="p-4">{row.storage}</td>
-                  <td className="p-4 font-bold text-slate-900 dark:text-white">{row.shared}</td>
-                  <td className="p-4 text-slate-500 dark:text-slate-400">{row.retention}</td>
+                  <td className="p-3">{row.purpose}</td>
+                  <td className="p-3">{row.storage}</td>
+                  <td className="p-3 font-bold text-slate-900 dark:text-white">{row.shared}</td>
+                  <td className="p-3 text-slate-500 dark:text-slate-400">{row.retention}</td>
                 </tr>
               ))}
             </tbody>
@@ -155,8 +142,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
       <div className="space-y-6 text-sm leading-relaxed relative z-10 text-slate-600 dark:text-slate-300">
         
         {/* Section 1: Google Sign-In */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "1. Google साइन-इन एवं खाता जानकारी" : "1. Google Sign-In & Authentication Disclosures"}
           </h2>
           <p className="font-medium">
@@ -173,8 +160,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </section>
 
         {/* Section 2: Server Infrastructure */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "2. सुरक्षित क्लाउड सर्वर इंफ्रास्ट्रक्चर सेवाएँ" : "2. Cloud Server Infrastructure & Services"}
           </h2>
           <p className="font-medium">
@@ -183,15 +170,15 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
               : "Less Legal integrates secure cloud server infrastructure services as detailed below:"}
           </p>
           <ul className="space-y-3">
-            <li className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
+            <li className="flex items-start gap-3 py-1.5">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "सुरक्षित प्रमाणीकरण सर्वर (Authentication Server):" : "Secure Authentication Server:"}</strong> <span className="font-medium">{isHindi ? "सुरक्षित साइन-इन और एन्क्रिप्टेड टोकन प्रबंधन के लिए।" : "Provides secure sign-in and encrypted session token management."}</span></div>
             </li>
-            <li className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
+            <li className="flex items-start gap-3 py-1.5">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "क्लाउड डेटाबेस सर्वर (Cloud Database Server):" : "Cloud Database Server:"}</strong> <span className="font-medium">{isHindi ? "उपयोगकर्ता प्रोफ़ाइल और क्लाउड-सिंक किए गए केस नोट्स (सक्षम होने पर) को संग्रहीत करने के लिए।" : "Stores account profile metadata and user-synced case diary notes if cloud sync is enabled."}</span></div>
             </li>
-            <li className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
+            <li className="flex items-start gap-3 py-1.5">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "डायग्नोस्टिक एवं स्थिरता सर्वर (Diagnostic & Crash Reporting Server):" : "Diagnostic & Crash Reporting Server:"}</strong> <span className="font-medium">{isHindi ? "अनाम क्रैश लॉग्स एकत्र करके ऐप की स्थिरता सुनिश्चित करने के लिए।" : "Captures anonymous diagnostic stack traces to identify and fix application crashes."}</span></div>
             </li>
@@ -199,8 +186,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </section>
 
         {/* Section 3: AdMob Disclosures */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "3. विज्ञापन एवं Google AdMob प्रकटीकरण" : "3. Advertising & Google AdMob Disclosures"}
           </h2>
           <p className="font-medium">
@@ -208,7 +195,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
               ? "Less Legal का निःशुल्क संस्करण Google AdMob द्वारा दिए गए विज्ञापन प्रदर्शित करता है। AdMob प्रासंगिक विज्ञापन दिखाने और विज्ञापन आवृत्ति को सीमित करने के लिए गूगल विज्ञापन पहचानकर्ताओं (AAID) और डिवाइस मीट्रिक्स को प्रोसेस कर सकता है।"
               : "The free edition of Less Legal displays third-party advertisements served by Google AdMob. Google AdMob may process device identifiers (including the Google Advertising ID / AAID) to serve ads, prevent fraud, and report ad performance in compliance with Google AdMob privacy standards."}
           </p>
-          <div className="bg-amber-50/80 dark:bg-amber-950/20 p-5 rounded-2xl border border-amber-200/80 dark:border-amber-800/40 space-y-1">
+          <div className="py-2 space-y-1">
             <strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "विज्ञापन-मुक्त प्रीमियम पास:" : "Ad-Free Premium Pass Upgrade:"}</strong>
             <p className="text-xs sm:text-sm font-medium leading-relaxed">
               {isHindi
@@ -219,8 +206,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </section>
 
         {/* Section 4: Google Drive Backup */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "4. गूगल ड्राइव बैकअप एवं अनुमतियाँ" : "4. Google Drive Backup & Scoped Permissions"}
           </h2>
           <p className="font-medium">
@@ -229,11 +216,11 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
               : "Less Legal provides an optional, user-initiated Google Drive backup feature. Document backups occur strictly when initiated by the user."}
           </p>
           <div className="space-y-3 text-xs sm:text-sm">
-            <div className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
+            <div className="flex items-start gap-3 py-1.5">
               <HardDrive className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
               <div><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "सीमित ऐप फ़ोल्डर अनुमति (Scoped Scope):" : "Scoped App Folder Permission:"}</strong> <span className="font-medium">{isHindi ? "ऐप केवल अपने निजी ऐप डेटा फ़ोल्डर (drive.appdata) तक पहुँच का अनुरोध करता है। Less Legal आपकी ड्राइव में अन्य निजी फ़ाइलों को कभी भी नहीं देख या बदल सकता है।" : "The app requests scoped access exclusively to its designated hidden app folder (`drive.appdata`). Less Legal CANNOT view, read, or modify unrelated personal files in your Google Drive."}</span></div>
             </div>
-            <div className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10">
+            <div className="flex items-start gap-3 py-1.5">
               <HelpCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
               <div><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? "बैकअप रोकना या अनुमति रद्द करना:" : "Stopping & Revoking Backup Access:"}</strong> <span className="font-medium">{isHindi ? "आप ऐप सेटिंग में बैकअप बंद कर सकते हैं या myaccount.google.com/permissions पर जाकर गूगल खाता सुरक्षा से अनुमति रद्द कर सकते हैं।" : "You can disable backup in app settings or revoke access anytime via Google Account Security at myaccount.google.com/permissions."}</span></div>
             </div>
@@ -241,8 +228,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </section>
 
         {/* Section 5: Local Processing */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "5. स्थानीय दस्तावेज़ प्रसंस्करण" : "5. On-Device Local Document Processing"}
           </h2>
           <p className="font-medium">
@@ -253,8 +240,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </section>
 
         {/* Section 6: Payment Gateway */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "6. भुगतान गेटवे एवं वित्तीय सुरक्षा" : "6. Payment Gateway & Financial Security"}
           </h2>
           <p className="font-medium">
@@ -265,8 +252,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </section>
 
         {/* Section 7: Account Deletion */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "7. खाता विलोपन एवं अधिकार" : "7. Account & Data Deletion Disclosures"}
           </h2>
           <p className="font-medium">
@@ -277,8 +264,8 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </section>
 
         {/* Section 8: Developer Info */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-3 py-2">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {isHindi ? "8. डेवलपर एवं गोपनीयता संपर्क" : "8. Developer Identity & Privacy Contact"}
           </h2>
           <p className="font-medium">

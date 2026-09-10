@@ -47,94 +47,68 @@ export const ToolCard: React.FC<ToolCardProps> = ({
     }
   };
 
-  const getPrivacyBadge = () => {
-    const isLocal = tool.privacyMode !== 'server-side';
-    if (isLocal) {
-      return (
-        <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span>{isHindi ? '100% ऑन-डिवाइस' : 'On-Device'}</span>
-        </span>
-      );
-    }
-    return (
-      <span className="flex items-center gap-1 text-[10px] font-semibold text-blue-600 dark:text-blue-400">
-        <Zap className="w-3.5 h-3.5" />
-        <span>{isHindi ? 'क्लाउड' : 'Secure Cloud'}</span>
-      </span>
-    );
-  };
+  const toolName = isHindi && tool.nameHi ? tool.nameHi : tool.name;
+  const toolCatLabel = isHindi && tool.categoryLabelHi ? tool.categoryLabelHi : tool.categoryLabel;
 
   return (
     <div
       onClick={() => onSelect(tool)}
-      className="group relative flex flex-col justify-between p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 hover:border-blue-500/50 dark:hover:border-blue-500/50 shadow-xs hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden transform hover:-translate-y-0.5"
+      className="group relative flex items-center justify-between p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#121622] border border-slate-200/90 dark:border-white/10 hover:border-blue-500/70 dark:hover:border-blue-500/70 shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer overflow-hidden transform hover:-translate-y-0.5"
     >
-      {/* Background Soft Glow Effect on Hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-blue-500/0 to-blue-500/[0.02] group-hover:to-blue-500/[0.04] transition-all duration-300 pointer-events-none" />
+      {/* Background Soft Subtle Glow on Hover */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/[0.02] to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-      {/* Top Bar: Icon + Category Badge + Favorite */}
-      <div>
-        <div className="flex items-center justify-between gap-2 mb-3.5">
-          <div className="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:scale-105 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shrink-0 shadow-2xs">
-            <IconComponent className="w-5.5 h-5.5" />
-          </div>
-
-          <div className="flex items-center gap-1.5 shrink-0">
-            {tool.isNew && (
-              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-500 text-white uppercase tracking-wider">
-                {isHindi ? 'नया' : 'NEW'}
-              </span>
-            )}
-            {tool.isPopular && (
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1">
-                <Sparkles className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
-                <span>{isHindi ? 'लोकप्रिय' : 'Popular'}</span>
-              </span>
-            )}
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200/60 dark:border-white/5 max-w-[120px] truncate">
-              {isHindi && tool.categoryLabelHi ? tool.categoryLabelHi : tool.categoryLabel}
-            </span>
-            {onToggleFavorite && (
-              <button
-                onClick={handleFavoriteClick}
-                className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
-                  isFavorite 
-                    ? 'bg-pink-500/10 text-pink-500 border-pink-500/20' 
-                    : 'bg-slate-50 dark:bg-white/5 text-slate-400 border-slate-200/60 dark:border-white/5 hover:text-pink-500'
-                }`}
-                title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-              >
-                <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-pink-500' : ''}`} />
-              </button>
-            )}
-          </div>
+      {/* Main Left Content: Icon + Name + Category */}
+      <div className="flex items-center gap-2.5 min-w-0 pr-1">
+        {/* Icon Box */}
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all duration-200 shrink-0 flex items-center justify-center shadow-2xs">
+          <IconComponent className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110" />
         </div>
 
-        {/* Title */}
-        <h3 className="font-extrabold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
-          {isHindi && tool.nameHi ? tool.nameHi : tool.name}
-        </h3>
+        {/* Title and Badge */}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate tracking-tight">
+              {toolName}
+            </h3>
+            {tool.isPopular && (
+              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-amber-500" title={isHindi ? 'लोकप्रिय' : 'Popular'} />
+            )}
+            {tool.isNew && (
+              <span className="shrink-0 text-[8px] font-black px-1 py-0.2 rounded bg-emerald-500 text-white leading-none">
+                NEW
+              </span>
+            )}
+          </div>
 
-        {/* Short Description */}
-        <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed min-h-[32px]">
-          {isHindi && tool.descriptionHi ? tool.descriptionHi : tool.description}
-        </p>
+          <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate mt-0.5">
+            <span className="truncate">{toolCatLabel}</span>
+            <span className="text-slate-300 dark:text-slate-700">•</span>
+            <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 shrink-0">
+              {tool.privacyMode === 'server-side' ? (isHindi ? 'क्लाउड' : 'Cloud') : (isHindi ? 'ऑन-डिवाइस' : 'Local')}
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* Footer Link & CTA */}
-      <div className="mt-4 pt-3.5 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400">
-        <div className="flex items-center gap-2">
-          {getPrivacyBadge()}
-          <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/10">
-            {tool.isPro || tool.isPremium ? 'PRO' : 'FREE'}
-          </span>
-        </div>
-        
-        <span className="inline-flex items-center gap-1 font-extrabold text-blue-600 dark:text-blue-400 group-hover:translate-x-0.5 transition-transform">
-          <span>{tool.cta ? (isHindi ? tool.cta : tool.cta) : (isHindi ? 'खोलें' : 'Open')}</span>
+      {/* Right Side Controls: Heart + Arrow */}
+      <div className="flex items-center gap-1 shrink-0">
+        {onToggleFavorite && (
+          <button
+            onClick={handleFavoriteClick}
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+              isFavorite 
+                ? 'text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/30' 
+                : 'text-slate-300 dark:text-slate-600 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-white/5'
+            }`}
+            title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+          >
+            <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-pink-500 text-pink-500' : ''}`} />
+          </button>
+        )}
+        <div className="w-6 h-6 rounded-lg text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all flex items-center justify-center">
           <ArrowRight className="w-3.5 h-3.5" />
-        </span>
+        </div>
       </div>
     </div>
   );

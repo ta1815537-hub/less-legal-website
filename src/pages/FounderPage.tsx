@@ -31,7 +31,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* ================================================== */}
       {/* TOP NAVIGATION & BREADCRUMB                       */}
       {/* ================================================== */}
-      <div className="relative z-10 flex items-center justify-start gap-4">
+      <div className="relative z-10 hidden items-center justify-start gap-4">
         <motion.button
           whileHover={{ x: -3 }}
           whileTap={{ scale: 0.95 }}
@@ -174,7 +174,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 2. THE VISION SECTION                             */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.05} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-6">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
             <div className="w-11 h-11 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
@@ -226,7 +226,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 3. CYBER SAFETY AWARENESS SECTION                 */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.06} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-7 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-7">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
             <div className="w-11 h-11 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/20">
@@ -352,7 +352,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 4. AI AND THE FUTURE SECTION                      */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.07} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-6">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
             <div className="w-11 h-11 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20">
@@ -442,7 +442,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 5. FROM AWARENESS TO ACTION SECTION               */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.08} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-6">
           
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
@@ -519,7 +519,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 6. LESS CREATION ECOSYSTEM SECTION                 */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.09} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-6">
           
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
@@ -596,14 +596,13 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                   : 'border-slate-200/80 dark:border-white/10'
               }`}
             >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-bold">
-                  <Award className="w-3.5 h-3.5" />
-                  <span>{isHindi ? "फ्लैगशिप उत्पाद (FLAGSHIP PRODUCT)" : "FLAGSHIP PRODUCT"}</span>
-                </div>
+              <div className="flex items-center justify-between gap-2">
+                <h4 className="text-xl font-bold text-slate-950 dark:text-white">
+                  Less Legal
+                </h4>
                 <button
                   onClick={() => onNavigate('features')}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer whitespace-nowrap"
                 >
                   <span>{isHindi ? "फीचर्स देखें" : "View Features"}</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -637,10 +636,10 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 7. ARTICLES & KNOWLEDGE SECTION                   */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.1} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-5 backdrop-blur-2xl">
           
-          <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
-            <div className="w-11 h-11 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
+          <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-4">
+            <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
               <BookOpen className="w-5 h-5" />
             </div>
             <div>
@@ -649,12 +648,6 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               </h2>
             </div>
           </div>
-
-          <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-            {isHindi 
-              ? "संस्थापक के विज़न के अनुरूप, लेस क्रिएशन नियमित रूप से व्यावहारिक लेख प्रकाशित करता है। हमारा उद्देश्य पाठकों को उन वास्तविक डिजिटल चुनौतियों के प्रति जागरूक करना है जिनका सामना वे अपने रोज़मर्रा के जीवन में करते हैं। हम निम्नलिखित विषयों पर स्पष्ट गाइड प्रकाशित करते हैं:"
-              : "Directly aligned with the Founder's vision, Less Creation publishes practical, accessible articles designed to empower users with verifiable facts, security hygiene, and legal literacy. Our knowledge hub covers:"}
-          </p>
 
           <div className="flex flex-wrap gap-2 pt-1">
             {[
@@ -1053,15 +1046,12 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               : "“Technology is becoming more powerful every day. The ability to understand it, question it and use it safely should become more accessible to everyone.”"}
           </blockquote>
 
-          <div className="pt-3 border-t border-slate-200/80 dark:border-white/10 flex flex-col items-center justify-center space-y-0.5">
+          <div className="pt-3 border-t border-slate-200/80 dark:border-white/10 flex flex-col items-center justify-center space-y-1">
             <span className="text-sm font-black text-slate-950 dark:text-white tracking-wide">
               Anurag Gurauli
             </span>
-            <span className="text-xs text-blue-600 dark:text-blue-400 font-bold">
-              {isHindi ? "संस्थापक, लेस क्रिएशन" : "Founder, Less Creation"}
-            </span>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400">
-              {isHindi ? "अधिवक्ता, इलाहाबाद उच्च न्यायालय" : "Advocate, Allahabad High Court"}
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+              {isHindi ? "संस्थापक, लेस क्रिएशन • अधिवक्ता, इलाहाबाद उच्च न्यायालय" : "Founder, Less Creation • Advocate, High Court"}
             </span>
           </div>
         </div>

@@ -184,28 +184,10 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       <HeroAmbientGlow />
       
       {/* Top Breadcrumb & Minimal Clean Header */}
-      <ScrollReveal direction="up" className="space-y-3 relative z-10 text-center max-w-2xl mx-auto">
-        <div className="flex items-center justify-center">
-          <motion.button
-            whileHover={{ x: -2 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => onNavigate('home')}
-            className="text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-xs backdrop-blur-md"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "होम पर वापस जाएं" : "Back to Home"}</span>
-          </motion.button>
-        </div>
-
+      <ScrollReveal direction="up" className="relative z-10 text-center max-w-2xl mx-auto hidden">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
           {isHindi ? "खाता एवं डेटा विलोपन अनुरोध" : "Account & Data Deletion"}
         </h1>
-        
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-lg mx-auto leading-relaxed font-medium">
-          {isHindi
-            ? "अपने खाते और डेटा को स्थायी रूप से हटाने का अनुरोध सबमिट करें या अपने अनुरोध की स्थिति जांचें।"
-            : "Submit a request to permanently purge your account records or track an existing request."}
-        </p>
       </ScrollReveal>
 
       {/* Main Interactive Box with Symmetrical Switcher Tabs */}
@@ -668,7 +650,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       </div>
 
       {/* In-App Instant Deletion Box */}
-      <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg backdrop-blur-xl space-y-3 relative z-10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+      <div className="py-2 space-y-3 relative z-10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
           <Smartphone className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
           <span>{isHindi ? "ऐप में तुरंत खाता हटाएं (In-App Deletion Flow)" : "In-App Instant Account Deletion Flow"}</span>
@@ -692,7 +674,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10 text-xs sm:text-sm">
         
         {/* Card 1: What Gets Deleted */}
-        <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg backdrop-blur-xl space-y-3">
+        <div className="py-2 space-y-3">
           <h3 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
             <span>{isHindi ? "कौन सा क्लाउड डेटा डिलीट होगा" : "Data That Will Be Permanently Deleted"}</span>
@@ -705,7 +687,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
         </div>
 
         {/* Card 2: Google Drive & Local Files */}
-        <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg backdrop-blur-xl space-y-3">
+        <div className="py-2 space-y-3">
           <h3 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
             <HardDrive className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
             <span>{isHindi ? "गूगल ड्राइव बैकअप एवं लोकल स्टोरेज" : "Google Drive Backups & Local Storage"}</span>
@@ -727,7 +709,7 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
       </div>
 
       {/* Legal Exception & Contact Box */}
-      <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg backdrop-blur-xl space-y-3 relative z-10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+      <div className="py-2 space-y-3 relative z-10 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
           <span>{isHindi ? "कानूनी एवं वित्तीय रिकॉर्ड रिटेंशन अपवाद" : "Legal & Tax Retention Exceptions"}</span>

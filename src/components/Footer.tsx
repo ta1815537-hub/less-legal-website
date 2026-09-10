@@ -62,7 +62,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* Column 1: Brand & Taglines (Span 4 on Desktop) */}
-            <div className="lg:col-span-4 space-y-4">
+            <div className="lg:col-span-4 space-y-3">
               <div className="flex items-center gap-3">
                 <div className="shrink-0 flex items-center justify-center">
                   <LTLogo className="w-10 h-10 sm:w-11 sm:h-11" />
@@ -78,14 +78,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 leading-snug">
+              <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed">
                 {isHindi ? "डिजिटल सुरक्षा, व्यावहारिक ज्ञान और उपयोगी तकनीक - एक सुरक्षित डिजिटल भविष्य के लिए।" : "Technology, awareness and practical digital knowledge for a safer, more informed digital world."}
-              </p>
-
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                {isHindi 
-                  ? "लेस क्रिएशन एक टेक्नोलॉजी और डिजिटल जागरूकता ब्रांड है। हम लोगों को तकनीक समझने, डिजिटल जोखिमों को पहचानने और आत्मविश्वास के साथ डिजिटल दुनिया में नेविगेट करने में मदद करने के लिए व्यावहारिक डिजिटल उत्पाद और स्पष्ट, सुलभ ज्ञान साझा करते हैं।" 
-                  : "Less Creation is a technology and digital awareness brand. We build practical digital products and share clear, accessible knowledge to help people understand technology, recognize digital risks and navigate the digital world with greater confidence."}
               </p>
             </div>
 
@@ -105,37 +99,37 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   <li>
                     <button
                       onClick={() => onNavigate('tools')}
-                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left whitespace-nowrap"
                     >
                       <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>{isHindi ? 'लेस क्रिएशन टूल्स' : 'Less Creation Tools'}</span>
+                      <span className="whitespace-nowrap">{isHindi ? 'लेस क्रिएशन टूल्स' : 'Less Creation Tools'}</span>
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={() => onNavigate('premium')}
-                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer text-left font-bold"
+                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer text-left font-bold whitespace-nowrap"
                     >
                       <Crown className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                      <span>{isHindi ? 'लाइफटाइम पास (₹99)' : 'Lifetime Pass (₹99)'}</span>
+                      <span className="whitespace-nowrap">{isHindi ? 'लाइफटाइम पास (₹99)' : 'Lifetime Pass (₹99)'}</span>
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={() => onNavigate('about')}
-                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left whitespace-nowrap"
                     >
                       <Info className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>{isHindi ? 'हमारे बारे में' : 'About Us'}</span>
+                      <span className="whitespace-nowrap">{isHindi ? 'हमारे बारे में' : 'About Us'}</span>
                     </button>
                   </li>
                   <li>
                     <button
                       onClick={() => onNavigate('founder')}
-                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
+                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left whitespace-nowrap"
                     >
                       <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>{isHindi ? 'संस्थापक' : 'Founder & Creator'}</span>
+                      <span className="whitespace-nowrap">{isHindi ? 'संस्थापक' : 'Founder & Creator'}</span>
                     </button>
                   </li>
                 </ul>

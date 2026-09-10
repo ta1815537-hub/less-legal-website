@@ -193,7 +193,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
       <HeroAmbientGlow />
 
       {/* Top Breadcrumb navigation */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-start">
         <button
           onClick={() => onNavigate('home')}
           className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer px-3 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10"
@@ -201,21 +201,11 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
           <ArrowLeft className="w-4 h-4" />
           <span>{isHindi ? 'होम पर वापस जाएं' : 'Back to Home'}</span>
         </button>
-
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>{isHindi ? 'वी आर हायरिंग!' : "We're Hiring!"}</span>
-        </span>
       </div>
 
       {/* Hero Header Section */}
       <ScrollReveal>
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/30 text-blue-700 dark:text-blue-400 text-xs sm:text-sm font-extrabold tracking-wide">
-            <Briefcase className="w-4 h-4" />
-            <span>{isHindi ? 'लेस क्रिएशन करियर एवं टीम विस्तार' : 'Careers at Less Creation'}</span>
-          </div>
-
+        <div className="text-center max-w-3xl mx-auto space-y-2 mb-8 sm:mb-10">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-[#F5F2EE] tracking-tight leading-tight">
             {isHindi ? (
               <>
@@ -233,59 +223,6 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
               </>
             )}
           </h1>
-
-          <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-            {isHindi 
-              ? 'हम ऐसे उत्साही डेवलपर्स, डिजाइनर्स और इनोवेटर्स की तलाश में हैं जो वास्तविक समस्याओं को हल करने वाले सरल और शक्तिशाली ऐप्स बनाने के लिए तैयार हैं। संस्थापक अनुराग गुरौली के साथ मिलकर काम करने का बेहतरीन अवसर।'
-              : 'We are expanding our core team. If you are passionate about crafting lightweight, purpose-driven digital products that simplify everyday work for millions of users across India, we want to work with you.'}
-          </p>
-        </div>
-      </ScrollReveal>
-
-      {/* Studio Culture & Perks Bento Grid */}
-      <ScrollReveal delay={0.1}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
-          <div className="p-5 sm:p-6 rounded-[24px] bg-white/80 dark:bg-[#0C101A]/80 backdrop-blur-xl border border-slate-200/90 dark:border-white/10 shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center border border-blue-500/20">
-              <Laptop className="w-5 h-5" />
-            </div>
-            <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-              {isHindi ? 'रिमोट-फर्स्ट एवं स्वतंत्रता' : '100% Remote & Flexible'}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              {isHindi 
-                ? 'भारत के किसी भी कोने से अपने समय और सुविधा अनुसार कार्य करें। हम माइक्रोटेनमेंट नहीं बल्कि परिणाम और गुणवत्ता में विश्वास रखते हैं।'
-                : 'Work from anywhere across India. We believe in high autonomy, ownership, and measurable outcomes rather than strict clock-watching.'}
-            </p>
-          </div>
-
-          <div className="p-5 sm:p-6 rounded-[24px] bg-white/80 dark:bg-[#0C101A]/80 backdrop-blur-xl border border-slate-200/90 dark:border-white/10 shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-500/20">
-              <Rocket className="w-5 h-5" />
-            </div>
-            <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-              {isHindi ? 'सीधा प्रभाव एवं मेंटरशिप' : 'Direct Impact & Mentorship'}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              {isHindi 
-                ? 'संस्थापक अनुराग गुरौली के साथ सीधा सहयोग। आपके द्वारा लिखा कोड और डिजाइन सीधे लाखों सक्रिय उपयोगकर्ताओं तक पहुंचेगा।'
-                : 'Work directly with Founder Anurag Gurauli. Your code and designs will immediately impact thousands of legal professionals and everyday citizens.'}
-            </p>
-          </div>
-
-          <div className="p-5 sm:p-6 rounded-[24px] bg-white/80 dark:bg-[#0C101A]/80 backdrop-blur-xl border border-slate-200/90 dark:border-white/10 shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-              <GraduationCap className="w-5 h-5" />
-            </div>
-            <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-              {isHindi ? 'सीखने व विकास के अवसर' : 'Continuous Growth & Scale'}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              {isHindi 
-                ? 'नवीनतम एंड्रॉइड, रिएक्ट और AI टूल्स पर काम करें। हम अपनी टीम के कौशल और पेशेवर विकास में पूरा निवेश करते हैं।'
-                : 'Work on bleeding-edge tech stacks. We foster a culture of rapid experimentation, continuous learning, and career acceleration.'}
-            </p>
-          </div>
         </div>
       </ScrollReveal>
 

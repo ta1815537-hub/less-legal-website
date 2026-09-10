@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
 import { 
-  Mail, Phone, MapPin, Send, MessageSquare, 
-  ShieldCheck, CheckCircle2, Clock, 
-  Smartphone, ArrowLeft, Search, RefreshCw, FileSearch, 
-  AlertCircle, Tag, Copy, Check, Sparkles, Shield, ChevronRight
+  Send, CheckCircle2, Clock, ShieldCheck, Mail,
+  ArrowLeft, Search, RefreshCw, FileSearch, 
+  AlertCircle, Tag, Copy, Check
 } from 'lucide-react';
 import { 
-  ScrollReveal, StaggerContainer, StaggerItem, 
-  HeroAmbientGlow, GlowingButton, EASING_SPRING 
+  ScrollReveal, HeroAmbientGlow, GlowingButton, EASING_SPRING 
 } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
@@ -169,180 +167,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
       <HeroAmbientGlow />
       
       {/* Top Header & Breadcrumb */}
-      <ScrollReveal direction="up" className="max-w-2xl mx-auto text-center space-y-3 relative z-10">
-        <div className="flex items-center justify-center">
-          <motion.button
-            whileHover={{ x: -2 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => onNavigate('home')}
-            className="text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-xs backdrop-blur-md"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-            <span className="whitespace-nowrap">{t.common.backToHome}</span>
-          </motion.button>
-        </div>
-
+      <ScrollReveal direction="up" className="max-w-2xl mx-auto text-center relative z-10 hidden">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
           {t.contactPage.title}
         </h1>
-
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-lg mx-auto">
-          {t.contactPage.subtitle}
-        </p>
       </ScrollReveal>
 
-      {/* Main Grid Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start relative z-10">
-        
-        {/* LEFT COLUMN: Channels, SLAs, Guidelines */}
-        <ScrollReveal direction="up" delay={0.08} className="lg:col-span-5 space-y-6">
-          
-          {/* Official Channels Card */}
-          <div className="p-6 sm:p-7 rounded-[26px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-lg space-y-5 backdrop-blur-xl">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-3.5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-blue-100/80 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shrink-0 border border-blue-200/80 dark:border-blue-900/50">
-                  <MessageSquare className="w-4 h-4" />
-                </div>
-                <h2 className="text-base font-black text-slate-900 dark:text-white">
-                  {isHindi ? 'आधिकारिक सहायता चैनल' : 'Official Support Channels'}
-                </h2>
-              </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800/40 whitespace-nowrap">
-                {isHindi ? 'सत्यापित' : 'Verified'}
-              </span>
-            </div>
-
-            {/* Support Channels List */}
-            {hasAnyDirectContact ? (
-              <StaggerContainer className="space-y-3.5 text-xs">
-                
-                {hasEmail && (
-                  <StaggerItem>
-                    <div className="group p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-blue-500/40 dark:hover:border-blue-500/40 transition-all duration-200 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shrink-0">
-                            <Mail className="w-4 h-4" />
-                          </div>
-                          <div>
-                            <div className="font-bold text-slate-900 dark:text-white">{isHindi ? 'ईमेल सहायता' : 'Email Support'}</div>
-                            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{isHindi ? 'प्राथमिक सपोर्ट चैनल' : 'Primary Support Channel'}</div>
-                          </div>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={handleCopyEmail}
-                          title={isHindi ? "ईमेल कॉपी करें" : "Copy Email"}
-                          className="px-2.5 py-1 rounded-lg bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-[11px] font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1 cursor-pointer transition-colors shadow-2xs whitespace-nowrap"
-                        >
-                          {copiedEmail ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                          <span>{copiedEmail ? (isHindi ? 'कॉपी हुआ' : 'Copied') : (isHindi ? 'कॉपी' : 'Copy')}</span>
-                        </button>
-                      </div>
-
-                      <div className="pt-1">
-                        <a 
-                          href={`mailto:${SITE_CONFIG.supportEmail}`} 
-                          className="text-xs font-black text-blue-600 dark:text-blue-400 hover:underline break-all inline-flex items-center gap-1"
-                        >
-                          <span>{SITE_CONFIG.supportEmail}</span>
-                          <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                        </a>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium leading-relaxed">
-                          {isHindi ? '24 से 48 व्यावसायिक घंटों के भीतर उत्तर दिया जाएगा।' : 'Standard response within 24-48 business hours.'}
-                        </p>
-                      </div>
-                    </div>
-                  </StaggerItem>
-                )}
-
-                {hasPhone && (
-                  <StaggerItem>
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1.5">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center font-bold shrink-0">
-                          <Phone className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-slate-900 dark:text-white">{isHindi ? 'टेलीफोन / हेल्पलाइन' : 'Telephone / Helpline'}</div>
-                          <a href={`tel:${SITE_CONFIG.supportPhone}`} className="text-slate-800 dark:text-slate-200 font-bold hover:text-blue-500 transition-colors">
-                            {SITE_CONFIG.supportPhone}
-                          </a>
-                        </div>
-                      </div>
-                      <div className="text-[11px] text-slate-500 dark:text-slate-400 pl-10.5 font-medium">
-                        {isHindi ? 'सोम - शुक्र, सुबह 10:00 - शाम 6:00 IST' : 'Mon - Fri, 10:00 AM - 6:00 PM IST'}
-                      </div>
-                    </div>
-                  </StaggerItem>
-                )}
-
-                {hasAddress && (
-                  <StaggerItem>
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1.5">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-700 flex items-center justify-center font-bold shrink-0">
-                          <MapPin className="w-4 h-4" />
-                        </div>
-                        <div className="font-bold text-slate-900 dark:text-white">{isHindi ? 'पंजीकृत व्यावसायिक पता' : 'Registered Business Address'}</div>
-                      </div>
-                      <p className="text-slate-600 dark:text-slate-300 font-medium text-[11px] leading-relaxed pl-10.5">
-                        {SITE_CONFIG.businessAddress}
-                      </p>
-                    </div>
-                  </StaggerItem>
-                )}
-
-              </StaggerContainer>
-            ) : null}
-
-            {/* In-App Direct Guidance */}
-            <div className="p-4 bg-slate-50/80 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10 text-xs space-y-2">
-              <div className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-                <span>{isHindi ? 'इन-ऐप सहायता डेस्क (In-App Support)' : 'In-App Support Desk'}</span>
-              </div>
-              <p className="text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-                {isHindi 
-                  ? 'तत्काल सहायता के लिए Less Legal एंड्रॉइड ऐप में ' 
-                  : 'For in-app issues or fast pass verification, open the Less Legal Android app and visit '}
-                <strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'सेटिंग्स > सहायता एवं समर्थन' : 'Settings > Help & Support'}</strong>.
-              </p>
-            </div>
-
-            {/* Turnaround Standards & Grievance */}
-            <div className="pt-1 space-y-2.5 text-xs text-slate-600 dark:text-slate-300 font-medium border-t border-slate-100 dark:border-white/10">
-              <div className="flex items-center gap-2 text-[11px]">
-                <Clock className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                <span><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'मानक टर्नअराउंड' : 'Standard Turnaround'}:</strong> {isHindi ? '24 से 48 व्यावसायिक घंटे' : '24 to 48 business hours'}</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px]">
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                <span><strong className="text-slate-900 dark:text-white font-bold">{isHindi ? 'लेनदेन पूछताछ' : 'Transaction Verification'}:</strong> {isHindi ? 'तेजी से समाधान के लिए ऑर्डर / ट्रांजेक्शन आईडी दर्ज करें' : 'Include Order / Transaction ID for priority check'}</span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Grievance Redressal Card */}
-          <div className="p-5 sm:p-6 rounded-[24px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300 space-y-2 shadow-md backdrop-blur-xl">
-            <div className="flex items-center gap-2 font-black text-slate-900 dark:text-white">
-              <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
-              <span>{isHindi ? 'शिकायत निवारण तंत्र (IT Act Rules)' : 'Grievance Redressal Mechanism'}</span>
-            </div>
-            <p className="leading-relaxed text-[11px] font-medium text-slate-600 dark:text-slate-300">
-              {isHindi 
-                ? 'सूचना प्रौद्योगिकी नियमों और उपभोक्ता संरक्षण दिशानिर्देशों के अनुसार, ऐप कार्यक्षमता, पास सक्रियण या बिलिंग के संबंध में उपयोगकर्ता की शिकायतों को 48 घंटों के भीतर स्वीकार किया जाएगा और 30 दिनों के भीतर पूर्ण समाधान दिया जाएगा।' 
-                : 'In accordance with Information Technology Rules and Consumer Protection guidelines, user grievances regarding app functionality, pass activation, or billing will be acknowledged promptly within 48 hours and resolved within 30 days.'}
-            </p>
-          </div>
-
-        </ScrollReveal>
-
-        {/* RIGHT COLUMN: Interactive Form & Status Tracker */}
-        <ScrollReveal direction="up" delay={0.14} className="lg:col-span-7">
+      {/* Main Interactive Form Section (Centered) */}
+      <div className="max-w-2xl mx-auto w-full relative z-10">
+        <ScrollReveal direction="up" delay={0.08}>
           <div className="p-4 sm:p-8 rounded-[24px] sm:rounded-[28px] bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xl space-y-6 backdrop-blur-xl">
             
             {/* Top Sleek Switcher Tabs - Symmetrical 2-Column Responsive Grid */}

@@ -169,7 +169,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
       
       {/* 13. HERO SECTION */}
       <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3 relative z-10">
-        <div className="flex items-center justify-center gap-3 flex-wrap">
+        <div className="flex items-center justify-center gap-3 flex-wrap hidden">
           <motion.button
             whileHover={{ x: -3 }}
             onClick={() => onNavigate('home')}
@@ -409,7 +409,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
                 key={idx}
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.2 }}
-                className="p-4 rounded-2xl bg-gradient-to-br from-white/95 to-blue-50/30 dark:from-[#111827]/95 dark:to-[#0F172A]/90 border border-blue-400/30 dark:border-blue-500/20 shadow-xs space-y-2 flex flex-col justify-between"
+                className="py-4 space-y-2 flex flex-col justify-between"
               >
                 <div className="space-y-1.5">
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${b.color}`}>
@@ -430,7 +430,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
       {/* 16. HOW IT WORKS (3-Step Stepper) */}
       <ScrollReveal direction="up" delay={0.18} className="relative z-10 pt-2">
-        <div className="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-white/95 via-blue-50/40 to-indigo-50/20 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/80 border border-blue-400/30 dark:border-blue-500/20 shadow-md space-y-5">
+        <div className="py-5 sm:py-7 space-y-5">
           <div className="text-center max-w-xl mx-auto space-y-1">
             <span className="text-xs font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">
               {isHindi ? 'सरल प्रक्रिया' : 'HOW IT WORKS'}
@@ -442,7 +442,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* Step 1 */}
-            <div className="p-4 rounded-2xl bg-white/60 dark:bg-slate-900/45 border border-blue-200/50 dark:border-blue-800/25 space-y-2">
+            <div className="py-4 space-y-2">
               <div className="w-8 h-8 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 font-black text-xs flex items-center justify-center border border-blue-500/20">
                 01
               </div>
@@ -457,7 +457,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Step 2 */}
-            <div className="p-4 rounded-2xl bg-white/60 dark:bg-slate-900/45 border border-blue-200/50 dark:border-blue-800/25 space-y-2">
+            <div className="py-4 space-y-2">
               <div className="w-8 h-8 rounded-lg bg-sky-500/15 text-sky-600 dark:text-sky-400 font-black text-xs flex items-center justify-center border border-sky-500/20">
                 02
               </div>
@@ -472,7 +472,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Step 3 */}
-            <div className="p-4 rounded-2xl bg-white/60 dark:bg-slate-900/45 border border-blue-200/50 dark:border-blue-800/25 space-y-2">
+            <div className="py-4 space-y-2">
               <div className="w-8 h-8 rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 font-black text-xs flex items-center justify-center border border-indigo-500/20">
                 03
               </div>
@@ -491,7 +491,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
       {/* 17. FINAL CONVERSION CTA SECTION */}
       <ScrollReveal direction="up" delay={0.2} className="relative z-10 pt-1">
-        <div className="p-6 sm:p-10 bg-gradient-to-br from-white/95 via-blue-50/50 to-indigo-50/30 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/90 backdrop-blur-2xl rounded-3xl border border-blue-400/30 dark:border-blue-500/20 shadow-lg text-center space-y-4">
+        <div className="py-6 sm:py-10 text-center space-y-4">
           <div className="max-w-xl mx-auto space-y-2.5 relative z-10">
             <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase border border-blue-500/20">
               <Sparkles className="w-3.5 h-3.5 fill-current" />
@@ -524,7 +524,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
       {/* Mandatory Merchant Verification & Compliance Links */}
       <ScrollReveal direction="up" delay={0.22} className="relative z-10">
-        <div className="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-white/95 via-blue-50/40 to-indigo-50/20 dark:from-[#111827]/95 dark:via-[#0F172A]/90 dark:to-[#1E293B]/80 border border-blue-400/30 dark:border-blue-500/20 shadow-md space-y-3">
+        <div className="py-5 sm:py-7 space-y-3">
           <h3 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
             <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span>{isHindi ? 'नीतियों और शर्तें' : 'Policies & Terms'}</span>
@@ -535,7 +535,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               <button
                 id="premium-btn-terms"
                 onClick={() => onNavigate('terms')}
-                className="w-full p-3 bg-white/60 dark:bg-slate-900/45 hover:bg-blue-500/5 rounded-xl border border-blue-200/50 dark:border-blue-800/25 text-left transition-all group flex items-center justify-between cursor-pointer"
+                className="w-full py-2 hover:bg-blue-500/5 transition-all group flex items-center justify-between cursor-pointer"
               >
                 <span className="text-xs font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 whitespace-nowrap">
                   {isHindi ? 'नियम और शर्तें' : 'Terms & Conditions'}
@@ -548,7 +548,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               <button
                 id="premium-btn-refund"
                 onClick={() => onNavigate('refund')}
-                className="w-full p-3 bg-white/60 dark:bg-slate-900/45 hover:bg-blue-500/5 rounded-xl border border-blue-200/50 dark:border-blue-800/25 text-left transition-all group flex items-center justify-between cursor-pointer"
+                className="w-full py-2 hover:bg-blue-500/5 transition-all group flex items-center justify-between cursor-pointer"
               >
                 <span className="text-xs font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 whitespace-nowrap">
                   {isHindi ? 'धनवापसी नीति' : 'Refund Policy'}
@@ -561,7 +561,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
               <button
                 id="premium-btn-contact"
                 onClick={() => onNavigate('contact')}
-                className="w-full p-3 bg-white/60 dark:bg-slate-900/45 hover:bg-blue-500/5 rounded-xl border border-blue-200/50 dark:border-blue-800/25 text-left transition-all group flex items-center justify-between cursor-pointer"
+                className="w-full py-2 hover:bg-blue-500/5 transition-all group flex items-center justify-between cursor-pointer"
               >
                 <span className="text-xs font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 whitespace-nowrap">
                   {isHindi ? 'सहायता केंद्र' : 'Contact Support'}

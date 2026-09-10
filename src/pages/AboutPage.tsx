@@ -99,15 +99,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           <h2 className="text-2xl font-black text-slate-900 dark:text-white">
             {isHindi ? 'हम क्या करते हैं' : 'What We Do'}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-            {isHindi ? 'डिजिटल सुरक्षा और ज्ञान के पांच मुख्य स्तंभ' : 'Five foundational pillars driving our work'}
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
           {/* Pillar 1 */}
-          <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5">
+          <div className="py-2 space-y-2">
             <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
               <ShieldCheck className="w-5 h-5" />
             </div>
@@ -122,7 +119,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Pillar 2 */}
-          <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5">
+          <div className="py-2 space-y-2">
             <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
               <ShieldAlert className="w-5 h-5" />
             </div>
@@ -137,7 +134,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Pillar 3 */}
-          <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5">
+          <div className="py-2 space-y-2">
             <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
               <Laptop className="w-5 h-5" />
             </div>
@@ -152,7 +149,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Pillar 4 */}
-          <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5">
+          <div className="py-2 space-y-2">
             <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
               <Scale className="w-5 h-5" />
             </div>
@@ -167,7 +164,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Pillar 5 */}
-          <div className="p-5 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-xs space-y-2.5 md:col-span-2 lg:col-span-1">
+          <div className="py-2 space-y-2 md:col-span-2 lg:col-span-1">
             <div className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold">
               <Smartphone className="w-5 h-5" />
             </div>
@@ -185,7 +182,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 5. SECTION: OUR APPROACH (4 PRINCIPLES) */}
-      <section className="p-6 sm:p-8 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 space-y-4 relative z-10">
+      <section className="py-2 space-y-4 relative z-10">
         <div className="text-center space-y-1">
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
             {isHindi ? 'हमारा दृष्टिकोण' : 'Our Approach'}
@@ -193,7 +190,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-1.5">
+          <div className="py-1 space-y-1.5">
             <div className="font-black text-blue-600 dark:text-blue-400 text-sm flex items-center gap-1.5">
               <Compass className="w-4 h-4" />
               <span>{isHindi ? 'सरल (Simple)' : 'Simple'}</span>
@@ -203,7 +200,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-1.5">
+          <div className="py-1 space-y-1.5">
             <div className="font-black text-emerald-600 dark:text-emerald-400 text-sm flex items-center gap-1.5">
               <Zap className="w-4 h-4" />
               <span>{isHindi ? 'व्यावहारिक (Practical)' : 'Practical'}</span>
@@ -213,7 +210,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-1.5">
+          <div className="py-1 space-y-1.5">
             <div className="font-black text-purple-600 dark:text-purple-400 text-sm flex items-center gap-1.5">
               <HeartHandshake className="w-4 h-4" />
               <span>{isHindi ? 'जिम्मेदार (Responsible)' : 'Responsible'}</span>
@@ -223,7 +220,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-1.5">
+          <div className="py-1 space-y-1.5">
             <div className="font-black text-amber-600 dark:text-amber-400 text-sm flex items-center gap-1.5">
               <Users className="w-4 h-4" />
               <span>{isHindi ? 'सुलभ (Accessible)' : 'Accessible'}</span>
@@ -236,10 +233,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 6. SECTION: LESS LEGAL — FLAGSHIP PRODUCT */}
-      <section className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-blue-50/90 via-white to-slate-50 dark:from-slate-900 dark:via-[#121622] dark:to-slate-900 border border-blue-200/80 dark:border-white/10 shadow-md space-y-4 relative z-10">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/60 dark:border-white/10 pb-3">
+      <section className="py-2 space-y-4 relative z-10 border-t border-slate-200/80 dark:border-white/10 pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-xs">
+            <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-xs">
               <Scale className="w-5 h-5" />
             </div>
             <div>
@@ -268,39 +265,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </p>
       </section>
 
-      {/* 7. SECTION: FOUNDER & VISION */}
-      <section className="p-6 sm:p-8 rounded-2xl bg-white/95 dark:bg-[#121622] border border-slate-200/80 dark:border-white/10 shadow-sm space-y-4 relative z-10">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-white/10 pb-3">
-          <div>
-            <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
-              {isHindi ? 'संस्थापक और विचार' : 'FOUNDER & VISION'}
-            </span>
-            <h2 className="text-xl font-black text-slate-900 dark:text-white mt-0.5">
-              Anurag Gurauli
-            </h2>
-            <p className="text-xs text-amber-600 dark:text-amber-400 font-bold">
-              {isHindi ? 'संस्थापक, लेस क्रिएशन • अधिवक्ता, इलाहाबाद उच्च न्यायालय' : 'Founder, Less Creation • Advocate, High Court'}
-            </p>
-          </div>
-
-          <button
-            onClick={() => onNavigate('founder')}
-            className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/15 text-slate-900 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs shrink-0"
-          >
-            <span>{isHindi ? 'संस्थापक प्रोफाइल पढ़ें' : 'Read Founder Story'}</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-          {isHindi
-            ? 'अनुराग गुरौली इलाहाबाद उच्च न्यायालय में कार्यरत एक अधिवक्ता और लेस क्रिएशन के संस्थापक हैं। कानूनी प्रक्रिया और डिजिटल प्रणालियों के अनुभव से प्रेरित होकर, उन्होंने लेस क्रिएशन की शुरुआत की। उनका उद्देश्य कानूनी समझ और तकनीकी नवाचार का उपयोग करके सार्वजनिक जागरूकता बढ़ाना, लोगों को साइबर अपराधों से बचाना और तकनीक को हर नागरिक के लिए सुलभ बनाना है।'
-            : 'Anurag Gurauli is an Advocate practicing before the Allahabad High Court and the founder behind Less Creation. Operating at the intersection of legal practice and modern technology, he established Less Creation to leverage legal literacy and software innovation for public digital safety. His vision centers on demystifying complex technology, empowering citizens against online fraud, and delivering accessible digital utilities.'}
-        </p>
-      </section>
-
       {/* 8. SECTION: INDEPENDENCE / NON-GOVERNMENT CLARIFICATION */}
-      <section className="p-5 sm:p-6 rounded-2xl bg-amber-50/80 dark:bg-amber-950/20 border border-amber-300/80 dark:border-amber-800/40 space-y-2 relative z-10">
+      <section className="py-2 space-y-2 relative z-10 border-t border-slate-200/80 dark:border-white/10 pt-4">
         <div className="flex items-center gap-2 text-amber-900 dark:text-amber-300 font-black text-sm">
           <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
           <span>{isHindi ? 'गैर-सरकारी एवं स्वतंत्र ब्रांड घोषणा' : 'Factual Independent Non-Government Declaration'}</span>
@@ -313,34 +279,23 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 9. SECTION: CLOSING VISION STATEMENT & CREATION STATEMENT */}
-      <section className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#121622] border-2 border-blue-500/30 dark:border-blue-400/25 shadow-md space-y-4 relative z-10 text-center">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-widest">
-          <Award className="w-3.5 h-3.5" />
-          <span>{isHindi ? 'आधिकारिक संकल्प' : 'OFFICIAL STATEMENT'}</span>
-        </span>
-
-        <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
+      <section className="py-4 space-y-4 relative z-10 text-center border-t border-slate-200/80 dark:border-white/10 pt-6">
+        <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
           {isHindi ? 'एक सुरक्षित और जागरूक डिजिटल भविष्य का निर्माण' : 'Building a Safer, Better-Informed Digital Future'}
         </h3>
-
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
-          {isHindi
-            ? 'लेस क्रिएशन की अवधारणा, विज़न, संरचना और दिशा व्यक्तिगत रूप से संस्थापक अनुराग गुरौली द्वारा निर्धारित की गई है। हम हर नागरिक को ज्ञान, तकनीक और सुरक्षा से सशक्त बनाने के लिए निरंतर प्रयासरत हैं।'
-            : 'The core concept, direction, website architecture, and brand vision of Less Creation were personally designed and directed by Founder Anurag Gurauli. We remain committed to fostering digital confidence and safety for all.'}
-        </p>
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => onNavigate('contact')}
-            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-2xs cursor-pointer"
+            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-2xs cursor-pointer whitespace-nowrap"
           >
-            <span>{isHindi ? 'संपर्क करें' : 'Contact Us'}</span>
+            <span className="whitespace-nowrap">{isHindi ? 'संपर्क करें' : 'Contact Us'}</span>
           </button>
           <button
             onClick={() => onNavigate('articles')}
-            className="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/15 text-slate-900 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-bold transition-all cursor-pointer"
+            className="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/15 text-slate-900 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-bold transition-all cursor-pointer whitespace-nowrap"
           >
-            <span>{isHindi ? 'डिजिटल सुरक्षा लेख पढ़ें' : 'Read Digital Safety Guides'}</span>
+            <span className="whitespace-nowrap">{isHindi ? 'डिजिटल सुरक्षा लेख पढ़ें' : 'Read Digital Safety Guides'}</span>
           </button>
         </div>
       </section>

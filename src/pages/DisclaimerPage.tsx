@@ -17,20 +17,7 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
       
       {/* Top Breadcrumb & Title */}
       <div className="space-y-4 relative z-10 text-center sm:text-left">
-        <button
-          onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
-        >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-500" />
-          <span>{t.common.backToHome}</span>
-        </button>
-
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
-            <Scale className="w-3.5 h-3.5 fill-current" />
-            <span>{t.disclaimerPage.badge}</span>
-          </div>
-
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.disclaimerPage.title}
           </h1>
@@ -42,16 +29,16 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
       </div>
 
       {/* Non-Government Status Box */}
-      <div className="rounded-[28px] p-6 sm:p-8 bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 space-y-4 relative z-10 shadow-lg backdrop-blur-xl">
+      <div className="py-2 space-y-3 relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shrink-0 shadow-md">
-            <AlertTriangle className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shrink-0 shadow-xs">
+            <AlertTriangle className="w-4 h-4" />
           </div>
           <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
             {t.disclaimerPage.nonGovTitle}
           </h2>
         </div>
-        <div className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+        <div className="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
           <p>
             <strong className="text-slate-900 dark:text-white font-bold">{t.disclaimerPage.nonGovP1}</strong>
           </p>
@@ -68,8 +55,8 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
       <div className="space-y-6 text-sm leading-relaxed relative z-10 text-slate-600 dark:text-slate-300">
         
         {/* Strict Liability Disclaimer */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-2 py-1">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {language === 'hi' ? 'डेटा और कानूनी दायित्व अस्वीकरण' : 'Data & Legal Liability Disclaimer'}
           </h2>
           <p className="font-semibold text-slate-900 dark:text-white leading-relaxed">
@@ -78,8 +65,8 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
         </section>
 
         {/* Point 2 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-2 py-1">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.disclaimerPage.sec2Title}
           </h2>
           <p className="font-medium">
@@ -91,11 +78,11 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
         </section>
 
         {/* Point 3 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-2 py-1">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.disclaimerPage.sec3Title}
           </h2>
-          <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10 space-y-2 text-xs text-slate-600 dark:text-slate-300 font-medium">
+          <div className="py-1 space-y-1.5 text-xs text-slate-600 dark:text-slate-300 font-medium">
             <p className="font-bold text-slate-900 dark:text-white">
               {t.disclaimerPage.sec3Highlight}
             </p>
@@ -109,8 +96,8 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
         </section>
 
         {/* Point 4 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-2 py-1">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.disclaimerPage.sec4Title}
           </h2>
           <p className="font-medium">
@@ -119,8 +106,8 @@ export const DisclaimerPage: React.FC<DisclaimerPageProps> = ({ onNavigate }) =>
         </section>
 
         {/* Point 5 */}
-        <section className="space-y-3 p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-xl backdrop-blur-xl">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2">
+        <section className="space-y-2 py-1">
+          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
             {t.disclaimerPage.sec5Title}
           </h2>
           <p className="font-medium">
