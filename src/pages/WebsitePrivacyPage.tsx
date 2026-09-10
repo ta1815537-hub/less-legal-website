@@ -45,34 +45,8 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
     <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-8 space-y-6 overflow-hidden">
       <HeroAmbientGlow />
       
-      {/* Top Navigation & Breadcrumbs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 relative z-10">
-        <button
-          onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-          <span>{isHindi ? "होम पर वापस जाएं" : "Back to Home"}</span>
-        </button>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => onNavigate('app-privacy')}
-            className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 bg-blue-50 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/40 px-3.5 py-1.5 rounded-full cursor-pointer"
-          >
-            <span>{isHindi ? "Less Legal ऐप गोपनीयता नीति" : "Less Legal App Privacy Policy"}</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-
       {/* Header Banner */}
-      <div className="space-y-3 relative z-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-wider">
-          <Globe className="w-3.5 h-3.5" />
-          <span>{isHindi ? "वेबसाइट गोपनीयता दस्तावेज़" : "Website Privacy Disclosures"}</span>
-        </div>
-
+      <div className="space-y-3 relative z-10 pt-4">
         <h1 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
           {isHindi ? "लेस क्रिएशन — वेबसाइट गोपनीयता नीति" : "Less Creation — Website Privacy Policy"}
         </h1>

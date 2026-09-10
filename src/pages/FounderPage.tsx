@@ -636,7 +636,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 7. ARTICLES & KNOWLEDGE SECTION                   */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.1} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-5 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-5">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-4">
             <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
@@ -699,7 +699,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 8. PHILOSOPHY & PRINCIPLES                        */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.11} className="relative z-10 space-y-6">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-7 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-7">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
             <div className="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20">
@@ -772,7 +772,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 9. VALUES / OUR PRINCIPLES (01 — 06)              */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.12} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-6">
           
           <div className="text-center max-w-2xl mx-auto space-y-1.5">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
@@ -851,7 +851,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 10. FOUNDER JOURNEY (GROUND FACTUAL FOUNDATION)    */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.13} className="relative z-10 space-y-6">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
+        <div className="py-6 sm:py-8 space-y-6">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
             <div className="w-11 h-11 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
@@ -930,7 +930,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       <ScrollReveal direction="up" delay={0.14} className="relative z-10">
         <div 
           id="about-less-creation-attribution" 
-          className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#121622] border border-blue-500/30 dark:border-blue-400/25 shadow-lg space-y-6"
+          className="py-6 sm:py-8 space-y-6"
         >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-md">

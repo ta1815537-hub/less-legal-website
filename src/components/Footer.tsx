@@ -55,8 +55,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Main Floating Glassmorphic Footer Card */}
-        <div className="bg-white/95 dark:bg-[#101420]/95 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.05)] space-y-8">
+        {/* Main Footer Container (Shifted to Background) */}
+        <div className="py-6 sm:py-8 lg:py-10 space-y-8">
           
           {/* Top Multi-Column Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
