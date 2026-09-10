@@ -21,32 +21,22 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const isHindi = language === 'hi';
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-8 space-y-8 overflow-hidden">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-24 sm:pb-32 space-y-6 sm:space-y-8 overflow-hidden">
       <HeroAmbientGlow />
       
       {/* Top Navigation Breadcrumb */}
-      <div className="flex items-center justify-between relative z-10">
+      <div className="flex items-center justify-start relative z-10">
         <button
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer bg-white/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs whitespace-nowrap"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-          <span>{isHindi ? 'होम पर वापस जाएं' : 'Back to Home'}</span>
+          <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+          <span className="whitespace-nowrap">{isHindi ? 'होम पर वापस जाएं' : 'Back to Home'}</span>
         </button>
-
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 text-[11px] font-extrabold tracking-wide">
-          <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-          <span>{isHindi ? 'तकनीक व डिजिटल जागरूकता' : 'Technology & Digital Awareness'}</span>
-        </div>
       </div>
 
       {/* 1. SECTION: ABOUT LESS CREATION (HEADER & LEAD) */}
-      <ScrollReveal direction="up" className="space-y-4 text-center max-w-3xl mx-auto relative z-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs">
-          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-          <span>{isHindi ? 'ब्रांड विज़न एवं पहचान' : 'Brand Vision & Purpose'}</span>
-        </div>
-
+      <ScrollReveal direction="up" className="space-y-3 text-center max-w-3xl mx-auto relative z-10">
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
           {isHindi ? 'लेस क्रिएशन के बारे में' : 'About Less Creation'}
         </h1>
@@ -61,9 +51,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       {/* 2. SECTION: OUR CORE VISION STATEMENT */}
       <ScrollReveal direction="up" delay={0.05} className="relative z-10">
         <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-blue-900 via-slate-900 to-blue-950 text-white border border-blue-500/30 shadow-xl space-y-3 text-center">
-          <span className="text-[10px] font-mono font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20 inline-block">
-            {isHindi ? 'हमारा मुख्य विज़न' : 'CORE VISION'}
-          </span>
           <h2 className="text-xl sm:text-3xl font-black text-white leading-tight max-w-3xl mx-auto">
             “{isHindi 
               ? 'तकनीक को समझना आसान, सुरक्षित और आम जनता के लिए अधिक उपयोगी बनाना।' 
@@ -107,11 +94,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 4. SECTION: WHAT WE DO (5 PILLARS) */}
-      <section className="space-y-5 relative z-10">
+      <section className="space-y-4 relative z-10">
         <div className="text-center space-y-1">
-          <span className="text-[11px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-            {isHindi ? 'हमारी गतिविधियां' : 'OUR CORE INITIATIVES'}
-          </span>
           <h2 className="text-2xl font-black text-slate-900 dark:text-white">
             {isHindi ? 'हम क्या करते हैं' : 'What We Do'}
           </h2>
@@ -201,11 +185,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 5. SECTION: OUR APPROACH (4 PRINCIPLES) */}
-      <section className="p-6 sm:p-8 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 space-y-5 relative z-10">
+      <section className="p-6 sm:p-8 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 space-y-4 relative z-10">
         <div className="text-center space-y-1">
-          <span className="text-[11px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-            {isHindi ? 'कार्य पद्धति' : 'OUR GUIDING PRINCIPLES'}
-          </span>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
             {isHindi ? 'हमारा दृष्टिकोण' : 'Our Approach'}
           </h2>

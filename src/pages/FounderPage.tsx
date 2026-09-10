@@ -25,13 +25,13 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
   const [isHoveredLessLegal, setIsHoveredLessLegal] = useState(false);
 
   return (
-    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-12 sm:pb-16 space-y-8 sm:space-y-12 overflow-hidden text-slate-900 dark:text-slate-100">
+    <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-24 sm:pb-32 space-y-6 sm:space-y-8 overflow-hidden text-slate-900 dark:text-slate-100">
       <HeroAmbientGlow />
 
       {/* ================================================== */}
       {/* TOP NAVIGATION & BREADCRUMB                       */}
       {/* ================================================== */}
-      <div className="relative z-10 flex items-center justify-between gap-4">
+      <div className="relative z-10 flex items-center justify-start gap-4">
         <motion.button
           whileHover={{ x: -3 }}
           whileTap={{ scale: 0.95 }}
@@ -41,11 +41,6 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           <ArrowLeft className="w-4 h-4 shrink-0 text-blue-600 dark:text-blue-400" />
           <span className="whitespace-nowrap">{isHindi ? "होमपेज पर लौटें" : "Back to Home"}</span>
         </motion.button>
-
-        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-[11px] font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap shrink-0">
-          <Scale className="w-3.5 h-3.5 shrink-0" />
-          <span className="whitespace-nowrap">{isHindi ? "संस्थापक एवं ब्रांड विज़न" : "Founder & Brand Vision"}</span>
-        </div>
       </div>
 
       {/* ================================================== */}
@@ -56,7 +51,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           
           {/* Subtle Ambient Radial Lighting */}
           <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-blue-500/10 dark:bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-amber-500/10 dark:bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-amber-500/10 dark:amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
             
@@ -94,14 +89,10 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
                   {/* Compact Bottom Identity Plaque */}
                   <div className="absolute bottom-2 inset-x-2.5 p-2 rounded-xl bg-slate-950/80 backdrop-blur-md border border-blue-500/30 text-center shadow-lg">
-                    <div className="inline-flex items-center gap-1 px-2 py-0.2 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 font-bold text-[8.5px] uppercase tracking-wider mb-0.5">
-                      <Scale className="w-2.5 h-2.5 text-blue-400 shrink-0" />
-                      <span>{isHindi ? "संस्थापक एवं अधिवक्ता" : "FOUNDER & ADVOCATE"}</span>
-                    </div>
                     <h4 className="text-xs font-bold text-white tracking-wide leading-none">
                       Anurag Gurauli
                     </h4>
-                    <p className="text-[9.5px] text-slate-300 font-medium leading-none mt-0.5">
+                    <p className="text-[9.5px] text-slate-300 font-medium leading-none mt-1">
                       {isHindi 
                         ? "संस्थापक, लेस क्रिएशन • अधिवक्ता, उच्च न्यायालय" 
                         : "Founder, Less Creation • Advocate"}
@@ -113,14 +104,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* RIGHT: High-Impact Headline & Hero Narrative */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
               
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-bold tracking-wide uppercase shadow-2xs mx-auto lg:mx-0">
-                  <Sparkles className="w-3.5 h-3.5 fill-current" />
-                  <span>{isHindi ? "संस्थापक दृष्टिकोण" : "FOUNDER PHILOSOPHY"}</span>
-                </div>
-
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 dark:text-white tracking-tight leading-tight">
                   {isHindi ? "उद्देश्यपूर्ण तकनीक।" : "Technology With a Purpose."}
                 </h1>
@@ -145,7 +131,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200/80 dark:border-blue-900/40 text-left space-y-2">
                 <div className="text-[11px] font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
                   <Target className="w-3.5 h-3.5" />
-                  <span>{isHindi ? "हमारा ध्येय (OUR MISSION)" : "OUR CORE MISSION"}</span>
+                  <span>{isHindi ? "हमारा ध्येय" : "OUR MISSION"}</span>
                 </div>
                 <p className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
                   {isHindi 
@@ -165,7 +151,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('features')}
                   className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 cursor-pointer transition-all hover:scale-[1.02] active:scale-95 flex items-center gap-2 whitespace-nowrap shrink-0"
                 >
-                  <span>{isHindi ? "फ्लैगशिप उत्पाद: लेस लीगल देखें" : "Explore Flagship: Less Legal"}</span>
+                  <span className="whitespace-nowrap">{isHindi ? "फ्लैगशिप उत्पाद: लेस लीगल देखें" : "Explore Flagship: Less Legal"}</span>
                   <ArrowRight className="w-4 h-4 shrink-0" />
                 </button>
                 
@@ -174,7 +160,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                   className="px-5 py-2.5 rounded-xl bg-white/95 dark:bg-white/10 text-slate-800 dark:text-white border border-slate-200 dark:border-white/10 text-xs font-bold hover:bg-slate-100 dark:hover:bg-white/20 cursor-pointer transition-all shadow-2xs hover:scale-[1.02] active:scale-95 whitespace-nowrap shrink-0 flex items-center gap-2"
                 >
                   <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-                  <span>{isHindi ? "व्यावहारिक ज्ञान व लेख पढ़ें" : "Read Knowledge & Articles"}</span>
+                  <span className="whitespace-nowrap">{isHindi ? "व्यावहारिक ज्ञान व लेख पढ़ें" : "Read Knowledge & Articles"}</span>
                 </button>
               </div>
 
@@ -195,9 +181,6 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <Eye className="w-5 h-5" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 text-[10.5px] font-bold uppercase tracking-wider mb-0.5">
-                <span>{isHindi ? "संस्थापक दृष्टिकोण" : "THE VISION"}</span>
-              </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 dark:text-white tracking-tight">
                 {isHindi ? "डिजिटल दुनिया: अवसर और वास्तविकताएँ" : "Understanding the Digital Frontier"}
               </h2>
@@ -250,9 +233,6 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 text-[10.5px] font-bold uppercase tracking-wider mb-0.5">
-                <span>{isHindi ? "डिजिटल सुरक्षा एवं जन-जागरूकता" : "DIGITAL SAFETY & PUBLIC EDUCATION"}</span>
-              </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 dark:text-white tracking-tight">
                 {isHindi ? "एक अधिक डिजिटल जागरूक समाज का निर्माण" : "Building a More Digitally Aware Society"}
               </h2>
@@ -379,9 +359,6 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <Cpu className="w-5 h-5" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 text-[10.5px] font-bold uppercase tracking-wider mb-0.5">
-                <span>{isHindi ? "अगली डिजिटल चुनौती" : "THE NEXT DIGITAL CHALLENGE"}</span>
-              </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 dark:text-white tracking-tight">
                 {isHindi ? "आर्टिफिशियल इंटेलिजेंस और आने वाला समय" : "AI and the Next Digital Frontier"}
               </h2>
@@ -465,13 +442,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 5. FROM AWARENESS TO ACTION SECTION               */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.08} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-7 backdrop-blur-2xl">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
           
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider">
-              <Compass className="w-3.5 h-3.5" />
-              <span>{isHindi ? "हमारी 5-चरणीय कार्यप्रणाली" : "OUR APPROACH"}</span>
-            </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
               {isHindi ? "अधिक जानें। बेहतर सोचें। सुरक्षित रहें।" : "KNOW MORE. THINK BETTER. STAY SAFER."}
             </h2>
@@ -546,13 +519,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 6. LESS CREATION ECOSYSTEM SECTION                 */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.09} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-8 backdrop-blur-2xl">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
           
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider">
-              <Layers className="w-3.5 h-3.5" />
-              <span>{isHindi ? "उत्पाद एवं ब्रांड संरचना" : "ECOSYSTEM STRUCTURE"}</span>
-            </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
               {isHindi ? "केवल एक उत्पाद से कहीं अधिक" : "More Than a Product"}
             </h2>
@@ -675,9 +644,6 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <BookOpen className="w-5 h-5" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 text-[10.5px] font-bold uppercase tracking-wider mb-0.5">
-                <span>{isHindi ? "सार्वजनिक ज्ञान एवं लेख" : "PRACTICAL KNOWLEDGE & ARTICLES"}</span>
-              </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 dark:text-white tracking-tight">
                 {isHindi ? "डिजिटल युग के लिए व्यावहारिक ज्ञान" : "Practical Knowledge for the Digital Age"}
               </h2>
@@ -740,16 +706,13 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 8. PHILOSOPHY & PRINCIPLES                        */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.11} className="relative z-10 space-y-6">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-8 backdrop-blur-2xl">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-7 backdrop-blur-2xl">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
             <div className="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20">
               <Lightbulb className="w-5 h-5" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-amber-600 dark:text-amber-400 text-[10.5px] font-bold uppercase tracking-wider mb-0.5">
-                <span>{isHindi ? "हमारा दर्शन" : "CORE PHILOSOPHY"}</span>
-              </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 dark:text-white tracking-tight">
                 {isHindi ? "प्रौद्योगिकी को लोगों की सेवा करनी चाहिए।" : "Technology Should Serve People."}
               </h2>
@@ -816,13 +779,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 9. VALUES / OUR PRINCIPLES (01 — 06)              */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.12} className="relative z-10">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-7 backdrop-blur-2xl">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
           
           <div className="text-center max-w-2xl mx-auto space-y-1.5">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider">
-              <Award className="w-3.5 h-3.5" />
-              <span>{isHindi ? "हमारे मार्गदर्शक मूल्य" : "OUR PRINCIPLES"}</span>
-            </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
               {isHindi ? "हमारे बुनियादी सिद्धांत" : "OUR PRINCIPLES"}
             </h2>
@@ -899,16 +858,13 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
       {/* 10. FOUNDER JOURNEY (GROUND FACTUAL FOUNDATION)    */}
       {/* ================================================== */}
       <ScrollReveal direction="up" delay={0.13} className="relative z-10 space-y-6">
-        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-7 backdrop-blur-2xl">
+        <div className="p-6 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0F172A]/90 border border-slate-200/80 dark:border-white/10 shadow-lg space-y-6 backdrop-blur-2xl">
           
           <div className="flex items-center gap-3.5 border-b border-slate-200/80 dark:border-white/10 pb-5">
             <div className="w-11 h-11 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
               <Briefcase className="w-5 h-5" />
             </div>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 text-[10.5px] font-bold uppercase tracking-wider mb-0.5">
-                <span>{isHindi ? "संस्थापक पृष्ठभूमि" : "FOUNDER JOURNEY"}</span>
-              </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-950 dark:text-white tracking-tight">
                 {isHindi ? "कानून, तकनीक एवं जन-जागरूकता का संगम" : "Law, Technology & Digital Awareness"}
               </h2>
@@ -1089,10 +1045,6 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           {/* Subtle Quote Glyph */}
           <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center mx-auto text-2xl font-serif shadow-md shadow-blue-500/25">
             “
-          </div>
-          
-          <div className="inline-block px-3.5 py-1 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider">
-            {isHindi ? "संस्थापक दृष्टिकोण वक्तव्य" : "FOUNDER VISION STATEMENT"}
           </div>
 
           <blockquote className="text-base sm:text-xl md:text-2xl font-bold text-slate-950 dark:text-white italic leading-relaxed">

@@ -153,7 +153,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   <li>
                     <button
                       onClick={() => onNavigate('articles')}
-                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left font-bold"
+                      className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
                     >
                       <BookOpen className="w-3.5 h-3.5 text-blue-500 shrink-0" />
                       <span>{isHindi ? 'लेख एवं ब्लॉग' : 'Articles & Editorial'}</span>
@@ -161,19 +161,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   </li>
                   <li>
                     <button
-                      onClick={() => onNavigate('tools')}
-                      className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
-                    >
-                      {isHindi ? 'सभी उपकरण' : 'All Tools'}
-                    </button>
-                  </li>
-                  <li>
-                    <button
                       onClick={() => onNavigate('careers')}
                       className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
                     >
-                      <span>{isHindi ? 'करियर' : 'Careers & Hiring'}</span>
-                      <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">Hiring</span>
+                      <span>{isHindi ? 'करियर अवसर' : 'Careers'}</span>
                     </button>
                   </li>
                   <li>
@@ -181,23 +172,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                       onClick={() => onNavigate('contact')}
                       className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
                     >
-                      {isHindi ? 'सहायता और सपोर्ट' : 'Help & Support'}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => onNavigate('about')}
-                      className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
-                    >
-                      {isHindi ? 'हमारे बारे में' : 'About Less Creation'}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => onNavigate('founder')}
-                      className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer text-left"
-                    >
-                      {isHindi ? 'संस्थापक' : 'Founder'}
+                      {isHindi ? 'सहायता और संपर्क' : 'Help & Support'}
                     </button>
                   </li>
                 </ul>
