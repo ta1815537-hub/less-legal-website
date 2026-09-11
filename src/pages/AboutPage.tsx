@@ -232,38 +232,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 6. SECTION: LESS LEGAL — FLAGSHIP PRODUCT */}
-      <section className="py-2 space-y-4 relative z-10 border-t border-slate-200/80 dark:border-white/10 pt-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-xs">
-              <Scale className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-[10px] font-mono font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-                {isHindi ? 'फ्लैगशिप डिजिटल उत्पाद' : 'FLAGSHIP PRODUCT'}
-              </span>
-              <h2 className="text-xl font-black text-slate-900 dark:text-white">
-                Less Legal
-              </h2>
-            </div>
-          </div>
-
-          <button
-            onClick={() => onNavigate('less-legal')}
-            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black flex items-center gap-1.5 transition-all shadow-2xs self-start sm:self-auto cursor-pointer"
-          >
-            <span>{isHindi ? 'लेस लीगल देखें' : 'Explore Less Legal'}</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-          {isHindi
-            ? 'लेस लीगल (Less Legal) लेस क्रिएशन का प्रमुख फ्लैगशिप डिजिटल उत्पाद है। यह एंड्रॉइड एप्लिकेशन वकीलों, न्यायशास्त्र के छात्रों और आम नागरिकों के लिए भारत के नवीनतम कानून (BNS, BNSS, BSA, IPC, CrPC), केस शेड्यूल डायरी और विधिक कैलकुलेटर प्रदान करता है। यद्यपि लेस लीगल हमारा मुख्य उत्पाद है, लेस क्रिएशन का दायरा व्यापक डिजिटल सुरक्षा और तकनीकी जागरूकता पहलों तक फैला हुआ है।'
-            : 'Less Legal is the premier flagship digital product engineered under the Less Creation initiative. It serves as a comprehensive legal utility app for Android—combining clean Bare Act reference tools (BNS, BNSS, BSA, IPC, CrPC), case hearing diary organization, and legal computation utilities. While Less Legal represents our signature software utility, Less Creation encompasses a broader ecosystem of digital safety awareness and technology education.'}
-        </p>
-      </section>
 
       {/* 8. SECTION: INDEPENDENCE / NON-GOVERNMENT CLARIFICATION */}
       <section className="py-2 space-y-2 relative z-10 border-t border-slate-200/80 dark:border-white/10 pt-4">

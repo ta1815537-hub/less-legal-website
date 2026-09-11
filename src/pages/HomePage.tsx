@@ -531,7 +531,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Product Body */}
             <div className="space-y-4">
               <div className="flex items-center gap-3.5">
-                <AppLogo className="w-14 h-14 shadow-md shrink-0" showShadow={false} />
+                <AppLogo className="w-14 h-14 shrink-0" showShadow={false} />
                 <div>
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
                     {t.home.flagshipTitle || "Less Legal"}
@@ -543,38 +543,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 {t.home.flagshipDesc || "An all-in-one smart workspace bringing practical legal utilities, reference tools, PDF tools and everyday productivity features together."}
               </p>
 
-              {/* Feature Chips */}
-              <div className="flex flex-wrap gap-2 pt-2">
-                {[
-                  isHindi ? "पीडीएफ टूल्स सूट" : "PDF Suite",
-                  isHindi ? "केस डायरी व प्लानर" : "Case Diary",
-                  isHindi ? "क्षेत्रफल कनवर्टर" : "Area Converter",
-                  isHindi ? "डायरेक्ट व्हाट्सएप" : "Direct WhatsApp",
-                  isHindi ? "ऑफ़लाइन लेस-शेयर" : "Offline LessShare"
-                ].map((tag, idx) => (
-                  <span key={idx} className="px-3 py-1.5 rounded-xl bg-white/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+
             </div>
 
             {/* Action Bar */}
             <div className="pt-5 border-t border-blue-200/60 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap items-center gap-3">
                 <button
-                  onClick={() => onNavigate('less-legal')}
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
-                >
-                  <span>{isHindi ? "ऐप विवरण व फीचर्स" : "Explore Less Legal"}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-
-                <button
                   onClick={() => onNavigate('download')}
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-[#131C31] hover:bg-slate-100 dark:hover:bg-[#1E293B] text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 text-xs font-bold shadow-xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
+                  className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
                 >
-                  <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <Download className="w-3.5 h-3.5 text-white" />
                   <span>{isHindi ? "APK डाउनलोड करें" : "Download APK"}</span>
                 </button>
               </div>

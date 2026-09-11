@@ -90,22 +90,10 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
           <span className="whitespace-nowrap">{t.common.backToHome}</span>
         </motion.button>
-
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400 text-xs font-bold whitespace-nowrap">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>{isHindi ? `नवीनतम संस्करण ${currentVersion}` : `Latest Release v${currentVersion}`}</span>
-          </span>
-        </div>
       </div>
 
       {/* Page Title & Hero Intro */}
-      <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-4 relative z-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs whitespace-nowrap">
-          <Sparkles className="w-3.5 h-3.5 text-blue-500" />
-          <span className="whitespace-nowrap">{isHindi ? 'आधिकारिक मोबाइल एप्लिकेशन' : 'Official Mobile Application'}</span>
-        </div>
-
+      <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3 relative z-10">
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
           {isHindi ? (
             <>
@@ -117,12 +105,6 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             </>
           )}
         </h1>
-
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed max-w-2xl mx-auto">
-          {isHindi 
-            ? 'कानूनी पेशेवरों, छात्रों और जागरूक नागरिकों के लिए एक संपूर्ण कानूनी उपयोगिता और संदर्भ उपकरण। Google Play पर सत्यापित एवं सुरक्षित।'
-            : 'The definitive all-in-one legal utility and reference suite for lawyers, students, and citizens. Verified & protected on Google Play.'}
-        </p>
       </ScrollReveal>
 
       {/* Main Luxury Download Showcase Card */}
@@ -137,16 +119,15 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
             
             {/* App Profile Header */}
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
-              {/* App Icon Container with Floating Glow */}
+              {/* App Icon Container without Background or Border */}
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="relative shrink-0"
               >
-                <div className="absolute -inset-2 bg-gradient-to-tr from-blue-600/30 via-sky-500/20 to-indigo-500/20 rounded-3xl blur-md -z-10 animate-pulse" />
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl p-1 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/15 shadow-xl flex items-center justify-center">
-                  <AppLogo className="w-full h-full rounded-xl object-contain shadow-sm" />
+                <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+                  <AppLogo className="w-full h-full object-contain" showShadow={false} />
                 </div>
-                <div className="absolute -bottom-2 -right-2 bg-blue-600 text-white p-1 rounded-full shadow-md border-2 border-white dark:border-slate-900" title="Verified App">
+                <div className="absolute bottom-0 right-0 bg-blue-600 text-white p-1 rounded-full shadow-md border-2 border-white dark:border-slate-900" title="Verified App">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
               </motion.div>
@@ -170,11 +151,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                   {SITE_CONFIG.appName} {isHindi ? 'फॉर एंड्रॉइड' : 'for Android'}
                 </h2>
 
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-                  {isHindi 
-                    ? 'न्यूनतम आवश्यकता: एंड्रॉइड 7.0 (Nougat) या उच्चतर • 100% सुरक्षित और गोपनीयता-केंद्रित' 
-                    : `Requirement: ${SITE_CONFIG.minAndroidVersion} • 100% Secure & Privacy-First`}
-                </p>
+
 
                 {/* Micro Metric Pills in single line */}
                 <div className="pt-1 flex flex-wrap items-center justify-center sm:justify-start gap-2 text-[11px] text-slate-500 dark:text-slate-400 font-semibold">
@@ -343,32 +320,7 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
 
             </div>
 
-            {/* Included Features Scrolling Marquee */}
-            <div className="pt-6 border-t border-slate-200/60 dark:border-white/10 overflow-hidden relative">
-              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 text-center sm:text-left flex items-center justify-center sm:justify-start gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                <span>{isHindi ? 'ऐप में शामिल 40+ आधुनिक टूल्स' : 'Included 40+ Legal & Digital Tools'}</span>
-              </div>
 
-              <div className="relative">
-                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-[#0F1420] to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-[#0F1420] to-transparent z-10 pointer-events-none" />
-                
-                <div className="flex overflow-hidden">
-                  <div className="flex items-center gap-2.5 w-max animate-marquee-left pause-on-hover py-1">
-                    {[...SITE_CONFIG.features.slice(0, 16), ...SITE_CONFIG.features.slice(0, 16)].map((feature, idx) => (
-                      <div 
-                        key={`dl-f1-${idx}`}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/90 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 rounded-full whitespace-nowrap shadow-2xs hover:border-blue-500/40 transition-colors"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                        <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200">{feature.title}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
 
           </div>
 
@@ -383,9 +335,6 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
               <Sparkles className="w-4 h-4 text-blue-500" />
               <span>{isHindi ? 'मुख्य विशेषताएं' : 'Core App Capabilities'}</span>
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              {isHindi ? 'हर सुविधा कानूनी काम को आसान और व्यवस्थित बनाने के लिए तैयार की गई है' : 'Engineered to accelerate your daily legal workflows and reference needs'}
-            </p>
           </div>
         </div>
 
@@ -441,10 +390,6 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                 {isHindi ? 'अनुमति और गोपनीयता गाइड' : 'Permissions & Privacy'}
               </button>
             </div>
-
-            <span className="text-[11px] font-mono text-slate-400 dark:text-slate-500 font-bold">
-              Package: com.lesslegal.app
-            </span>
           </div>
 
           {/* Tab 1: System Specs Content */}
@@ -639,9 +584,6 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
                   {isHindi ? 'आधिकारिक ऐप नीतियां और डेटा प्रबंधन' : 'Official App Policies & Data Management'}
                 </div>
               </div>
-              <span className="text-xs font-mono text-slate-500 dark:text-slate-400 font-bold bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg">
-                com.lesslegal.app
-              </span>
             </div>
             
             <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-slate-700 dark:text-slate-300">

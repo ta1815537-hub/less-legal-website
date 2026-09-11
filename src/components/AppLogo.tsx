@@ -16,14 +16,14 @@ export const AppLogo: React.FC<AppLogoProps> = ({
 
   return (
     <div 
-      className={`relative flex items-center justify-center shrink-0 rounded-2xl ${showShadow ? 'shadow-lg shadow-blue-500/20' : ''} ${className}`}
+      className={`relative flex items-center justify-center shrink-0 rounded-2xl overflow-hidden ${showShadow ? 'shadow-lg shadow-blue-500/20' : ''} ${className}`}
       style={style}
     >
       {!imgErr ? (
         <img
           src="/app_logo_512x512-3.png"
           alt="Less Legal App Logo"
-          className="w-full h-full object-cover rounded-2xl select-none"
+          className="w-full h-full object-cover select-none scale-[1.15]"
           onError={() => setImgErr(true)}
         />
       ) : (
