@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { PageRoute, ArticleSummary } from '../types';
 import { 
   Search, Tag, Clock, Calendar, Sparkles, BookOpen, 
-  ChevronRight, RefreshCw, X, ArrowRight, PenTool 
+  ChevronRight, RefreshCw, X 
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { articleService, DEFAULT_CATEGORIES } from '../services/articleService';
@@ -22,16 +22,13 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // Articles & Loading State
   const [articles, setArticles] = useState<ArticleSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Filters State
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory || 'ALL');
   const [selectedTag, setSelectedTag] = useState<string>(initialTag || 'ALL');
 
-  // Debounce search query to prevent unnecessary computations
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -40,7 +37,6 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Load articles on mount & filter changes with live updates
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -59,7 +55,6 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
 
     loadData();
 
-    // Subscribe to live changes
     const unsubscribe = articleService.subscribeToPublicSummaries(() => {
       loadData();
     });
@@ -70,7 +65,6 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
     };
   }, [selectedCategory, selectedTag, debouncedSearch]);
 
-  // Extract all unique tags
   const allTags = useMemo(() => {
     const set = new Set<string>();
     articles.forEach(a => {
@@ -79,7 +73,6 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
     return Array.from(set);
   }, [articles]);
 
-  // Categorize Featured vs Regular Articles
   const featuredArticle = useMemo(() => {
     return articles.find(a => a.isFeatured) || articles[0];
   }, [articles]);
@@ -91,7 +84,6 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
     return articles.filter(a => a.id !== featuredArticle?.id);
   }, [articles, featuredArticle, selectedCategory, debouncedSearch, selectedTag]);
 
-  // Format Display Date cleanly
   const formatArticleDate = (isoString?: string) => {
     if (!isoString) return '';
     try {
@@ -107,338 +99,248 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
   };
 
   return (
-    <div className="w-full text-slate-900 dark:text-[#F5F2EE] transition-colors duration-200 pb-4 sm:pb-6">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 space-y-8">
       
-      {/* COMPACT EDITORIAL HEADER */}
-      <header className="border-b border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-[#0E131F]/90 backdrop-blur-md sticky top-14 z-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
-          
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400"></span>
-                <span className="text-[11px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">
-                  {isHindi ? "संपादकीय प्रकाशन" : "Less Creation Articles"}
-                </span>
-              </div>
-              <h1 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight mt-0.5">
-                {isHindi 
-                  ? "तकनीक, डिजिटल सुरक्षा और कानूनी जागरूकता" 
-                  : "Technology, Digital Safety & Legal Literacy"}
-              </h1>
-            </div>
-
-            {/* Compact Search Bar */}
-            <div className="relative w-full sm:w-72 md:w-80">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={isHindi ? "लेख खोजें..." : "Search articles, tags, topics..."}
-                className="w-full pl-9 pr-8 py-1.5 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white p-0.5"
-                  aria-label="Clear search"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
+      {/* Editorial Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 dark:border-white/10 pb-6">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
+            {isHindi ? "संपादकीय एवं ज्ञानकोष" : "EDITORIAL & ESSAYS"}
           </div>
+          <h1 className="text-2xl sm:text-4xl font-bold text-[#111016] dark:text-white tracking-tight mt-1">
+            {isHindi ? "तकनीक, सुरक्षा व कानून" : "Technology, Safety & Law"}
+          </h1>
+          <p className="text-xs sm:text-sm text-stone-500 mt-1">
+            {isHindi 
+              ? "डिजिटल सुरक्षा, साइबर फ्रॉड व कानूनी साक्षरता पर विश्लेषण" 
+              : "Practical insights on technology, digital sovereignty, cyber defense and Indian law"}
+          </p>
+        </div>
 
-          {/* HORIZONTAL CATEGORY SCROLL BAR */}
-          <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-white/5 flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5">
+        {/* Search */}
+        <div className="relative w-full sm:w-72">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={isHindi ? "लेख खोजें..." : "Search articles, topics..."}
+            className="w-full pl-8 pr-7 py-2 rounded-lg bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs text-[#111016] dark:text-white placeholder-stone-400 focus:outline-none focus:border-[#16A34A] dark:focus:border-[#22C55E]"
+          />
+          {searchQuery && (
             <button
-              onClick={() => setSelectedCategory('ALL')}
-              className={`px-3 py-1 rounded-md text-xs font-bold transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
-                selectedCategory === 'ALL'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10'
+              onClick={() => setSearchQuery('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-0.5"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Category Tabs */}
+      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+        <button
+          onClick={() => setSelectedCategory('ALL')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
+            selectedCategory === 'ALL'
+              ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
+              : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
+          }`}
+        >
+          {isHindi ? "सभी लेख" : "All Articles"}
+        </button>
+
+        {DEFAULT_CATEGORIES.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setSelectedCategory(cat.name)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
+              selectedCategory.toLowerCase() === cat.name.toLowerCase()
+                ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
+                : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
+            }`}
+          >
+            {cat.name}
+          </button>
+        ))}
+
+        {(selectedCategory !== 'ALL' || selectedTag !== 'ALL' || searchQuery) && (
+          <button
+            onClick={() => {
+              setSelectedCategory('ALL');
+              setSelectedTag('ALL');
+              setSearchQuery('');
+            }}
+            className="ml-auto text-xs font-bold text-[#16A34A] dark:text-[#22C55E] hover:underline flex items-center gap-1 whitespace-nowrap shrink-0 pl-2 cursor-pointer"
+          >
+            <RefreshCw className="w-3 h-3" />
+            <span>{isHindi ? "रीसेट" : "Reset"}</span>
+          </button>
+        )}
+      </div>
+
+      {/* Tag Filter Pills */}
+      {allTags.length > 0 && (
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+          <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider flex items-center gap-1 shrink-0 mr-1">
+            <Tag className="w-3 h-3" />
+            <span>{isHindi ? "टैग्स:" : "Tags:"}</span>
+          </span>
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(selectedTag === tag ? 'ALL' : tag)}
+              className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors whitespace-nowrap cursor-pointer shrink-0 border ${
+                selectedTag === tag
+                  ? 'bg-[#16A34A] text-white border-[#16A34A]'
+                  : 'bg-white dark:bg-[#151720] border-stone-200 dark:border-white/10 text-stone-600 dark:text-stone-400 hover:border-stone-400'
               }`}
             >
-              {isHindi ? "सभी (All)" : "All Articles"}
+              #{tag}
             </button>
-
-            {DEFAULT_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.name)}
-                className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
-                  selectedCategory.toLowerCase() === cat.name.toLowerCase()
-                    ? 'bg-blue-600 text-white font-bold'
-                    : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10'
-                }`}
-              >
-                {cat.name}
-              </button>
-            ))}
-
-            {(selectedCategory !== 'ALL' || selectedTag !== 'ALL' || searchQuery) && (
-              <button
-                onClick={() => {
-                  setSelectedCategory('ALL');
-                  setSelectedTag('ALL');
-                  setSearchQuery('');
-                }}
-                className="ml-auto text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 whitespace-nowrap shrink-0 pl-2 cursor-pointer"
-              >
-                <RefreshCw className="w-3 h-3" />
-                <span>{isHindi ? "रीसेट" : "Reset"}</span>
-              </button>
-            )}
-          </div>
-
+          ))}
         </div>
-      </header>
+      )}
 
-      {/* MAIN EDITORIAL CONTENT CONTAINER */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-
-        {/* Tag Pills (if selected or available) */}
-        {allTags.length > 0 && (
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
-            <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider flex items-center gap-1 shrink-0 mr-1">
-              <Tag className="w-3 h-3" />
-              <span>{isHindi ? "टैग्स:" : "Tags:"}</span>
-            </span>
-            {allTags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setSelectedTag(selectedTag === tag ? 'ALL' : tag)}
-                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
-                  selectedTag === tag
-                    ? 'bg-blue-600 text-white font-bold'
-                    : 'bg-slate-200/60 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                #{tag}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* LOADING INDICATOR */}
-        {loading ? (
-          <div className="py-16 text-center space-y-2">
-            <RefreshCw className="w-5 h-5 text-blue-600 animate-spin mx-auto" />
-            <p className="text-xs text-slate-500 font-medium">
-              {isHindi ? "संपादकीय लेख लोड हो रहे हैं..." : "Loading editorial articles..."}
-            </p>
-          </div>
-        ) : articles.length === 0 ? (
+      {/* Articles Content */}
+      {loading ? (
+        <div className="py-20 text-center space-y-2">
+          <RefreshCw className="w-5 h-5 text-[#16A34A] dark:text-[#22C55E] animate-spin mx-auto" />
+          <p className="text-xs text-stone-500 font-medium">
+            {isHindi ? "संपादकीय लेख लोड हो रहे हैं..." : "Loading articles..."}
+          </p>
+        </div>
+      ) : articles.length === 0 ? (
+        <div className="py-16 px-6 text-center max-w-md mx-auto border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] space-y-3">
+          <BookOpen className="w-8 h-8 text-stone-400 mx-auto" />
+          <h3 className="text-sm font-bold text-[#111016] dark:text-white">
+            {isHindi ? "कोई लेख उपलब्ध नहीं है" : "No articles found"}
+          </h3>
+          <p className="text-xs text-stone-500 leading-relaxed">
+            {isHindi 
+              ? "कृपया अपने खोज फ़िल्टर बदलें या बाद में पुनः देखें।" 
+              : "Try adjusting your search filters or check back soon."}
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-8">
           
-          /* COMPACT EDITORIAL EMPTY STATE */
-          <div className="py-12 px-6 text-center max-w-lg mx-auto border border-dashed border-slate-300 dark:border-white/10 rounded-xl space-y-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto">
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-              {isHindi ? "कोई लेख उपलब्ध नहीं है" : "Articles are coming soon"}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-[#B8B3AF] leading-relaxed">
-              {isHindi 
-                ? "लेस क्रिएशन जल्द ही तकनीक, डिजिटल सुरक्षा, साइबर फ्रॉड व नागरिक अधिकारों पर व्यावहारिक लेख प्रकाशित करेगा।" 
-                : "Less Creation will publish practical insights on technology, digital safety, fraud awareness and legal literacy."}
-            </p>
-            {(selectedCategory !== 'ALL' || selectedTag !== 'ALL' || searchQuery) && (
-              <button
-                onClick={() => {
-                  setSelectedCategory('ALL');
-                  setSelectedTag('ALL');
-                  setSearchQuery('');
-                }}
-                className="mt-2 px-3 py-1.5 rounded-md bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors cursor-pointer inline-flex items-center gap-1"
-              >
-                <span>{isHindi ? "सभी लेख देखें" : "View All Articles"}</span>
-              </button>
-            )}
-          </div>
-
-        ) : (
-
-          <div className="space-y-6">
-
-            {/* FEATURED ARTICLE (COMPACT EDITORIAL HERO) */}
-            {featuredArticle && selectedCategory === 'ALL' && !debouncedSearch && selectedTag === 'ALL' && (
-              <article 
-                onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug })}
-                className="group border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-[#0E131F] p-4 sm:p-5 hover:border-blue-500/40 dark:hover:border-blue-400/40 transition-all cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-5 items-center"
-              >
-                <div className="md:col-span-7 space-y-2.5">
-                  
-                  {/* Top Metadata with prominent Date */}
-                  <div className="flex flex-wrap items-center gap-2 text-xs">
-                    <span className="px-2 py-0.5 rounded bg-blue-600 text-white text-[11px] font-bold">
-                      {featuredArticle.category}
-                    </span>
-                    <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[10.5px] font-bold flex items-center gap-1">
-                      <Sparkles className="w-3 h-3" />
-                      <span>{isHindi ? "मुख्य लेख" : "Featured"}</span>
-                    </span>
-                    <span className="text-slate-400 dark:text-slate-500">•</span>
-                    <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-blue-500" />
-                      {formatArticleDate(featuredArticle.publishedAt || featuredArticle.createdAt)}
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h2 className="text-base sm:text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
-                    {featuredArticle.title}
-                  </h2>
-
-                  {/* Excerpt */}
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF] line-clamp-2 sm:line-clamp-3 leading-relaxed">
-                    {featuredArticle.excerpt}
-                  </p>
-
-                  {/* Bottom Attribution */}
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-white/5 text-xs text-slate-500 dark:text-slate-400 pointer-events-none select-none">
-                    <div className="flex items-center gap-2 pointer-events-none select-none">
-                      <div className="w-5 h-5 rounded-md bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/25 flex items-center justify-center shrink-0 pointer-events-none select-none">
-                        <BookOpen className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300 text-xs pointer-events-none select-none flex items-center gap-1">
-                        By Less Team
-                        <PenTool className="w-2.5 h-2.5 text-blue-500/70" />
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-3 text-[11px] font-mono pointer-events-none select-none">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-blue-500" />
-                        {featuredArticle.readingTime}
-                      </span>
-                      <span className="text-blue-600 dark:text-blue-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
-                        <span>Read</span>
-                        <ChevronRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </div>
-
+          {/* Featured Article */}
+          {featuredArticle && selectedCategory === 'ALL' && !debouncedSearch && selectedTag === 'ALL' && (
+            <article 
+              onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug })}
+              className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] p-6 sm:p-8 hover:border-[#16A34A]/60 transition-colors cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-2xs"
+            >
+              <div className="md:col-span-7 space-y-3">
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="px-2 py-0.5 rounded bg-stone-100 dark:bg-white/10 text-stone-800 dark:text-stone-200 font-bold uppercase tracking-wider text-[10px]">
+                    {featuredArticle.category}
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/40 text-[#16A34A] dark:text-[#22C55E] text-[10px] font-bold flex items-center gap-1">
+                    <Sparkles className="w-2.5 h-2.5" />
+                    <span>{isHindi ? "विशेष" : "Featured"}</span>
+                  </span>
+                  <span className="text-stone-300 dark:text-stone-700">•</span>
+                  <span className="text-xs text-stone-500">
+                    {formatArticleDate(featuredArticle.publishedAt || featuredArticle.createdAt)}
+                  </span>
                 </div>
 
-                {/* Featured Thumbnail */}
-                <div className="md:col-span-5 aspect-video rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
-                  {featuredArticle.featuredImage ? (
-                    <img 
-                      src={getDirectCloudImageUrl(featuredArticle.featuredImage)} 
-                      alt={featuredArticle.title} 
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900 group-hover:scale-102 transition-transform duration-300" 
-                      loading="eager"
-                    />
-                  ) : (
-                    <div className="text-center p-4 space-y-1">
-                      <BookOpen className="w-8 h-8 text-blue-500/40 mx-auto" />
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Less Creation Editorial</span>
-                    </div>
-                  )}
+                <h2 className="text-xl sm:text-2xl font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors leading-snug">
+                  {featuredArticle.title}
+                </h2>
+
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 line-clamp-3 leading-relaxed">
+                  {featuredArticle.excerpt}
+                </p>
+
+                <div className="pt-2 flex items-center justify-between text-xs text-stone-500 border-t border-stone-100 dark:border-white/5">
+                  <span className="font-semibold text-stone-700 dark:text-stone-300">By Less Team</span>
+                  <span className="flex items-center gap-1 font-mono">
+                    <Clock className="w-3 h-3 text-[#16A34A] dark:text-[#22C55E]" />
+                    {featuredArticle.readingTime}
+                  </span>
                 </div>
-
-              </article>
-            )}
-
-            {/* LATEST ARTICLES LIST (Mobile: Compact Editorial Rows | Desktop: 2-Column Grid) */}
-            <div className="space-y-3">
-              
-              <div className="flex items-center justify-between pb-1 border-b border-slate-200/80 dark:border-white/10">
-                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-blue-600" />
-                  <span>{isHindi ? "हालिया संपादकीय लेख" : "Latest Articles"}</span>
-                </h3>
-                <span className="text-[11px] font-mono text-slate-400">
-                  {regularArticles.length} {isHindi ? "लेख" : "Articles"}
-                </span>
               </div>
 
-              {/* Mobile-first editorial list with high content density */}
-              <div className="divide-y divide-slate-200/70 dark:divide-white/10 border-y border-slate-200/70 dark:border-white/10 bg-white dark:bg-[#0E131F] rounded-xl overflow-hidden">
-                {regularArticles.map((article) => (
-                  <article
-                    key={article.id}
-                    onClick={() => onNavigate('article-detail', { slug: article.slug })}
-                    className="group p-3.5 sm:p-4 hover:bg-slate-50/80 dark:hover:bg-white/5 transition-colors cursor-pointer flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4"
-                  >
-                    
-                    {/* Optional Thumbnail / Category Badge */}
-                    <div className="w-full sm:w-36 aspect-video shrink-0 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
+              <div className="md:col-span-5 aspect-video rounded-xl bg-stone-100 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 overflow-hidden flex items-center justify-center">
+                {featuredArticle.featuredImage ? (
+                  <img 
+                    src={getDirectCloudImageUrl(featuredArticle.featuredImage)} 
+                    alt={featuredArticle.title} 
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" 
+                  />
+                ) : (
+                  <div className="text-center p-4">
+                    <BookOpen className="w-8 h-8 text-stone-400 mx-auto" />
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-stone-400 mt-2 block">Less Creation</span>
+                  </div>
+                )}
+              </div>
+            </article>
+          )}
+
+          {/* Regular Articles Grid */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-stone-500">
+              {isHindi ? "सभी प्रकाशित लेख" : "Articles Index"} ({regularArticles.length})
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {regularArticles.map((article) => (
+                <article
+                  key={article.id}
+                  onClick={() => onNavigate('article-detail', { slug: article.slug })}
+                  className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] p-5 hover:border-[#16A34A]/60 transition-colors cursor-pointer flex flex-col justify-between shadow-2xs space-y-4"
+                >
+                  <div className="space-y-3">
+                    <div className="w-full aspect-video rounded-xl bg-stone-100 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 overflow-hidden flex items-center justify-center">
                       {article.featuredImage ? (
                         <img 
                           src={getDirectCloudImageUrl(article.featuredImage)} 
                           alt={article.title} 
                           referrerPolicy="no-referrer"
-                          className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900 group-hover:scale-105 transition-transform" 
-                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" 
                         />
                       ) : (
-                        <div className="p-2 text-center">
-                          <span className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-                            {article.category}
-                          </span>
-                        </div>
+                        <BookOpen className="w-6 h-6 text-stone-400" />
                       )}
                     </div>
 
-                    {/* Article Content Details */}
-                    <div className="flex-1 min-w-0 space-y-1">
-                      
-                      {/* Category & Date Row */}
-                      <div className="flex items-center gap-2 text-[11px]">
-                        <span className="font-bold text-blue-600 dark:text-blue-400">
-                          {article.category}
-                        </span>
-                        <span className="text-slate-400 dark:text-slate-500">•</span>
-                        <span className="font-mono text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                          <Calendar className="w-3 h-3 text-slate-400" />
-                          {formatArticleDate(article.publishedAt || article.createdAt)}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug line-clamp-2">
-                        {article.title}
-                      </h4>
-
-                      {/* Excerpt */}
-                      <p className="text-xs text-slate-600 dark:text-[#B8B3AF] line-clamp-1 sm:line-clamp-2 leading-relaxed">
-                        {article.excerpt}
-                      </p>
-
-                      {/* Metadata Attribution Bar */}
-                      <div className="flex items-center gap-2.5 pt-1 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                        <span className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
-                          <BookOpen className="w-3 h-3 text-blue-500" />
-                          By Less Team
-                        </span>
-                        <span>•</span>
-                        <span className="font-mono flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-blue-500" />
-                          {article.readingTime}
-                        </span>
-                      </div>
-
+                    <div className="flex items-center gap-2 text-[11px]">
+                      <span className="font-bold text-[#16A34A] dark:text-[#22C55E]">{article.category}</span>
+                      <span className="text-stone-300 dark:text-stone-700">•</span>
+                      <span className="text-stone-500 font-mono">{formatArticleDate(article.publishedAt || article.createdAt)}</span>
                     </div>
 
-                    {/* Right Arrow Icon */}
-                    <div className="hidden sm:flex items-center justify-center pl-2 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors shrink-0">
-                      <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
+                    <h4 className="text-base font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors line-clamp-2 leading-snug">
+                      {article.title}
+                    </h4>
 
-                  </article>
-                ))}
-              </div>
+                    <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-2 leading-relaxed">
+                      {article.excerpt}
+                    </p>
+                  </div>
 
+                  <div className="pt-3 border-t border-stone-100 dark:border-white/5 flex items-center justify-between text-xs text-stone-500">
+                    <span className="font-mono flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-[#16A34A] dark:text-[#22C55E]" />
+                      {article.readingTime}
+                    </span>
+                    <span className="text-[#16A34A] dark:text-[#22C55E] font-semibold flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+                      <span>Read</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </article>
+              ))}
             </div>
-
           </div>
-        )}
 
-      </main>
+        </div>
+      )}
 
     </div>
   );

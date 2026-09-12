@@ -3,7 +3,6 @@ import {
   TOOLS_REGISTRY, 
   TOOL_CATEGORIES, 
   getToolBySlug, 
-  POPULAR_TOOLS,
   TOTAL_TOOLS_COUNT
 } from '../tools/toolRegistry';
 import { ToolDefinition, ToolCategory } from '../types';
@@ -11,8 +10,7 @@ import { ToolCard } from '../components/tools/ToolCard';
 import { ToolDispatcher } from '../components/tools/ToolDispatcher';
 import { GlobalSearchModal } from '../components/tools/GlobalSearchModal';
 import { 
-  Search, Sparkles, ShieldCheck, Zap, Laptop, 
-  Layers, ArrowRight, Heart, Filter, SlidersHorizontal, Clock 
+  Search, Sparkles, Heart, Clock 
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -23,12 +21,10 @@ interface ToolsDirectoryPageProps {
 
 export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
   initialToolSlug,
-  onNavigate
 }) => {
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // Check URL query param for initial tool
   const getInitialActiveTool = (): ToolDefinition | null => {
     const params = new URLSearchParams(window.location.search);
     const slugFromQuery = params.get('tool') || initialToolSlug;
@@ -55,7 +51,6 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
 
   const [recentSlugs, setRecentSlugs] = useState<string[]>([]);
 
-  // Load recently used tools from localStorage
   useEffect(() => {
     try {
       const stored = localStorage.getItem('less_creation_recent_tools');
@@ -65,7 +60,6 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
     } catch {}
   }, []);
 
-  // Keyboard shortcut Ctrl+K or / to open search modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -80,12 +74,10 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Sync URL when active tool changes
   const handleSelectTool = (tool: ToolDefinition) => {
     setActiveTool(tool);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Save to recently used list
     try {
       const updated = [tool.slug, ...recentSlugs.filter(s => s !== tool.slug)].slice(0, 6);
       localStorage.setItem('less_creation_recent_tools', JSON.stringify(updated));
@@ -107,7 +99,6 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
       window.history.pushState({}, '', url.toString());
     } catch {}
     
-    // Reload recents when back in directory
     try {
       const stored = localStorage.getItem('less_creation_recent_tools');
       if (stored) {
@@ -126,7 +117,6 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
     });
   };
 
-  // Filtered and Sorted tools
   const filteredTools = useMemo(() => {
     let result = TOOLS_REGISTRY.filter(tool => {
       if (selectedCategory !== 'all' && tool.category !== selectedCategory) {
@@ -147,7 +137,6 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
       );
     });
 
-    // Apply sorting logic
     return [...result].sort((a, b) => {
       if (sortBy === 'popular') {
         const aPop = a.isPopular ? 1 : 0;
@@ -158,14 +147,12 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
         const bNew = b.isNew ? 1 : 0;
         if (bNew !== aNew) return bNew - aNew;
       }
-      // Fallback to Alphabetical
       const nameA = (isHindi && a.nameHi) ? a.nameHi : a.name;
       const nameB = (isHindi && b.nameHi) ? b.nameHi : b.name;
       return nameA.localeCompare(nameB);
     });
   }, [selectedCategory, searchQuery, favoritesOnly, favoriteSlugs, sortBy, isHindi]);
 
-  // If a specific tool is active, render the tool dispatcher
   if (activeTool) {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -179,37 +166,42 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-5 pb-32 sm:pb-40 space-y-3.5 sm:space-y-4">
-      {/* 1. Integrated Search & Header Bar */}
-      <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-        {/* Search Input Box */}
-        <div
-          onClick={() => setIsSearchModalOpen(true)}
-          className="relative flex-1 flex items-center justify-between p-2.5 sm:p-3 rounded-2xl bg-white dark:bg-[#121622] border border-slate-200/90 dark:border-white/10 shadow-2xs hover:border-blue-500/60 transition-all cursor-pointer group"
-        >
-          <div className="flex items-center gap-2.5 w-full">
-            <Search className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
-            <span className="text-xs text-slate-400 font-medium truncate">
-              {isHindi ? `सभी ${TOTAL_TOOLS_COUNT} टूल्स में खोजें (PDF, QR, EMI)...` : `Search across all ${TOTAL_TOOLS_COUNT} utilities (e.g. PDF, QR, EMI)...`}
-            </span>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 space-y-6">
+      
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 dark:border-white/10 pb-4">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
+            {isHindi ? "डिजिटल उपयोगिताएं" : "DIGITAL SUITE"}
           </div>
-          <span className="text-[10px] font-black px-2 py-0.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-500/20 whitespace-nowrap shrink-0">
-            Ctrl+K
-          </span>
+          <h1 className="text-2xl sm:text-4xl font-bold text-[#111016] dark:text-white tracking-tight mt-1">
+            {isHindi ? 'लेस क्रिएशन टूल्स डायरेक्टरी' : 'Less Creation Tools Directory'}
+          </h1>
+          <p className="text-xs sm:text-sm text-stone-500 mt-1">
+            {isHindi ? `${TOTAL_TOOLS_COUNT} तेज, सुरक्षित व ऑन-डिवाइस टूल्स का संपूर्ण संग्रह` : `Complete suite of ${TOTAL_TOOLS_COUNT} high-speed, local utilities`}
+          </p>
         </div>
 
-        {/* Live Active Count Badge */}
-        <div className="px-3 py-2.5 rounded-2xl bg-blue-600 text-white font-extrabold text-xs flex items-center gap-1.5 shrink-0 shadow-2xs">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span className="whitespace-nowrap">{filteredTools.length} {isHindi ? 'टूल्स' : 'Tools'}</span>
+        {/* Search Modal Trigger */}
+        <div
+          onClick={() => setIsSearchModalOpen(true)}
+          className="flex items-center justify-between px-3.5 py-2 rounded-xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs text-stone-400 hover:border-stone-400 transition-colors cursor-pointer w-full sm:w-72 shadow-2xs"
+        >
+          <div className="flex items-center gap-2">
+            <Search className="w-3.5 h-3.5" />
+            <span>{isHindi ? 'टूल्स खोजें...' : 'Search tools...'}</span>
+          </div>
+          <kbd className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-white/10 text-[10px] font-mono text-stone-500">
+            ⌘K
+          </kbd>
         </div>
       </div>
 
-      {/* 2. Recently Used Tools Ribbon (Micro Horizontal Row) */}
+      {/* Recently Used Tools Ribbon */}
       {recentSlugs.length > 0 && (
-        <div className="flex items-center gap-2 py-0.5 border-b border-slate-100 dark:border-white/5 pb-2">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1 shrink-0 whitespace-nowrap">
-            <Clock className="w-3 h-3 text-blue-500" />
+        <div className="flex items-center gap-2 py-1">
+          <span className="text-[11px] font-bold uppercase text-stone-400 flex items-center gap-1 shrink-0">
+            <Clock className="w-3 h-3 text-[#16A34A] dark:text-[#22C55E]" />
             <span>{isHindi ? 'हाल ही में:' : 'Recent:'}</span>
           </span>
 
@@ -221,7 +213,7 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
                 <button
                   key={tool.id}
                   onClick={() => handleSelectTool(tool)}
-                  className="px-2.5 py-1 rounded-xl text-[11px] font-bold bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all cursor-pointer whitespace-nowrap shrink-0"
+                  className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-stone-700 dark:text-stone-300 hover:border-[#16A34A] dark:hover:border-[#22C55E] hover:text-[#16A34A] dark:hover:text-[#22C55E] transition-colors cursor-pointer whitespace-nowrap shrink-0"
                 >
                   {isHindi && tool.nameHi ? tool.nameHi : tool.name}
                 </button>
@@ -235,23 +227,22 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
                 setRecentSlugs([]);
               } catch {}
             }}
-            className="text-[10px] font-bold text-red-500 hover:text-red-600 transition-colors cursor-pointer shrink-0 ml-auto whitespace-nowrap"
+            className="text-[11px] font-bold text-stone-400 hover:text-red-500 transition-colors cursor-pointer shrink-0 ml-auto whitespace-nowrap"
           >
             {isHindi ? 'साफ करें' : 'Clear'}
           </button>
         </div>
       )}
 
-      {/* 3. Single-Line Category Filter Tabs & Controls */}
-      <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-1 pb-1.5 border-b border-slate-200/80 dark:border-white/10">
-        {/* Horizontal Category Chips */}
-        <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
+      {/* Category Filter Tabs & Sorting */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full sm:w-auto pb-1">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
               selectedCategory === 'all' && !favoritesOnly
-                ? 'bg-blue-600 text-white shadow-2xs'
-                : 'bg-white dark:bg-[#121622] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-50'
+                ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
+                : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
             }`}
           >
             {isHindi ? 'सभी टूल्स' : 'All Tools'} ({TOOLS_REGISTRY.length})
@@ -263,42 +254,37 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
               <button
                 key={cat.id}
                 onClick={() => { setSelectedCategory(cat.id); setFavoritesOnly(false); }}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border flex items-center gap-1.5 ${
                   selectedCategory === cat.id && !favoritesOnly
-                    ? 'bg-blue-600 text-white shadow-2xs'
-                    : 'bg-white dark:bg-[#121622] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-50'
+                    ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
+                    : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
                 }`}
               >
                 <span>{isHindi ? cat.labelHi : cat.label}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-md font-extrabold ${
-                  selectedCategory === cat.id && !favoritesOnly ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-white/10 text-slate-500'
-                }`}>
-                  {count}
-                </span>
+                <span className="text-[10px] font-bold opacity-60">({count})</span>
               </button>
             );
           })}
 
-          {/* Favorites toggle */}
           <button
             onClick={() => setFavoritesOnly(!favoritesOnly)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 shrink-0 cursor-pointer whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border flex items-center gap-1.5 ${
               favoritesOnly
-                ? 'bg-pink-500 text-white border-pink-500 shadow-2xs'
-                : 'bg-white dark:bg-[#121622] text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-slate-300'
+                ? 'bg-red-500 text-white border-red-500'
+                : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
             }`}
           >
-            <Heart className={`w-3.5 h-3.5 ${favoritesOnly ? 'fill-white' : 'text-pink-500'}`} />
+            <Heart className={`w-3.5 h-3.5 ${favoritesOnly ? 'fill-white' : 'text-red-500'}`} />
             <span>{isHindi ? 'पसंदीदा' : 'Favorites'} ({favoriteSlugs.length})</span>
           </button>
         </div>
 
-        {/* Sorting dropdown */}
-        <div className="flex items-center gap-1.5 shrink-0 ml-2 whitespace-nowrap">
+        {/* Sort Select */}
+        <div className="shrink-0 self-end sm:self-auto">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#121622] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-blue-500 cursor-pointer whitespace-nowrap"
+            className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs font-semibold text-stone-700 dark:text-stone-300 focus:outline-none focus:border-[#16A34A] cursor-pointer"
           >
             <option value="popular">{isHindi ? 'लोकप्रिय' : 'Popular First'}</option>
             <option value="newest">{isHindi ? 'नवीनतम' : 'Newest First'}</option>
@@ -307,9 +293,9 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
         </div>
       </div>
 
-      {/* 4. High-Density Compact Grid of All Tools */}
+      {/* High-Density Grid of Tools */}
       {filteredTools.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 sm:gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {filteredTools.map((tool) => (
             <ToolCard
               key={tool.id}
@@ -321,19 +307,16 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
           ))}
         </div>
       ) : (
-        <div className="py-12 text-center space-y-2 bg-white dark:bg-[#121622] rounded-2xl border border-slate-200 dark:border-white/10">
-          <Search className="w-8 h-8 text-slate-400 mx-auto" />
-          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
+        <div className="py-16 text-center space-y-3 bg-white dark:bg-[#151720] rounded-2xl border border-stone-200 dark:border-white/10">
+          <Search className="w-8 h-8 text-stone-400 mx-auto" />
+          <h3 className="text-sm font-bold text-[#111016] dark:text-white">
             {isHindi ? 'कोई टूल नहीं मिला' : 'No matching tools found'}
           </h3>
-          <p className="text-xs text-slate-500 max-w-xs mx-auto">
-            {isHindi ? 'कृपया अन्य शब्द से खोजें या फ़िल्टर बदलें।' : 'Try searching with different keywords or reset filters.'}
-          </p>
           <button
             onClick={() => { setSelectedCategory('all'); setSearchQuery(''); setFavoritesOnly(false); }}
-            className="px-3.5 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-[#111016] text-white dark:bg-white dark:text-[#111016] text-xs font-bold hover:opacity-90 cursor-pointer"
           >
-            {isHindi ? 'रीसेट करें' : 'Reset Filters'}
+            {isHindi ? 'फ़िल्टर रीसेट करें' : 'Reset Filters'}
           </button>
         </div>
       )}

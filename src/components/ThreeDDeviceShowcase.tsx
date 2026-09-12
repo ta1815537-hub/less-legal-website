@@ -29,11 +29,11 @@ export const ThreeDDeviceShowcase: React.FC<ThreeDDeviceShowcaseProps> = ({
           onClick={() => setShowcaseTab('aiRobot')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black transition-all cursor-pointer ${
             showcaseTab === 'aiRobot'
-              ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 text-white shadow-md'
+              ? 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-green-500 text-white shadow-md'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
-          <Bot className="w-3.5 h-3.5 text-cyan-300" />
+          <Bot className="w-3.5 h-3.5 text-emerald-300" />
           <span>{isHindi ? 'एआई मॉडल' : 'AI Model'}</span>
         </button>
 
@@ -42,7 +42,7 @@ export const ThreeDDeviceShowcase: React.FC<ThreeDDeviceShowcaseProps> = ({
           onClick={() => setShowcaseTab('appScreen')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black transition-all cursor-pointer ${
             showcaseTab === 'appScreen'
-              ? 'bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 text-white shadow-md'
+              ? 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-green-500 text-white shadow-md'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
@@ -53,7 +53,7 @@ export const ThreeDDeviceShowcase: React.FC<ThreeDDeviceShowcaseProps> = ({
 
       {/* Ambient Backlight */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10 overflow-hidden">
-        <div className="w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] rounded-full bg-gradient-to-tr from-blue-500/15 via-cyan-400/10 to-transparent dark:from-blue-600/20 dark:via-cyan-900/15 to-transparent blur-[50px] sm:blur-[70px] pointer-events-none" />
+        <div className="w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] rounded-full bg-gradient-to-tr from-emerald-500/15 via-green-400/10 to-transparent dark:from-emerald-600/20 dark:via-green-900/15 to-transparent blur-[50px] sm:blur-[70px] pointer-events-none" />
       </div>
 
       {/* Composite Showcase Layout */}

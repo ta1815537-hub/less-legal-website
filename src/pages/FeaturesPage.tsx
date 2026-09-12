@@ -220,19 +220,19 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
     switch (color) {
       case 'red':
         return {
-          iconBg: 'bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400',
-          badgeBg: 'bg-blue-600 text-white',
-          catBg: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200/70',
-          btnBg: 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 group-hover:bg-blue-600 group-hover:text-white',
-          hoverBorder: 'hover:border-blue-200 dark:hover:border-blue-800/40',
+          iconBg: 'bg-emerald-100 dark:bg-emerald-950/40 text-[#16A34A] dark:text-[#22C55E]',
+          badgeBg: 'bg-[#16A34A] text-white',
+          catBg: 'bg-emerald-50 dark:bg-emerald-950/30 text-[#16A34A] dark:text-[#22C55E] border-emerald-200/70',
+          btnBg: 'bg-emerald-100 dark:bg-emerald-900/40 text-[#16A34A] dark:text-[#22C55E] group-hover:bg-[#16A34A] group-hover:text-white',
+          hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-800/40',
         };
       case 'blue':
         return {
-          iconBg: 'bg-blue-100 dark:bg-blue-950/40 text-[#2563EB]',
-          badgeBg: 'bg-blue-600 text-white',
-          catBg: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200/70',
-          btnBg: 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 group-hover:bg-[#2563EB] group-hover:text-white',
-          hoverBorder: 'hover:border-blue-200 dark:hover:border-blue-800/40',
+          iconBg: 'bg-stone-100 dark:bg-white/10 text-[#111016] dark:text-white',
+          badgeBg: 'bg-[#111016] text-white',
+          catBg: 'bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300 border-stone-200/70',
+          btnBg: 'bg-stone-100 dark:bg-white/10 text-stone-800 dark:text-stone-200 group-hover:bg-[#16A34A] group-hover:text-white',
+          hoverBorder: 'hover:border-stone-300 dark:hover:border-stone-700',
         };
       case 'emerald':
         return {
@@ -308,14 +308,14 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       {/* Top Breadcrumb */}
       <div className="flex items-center justify-between relative z-10">
         <button
-          onClick={() => onNavigate('less-legal')}
-          className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer bg-white/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
+          onClick={() => onNavigate('tools')}
+          className="text-xs font-bold text-stone-600 dark:text-stone-300 hover:text-[#16A34A] dark:hover:text-[#22C55E] inline-flex items-center gap-1.5 transition-colors cursor-pointer bg-white dark:bg-white/5 border border-stone-200/80 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-blue-600" />
-          <span>{language === 'hi' ? 'लेस लीगल पर वापस जाएं' : 'Back to Less Legal'}</span>
+          <ArrowLeft className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E]" />
+          <span>{language === 'hi' ? 'सभी टूल्स पर वापस जाएं' : 'Back to Tools'}</span>
         </button>
 
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 text-[11px] font-extrabold tracking-wide">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 text-stone-700 dark:text-stone-300 text-[11px] font-extrabold tracking-wide">
           <span>{language === 'hi' ? 'लेस लीगल: फीचर कैटलॉग' : 'Less Legal: Feature Catalog'}</span>
         </div>
       </div>
@@ -328,14 +328,14 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
           <div className="lg:col-span-7 space-y-5 text-center sm:text-left flex flex-col items-center sm:items-start">
             
             {/* Top Badge: Complete Utility Suite */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/40 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 text-[#16A34A] dark:text-[#22C55E] text-xs font-bold tracking-wider uppercase shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 fill-current" />
               <span>COMPLETE UTILITY SUITE</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-black text-slate-900 dark:text-white tracking-tight leading-[1.05]">
-              Explore Smart Integrated <span className="text-[#2563EB] dark:text-[#3B82F6]">Utilities</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-black text-[#111016] dark:text-white tracking-tight leading-[1.05]">
+              Explore Smart Integrated <span className="text-[#16A34A] dark:text-[#22C55E]">Utilities</span>
             </h1>
 
             {/* Subtitle */}
@@ -352,12 +352,12 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                   placeholder="Search features (e.g. Bare Acts, Bigha, PDF, Calculator...)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white/95 dark:bg-white/10 border border-slate-200 dark:border-white/15 text-sm text-slate-900 dark:text-white placeholder-slate-400 shadow-xs focus:ring-2 focus:ring-[#2563EB] outline-none backdrop-blur-md transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white dark:bg-white/10 border border-stone-200 dark:border-white/15 text-sm text-[#111016] dark:text-white placeholder-stone-400 shadow-xs focus:ring-2 focus:ring-[#16A34A] outline-none backdrop-blur-md transition-all"
                 />
               </div>
               <button
                 onClick={() => setSelectedCategory('All')}
-                className="p-3.5 rounded-2xl bg-white/95 dark:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-200 shadow-xs hover:bg-slate-100 dark:hover:bg-white/15 transition-all cursor-pointer flex items-center justify-center shrink-0"
+                className="p-3.5 rounded-2xl bg-white dark:bg-white/10 border border-stone-200 dark:border-white/15 text-stone-700 dark:text-stone-200 shadow-xs hover:bg-stone-100 dark:hover:bg-white/15 transition-all cursor-pointer flex items-center justify-center shrink-0"
                 title="Reset / Show All Filters"
               >
                 <SlidersHorizontal className="w-5 h-5" />
@@ -371,28 +371,28 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
             
             {/* Top Left Cursive Handwritten: Your Complete Legal Companion */}
             <div className="absolute top-2 left-2 sm:left-4 z-20 transform -rotate-6">
-              <span className="font-serif italic font-extrabold text-base sm:text-lg text-blue-900 dark:text-blue-300 block">
+              <span className="font-serif italic font-extrabold text-base sm:text-lg text-stone-900 dark:text-stone-200 block">
                 Your Complete
               </span>
-              <span className="font-serif italic font-extrabold text-lg sm:text-xl text-blue-600 dark:text-blue-400 block -mt-1">
+              <span className="font-serif italic font-extrabold text-lg sm:text-xl text-[#16A34A] dark:text-[#22C55E] block -mt-1">
                 Legal Companion
               </span>
-              {/* Curved Blue Doodle Line */}
-              <svg className="w-28 h-5 text-blue-600 dark:text-blue-400" viewBox="0 0 100 20" fill="none">
+              {/* Curved Green Doodle Line */}
+              <svg className="w-28 h-5 text-[#16A34A] dark:text-[#22C55E]" viewBox="0 0 100 20" fill="none">
                 <path d="M5 5 Q 50 18, 95 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
             </div>
 
             {/* Bottom Right Cursive Handwritten: One App Many Possibilities */}
             <div className="absolute bottom-2 right-2 sm:right-4 z-20 transform rotate-6 text-right">
-              <span className="font-serif italic font-extrabold text-sm sm:text-base text-blue-800 dark:text-blue-300 block">
+              <span className="font-serif italic font-extrabold text-sm sm:text-base text-stone-800 dark:text-stone-300 block">
                 One App
               </span>
-              <span className="font-serif italic font-extrabold text-base sm:text-lg text-[#2563EB] dark:text-blue-400 block -mt-1">
+              <span className="font-serif italic font-extrabold text-base sm:text-lg text-[#16A34A] dark:text-[#22C55E] block -mt-1">
                 Many Possibilities
               </span>
-              {/* Curved Blue Doodle Arrow */}
-              <svg className="w-20 h-6 text-[#2563EB] dark:text-blue-400 ml-auto" viewBox="0 0 80 20" fill="none">
+              {/* Curved Green Doodle Arrow */}
+              <svg className="w-20 h-6 text-[#16A34A] dark:text-[#22C55E] ml-auto" viewBox="0 0 80 20" fill="none">
                 <path d="M10 15 Q 40 5, 70 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 <path d="M65 8 L 72 12 L 67 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
@@ -426,18 +426,18 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                       <img src="/app_logo_512x512-3.png" alt="Logo" className="w-6 h-6 rounded-md object-cover" />
                       <span className="text-[11px] font-black text-white">Less Legal</span>
                     </div>
-                    <div className="w-6 h-6 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-[10px] text-blue-300 font-bold">
+                    <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-[10px] text-emerald-300 font-bold">
                       👤
                     </div>
                   </div>
 
                   {/* Hero Card inside phone */}
-                  <div className="rounded-2xl bg-gradient-to-br from-blue-900/40 via-slate-800 to-slate-900 border border-blue-500/30 p-3 text-center space-y-1">
-                    <div className="w-12 h-12 mx-auto rounded-full bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-400 text-xl shadow-xs">
+                  <div className="rounded-2xl bg-gradient-to-br from-stone-800 via-stone-900 to-black border border-white/10 p-3 text-center space-y-1">
+                    <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 text-xl shadow-xs">
                       ⚖️
                     </div>
                     <div className="text-[11px] font-extrabold text-white">Knowledge • Tools</div>
-                    <div className="text-[9px] font-bold text-amber-300">Simpler Life</div>
+                    <div className="text-[9px] font-bold text-emerald-300">Simpler Life</div>
                   </div>
 
                   {/* 3 Quick Action Tiles inside phone */}
@@ -446,9 +446,9 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                       <BookOpen className="w-4 h-4 text-emerald-400" />
                       <span className="text-[8px] font-bold text-emerald-200">Bare Acts</span>
                     </div>
-                    <div className="rounded-xl bg-blue-950/50 border border-blue-500/30 p-2 flex flex-col items-center gap-1">
-                      <FileText className="w-4 h-4 text-blue-400" />
-                      <span className="text-[8px] font-bold text-blue-200">PDF Tools</span>
+                    <div className="rounded-xl bg-green-950/50 border border-green-500/30 p-2 flex flex-col items-center gap-1">
+                      <FileText className="w-4 h-4 text-green-400" />
+                      <span className="text-[8px] font-bold text-green-200">PDF Tools</span>
                     </div>
                     <div className="rounded-xl bg-amber-950/50 border border-amber-500/30 p-2 flex flex-col items-center gap-1">
                       <Calculator className="w-4 h-4 text-amber-400" />
@@ -476,7 +476,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 2. CATEGORY PILLS BAR (SINGLE-LINE INFINITE SMOOTH SCROLL MARQUEE) */}
-      <section className="relative z-10 w-full overflow-hidden py-1 sm:py-2 rounded-2xl bg-blue-500/5 dark:bg-blue-950/10 border border-blue-200/20 dark:border-blue-900/10">
+      <section className="relative z-10 w-full overflow-hidden py-1 sm:py-2 rounded-2xl bg-stone-100/80 dark:bg-white/5 border border-stone-200/80 dark:border-white/10">
         <div className="relative w-full overflow-hidden select-none mask-edges-x">
           <div className="flex w-max animate-marquee-left pause-on-hover gap-3 whitespace-nowrap py-1">
             {/* First Set of Categories */}
@@ -489,11 +489,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                   onClick={() => setSelectedCategory(cat.key)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 border ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-400/30 shadow-[0_4px_16px_rgba(37,99,235,0.35)] scale-[1.02]'
-                      : 'bg-white/90 dark:bg-[#0B132B]/85 text-slate-700 dark:text-slate-300 border-blue-200/20 dark:border-blue-800/15 shadow-2xs hover:border-blue-400/30 hover:scale-[1.01] hover:bg-white dark:hover:bg-slate-800/90'
+                      ? 'bg-[#16A34A] text-white border-[#16A34A] shadow-xs scale-[1.02]'
+                      : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200/80 dark:border-white/10 shadow-2xs hover:border-[#16A34A]/40 hover:scale-[1.01]'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                  <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-[#16A34A] dark:text-[#22C55E]'}`} />
                   <span>{cat.label}</span>
                 </button>
               );
@@ -508,11 +508,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                   onClick={() => setSelectedCategory(cat.key)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 border ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white border-blue-400/30 shadow-[0_4px_16px_rgba(37,99,235,0.35)] scale-[1.02]'
-                      : 'bg-white/90 dark:bg-[#0B132B]/85 text-slate-700 dark:text-slate-300 border-blue-200/20 dark:border-blue-800/15 shadow-2xs hover:border-blue-400/30 hover:scale-[1.01] hover:bg-white dark:hover:bg-slate-800/90'
+                      ? 'bg-[#16A34A] text-white border-[#16A34A] shadow-xs scale-[1.02]'
+                      : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200/80 dark:border-white/10 shadow-2xs hover:border-[#16A34A]/40 hover:scale-[1.01]'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                  <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-white' : 'text-[#16A34A] dark:text-[#22C55E]'}`} />
                   <span>{cat.label}</span>
                 </button>
               );
@@ -550,7 +550,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                   }}
                   className={`animated-card rounded-[24px] p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl cursor-pointer ${
                     isLifted 
-                      ? 'border-blue-500/70 dark:border-blue-400/70 shadow-[0_24px_50px_rgba(59,130,246,0.25)] bg-gradient-to-br from-blue-50/90 via-indigo-50/40 to-white dark:from-[#1E293B] dark:via-[#182035] dark:to-[#121622]'
+                      ? 'border-emerald-500/70 dark:border-emerald-400/70 shadow-[0_24px_50px_rgba(16,185,129,0.2)] bg-gradient-to-br from-emerald-50/90 via-green-50/40 to-white dark:from-[#132219] dark:via-[#0F1B15] dark:to-[#121622]'
                       : `bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(0,0,0,0.08)] ${styles.hoverBorder}`
                   }`}
                 >
@@ -630,7 +630,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
             <p className="text-base font-bold text-slate-800 dark:text-white">कोई परिणाम नहीं मिला (No tools found)</p>
             <button
               onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
-              className="mt-3 px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold cursor-pointer shadow-[0_4px_12px_rgba(37,99,235,0.3)] transition-all border border-white/10"
+              className="mt-3 px-4 py-2 rounded-full bg-[#16A34A] hover:bg-[#15803D] text-white text-xs font-bold cursor-pointer shadow-xs transition-all border border-white/10"
             >
               फ़िल्टर रीसेट करें (Reset filters)
             </button>
@@ -649,29 +649,29 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
               className="w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-white/40 dark:border-white/10 shadow-2xl p-6 sm:p-8 space-y-5 text-left"
             >
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-stone-100 dark:bg-white/10 text-stone-800 dark:text-stone-200">
                   {activeModalFeature.category}
                 </span>
                 <button
                   onClick={() => setActiveModalFeature(null)}
-                  className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center font-bold cursor-pointer"
+                  className="w-8 h-8 rounded-full bg-stone-100 dark:bg-white/10 text-stone-500 hover:text-stone-900 dark:hover:text-white flex items-center justify-center font-bold cursor-pointer"
                 >
                   ✕
                 </button>
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                <h3 className="text-xl font-black text-[#111016] dark:text-white">
                   {activeModalFeature.title}
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
                   {activeModalFeature.description}
                 </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200/80 dark:border-blue-800/40 space-y-2 text-xs text-blue-900 dark:text-blue-200">
-                <div className="font-extrabold flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <div className="p-4 rounded-2xl bg-stone-50 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 space-y-2 text-xs text-stone-700 dark:text-stone-300">
+                <div className="font-extrabold flex items-center gap-1.5 text-[#16A34A] dark:text-[#22C55E]">
+                  <ShieldCheck className="w-4 h-4" />
                   <span>Less Legal Android App Tool</span>
                 </div>
                 <p>
@@ -685,14 +685,14 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                     setActiveModalFeature(null);
                     onNavigate('download');
                   }}
-                  className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(37,99,235,0.35)] cursor-pointer border border-white/10 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                  className="flex-1 py-3 px-4 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download App to Use</span>
                 </button>
                 <button
                   onClick={() => setActiveModalFeature(null)}
-                  className="py-3 px-5 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-200 font-bold text-sm hover:bg-slate-200 dark:hover:bg-white/20 cursor-pointer"
+                  className="py-3 px-5 rounded-xl bg-stone-100 dark:bg-white/10 text-stone-700 dark:text-stone-200 font-bold text-sm hover:bg-stone-200 dark:hover:bg-white/20 cursor-pointer"
                 >
                   Close
                 </button>
@@ -707,51 +707,51 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
 
       {/* 5. APP COMPLIANCE & LEGAL BOTTOM BAR */}
       <section className="pt-4">
-        <div className="rounded-3xl bg-white/90 dark:bg-white/5 backdrop-blur-xl border border-white/80 dark:border-white/10 p-6 shadow-sm space-y-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-white/10">
+        <div className="rounded-3xl bg-white dark:bg-[#151720] border border-stone-200/80 dark:border-white/10 p-6 shadow-sm space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-stone-100 dark:border-white/10">
             <div>
-              <div className="text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+              <div className="text-xs font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-wider">
                 Less Legal Official Utility Suite
               </div>
-              <div className="text-sm font-bold text-slate-800 dark:text-white">
+              <div className="text-sm font-bold text-[#111016] dark:text-white">
                 All Smart Tools Verified & Maintained by Less Creation
               </div>
             </div>
-            <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg">
+            <span className="text-[11px] font-mono text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-white/5 px-2.5 py-1 rounded-lg">
               com.lesslegal.app
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-slate-700 dark:text-slate-300">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-stone-700 dark:text-stone-300">
             <button
               onClick={() => onNavigate('app-privacy')}
-              className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1"
+              className="hover:text-[#16A34A] dark:hover:text-[#22C55E] transition-colors cursor-pointer flex items-center gap-1"
             >
               <span>गोपनीयता नीति (Privacy Policy)</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-blue-600" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E]" />
             </button>
             <button
               onClick={() => onNavigate('app-delete-account')}
-              className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer flex items-center gap-1"
+              className="text-[#16A34A] dark:text-[#22C55E] hover:underline cursor-pointer flex items-center gap-1"
             >
               <span>खाता और डेटा हटाएं (Delete Account & Data)</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-blue-600" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E]" />
             </button>
             <button
               onClick={() => onNavigate('terms')}
-              className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              className="hover:text-[#111016] dark:hover:text-white transition-colors cursor-pointer"
             >
               नियम और शर्तें (Terms & Conditions)
             </button>
             <button
               onClick={() => onNavigate('refund')}
-              className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              className="hover:text-[#111016] dark:hover:text-white transition-colors cursor-pointer"
             >
               धनवापसी नीति (Refund Policy)
             </button>
             <button
               onClick={() => onNavigate('disclaimer')}
-              className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+              className="hover:text-[#111016] dark:hover:text-white transition-colors cursor-pointer"
             >
               अस्वीकरण (Disclaimer)
             </button>

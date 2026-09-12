@@ -1,7 +1,6 @@
 import React from 'react';
 import { PageRoute } from '../types';
 import { FileText, ArrowLeft, AlertTriangle } from 'lucide-react';
-import { HeroAmbientGlow } from '../components/MotionWrappers';
 import { useLanguage } from '../context/LanguageContext';
 
 interface TermsPageProps {
@@ -12,31 +11,25 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
 
   return (
-    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-4 sm:pb-6 space-y-8 overflow-hidden">
-      <HeroAmbientGlow />
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-20 space-y-8 text-[#111016] dark:text-[#F5F2EE]">
       
-      {/* Top Breadcrumb & Title */}
-      <div className="space-y-4 relative z-10 text-center sm:text-left">
+      {/* Top Breadcrumb & Header */}
+      <div className="space-y-4">
         <button
           onClick={() => onNavigate('home')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3.5 py-1.5 rounded-full shadow-2xs"
+          className="text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-[#16A34A] dark:hover:text-[#22C55E] inline-flex items-center gap-1.5 transition-colors cursor-pointer hover:underline"
         >
-          <ArrowLeft className="w-4 h-4 shrink-0 text-blue-500" />
+          <ArrowLeft className="w-3.5 h-3.5 shrink-0 text-[#16A34A] dark:text-[#22C55E]" />
           <span>{t.common.backToHome}</span>
         </button>
 
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-black tracking-wider uppercase shadow-2xs mb-3">
-            <FileText className="w-3.5 h-3.5 fill-current" />
-            <span>{t.termsPage.badge}</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-[#111016] dark:text-white tracking-tight">
             {t.termsPage.title}
           </h1>
         </div>
         
-        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400 pb-4 border-b border-slate-200/80 dark:border-white/10 font-medium">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-stone-500 dark:text-stone-400 pb-4 border-b border-stone-200 dark:border-white/10 font-medium">
           <span>{t.termsPage.effectiveDate}</span>
           <span>•</span>
           <span>{t.termsPage.lastUpdated}</span>
@@ -45,39 +38,39 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Prominent Legal Advice Disclaimer in Terms */}
-      <div className="py-2 space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 relative z-10">
-        <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+      {/* Prominent Legal Advice Disclaimer */}
+      <div className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6 text-xs sm:text-sm">
+        <div className="font-bold text-sm sm:text-base text-[#111016] dark:text-white flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
           <span>{t.termsPage.disclaimerBannerTitle}</span>
         </div>
-        <p className="leading-relaxed font-medium">
+        <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
           {t.termsPage.disclaimerBannerText}
         </p>
       </div>
 
-      {/* Terms Content */}
-      <div className="space-y-6 text-sm leading-relaxed relative z-10 text-slate-600 dark:text-slate-300">
+      {/* Terms Content Sections */}
+      <div className="space-y-6 text-xs sm:text-sm">
         
         {/* 1 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec1Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec1Text}
           </p>
         </section>
 
         {/* 2 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec2Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec2Text}
           </p>
-          <ul className="list-disc pl-5 space-y-1.5 font-medium text-slate-800 dark:text-slate-200">
+          <ul className="list-disc pl-5 space-y-1.5 text-stone-700 dark:text-stone-300 pt-1 font-normal">
             {t.termsPage.sec2Bullets.map((bullet, idx) => (
               <li key={idx}>{bullet}</li>
             ))}
@@ -85,14 +78,14 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 3 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec3Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec3Text}
           </p>
-          <ul className="list-disc pl-5 space-y-2 text-slate-800 dark:text-slate-200 font-medium">
+          <ul className="list-disc pl-5 space-y-1.5 text-stone-700 dark:text-stone-300 pt-1 font-normal">
             {t.termsPage.sec3Bullets.map((bullet, idx) => (
               <li key={idx}>{bullet}</li>
             ))}
@@ -100,34 +93,34 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 4 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec4Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec4Text}
           </p>
         </section>
 
         {/* 5 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec5Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec5Text}
           </p>
         </section>
 
         {/* 6 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec6Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec6Text}
           </p>
-          <ul className="list-disc pl-5 space-y-1.5 text-slate-800 dark:text-slate-200 font-medium">
+          <ul className="list-disc pl-5 space-y-1.5 text-stone-700 dark:text-stone-300 pt-1 font-normal">
             {t.termsPage.sec6Bullets.map((bullet, idx) => (
               <li key={idx}>{bullet}</li>
             ))}
@@ -135,21 +128,21 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
         </section>
 
         {/* 7 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec7Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec7Text}
           </p>
         </section>
 
         {/* 8 */}
-        <section className="space-y-3 py-2">
-          <h2 className="text-lg font-black text-slate-900 dark:text-white border-b border-slate-200/80 dark:border-white/10 pb-2">
+        <section className="py-2 space-y-2">
+          <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white pb-1">
             {t.termsPage.sec8Title}
           </h2>
-          <p className="font-medium">
+          <p className="text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
             {t.termsPage.sec8Text}
           </p>
         </section>
@@ -157,18 +150,20 @@ export const TermsPage: React.FC<TermsPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Navigation Footer */}
-      <div className="pt-6 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 relative z-10">
+      <div className="pt-8 border-t border-stone-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-semibold text-stone-600 dark:text-stone-400">
         <button
           onClick={() => onNavigate('privacy')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="hover:text-[#16A34A] dark:hover:text-[#22C55E] cursor-pointer transition-colors hover:underline inline-flex items-center gap-1"
         >
-          {t.termsPage.readPrivacy}
+          <span>{t.termsPage.readPrivacy}</span>
+          <span>→</span>
         </button>
         <button
           onClick={() => onNavigate('refund')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors px-4 py-2 rounded-full bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xs"
+          className="hover:text-[#16A34A] dark:hover:text-[#22C55E] cursor-pointer transition-colors hover:underline inline-flex items-center gap-1"
         >
-          {t.termsPage.readRefund}
+          <span>{t.termsPage.readRefund}</span>
+          <span>→</span>
         </button>
       </div>
 

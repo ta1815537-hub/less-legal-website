@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PageRoute } from '../types';
 import { SITE_CONFIG } from '../config';
 import { 
-  Shield, Lock, ArrowLeft, ArrowUpRight, Globe, Server, CheckCircle2, 
-  Database, CreditCard, UserCheck, Key, FileText, Trash2, Mail, ExternalLink,
-  ChevronDown, ChevronUp, Layers, HelpCircle
+  Lock, ArrowUpRight, UserCheck, CreditCard, 
+  Trash2, Mail
 } from 'lucide-react';
-import { HeroAmbientGlow } from '../components/MotionWrappers';
 import { useLanguage } from '../context/LanguageContext';
 
 interface WebsitePrivacyPageProps {
@@ -18,41 +16,17 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
   const isHindi = language === 'hi';
   const supportEmail = SITE_CONFIG.supportEmail || "support@lesscreation.com";
 
-  const [activeSection, setActiveSection] = useState<string>('sec-1');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-
-  const sections = [
-    { id: 'sec-1', number: '1', title: isHindi ? 'परिचय एवं दायरा' : 'Introduction & Scope' },
-    { id: 'sec-2', number: '2', title: isHindi ? 'हम जो जानकारी एकत्र करते हैं' : 'Information We Process' },
-    { id: 'sec-3', number: '3', title: isHindi ? 'उपयोगकर्ता प्रमाणीकरण' : 'User Authentication & Sign-In' },
-    { id: 'sec-4', number: '4', title: isHindi ? 'सुरक्षित भुगतान प्रसंस्करण' : 'Secure Payment Processing' },
-    { id: 'sec-5', number: '5', title: isHindi ? 'लोकल स्टोरेज एवं प्राथमिकताएँ' : 'Local Browser Storage & Preferences' },
-    { id: 'sec-6', number: '6', title: isHindi ? 'सामग्री व व्यू मीट्रिक्स' : 'Content & Anonymous View Metrics' },
-    { id: 'sec-7', number: '7', title: isHindi ? 'डेटा विलोपन व खाता सुरक्षा' : 'Data Deletion & Account Safety' },
-    { id: 'sec-8', number: '8', title: isHindi ? 'उपयोगकर्ता अधिकार व संपर्क' : 'Your Rights & Support Contact' },
-  ];
-
-  const scrollTo = (id: string) => {
-    setActiveSection(id);
-    setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
-    <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-8 space-y-6 overflow-hidden">
-      <HeroAmbientGlow />
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-20 space-y-8 text-[#111016] dark:text-[#F5F2EE]">
       
       {/* Header Banner */}
-      <div className="space-y-3 relative z-10 pt-4">
-        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+      <div className="space-y-3 pt-4 border-b border-stone-200 dark:border-white/10 pb-6">
+        <h1 className="text-2xl sm:text-4xl font-black text-[#111016] dark:text-white tracking-tight">
           {isHindi ? "लेस क्रिएशन — वेबसाइट गोपनीयता नीति" : "Less Creation — Website Privacy Policy"}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
-          <span className="bg-slate-100 dark:bg-white/10 px-2.5 py-0.5 rounded-md font-mono text-[11px] text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-white/10">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-stone-500 dark:text-stone-400 font-medium">
+          <span className="bg-stone-100 dark:bg-white/10 px-2.5 py-0.5 rounded-md font-mono text-[11px] text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-white/10">
             {isHindi ? "ब्रांड: लेस क्रिएशन" : "Brand: Less Creation"}
           </span>
           <span>•</span>
@@ -63,92 +37,26 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
       </div>
 
       {/* Summary Highlight Box */}
-      <div className="py-2 space-y-2 relative z-10">
-        <div className="font-black text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-2">
-          <Lock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+      <div className="p-5 rounded-2xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 shadow-2xs space-y-2">
+        <div className="font-bold text-xs sm:text-sm text-[#111016] dark:text-white flex items-center gap-2">
+          <Lock className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
           <span>{isHindi ? "संक्षिप्त सार (Privacy Summary)" : "Privacy Practices Summary"}</span>
         </div>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
           {isHindi
             ? "यह गोपनीयता नीति लेस क्रिएशन वेबसाइट पर वास्तविक डेटा प्रोसेसिंग को सटीक रूप से स्पष्ट करती है। हम केवल सुरक्षित उपयोगकर्ता प्रमाणीकरण, प्रीमियम पास सक्रियण के लिए भुगतान प्रसंस्करण गेटवे, और आपकी थीम व भाषा प्राथमिकताओं को सहेजने के लिए लोकल स्टोरेज का उपयोग करते हैं। हम विज्ञापन ट्रैकर्स नहीं चलाते हैं और न ही आपका डेटा किसी तीसरे पक्ष को बेचते हैं।"
             : "This policy describes data practices on the Less Creation website. We process data strictly for secure account authentication, subscription mapping, payment processing, and browser local storage to save your theme and language preferences. We do not run commercial advertising tracking scripts, nor do we sell personal data."}
         </p>
       </div>
 
-      {/* Mobile Sticky Contents Dropdown */}
-      <div className="lg:hidden relative z-20">
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="w-full flex items-center justify-between p-3.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white cursor-pointer shadow-2xs"
-        >
-          <span className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-blue-600" />
-            <span>{isHindi ? "गोपनीयता नीति अनुभाग चुनें" : "Jump to Section"}</span>
-          </span>
-          {mobileMenuOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-        </button>
-
-        {mobileMenuOpen && (
-          <div className="mt-2 p-2 rounded-xl bg-white dark:bg-[#121622] border border-slate-200 dark:border-white/10 shadow-lg space-y-1">
-            {sections.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => scrollTo(s.id)}
-                className="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-white/5 hover:text-blue-600 cursor-pointer flex items-center gap-2"
-              >
-                <span className="font-mono text-[11px] text-blue-600 dark:text-blue-400">{s.number}.</span>
-                <span>{s.title}</span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Main Grid: Sidebar Table of Contents (Desktop) + Policy Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start relative z-10">
-        
-        {/* Desktop Sticky Sidebar Navigation */}
-        <div className="hidden lg:block sticky top-24 space-y-2 p-4 rounded-2xl bg-white/90 dark:bg-[#121622]/90 border border-slate-200/80 dark:border-white/10 shadow-xs backdrop-blur-md">
-          <div className="flex items-center gap-2 text-xs font-black text-slate-900 dark:text-white border-b border-slate-100 dark:border-white/10 pb-2.5">
-            <Layers className="w-4 h-4 text-blue-600" />
-            <span>{isHindi ? "विषय सूची" : "Table of Contents"}</span>
-          </div>
-          <nav className="space-y-0.5 max-h-[calc(100vh-160px)] overflow-y-auto pr-1">
-            {sections.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => scrollTo(s.id)}
-                className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer flex items-center gap-2 ${
-                  activeSection === s.id
-                    ? 'bg-blue-600 text-white font-bold shadow-2xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <span className="font-mono text-[10px] opacity-80">{s.number}.</span>
-                <span className="truncate">{s.title}</span>
-              </button>
-            ))}
-          </nav>
-
-          <div className="pt-2 border-t border-slate-100 dark:border-white/10 space-y-1">
-            <button
-              onClick={() => onNavigate('app-delete-account')}
-              className="w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 cursor-pointer flex items-center gap-1.5"
-            >
-              <Trash2 className="w-3.5 h-3.5 shrink-0" />
-              <span>{isHindi ? "डेटा डिलीट अनुरोध" : "Data Deletion Request"}</span>
-            </button>
-          </div>
-        </div>
-
-        {/* POLICY CONTENT BODY */}
-        <div className="lg:col-span-3 space-y-6 text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+      {/* POLICY CONTENT STREAM - EDITORIAL BACKGROUND STYLE */}
+      <div className="space-y-8 text-stone-700 dark:text-stone-300 text-xs sm:text-sm leading-relaxed">
 
           {/* Section 1 */}
           <section id="sec-1" className="py-2 space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">1</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">1</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "1. परिचय एवं दायरा" : "1. Introduction & Scope"}
               </h2>
             </div>
@@ -157,7 +65,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
                 ? "यह गोपनीयता नीति केवल हमारी आधिकारिक वेबसाइट (lesscreation.com) पर आने वाले उपयोगकर्ताओं, आगंतुकों और पंजीकृत उपयोगकर्ताओं के डेटा प्रसंस्करण प्रथाओं को नियंत्रित करती है।"
                 : "This Privacy Policy governs the data collection and processing practices strictly applicable to visitors and registered users browsing our official website at lesscreation.com."}
             </p>
-            <p className="py-1 font-medium text-slate-600 dark:text-slate-400">
+            <p className="py-1 font-medium text-stone-500 dark:text-stone-400">
               {isHindi
                 ? "नोट: हमारे एंड्रॉइड मोबाइल ऐप 'Less Legal' के लिए समर्पित ऐप प्राइवेसी पॉलिसी लागू होती है, जिसे आप ऐप सेटिंग्स या हमारे ऐप गोपनीयता पृष्ठ पर देख सकते हैं।"
                 : "Note: For disclosures regarding our flagship Android mobile app 'Less Legal', please review our dedicated App Privacy Policy."}
@@ -166,9 +74,9 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
 
           {/* Section 2 */}
           <section id="sec-2" className="py-2 space-y-3 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">2</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">2</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "2. हम जो जानकारी एकत्र करते हैं" : "2. Information We Process"}
               </h2>
             </div>
@@ -178,37 +86,37 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
                 : "We collect and process only the minimal necessary information required to operate the website safely, authenticate accounts, and resolve customer support inquiries:"}
             </p>
 
-            <ul className="space-y-2">
-              <li className="py-1.5 space-y-1">
-                <strong className="text-slate-900 dark:text-white font-bold flex items-center gap-1.5">
-                  <UserCheck className="w-4 h-4 text-blue-600" />
+            <ul className="space-y-3">
+              <li className="p-4 rounded-xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 space-y-1">
+                <strong className="text-[#111016] dark:text-white font-bold flex items-center gap-1.5">
+                  <UserCheck className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
                   <span>{isHindi ? "खाता जानकारी:" : "Authenticated Profile Data:"}</span>
                 </strong>
-                <p className="text-xs text-slate-600 dark:text-slate-300">
+                <p className="text-xs text-stone-600 dark:text-stone-300">
                   {isHindi
                     ? "जब आप वेबसाइट पर साइन इन करते हैं, तो हम आपका नाम, ईमेल पता, प्रोफ़ाइल चित्र URL और एक विशिष्ट यूज़र आईडी (UID) प्राप्त व संसाधित करते हैं।"
                     : "When you sign in to the website, we receive your display name, verified email address, profile picture URL, and a unique User Identifier (UID) to coordinate your active features."}
                 </p>
               </li>
 
-              <li className="py-1.5 space-y-1">
-                <strong className="text-slate-900 dark:text-white font-bold flex items-center gap-1.5">
-                  <Mail className="w-4 h-4 text-emerald-600" />
+              <li className="p-4 rounded-xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 space-y-1">
+                <strong className="text-[#111016] dark:text-white font-bold flex items-center gap-1.5">
+                  <Mail className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
                   <span>{isHindi ? "संपर्क व सहायता फ़ॉर्म:" : "Contact & Support Form Entries:"}</span>
                 </strong>
-                <p className="text-xs text-slate-600 dark:text-slate-300">
+                <p className="text-xs text-stone-600 dark:text-stone-300">
                   {isHindi
                     ? "जब आप हमारे संपर्क फ़ॉर्म का उपयोग करते हैं, तो आपका नाम, ईमेल पता, पूछताछ का प्रकार और आपका संदेश प्राप्त होता है।"
                     : "When you submit a support message, we collect your name, email address, query category, and message text to respond to your inquiry."}
                 </p>
               </li>
 
-              <li className="py-1.5 space-y-1">
-                <strong className="text-slate-900 dark:text-white font-bold flex items-center gap-1.5">
-                  <CreditCard className="w-4 h-4 text-amber-600" />
+              <li className="p-4 rounded-xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 space-y-1">
+                <strong className="text-[#111016] dark:text-white font-bold flex items-center gap-1.5">
+                  <CreditCard className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
                   <span>{isHindi ? "भुगतान लेनदेन विवरण:" : "Payment Transaction Records:"}</span>
                 </strong>
-                <p className="text-xs text-slate-600 dark:text-slate-300">
+                <p className="text-xs text-stone-600 dark:text-stone-300">
                   {isHindi
                     ? "भुगतान ऑर्डर के लिए हम केवल ऑर्डर आईडी (Order ID), भुगतान आईडी (Payment ID), भुगतान स्थिति और खरीदे गए पास का विवरण सुरक्षित रूप से सहेजते हैं।"
                     : "For pass purchases, we retain transaction metadata including Order ID, Payment ID, payment status, and activated pass tier to enable your premium access."}
@@ -219,9 +127,9 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
 
           {/* Section 3 */}
           <section id="sec-3" className="py-2 space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">3</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">3</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "3. उपयोगकर्ता प्रमाणीकरण" : "3. User Authentication & Sign-In"}
               </h2>
             </div>
@@ -234,9 +142,9 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
 
           {/* Section 4 */}
           <section id="sec-4" className="py-2 space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">4</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">4</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "4. सुरक्षित भुगतान प्रसंस्करण" : "4. Secure Payment Processing"}
               </h2>
             </div>
@@ -249,9 +157,9 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
 
           {/* Section 5 */}
           <section id="sec-5" className="py-2 space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">5</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">5</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "5. लोकल स्टोरेज एवं प्राथमिकताएँ" : "5. Local Browser Storage & Preferences"}
               </h2>
             </div>
@@ -264,9 +172,9 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
 
           {/* Section 6 */}
           <section id="sec-6" className="py-2 space-y-2.5 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">6</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">6</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "6. सामग्री व व्यू मीट्रिक्स" : "6. Content & Anonymous View Metrics"}
               </h2>
             </div>
@@ -279,9 +187,9 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
 
           {/* Section 7 */}
           <section id="sec-7" className="py-2 space-y-3 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">7</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">7</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "7. डेटा विलोपन व खाता सुरक्षा" : "7. Data Deletion & Account Safety"}
               </h2>
             </div>
@@ -303,9 +211,9 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
 
           {/* Section 8 */}
           <section id="sec-8" className="py-2 space-y-3 scroll-mt-24">
-            <div className="flex items-center gap-2 border-b border-slate-200/80 dark:border-white/10 pb-2">
-              <span className="w-6 h-6 rounded-md bg-blue-600 text-white text-xs font-mono font-bold flex items-center justify-center shrink-0">8</span>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+            <div className="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-2">
+              <span className="w-6 h-6 rounded-md bg-[#111016] dark:bg-white text-white dark:text-[#111016] text-xs font-mono font-bold flex items-center justify-center shrink-0">8</span>
+              <h2 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white">
                 {isHindi ? "8. उपयोगकर्ता अधिकार व संपर्क" : "8. Your Rights & Support Contact"}
               </h2>
             </div>
@@ -316,10 +224,10 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
             </p>
 
             <div className="py-2 space-y-1">
-              <span className="text-xs font-bold text-slate-900 dark:text-white block">
+              <span className="text-xs font-bold text-[#111016] dark:text-white block">
                 {isHindi ? "आधिकारिक समर्थन ईमेल:" : "Official Support Contact:"}
               </span>
-              <a href={`mailto:${supportEmail}`} className="text-xs font-black text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
+              <a href={`mailto:${supportEmail}`} className="text-xs font-bold text-[#16A34A] dark:text-[#22C55E] hover:underline inline-flex items-center gap-1">
                 <Mail className="w-3.5 h-3.5" />
                 <span>{supportEmail}</span>
               </a>
@@ -327,20 +235,19 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
           </section>
 
         </div>
-      </div>
 
       {/* Footer Navigation CTAs */}
-      <div className="pt-4 border-t border-slate-200/80 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 relative z-10">
+      <div className="pt-4 border-t border-stone-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-3">
         <button
           onClick={() => onNavigate('app-privacy')}
-          className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors flex items-center gap-1 bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-4 py-2 rounded-full shadow-2xs"
+          className="text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-[#16A34A] dark:hover:text-[#22C55E] cursor-pointer transition-colors flex items-center gap-1 bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 px-4 py-2 rounded-full shadow-2xs"
         >
           <span>{isHindi ? "Less Legal ऐप गोपनीयता नीति पढ़ें" : "Read Less Legal App Privacy Policy"}</span>
-          <ArrowUpRight className="w-3.5 h-3.5" />
+          <ArrowUpRight className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E]" />
         </button>
         <button
           onClick={() => onNavigate('contact')}
-          className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer transition-colors px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/40 shadow-2xs"
+          className="text-xs font-bold text-white bg-[#16A34A] hover:bg-[#15803D] cursor-pointer transition-colors px-4 py-2 rounded-full shadow-2xs"
         >
           {isHindi ? "संपर्क फ़ॉर्म खोलें" : "Open Support Form"}
         </button>

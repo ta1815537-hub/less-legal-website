@@ -1,28 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { PageRoute, ArticleSummary } from '../types';
-import { SITE_CONFIG } from '../config';
 import { 
-  Download, ArrowRight, ShieldCheck, Sparkles, Bot, 
-  FileText, Calendar, Compass, Scale, Lock, CheckCircle2, 
-  Smartphone, Check, Layers, LayoutGrid, Music, Edit3,
-  Search, Zap, Share2, MessageSquare, ChevronRight,
-  Copy, Play, ChevronDown, UserCheck, Gavel, BookOpen, Scan, Calculator, Grid,
-  Rocket, Star, Users, Clock, User, Quote, Lightbulb, Target, Landmark,
-  Shield, Server, Award, Cpu, RefreshCw, KeyRound, ExternalLink, HelpCircle,
-  X, PenTool, AlertCircle
+  Download, ArrowRight, Sparkles, 
+  Calendar, Clock, BookOpen, ChevronRight,
+  ChevronDown, User, Scale, Search, X,
+  FileText, Calculator, Image as ImageIcon, QrCode, Briefcase
 } from 'lucide-react';
-import { LTLogo } from '../components/LTLogo';
 import { AppLogo } from '../components/AppLogo';
 import { ThreeDDeviceShowcase } from '../components/ThreeDDeviceShowcase';
-import { 
-  ScrollReveal, StaggerContainer, 
-  StaggerItem, GlowingButton, HeroAmbientGlow 
-} from '../components/MotionWrappers';
+import { ScrollReveal } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
-import { DynamicNoticeBoard } from '../components/DynamicNoticeBoard';
-import { DynamicPromoBanner } from '../components/DynamicPromoBanner';
 import { articleService } from '../services/articleService';
 import { getDirectCloudImageUrl } from '../utils/adminStorage';
 
@@ -34,51 +23,70 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
   const isHindi = language === 'hi';
   const [founderImgErr, setFounderImgErr] = useState(false);
-  const [liftedProducts, setLiftedProducts] = useState<Record<string, boolean>>({});
-  const [liftedFeatures, setLiftedFeatures] = useState<Record<string, boolean>>({});
-
-  // Sync countdown timer with the Navbar top banner
-  const [timeLeft, setTimeLeft] = useState({ hours: 38, minutes: 47, seconds: 12 });
-
-  useEffect(() => {
-    const STORAGE_KEY = 'less_legal_promo_target_v3_38h';
-    let targetTime = localStorage.getItem(STORAGE_KEY);
-    
-    if (!targetTime) {
-      const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
-      localStorage.setItem(STORAGE_KEY, newTarget.toString());
-      targetTime = newTarget.toString();
-    }
-
-    const interval = setInterval(() => {
-      const difference = parseInt(targetTime!) - Date.now();
-      if (difference <= 0) {
-        const newTarget = Date.now() + (38 * 3600 + 47 * 60 + 12) * 1000;
-        localStorage.setItem(STORAGE_KEY, newTarget.toString());
-      } else {
-        const h = Math.floor(difference / (1000 * 60 * 60));
-        const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((difference % (1000 * 60)) / 1000);
-        setTimeLeft({ hours: h, minutes: m, seconds: s });
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Smooth scroll helper
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
 
   // Real-Time Articles Feed State
   const [articles, setArticles] = useState<ArticleSummary[]>([]);
-  const [articlesLoading, setArticlesLoading] = useState<boolean>(true);
   const [articleCategory, setArticleCategory] = useState<string>('ALL');
   const [articleSearch, setArticleSearch] = useState<string>('');
+
+  // Curated Featured Tools for Modern Product Showcase
+  const coreTools = [
+    {
+      id: 'rti-draft',
+      slug: 'rti-draft',
+      category: isHindi ? 'कानूनी अधिकार' : 'Legal Rights',
+      title: isHindi ? 'आरटीआई ड्राफ्ट जनरेटर' : 'RTI Draft Generator',
+      description: isHindi ? 'सूचना का अधिकार (RTI) आवेदन पत्र सरल व सटीक कानूनी प्रारूप में तैयार करें।' : 'Generate structured Right to Information applications with statutory legal formatting.',
+      icon: FileText
+    },
+    {
+      id: 'pdf-merge',
+      slug: 'pdf-merge',
+      category: isHindi ? 'दस्तावेज़ सुइट' : 'Document Suite',
+      title: isHindi ? 'पीडीएफ मर्ज व स्प्लिट' : 'PDF Merge & Split',
+      description: isHindi ? '100% ऑन-डिवाइस सुरक्षित प्रोसेसिंग। फाइलें कभी सर्वर पर अपलोड नहीं होतीं।' : '100% on-device private processing. Merge and manage judicial & office documents locally.',
+      icon: FileText
+    },
+    {
+      id: 'court-fee-calc',
+      slug: 'court-fee-calc',
+      category: isHindi ? 'कानूनी गणना' : 'Legal Finance',
+      title: isHindi ? 'कोर्ट फीस एवं स्टांप कैलकुलेटर' : 'Court Fee Calculator',
+      description: isHindi ? 'मुकदमा मूल्य और क्षेत्राधिकार के आधार पर आवश्यक कोर्ट फीस की त्वरित गणना करें।' : 'Calculate court fees, valuation thresholds, and legal stamp duty accurately.',
+      icon: Calculator
+    },
+    {
+      id: 'image-compress',
+      slug: 'image-compress',
+      category: isHindi ? 'डिजिटल उपकरण' : 'Digital Suite',
+      title: isHindi ? 'स्मार्ट इमेज कंप्रेसर' : 'Smart Image Compressor',
+      description: isHindi ? 'सरकारी व न्यायिक पोर्टल हेतु गुणवत्ता बनाए रखते हुए फोटो का आकार कम करें।' : 'Reduce file size for official e-filing and job portal submissions with local privacy.',
+      icon: ImageIcon
+    },
+    {
+      id: 'case-diary',
+      slug: 'case-diary',
+      category: isHindi ? 'कार्य प्रबंधन' : 'Productivity',
+      title: isHindi ? 'केस डायरी व हियरिंग ट्रैकर' : 'Case Diary Workspace',
+      description: isHindi ? 'अधिवक्ताओं व वादकारियों के लिए अगली तारीख, केस विवरण व नोट्स का व्यवस्थित रिकॉर्ड।' : 'Track court hearings, cause list dates, and case notes in an offline-ready diary.',
+      icon: Briefcase
+    },
+    {
+      id: 'qr-generator',
+      slug: 'qr-generator',
+      category: isHindi ? 'सुरक्षित उपयोगिता' : 'Utilities',
+      title: isHindi ? 'सुरक्षित क्यूआर जनरेटर' : 'Secure QR Generator',
+      description: isHindi ? 'बिना किसी ट्रैकिंग के लिंक, संपर्क व यूपीआई के लिए त्वरित क्यूआर कोड बनाएं।' : 'Generate instant QR codes for links, text, and payments with zero analytics tracking.',
+      icon: QrCode
+    }
+  ];
+
+  const handleLaunchTool = (slug: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('tool', slug);
+    window.history.pushState({}, '', url.toString());
+    onNavigate('tools');
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -87,10 +95,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         const list = await articleService.getPublicArticleSummaries();
         if (isMounted) {
           setArticles(list);
-          setArticlesLoading(false);
         }
       } catch {
-        if (isMounted) setArticlesLoading(false);
+        // Handled silently
       }
     };
 
@@ -99,7 +106,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     const unsubscribe = articleService.subscribeToPublicSummaries((updated) => {
       if (isMounted) {
         setArticles(updated);
-        setArticlesLoading(false);
       }
     });
 
@@ -151,118 +157,164 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   // Interactive FAQ Accordion State
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const faqs = t.home.faqs;
+  const faqs = useMemo(() => [
+    {
+      q: isHindi ? "लेस क्रिएशन का मुख्य उद्देश्य क्या है?" : "What is the objective of Less Creation?",
+      a: isHindi 
+        ? "लेस क्रिएशन अधिवक्ता अनुराग गुरौली (इलाहाबाद उच्च न्यायालय) का एक आधिकारिक विधिक व डिजिटल जागरूकता मंच है। इसका मुख्य उद्देश्य आम नागरिकों को ऑनलाइन धोखाधड़ी, डिजिटल अरेस्ट, वित्तीय घोटालों और साइबर अपराधों से बचाने हेतु विधिक रूप से सजग करना, व्यावहारिक सुरक्षा तकनीकें सिखाना और मार्गदर्शन प्रदान करना है। भविष्य में इससे संबंधित विशेष साइबर सुरक्षा टूल्स भी यहाँ उपलब्ध कराए जा सकते हैं।"
+        : "Less Creation is an official legal & digital awareness initiative founded by Advocate Anurag Gurauli (High Court). Its primary objective is to empower everyday citizens with cyber law literacy, online fraud defense techniques, and statutory legal safeguards against digital crimes. Specialized cybersecurity and compliance utilities may also be provided here in the future."
+    },
+    {
+      q: isHindi ? "क्या यहाँ साइबर सुरक्षा सम्बन्धी जानकारी व विधिक मार्गदर्शन मिलेगा?" : "Will I find cybersecurity information and legal guidance here?",
+      a: isHindi 
+        ? "जी हाँ, यहाँ आपको साइबर अपराधों से बचाव की व्यावहारिक तकनीकें, ऑनलाइन धोखाधड़ी से निपटने के कानूनी उपाय, आईटी एक्ट की धाराएं और दैनिक जीवन में डिजिटल सुरक्षा बनाए रखने के प्रामाणिक टिप्स मिलेंगे।"
+        : "Yes, this platform provides authoritative articles, practical defense techniques against digital fraud, statutory information on cyber law, and daily digital safety tips."
+    },
+    {
+      q: isHindi ? "भविष्य में इस वेबसाइट पर क्या सुविधाएं मिलेंगी?" : "What features will be available on this platform in the future?",
+      a: isHindi 
+        ? "भविष्य में आम नागरिकों और अधिवक्ताओं की सहायता हेतु साइबर सुरक्षा चेकिंग टूल्स, विधिक ड्राफ्टिंग सुविधाएं और ऑन-डिवाइस सुरक्षित यूटिलिटीज जोड़ी जा सकती हैं।"
+        : "In the future, specialized cybersecurity verification tools, statutory drafting aids, and privacy-first digital utilities will be made available for citizens and legal professionals."
+    },
+    {
+      q: isHindi ? "यह मंच किसके द्वारा संचालित और निर्देशित है?" : "Who manages and directs this initiative?",
+      a: isHindi 
+        ? "यह मंच इलाहाबाद उच्च न्यायालय में कार्यरत अधिवक्ता अनुराग गुरौली द्वारा व्यक्तिगत रूप से संचालित, डिजाइन और निर्देशित एक स्वतंत्र जन-जागरूकता पहल है।"
+        : "This platform is an independent initiative personally created, designed, and directed by Advocate Anurag Gurauli, Advocate at the Allahabad High Court."
+    }
+  ], [isHindi]);
 
   return (
-    <div className="flex flex-col gap-6 sm:gap-8 py-2 overflow-hidden transition-colors duration-300 pb-24 sm:pb-32">
+    <div className="flex flex-col gap-16 sm:gap-24 overflow-hidden transition-colors pb-28">
       
-      {/* 1. HERO SECTION: ADVOCATE ANURAG GURAULI VISION */}
-      <section className="relative text-slate-900 dark:text-white pt-6 sm:pt-10 pb-8 sm:pb-12 overflow-hidden flex items-center rounded-3xl min-h-[400px] border border-slate-200/20 dark:border-white/5">
-        {/* Clean Ambient Gradient Backdrop */}
-        <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden rounded-3xl bg-slate-50/50 dark:bg-slate-950/50">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.04] via-transparent to-cyan-500/[0.04] dark:from-blue-600/[0.08] dark:to-cyan-600/[0.08]" />
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 dark:from-slate-950 to-transparent" />
-        </div>
+      {/* 1. HERO SECTION: MODERN PRODUCT DARK NAVY HERO (REFERENCE STYLE B INFLUENCE) */}
+      <section className="relative w-full bg-[#0B1120] text-white border-b border-white/10 pt-12 sm:pt-20 pb-16 sm:pb-24 overflow-hidden">
+        {/* Subtle atmospheric ambient glow */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#16A34A]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
 
-        <HeroAmbientGlow />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 space-y-4 w-full">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
-            {/* Left Column: Brand Statement & Action CTAs */}
+            {/* Left Column: Bold White Typography & Editorial Hierarchy */}
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-7 space-y-6 text-left flex flex-col items-start min-w-0 w-full"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="lg:col-span-7 space-y-6 text-left"
             >
-              <div className="flex flex-col gap-6 items-start w-full min-w-0 mt-4 sm:mt-6 mb-2 sm:mb-4">
-                
-                {/* 1. Main Headline */}
-                <div className="w-full flex flex-col gap-1.5">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black tracking-tight leading-[1.12] text-slate-950 dark:text-white">
-                    {isHindi ? "सुरक्षित डिजिटल जीवन के लिए " : "Smart Technology & "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-400">
-                      {isHindi ? "तकनीक और जागरूकता" : "Cyber Awareness"}
-                    </span>
-                    {isHindi ? "" : " for a Safer Tomorrow."}
-                  </h1>
-                </div>
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] text-white">
+                {isHindi ? (
+                  <>
+                    नागरिकों की कानूनी व <br />
+                    <span className="text-[#22C55E]">साइबर सुरक्षा के लिए समर्पित।</span>
+                  </>
+                ) : (
+                  <>
+                    Cyber Law, Digital Defense & <br />
+                    <span className="text-[#22C55E]">Public Legal Safety.</span>
+                  </>
+                )}
+              </h1>
+
+              <p className="text-base sm:text-lg text-stone-300 leading-relaxed max-w-xl font-normal">
+                {isHindi 
+                  ? "अधिवक्ता अनुराग गुरौली (इलाहाबाद उच्च न्यायालय) का यह आधिकारिक मंच आम नागरिकों को साइबर अपराधों, ऑनलाइन धोखाधड़ी और डिजिटल खतरों से सुरक्षित रखने हेतु कानूनी जागरूकता, व्यावहारिक सुरक्षा तकनीकें और आवश्यक मार्गदर्शन प्रदान करने के लिए तत्पर है। भविष्य में इस मंच पर साइबर सुरक्षा से जुड़े विशेष टूल्स भी उपलब्ध कराए जा सकते हैं।"
+                  : "The official digital platform of Advocate Anurag Gurauli (High Court), dedicated to equipping citizens with cyber law awareness, online fraud defense techniques, and statutory protections. Purpose-built cybersecurity and legal safety tools may also be introduced here in the future."}
+              </p>
+
+              {/* Action Buttons: Clean & Perfectly Aligned */}
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => onNavigate('articles')}
+                  className="px-6 py-3.5 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold shadow-sm transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>{isHindi ? "साइबर सुरक्षा लेख व गाइड पढ़ें" : "Read Cyber Safety Guides"}</span>
+                </button>
+
+                <button
+                  onClick={() => onNavigate('tools')}
+                  className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-sm font-bold transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap"
+                >
+                  <span>{isHindi ? "टूल्स डायरेक्टरी देखें" : "Explore All Tools"}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </motion.div>
 
-            {/* Right Column: 3D Interactive Showcase */}
+            {/* Right Column: 3D Device Showcase */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, x: 20 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="lg:col-span-5 w-full flex justify-center items-center"
             >
               <ThreeDDeviceShowcase imageSrc="/Screenshot.jpg" language={language} />
             </motion.div>
           </div>
-
         </div>
-
-        {/* Seamless Soft Bottom Shadow & Blend - Eliminates any visible hard cut */}
-        <div 
-          className="absolute bottom-0 left-0 right-0 h-28 sm:h-36 bg-gradient-to-t from-[#F4F8FD] via-[#F4F8FD]/50 to-transparent dark:from-[#0B0F1D] dark:via-[#0B0F1D]/50 dark:to-transparent pointer-events-none z-[5]" 
-          aria-hidden="true"
-        />
       </section>
 
-      {/* 2. DIGITAL SAFETY & LEGAL ARTICLES SECTION (FRONT & CENTERED) */}
-      <section id="homepage-articles" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-6 scroll-mt-28 w-full overflow-hidden">
-        <ScrollReveal direction="up" className="w-full text-center max-w-3xl mx-auto space-y-2">
+      {/* 2. ARTICLES & EDITORIAL KNOWLEDGE SECTION */}
+      <section id="homepage-articles" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 w-full">
+        <ScrollReveal direction="up" className="w-full flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 dark:border-white/10 pb-4">
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
+              {isHindi ? "संपादकीय एवं गाइड" : "EDITORIAL & GUIDES"}
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-bold text-[#111016] dark:text-white tracking-tight mt-1">
+              {isHindi ? 'ज्ञान जो आपको सुरक्षित रखे' : 'Knowledge That Keeps You Safe'}
+            </h2>
+          </div>
 
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            {isHindi ? 'ज्ञान जो आपको सुरक्षित रखे' : 'Knowledge That Keeps You Safe'}
-          </h2>
+          <button
+            onClick={() => onNavigate('articles')}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16A34A] dark:text-[#22C55E] hover:underline transition-colors cursor-pointer"
+          >
+            <span>{isHindi ? 'सभी लेख देखें' : 'View All Publications'}</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </ScrollReveal>
 
-        {/* Category Filter Pills & Search Bar (Single Row, No Awkward Wrap) */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 w-full min-w-0">
-          {/* Scrollable category pills wrapper with explicit min-width safety */}
-          <div className="w-full sm:w-auto max-w-full min-w-0 overflow-hidden">
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 min-w-0">
-              {[
-                { key: 'ALL', label: isHindi ? 'सभी लेख' : 'All Articles' },
-                { key: 'Digital Safety', label: isHindi ? 'डिजिटल सुरक्षा' : 'Digital Safety' },
-                { key: 'Fraud Awareness', label: isHindi ? 'धोखाधड़ी जागरूकता' : 'Fraud Awareness' },
-                { key: 'Legal Awareness', label: isHindi ? 'कानूनी अधिकार' : 'Legal Awareness' },
-                { key: 'Privacy & Security', label: isHindi ? 'गोपनीयता' : 'Privacy & Security' },
-                { key: 'Technology', label: isHindi ? 'प्रौद्योगिकी' : 'Technology' },
-              ].map(cat => (
-                <button
-                  key={cat.key}
-                  onClick={() => setArticleCategory(cat.key)}
-                  className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border whitespace-nowrap cursor-pointer badge-one-line ${
-                    articleCategory === cat.key
-                      ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
-                      : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-blue-400 hover:text-blue-600'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
+        {/* Category Filter Pills & Search */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 w-full sm:w-auto">
+            {[
+              { key: 'ALL', label: isHindi ? 'सभी लेख' : 'All Articles' },
+              { key: 'Digital Safety', label: isHindi ? 'डिजिटल सुरक्षा' : 'Digital Safety' },
+              { key: 'Fraud Awareness', label: isHindi ? 'धोखाधड़ी बचाव' : 'Fraud Awareness' },
+              { key: 'Legal Awareness', label: isHindi ? 'कानूनी अधिकार' : 'Legal Awareness' },
+              { key: 'Privacy & Security', label: isHindi ? 'गोपनीयता' : 'Privacy & Security' },
+            ].map(cat => (
+              <button
+                key={cat.key}
+                onClick={() => setArticleCategory(cat.key)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
+                  articleCategory === cat.key
+                    ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
+                    : 'bg-stone-100 dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200/80 dark:border-white/10 hover:border-stone-400'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
 
           {/* Search Input */}
-          <div className="relative w-full sm:w-64 shrink-0 min-w-0">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <div className="relative w-full sm:w-72 shrink-0">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
             <input
               type="text"
               value={articleSearch}
               onChange={(e) => setArticleSearch(e.target.value)}
               placeholder={isHindi ? 'लेख खोजें...' : 'Search articles...'}
-              className="w-full pl-8 pr-8 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-full text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+              className="w-full pl-9 pr-8 py-2 text-xs bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 rounded-lg text-[#111016] dark:text-white placeholder-stone-400 focus:outline-none focus:border-[#16A34A]"
             />
             {articleSearch && (
               <button
                 onClick={() => setArticleSearch('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -277,69 +329,62 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {featuredArticle && articleCategory === 'ALL' && !articleSearch.trim() && (
               <article 
                 onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug })}
-                className="group border border-slate-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#0E131F] p-4 sm:p-6 hover:border-blue-500/50 transition-all cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-5 items-center shadow-xs"
+                className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] p-6 hover:border-[#16A34A]/60 transition-colors cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-2xs"
               >
                 <div className="md:col-span-7 space-y-3">
                   <div className="flex flex-wrap items-center gap-2 text-xs">
-                    <span className="px-2.5 py-0.5 rounded-full bg-blue-600 text-white text-[11px] font-bold">
+                    <span className="px-2.5 py-0.5 rounded bg-stone-100 dark:bg-white/10 text-stone-800 dark:text-stone-200 text-[11px] font-bold">
                       {featuredArticle.category}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[10.5px] font-bold flex items-center gap-1">
+                    <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/40 text-[#16A34A] dark:text-[#22C55E] text-[11px] font-bold flex items-center gap-1">
                       <Sparkles className="w-3 h-3" />
                       <span>{isHindi ? "मुख्य लेख" : "Featured"}</span>
                     </span>
-                    <span className="text-slate-400 dark:text-slate-500">•</span>
-                    <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-blue-500" />
+                    <span className="text-stone-300 dark:text-stone-700">•</span>
+                    <span className="text-[11px] text-stone-500 font-medium">
                       {formatArticleDate(featuredArticle.publishedAt || featuredArticle.createdAt)}
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-xl md:text-2xl font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors leading-snug">
                     {featuredArticle.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 line-clamp-2 sm:line-clamp-3 leading-relaxed">
+                  <p className="text-sm text-stone-600 dark:text-stone-300 line-clamp-2 leading-relaxed font-normal">
                     {featuredArticle.excerpt}
                   </p>
 
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-white/5 text-xs text-slate-500 dark:text-slate-400">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-md bg-blue-500/10 border border-blue-500/25 flex items-center justify-center shrink-0">
-                        <BookOpen className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300 text-xs flex items-center gap-1">
-                        By Less Team
-                        <PenTool className="w-2.5 h-2.5 text-blue-500/70" />
-                      </span>
-                    </div>
+                  <div className="flex items-center justify-between pt-3 border-t border-stone-100 dark:border-white/5 text-xs text-stone-500">
+                    <span className="font-semibold text-stone-700 dark:text-stone-300">
+                      Less Creation Editorial
+                    </span>
 
-                    <div className="flex items-center gap-3 text-[11px] font-mono">
+                    <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-blue-500" />
+                        <Clock className="w-3.5 h-3.5 text-stone-400" />
                         {featuredArticle.readingTime}
                       </span>
-                      <span className="text-blue-600 dark:text-blue-400 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
-                        <span>{isHindi ? 'पढ़ें' : 'Read'}</span>
+                      <span className="text-[#16A34A] dark:text-[#22C55E] font-bold flex items-center gap-0.5">
+                        <span>{isHindi ? 'पढ़ें' : 'Read Article'}</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="md:col-span-5 aspect-video rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
+                <div className="md:col-span-5 aspect-video rounded-xl bg-stone-100 dark:bg-white/5 border border-stone-200/60 dark:border-white/5 overflow-hidden flex items-center justify-center">
                   {featuredArticle.featuredImage ? (
                     <img 
                       src={getDirectCloudImageUrl(featuredArticle.featuredImage)} 
                       alt={featuredArticle.title} 
                       referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain bg-slate-50 dark:bg-slate-900 group-hover:scale-102 transition-transform duration-300" 
+                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" 
                       loading="lazy"
                     />
                   ) : (
-                    <div className="text-center p-4 space-y-1.5">
-                      <ShieldCheck className="w-8 h-8 text-blue-500/60 mx-auto" />
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Less Creation Insights</span>
+                    <div className="text-center p-4 space-y-1">
+                      <BookOpen className="w-8 h-8 text-stone-400 mx-auto" />
+                      <span className="text-[10px] uppercase font-bold text-stone-400">Editorial Guide</span>
                     </div>
                   )}
                 </div>
@@ -347,56 +392,54 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             )}
 
             {/* Recent Articles Grid */}
-            {recentArticles.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {recentArticles.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recentArticles.map((article) => (
                   <article
                     key={article.id}
                     onClick={() => onNavigate('article-detail', { slug: article.slug })}
-                    className="group border border-slate-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#0E131F] overflow-hidden hover:border-blue-500/50 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between shadow-xs"
+                    className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] overflow-hidden hover:border-[#16A34A]/60 transition-colors cursor-pointer flex flex-col justify-between shadow-2xs"
                   >
-                    {/* Thumbnail */}
-                    <div className="aspect-video bg-slate-100 dark:bg-white/5 border-b border-slate-100 dark:border-white/5 overflow-hidden flex items-center justify-center relative">
+                    <div className="aspect-video bg-stone-100 dark:bg-white/5 border-b border-stone-100 dark:border-white/5 overflow-hidden flex items-center justify-center relative">
                       {article.featuredImage ? (
                         <img
                           src={getDirectCloudImageUrl(article.featuredImage)}
                           alt={article.title}
                           referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
+                          className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                           loading="lazy"
                         />
                       ) : (
                         <div className="text-center p-4 space-y-1">
-                          <BookOpen className="w-7 h-7 text-blue-500/50 mx-auto" />
-                          <span className="text-[9px] font-mono uppercase text-slate-400">Editorial Guide</span>
+                          <BookOpen className="w-7 h-7 text-stone-400 mx-auto" />
+                          <span className="text-[9px] uppercase font-bold text-stone-400">Article</span>
                         </div>
                       )}
-                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-bold shadow-xs">
+                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-[#111016] text-white text-[10px] font-bold">
                         {article.category}
                       </span>
                     </div>
 
-                    {/* Content */}
-                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+                    <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                       <div className="space-y-1.5">
-                        <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
-                          <Calendar className="w-3 h-3 text-blue-500" />
+                        <div className="flex items-center gap-2 text-[11px] text-stone-400">
+                          <Calendar className="w-3.5 h-3.5" />
                           <span>{formatArticleDate(article.publishedAt || article.createdAt)}</span>
                         </div>
-                        <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug">
+                        <h4 className="text-base font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors line-clamp-2 leading-snug">
                           {article.title}
                         </h4>
-                        <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-2 leading-relaxed">
                           {article.excerpt}
                         </p>
                       </div>
 
-                      <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-                        <span className="flex items-center gap-1 font-mono">
-                          <Clock className="w-3 h-3 text-blue-500" />
+                      <div className="pt-3 border-t border-stone-100 dark:border-white/5 flex items-center justify-between text-[11px] text-stone-500">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-stone-400" />
                           {article.readingTime}
                         </span>
-                        <span className="text-blue-600 dark:text-blue-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                        <span className="text-[#16A34A] dark:text-[#22C55E] font-bold flex items-center gap-0.5">
                           <span>{isHindi ? 'पढ़ें' : 'Read'}</span>
                           <ChevronRight className="w-3 h-3" />
                         </span>
@@ -405,27 +448,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   </article>
                 ))}
               </div>
-            ) : (
-              <div className="text-center py-8 border border-slate-200/60 dark:border-white/5 rounded-2xl p-6 bg-slate-50/50 dark:bg-white/[0.02]">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  {isHindi ? 'इस श्रेणी में कोई लेख नहीं मिला।' : 'No articles match your selected filter.'}
-                </p>
-              </div>
             )}
           </div>
         ) : (
-          /* Curated Foundational Guides (Displays When Firestore Articles are Loading or Empty) */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          /* Curated Foundational Guides */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 id: 'guide-digital-arrest',
                 title: isHindi 
                   ? 'डिजिटल अरेस्ट फ्रॉड: फर्जी पुलिस और सीबीआई वीडियो कॉल का सच' 
-                  : 'Digital Arrest Frauds: How Fake Police & CBI Calls Trap Citizens',
+                  : 'Digital Arrest Frauds: How Fake Police & CBI Video Calls Trap Citizens',
                 category: isHindi ? 'डिजिटल सुरक्षा' : 'Digital Safety',
                 excerpt: isHindi 
                   ? 'स्काइप और व्हाट्सएप पर फर्जी पुलिस वर्दी व कोर्ट सेटअप बनाकर नागरिकों से लाखों की उगाही करने के तरीकों व बचाव के नियम।' 
-                  : 'How cyber syndicates impersonate law enforcement and Supreme Court judges on video calls, and key steps to protect yourself.',
+                  : 'How cyber syndicates impersonate law enforcement and court officials on video calls, and key steps to protect yourself.',
                 readingTime: '5 min read',
                 date: 'Mar 2026'
               },
@@ -457,29 +494,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <article
                 key={idx}
                 onClick={() => onNavigate('articles')}
-                className="group border border-slate-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#0E131F] p-5 hover:border-blue-500/50 hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between shadow-xs space-y-4"
+                className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] p-5 hover:border-[#16A34A]/60 transition-colors cursor-pointer flex flex-col justify-between shadow-2xs space-y-4"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded-md bg-blue-600/10 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold border border-blue-500/20">
+                    <span className="px-2.5 py-0.5 rounded bg-stone-100 dark:bg-white/10 text-stone-800 dark:text-stone-200 text-[10px] font-bold">
                       {guide.category}
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">{guide.date}</span>
+                    <span className="text-[10px] text-stone-400">{guide.date}</span>
                   </div>
-                  <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug">
+                  <h4 className="text-base font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors line-clamp-2 leading-snug">
                     {guide.title}
                   </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-3 leading-relaxed">
                     {guide.excerpt}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
-                  <span className="flex items-center gap-1 font-mono">
-                    <Clock className="w-3 h-3 text-blue-500" />
+                <div className="pt-3 border-t border-stone-100 dark:border-white/5 flex items-center justify-between text-[11px] text-stone-500">
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-stone-400" />
                     {guide.readingTime}
                   </span>
-                  <span className="text-blue-600 dark:text-blue-400 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+                  <span className="text-[#16A34A] dark:text-[#22C55E] font-bold flex items-center gap-0.5">
                     <span>{isHindi ? 'विस्तार से पढ़ें' : 'Read Guide'}</span>
                     <ChevronRight className="w-3 h-3" />
                   </span>
@@ -488,328 +525,147 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             ))}
           </div>
         )}
-
-        {/* View All Articles Action */}
-        <div className="text-center pt-2">
-          <button
-            onClick={() => onNavigate('articles')}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs sm:text-sm font-bold shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
-          >
-            <BookOpen className="w-4 h-4 text-blue-400 dark:text-blue-600" />
-            <span>{isHindi ? 'सभी लेख व साइबर सुरक्षा गाइड पढ़ें' : 'Explore All Editorial Articles & Publications'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
       </section>
 
-      {/* 3. PRODUCT ECOSYSTEM SECTION */}
-      <section id="product-ecosystem" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2.5">
+      {/* 4. MANIFESTO & PHILOSOPHY */}
+      <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <ScrollReveal direction="up" className="border border-stone-200 dark:border-white/10 rounded-3xl p-8 sm:p-12 bg-white dark:bg-[#151720] shadow-2xs space-y-6">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
+            LESS CREATION MANIFESTO
+          </div>
 
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.home.ecosystemTitle || "Products Built for Real-World Use"}
-          </h2>
+          <blockquote className="text-xl sm:text-3xl font-bold text-[#111016] dark:text-white leading-snug tracking-tight">
+            “{t.home.missionQuote || "When technology removes unnecessary hurdles and respects human time, it transforms everyday work into effortless progress."}”
+          </blockquote>
 
+          <div className="pt-4 border-t border-stone-100 dark:border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-stone-500">
+            <span>Built with integrity for Indian citizens, advocates & innovators.</span>
+            <span className="font-mono text-[#16A34A] dark:text-[#22C55E] font-semibold">#LessFrictionMoreFocus</span>
+          </div>
         </ScrollReveal>
-
-        {/* Dynamic Apps Showcase (Cards Managed via Admin Control Center) */}
-        <DynamicAppsShowcase onNavigate={onNavigate} showAllLink={true} />
-
-        {/* Ecosystem Grid: Flagship Hero Product & Lifetime Pass */}
-        <div className="max-w-4xl mx-auto w-full space-y-6">
-          
-          {/* Flagship Product Card: Less Legal */}
-          <div className="animated-card rounded-3xl p-6 sm:p-10 bg-gradient-to-br from-blue-50/90 via-sky-50/40 to-white dark:from-[#111827] dark:via-[#0F172A] dark:to-[#1E293B] border-2 border-blue-500/40 dark:border-blue-400/30 shadow-[0_20px_50px_rgba(59,130,246,0.18)] flex flex-col justify-between space-y-6 relative overflow-hidden">
-            {/* Top Badge */}
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[11px] font-black uppercase tracking-wider shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 fill-slate-950 shrink-0" />
-                <span>{t.home.flagshipBadge || "FLAGSHIP PRODUCT"}</span>
-              </div>
-            </div>
-
-            {/* Product Body */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3.5">
-                <AppLogo className="w-14 h-14 shrink-0" showShadow={false} />
-                <div>
-                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-                    {t.home.flagshipTitle || "Less Legal"}
-                  </h3>
-                </div>
-              </div>
-
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                {t.home.flagshipDesc || "An all-in-one smart workspace bringing practical legal utilities, reference tools, PDF tools and everyday productivity features together."}
-              </p>
-
-
-            </div>
-
-            {/* Action Bar */}
-            <div className="pt-5 border-t border-blue-200/60 dark:border-white/10 flex flex-wrap items-center justify-between gap-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  onClick={() => onNavigate('download')}
-                  className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-bold shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer whitespace-nowrap badge-one-line"
-                >
-                  <Download className="w-3.5 h-3.5 text-white" />
-                  <span>{isHindi ? "APK डाउनलोड करें" : "Download APK"}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Permanent Lifetime Pass Banner Card (Preserved for monetization/Razorpay!) */}
-          <div className="animated-card relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#F8FAFC] via-slate-50 to-[#F1F5F9] dark:from-[#090D1A] dark:via-[#02040A] dark:to-[#0B0F19] text-slate-900 dark:text-white border-2 border-slate-200/90 dark:border-[#E5BA55]/40 shadow-[0_20px_50px_rgba(0,0,0,0.06)] dark:shadow-[0_25px_60px_rgba(229,186,85,0.12)] p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 select-none">
-            <div className="space-y-3 flex-1 text-center lg:text-left">
-              
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white leading-tight">
-                {language === 'hi' 
-                  ? 'लेस लीगल स्थायी प्रीमियम मेंबरशिप' 
-                  : 'Less Legal Permanent Lifetime Access'}
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl font-medium leading-relaxed">
-                {language === 'hi'
-                  ? 'सभी आवश्यक टूल्स, केस डायरी, बेयर एक्ट्स और भविष्य के अपडेट्स का स्थायी लाभ। कोई आवर्ती शुल्क नहीं।'
-                  : 'Unlock all smart tools, case diary, custom Bare Acts & free lifetime upgrades with a one-time pass.'}
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center justify-center bg-red-50/20 dark:bg-red-950/10 border-2 border-red-500/30 dark:border-red-500/20 rounded-2xl p-4 sm:p-5 w-full lg:w-72 shrink-0 space-y-3 shadow-[0_10px_30px_rgba(239,68,68,0.1)] relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-bl-lg uppercase tracking-wider">
-                {language === 'hi' ? 'बचत ₹800' : 'SAVE ₹800'}
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <span className="text-xs text-red-500 dark:text-red-400 line-through decoration-red-500 decoration-2 font-bold">₹899</span>
-                  <span className="bg-red-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md shadow-xs animate-pulse">89.9% OFF</span>
-                </div>
-                <div className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">
-                  ₹99 <span className="text-xs text-slate-500 font-bold">/ {language === 'hi' ? 'एक बार' : 'Lifetime'}</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() => onNavigate('premium')}
-                className="red-shimmer-button w-full py-2.5 px-2 rounded-xl uppercase tracking-wider text-[10px] sm:text-xs font-black cursor-pointer shadow-md flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap overflow-hidden"
-              >
-                <Sparkles className="w-3.5 h-3.5 fill-white text-white shrink-0" />
-                <span className="whitespace-nowrap">{language === 'hi' ? 'प्रीमियम पास लें' : 'Get Lifetime Pass'}</span>
-              </button>
-            </div>
-          </div>
-
-        </div>
       </section>
 
-      {/* 5. MISSION & MANIFESTO SECTION */}
-      <section id="mission-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 scroll-mt-28">
-        
-        {/* Section Header directly on natural background */}
-        <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2">
-
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.home.missionTitle || "Technology should not feel complicated."}
-          </h2>
-        </ScrollReveal>
-
-        {/* Real Mission Message Card (Obsidian Gold & Warm Amber Luxury Aesthetic) */}
-        <ScrollReveal direction="up" className="max-w-4xl mx-auto">
-          <div className="relative rounded-3xl p-6 sm:p-10 md:p-12 bg-gradient-to-br from-slate-900 via-[#12131A] to-[#1A1516] text-white border-2 border-amber-500/40 dark:border-amber-400/35 shadow-[0_25px_60px_-15px_rgba(245,158,11,0.2)] overflow-hidden">
-            
-            {/* Ambient Lighting Gradients */}
-            <div className="absolute top-0 right-0 -mt-16 -mr-16 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
-            
-            {/* Top Seal / Header */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-500/20 pb-5 mb-6 sm:mb-8 relative z-10">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center font-black shadow-md shadow-amber-500/20">
-                  <Target className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-black tracking-wider uppercase text-amber-400">
-                    LESS CREATION MANIFESTO
-                  </div>
-
-                </div>
-              </div>
-
-
-            </div>
-
-            {/* Core Inspiring Quote Body */}
-            <div className="relative z-10 space-y-4 my-2 text-center sm:text-left">
-              <span className="text-4xl sm:text-6xl text-amber-400/40 font-serif leading-none select-none block -mb-4 sm:-mb-6">“</span>
-              <blockquote className="text-lg sm:text-2xl md:text-3xl font-bold text-slate-100 leading-snug tracking-tight font-serif italic px-2 sm:px-4">
-                {t.home.missionQuote || "When technology removes unnecessary hurdles and respects human time, it transforms everyday work into effortless progress."}
-              </blockquote>
-              <span className="text-4xl sm:text-6xl text-amber-400/40 font-serif leading-none select-none block text-right -mt-2">”</span>
-            </div>
-
-            {/* Footer Attribution */}
-            <div className="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400 relative z-10">
-              <div className="flex items-center gap-2">
-              </div>
-              <div className="font-mono text-[11px] text-amber-400/80">
-                #BuildWithIntegrity
-              </div>
-            </div>
-
-          </div>
-        </ScrollReveal>
-
-        {/* Connected Innovation Pipeline (Directly on canvas, responsive across all screens) */}
-        <ScrollReveal direction="up" className="max-w-5xl mx-auto space-y-4 pt-2">
-          <div className="text-center">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              {isHindi ? "हमारा विकास चक्र" : "Our Product Development Journey"}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
-            {[
-              { step: "01", label: isHindi ? "विचार" : "Idea", sub: isHindi ? "समस्या की खोज" : "Discovery", color: "from-blue-500 to-sky-500" },
-              { step: "02", label: isHindi ? "समस्या" : "Problem", sub: isHindi ? "जटिलता का विश्लेषण" : "Root Analysis", color: "from-sky-500 to-cyan-500" },
-              { step: "03", label: isHindi ? "सरल तकनीक" : "Simple Tech", sub: isHindi ? "कम जटिल समाधान" : "Clean Code", color: "from-cyan-500 to-emerald-500" },
-              { step: "04", label: isHindi ? "उपयोगी उत्पाद" : "Useful Product", sub: isHindi ? "वास्तविक उपयोगिता" : "Utility App", color: "from-emerald-500 to-amber-500" },
-              { step: "05", label: isHindi ? "वास्तविक प्रभाव" : "Real Impact", sub: isHindi ? "समय की बचत" : "Human Progress", color: "from-amber-500 to-orange-500" }
-            ].map((item, idx) => (
-              <div 
-                key={idx} 
-                className="relative rounded-2xl p-4 bg-white/80 dark:bg-[#111827]/80 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/90 text-center space-y-2 hover:-translate-y-1 transition-all duration-300 shadow-xs group"
-              >
-                <div className={`w-8 h-8 mx-auto rounded-xl bg-gradient-to-tr ${item.color} text-white font-black text-xs flex items-center justify-center shadow-sm`}>
-                  {item.step}
-                </div>
-                <div className="text-sm font-bold text-slate-900 dark:text-white whitespace-nowrap">
-                  {item.label}
-                </div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium leading-tight">
-                  {item.sub}
-                </div>
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
-
-      </section>
-
-      {/* Trust Section Removed to streamline layout */}
-
-      {/* 7. FOUNDER PREVIEW SECTION */}
-      <section id="founder-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-28">
+      {/* 5. FOUNDER SPOTLIGHT: ADVOCATE ANURAG GURAULI */}
+      <section id="founder-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
-          <div className="animated-card relative p-6 sm:p-10 md:p-12 rounded-[32px] bg-gradient-to-br from-white via-white/95 to-slate-50/90 dark:from-[#0E1526] dark:via-[#0D1424] dark:to-[#080D1A] border border-slate-200/90 dark:border-white/12 shadow-[0_25px_60px_rgba(37,99,235,0.12)] dark:shadow-[0_30px_70px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-2xl">
-            
-            {/* Ambient Lighting Gradients */}
-            <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-bl from-blue-500/15 via-cyan-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-gradient-to-tr from-amber-500/10 via-blue-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+          <div className="border border-stone-200 dark:border-white/10 rounded-3xl p-6 sm:p-10 bg-white dark:bg-[#151720] shadow-2xs">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               
-              {/* Image Column: Luxury Framing with Glowing Accents */}
-              <div className="lg:col-span-5 flex flex-col items-center">
-                <div className="relative group w-full max-w-[280px] sm:max-w-[320px] lg:max-w-none">
-                  {/* Outer Floating Glow on hover */}
-                  <div className="absolute -inset-2 bg-gradient-to-tr from-amber-500/25 via-blue-600/30 to-cyan-400/25 rounded-[2rem] blur-lg opacity-70 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-                  
-                  <div className="relative rounded-[1.75rem] overflow-hidden bg-slate-900 border-2 border-slate-200/80 dark:border-white/15 shadow-2xl isolate">
-                    <div className="relative aspect-[4/5] overflow-hidden bg-slate-950">
-                      {!founderImgErr ? (
-                        <img 
-                          src="/Founder1.jpg" 
-                          alt="Anurag Gurauli — Founder of Less Creation & Advocate"
-                          onError={() => setFounderImgErr(true)}
-                          className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-b from-slate-900 via-[#0F172A] to-[#070B14] flex flex-col items-center justify-center p-6 text-center">
-                          <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 mb-3 shadow-lg">
-                            <Scale className="w-8 h-8" />
-                          </div>
-                          <div className="text-base font-black text-white">Anurag Gurauli</div>
-                          <div className="text-xs text-amber-400 font-bold mt-0.5">Founder, Less Creation</div>
-                        </div>
-                      )}
-                      
-                      {/* Compact Bottom Identity Banner Positioned Lower */}
-                      <div className="absolute bottom-2 inset-x-2.5 p-2 rounded-xl bg-slate-950/80 backdrop-blur-md border border-amber-500/30 text-center shadow-lg">
-                        <h4 className="text-xs font-black text-white tracking-wide uppercase leading-none">
-                          Anurag Gurauli
-                        </h4>
-                        <p className="text-[9px] text-amber-200/90 font-bold leading-none mt-0.5">
-                          Founder, Less Creation • Advocate, High Court
-                        </p>
-                      </div>
+              {/* Image */}
+              <div className="lg:col-span-5 flex justify-center">
+                <div className="w-full max-w-[280px] sm:max-w-[320px] rounded-2xl overflow-hidden border border-stone-200 dark:border-white/10 bg-stone-100 dark:bg-stone-900 shadow-sm aspect-[4/5] relative">
+                  {!founderImgErr ? (
+                    <img 
+                      src="/Founder1.jpg" 
+                      alt="Anurag Gurauli — Founder of Less Creation & Advocate"
+                      onError={() => setFounderImgErr(true)}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
+                      <Scale className="w-10 h-10 text-[#16A34A] dark:text-[#22C55E] mb-2" />
+                      <div className="text-base font-bold text-[#111016] dark:text-white">Anurag Gurauli</div>
+                      <div className="text-xs text-stone-500 mt-1">Founder, Less Creation</div>
                     </div>
+                  )}
+
+                  <div className="absolute bottom-2 inset-x-2 p-2 rounded-xl bg-[#111016]/85 backdrop-blur-sm text-center text-white">
+                    <div className="text-xs font-bold uppercase">Anurag Gurauli</div>
+                    <div className="text-[10px] text-stone-300">Founder & Advocate, High Court</div>
                   </div>
                 </div>
               </div>
 
-              {/* Story Column */}
-              <div className="lg:col-span-7 flex flex-col justify-center space-y-5 text-center lg:text-left">
-                
-                <div className="space-y-3">
-                  <h3 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
-                    {t.home.founderPreviewTitle || "Created by an Advocate for Real-World Utility"}
-                  </h3>
-
-                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium">
-                    {t.home.founderPreviewText || "Anurag Gurauli, Advocate practicing before the Allahabad High Court, founded Less Creation to eliminate friction from legal research, document management, and everyday digital productivity."}
-                  </p>
+              {/* Story */}
+              <div className="lg:col-span-7 space-y-4 text-left">
+                <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
+                  {isHindi ? "संस्थापक परिचय • साइबर कानून विशेषज्ञ" : "FOUNDER PROFILE • CYBER LAW EXPERT"}
                 </div>
 
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#111016] dark:text-white leading-tight">
+                  {isHindi 
+                    ? "अधिवक्ता अनुराग गुरौली: आम नागरिकों की डिजिटल सुरक्षा के सजग प्रहरी" 
+                    : "Advocate Anurag Gurauli: Safeguarding Citizen Rights in the Digital Age"}
+                </h3>
 
+                <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+                  {isHindi 
+                    ? "अधिवक्ता अनुराग गुरौली (इलाहाबाद उच्च न्यायालय) साइबर कानून और डिजिटल सुरक्षा के प्रतिष्ठित जानकार हैं। वे एक निष्ठावान, कर्मठ और संवेदनशील विधिक व्यक्तित्व हैं, जो आम लोगों को ऑनलाइन धोखाधड़ी, फर्जीवाड़े और साइबर खतरों से बचाने के लिए निरंतर प्रयासरत हैं। उनका संकल्प है कि हर नागरिक विधिक रूप से जागरूक और डिजिटल रूप से सुरक्षित रहे।"
+                    : "Advocate Anurag Gurauli (High Court) is an accomplished authority in cybersecurity and cyber law. Known for his unwavering diligence and deep concern for citizen safety, he is dedicated to educating individuals on digital self-defense, IT regulations, and fraud prevention."}
+                </p>
 
-                {/* High Quality Quote Callout */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-50/80 via-indigo-50/40 to-transparent dark:from-[#131C31] dark:via-[#11192C] dark:to-transparent border border-blue-200/60 dark:border-white/10 text-xs sm:text-sm text-slate-700 dark:text-slate-200 italic font-medium text-left relative shadow-2xs">
-                  <div className="text-2xl font-serif text-blue-500/40 leading-none mb-1">“</div>
-                  <p className="leading-relaxed">
-                    {isHindi 
-                      ? "तकनीक तब सार्थक बनती है जब वह किसी उपयोगी कार्य को अधिक सरल, सुरक्षित और हर नागरिक के लिए सुलभ बनाती है। लेस क्रिएशन इसी विचार के साथ बनाया जा रहा है।"
-                      : "Technology is truly meaningful when it removes friction from essential legal workflows and makes authentic knowledge accessible to every Indian."}
-                  </p>
-                  <div className="text-xs font-bold text-blue-600 dark:text-blue-400 not-italic mt-2.5 flex items-center gap-1.5">
-                    <span className="w-4 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
-                    <span>Anurag Gurauli • Founder & Creator</span>
-                  </div>
+                <div className="p-4 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 text-xs sm:text-sm text-stone-700 dark:text-stone-300 italic">
+                  “{isHindi 
+                    ? "जब नागरिक अपने कानूनी अधिकारों और डिजिटल सुरक्षा तकनीकों से अवगत होते हैं, तभी वे ऑनलाइन शोषण और वित्तीय धोखाधड़ी से सुरक्षित रह सकते हैं।"
+                    : "When citizens understand their legal rights and digital defense techniques, they become resilient against fraud and cyber deception."}”
                 </div>
 
-                {/* Interactive Action Bar */}
-                <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                <div className="pt-2 flex flex-wrap items-center gap-3">
                   <button
                     onClick={() => onNavigate('founder')}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white text-xs font-black rounded-xl shadow-md shadow-blue-500/20 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
+                    className="px-5 py-2.5 bg-[#111016] hover:bg-black text-white dark:bg-white dark:hover:bg-stone-100 dark:text-[#111016] text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
                   >
-                    <User className="w-4 h-4" />
-                    <span>{isHindi ? "संस्थापक प्रोफाइल व विज़न पढ़ें" : "Read Founder's Story"}</span>
-                    <ArrowRight className="w-4 h-4 ml-0.5" />
+                    <User className="w-3.5 h-3.5" />
+                    <span>{isHindi ? "संस्थापक प्रोफाइल पढ़ें" : "Read Founder's Story"}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </button>
 
                   <button
                     onClick={() => onNavigate('about')}
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/90 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-white text-xs font-extrabold rounded-xl border border-slate-200 dark:border-white/10 shadow-2xs hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
+                    className="px-5 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
                   >
-                    <span>{isHindi ? "लेस क्रिएशन के बारे में" : "About Less Creation"}</span>
+                    <span>{isHindi ? "हमारे बारे में" : "About Less Creation"}</span>
                   </button>
                 </div>
-
               </div>
 
             </div>
           </div>
         </ScrollReveal>
       </section>
+ 
+      {/* 7. FINAL CTA: MODERN PRODUCT DARK CALLOUT */}
+      <section id="final-cta" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <ScrollReveal direction="up">
+          <div className="rounded-3xl bg-[#0B1120] text-white border border-white/10 p-8 sm:p-14 text-center space-y-6 relative overflow-hidden shadow-xl">
+            <div className="space-y-2 max-w-2xl mx-auto">
+              <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
+                {isHindi ? "विधिक रूप से जागरूक, डिजिटल रूप से सुरक्षित" : "Legally Aware, Digitally Secure."}
+              </h2>
+              <p className="text-sm sm:text-base text-stone-300 font-normal">
+                {isHindi 
+                  ? "साइबर सुरक्षा नियमों, आईटी कानून और ऑनलाइन फ्रॉड से बचाव के लिए प्रामाणिक गाइड्स और टूल्स का लाभ उठाएं।"
+                  : "Explore verified cybersecurity insights, statutory rights under cyber laws, and practical digital safeguards."}
+              </p>
+            </div>
 
-      {/* 8. FREQUENTLY ASKED QUESTIONS (ACCORDION) */}
-      <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 scroll-mt-28">
-        <ScrollReveal direction="up" className="text-center space-y-2">
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            {t.home.faqTitle}
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <button
+                onClick={() => onNavigate('articles')}
+                className="px-6 py-3.5 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold shadow-sm transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap"
+              >
+                <BookOpen className="w-4 h-4" />
+                <span>{isHindi ? "साइबर सुरक्षा गाइड पढ़ें" : "Read Cyber Safety Guides"}</span>
+              </button>
+
+              <button
+                onClick={() => onNavigate('tools')}
+                className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-sm font-bold transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap"
+              >
+                <span>{isHindi ? "टूल्स डायरेक्टरी देखें" : "Explore All Tools"}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* 8. FREQUENTLY ASKED QUESTIONS */}
+      <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <ScrollReveal direction="up" className="text-center">
+          <h2 className="text-2xl sm:text-4xl font-bold text-[#111016] dark:text-white tracking-tight">
+            Got Questions ?
           </h2>
-
         </ScrollReveal>
 
         <div className="space-y-3">
@@ -819,14 +675,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             return (
               <div 
                 key={idx}
-                className="animated-card bg-white/90 dark:bg-[#111827]/90 backdrop-blur-2xl rounded-2xl overflow-hidden transition-all duration-300 border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md"
+                className="border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] overflow-hidden transition-colors shadow-2xs"
               >
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none cursor-pointer select-none"
+                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-[#111016] dark:text-white focus:outline-none cursor-pointer"
                 >
                   <span>{faq.q}</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-blue-600 dark:text-blue-400' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-stone-500 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-[#16A34A] dark:text-[#22C55E]' : ''}`} />
                 </button>
 
                 <AnimatePresence initial={false}>
@@ -835,10 +691,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
+                      <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed border-t border-stone-100 dark:border-white/5 pt-3 font-normal">
                         {faq.a}
                       </div>
                     </motion.div>

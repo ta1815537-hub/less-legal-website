@@ -27,18 +27,15 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeK
   );
 };
 
-// 2. GLOBAL ANIMATED SMOKE BACKGROUND COMPONENT
+// 2. GLOBAL ANIMATED BACKGROUND COMPONENT (Restrained, subtle ambient light)
 export const SmokeBackground: React.FC = () => {
   return (
     <div 
-      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none hidden dark:block"
+      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none opacity-40 dark:opacity-20"
       style={{ contain: 'strict' }}
     >
-      {/* Smoke Cloud 1 - Clean Blue / Indigo Ambient Vapor (Dark mode only) */}
-      <div className="vapor-orb-1 absolute -top-40 -left-40 w-[35rem] sm:w-[45rem] h-[35rem] sm:h-[45rem] bg-gradient-to-br from-blue-600/15 via-indigo-600/10 to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-40" />
-
-      {/* Smoke Cloud 2 - Subtle Sky / Blue Vapor (Dark mode only) */}
-      <div className="vapor-orb-2 absolute top-1/4 -right-40 w-[30rem] sm:w-[40rem] h-[30rem] sm:h-[40rem] bg-gradient-to-bl from-sky-500/12 via-blue-700/10 to-transparent rounded-full blur-[50px] sm:blur-[90px] opacity-35" />
+      <div className="absolute top-0 right-1/4 w-[40rem] h-[40rem] bg-orange-500/5 rounded-full blur-[120px]" />
+      <div className="absolute top-1/2 left-1/4 w-[40rem] h-[40rem] bg-stone-500/5 rounded-full blur-[140px]" />
     </div>
   );
 };

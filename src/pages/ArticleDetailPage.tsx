@@ -292,8 +292,8 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
   if (loading) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center space-y-3">
-        <BookOpen className="w-8 h-8 text-blue-600 animate-pulse" />
-        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+        <BookOpen className="w-8 h-8 text-[#16A34A] dark:text-[#22C55E] animate-pulse" />
+        <p className="text-xs font-semibold text-stone-500 dark:text-stone-400">
           {isHindi ? "संपादकीय लेख लोड हो रहा है..." : "Loading editorial article..."}
         </p>
       </div>
@@ -303,19 +303,19 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
   if (!article) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center space-y-4">
-        <div className="max-w-md p-6 border border-slate-200 dark:border-white/10 rounded-xl space-y-4 bg-white dark:bg-[#0E131F]">
+        <div className="max-w-md p-6 border border-stone-200 dark:border-white/10 rounded-2xl space-y-4 bg-white dark:bg-[#151720]">
           <AlertTriangle className="w-10 h-10 text-amber-500 mx-auto" />
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+          <h2 className="text-lg font-bold text-[#111016] dark:text-white">
             {isHindi ? "लेख नहीं मिला" : "Article Not Found"}
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-stone-500 dark:text-stone-400">
             {isHindi 
               ? "यह लेख हटाया जा चुका है या इसका लिंक अमान्य है।" 
               : "The requested article could not be found or has been unpublished."}
           </p>
           <button
             onClick={() => onNavigate('articles')}
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors cursor-pointer inline-flex items-center gap-2"
+            className="px-4 py-2 rounded-xl bg-[#16A34A] text-white font-bold text-xs hover:bg-[#15803D] transition-colors cursor-pointer inline-flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>{isHindi ? "सभी लेख देखें" : "Back to Articles"}</span>
@@ -354,9 +354,9 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       }}
       relatedArticlesComponent={
         relatedArticles.length > 0 ? (
-          <section className="space-y-3 pt-6 border-t border-slate-100 dark:border-white/5">
-            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
-              <BookOpen className="w-4 h-4 text-blue-500" />
+          <section className="space-y-3 pt-6 border-t border-stone-200/80 dark:border-white/10">
+            <h3 className="text-xs font-black uppercase tracking-widest text-stone-500 flex items-center gap-1.5">
+              <BookOpen className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
               <span>{isHindi ? "संबंधित लेख (Continue Reading)" : "Continue Reading"}</span>
             </h3>
 
@@ -365,16 +365,16 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
                 <div
                   key={rel.id}
                   onClick={() => onNavigate('article-detail', { slug: rel.slug })}
-                  className="p-4 rounded-xl border border-slate-100 dark:border-white/10 hover:border-blue-500/30 dark:hover:border-blue-500/30 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 cursor-pointer group transition-all duration-200"
+                  className="p-4 rounded-xl border border-stone-200/80 dark:border-white/10 hover:border-[#16A34A]/40 bg-white dark:bg-[#151720] cursor-pointer group transition-all duration-200"
                 >
-                  <span className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-widest">
                     {rel.category}
                   </span>
-                  <h4 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mt-1">
+                  <h4 className="text-sm font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors line-clamp-2 mt-1">
                     {rel.title}
                   </h4>
-                  <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mt-2">
-                    <Clock className="w-3.5 h-3.5 animate-pulse text-blue-500" />
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400 mt-2">
+                    <Clock className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E]" />
                     <span>{rel.readingTime || '4 min read'}</span>
                   </div>
                 </div>

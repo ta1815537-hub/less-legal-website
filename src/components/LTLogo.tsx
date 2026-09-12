@@ -22,7 +22,7 @@ export const LTLogo: React.FC<LTLogoProps> = ({
         <img 
           src={logoSources[srcIndex]} 
           alt="Less Creation Logo" 
-          className="w-full h-full object-contain select-none mix-blend-multiply dark:mix-blend-normal"
+          className="w-full h-full object-contain select-none"
           onError={() => setSrcIndex((prev) => prev + 1)}
         />
       ) : (
