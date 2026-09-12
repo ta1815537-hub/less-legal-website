@@ -4,7 +4,8 @@ import {
   Download, ArrowRight, Sparkles, 
   Calendar, Clock, BookOpen, ChevronRight,
   ChevronDown, User, Scale, Search, X,
-  FileText, Calculator, Image as ImageIcon, QrCode, Briefcase
+  FileText, Calculator, Image as ImageIcon, QrCode, Briefcase,
+  Star, ChevronLeft, Quote, Send, CheckCircle2, MessageSquare
 } from 'lucide-react';
 import { AppLogo } from '../components/AppLogo';
 import { ThreeDDeviceShowcase } from '../components/ThreeDDeviceShowcase';
@@ -13,7 +14,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
 import { articleService } from '../services/articleService';
-import { getDirectCloudImageUrl } from '../utils/adminStorage';
+import { adminStorage, UserStory, getDirectCloudImageUrl } from '../utils/adminStorage';
 
 interface HomePageProps {
   onNavigate: (route: PageRoute, params?: any) => void;
@@ -22,7 +23,77 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { t, language } = useLanguage();
   const isHindi = language === 'hi';
-  const [founderImgErr, setFounderImgErr] = useState(false);
+
+  // User Stories & Community Experiences State
+  const [userStories, setUserStories] = useState<UserStory[]>([]);
+  const [showStoryModal, setShowStoryModal] = useState(false);
+  const [storySubmittedMsg, setStorySubmittedMsg] = useState(false);
+  const [isSubmittingStory, setIsSubmittingStory] = useState(false);
+  const [storyForm, setStoryForm] = useState({
+    authorName: '',
+    authorRole: '',
+    city: '',
+    rating: 5,
+    story: ''
+  });
+
+  // Real-time listener for approved User Stories
+  useEffect(() => {
+    const unsub = adminStorage.listenUserStories((allStories) => {
+      const approvedOnly = allStories.filter(s => s.status === 'approved');
+      setUserStories(approvedOnly.length > 0 ? approvedOnly : adminStorage.getApprovedUserStories());
+    });
+    return () => unsub();
+  }, []);
+
+  // Auto-slide User Stories Cards unlimited every 2 seconds
+  const [isStoryHovered, setIsStoryHovered] = useState(false);
+
+  useEffect(() => {
+    if (userStories.length <= 1 || isStoryHovered || showStoryModal) return;
+
+    const interval = setInterval(() => {
+      const container = document.getElementById('user-stories-scroll-container');
+      if (container) {
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        if (container.scrollLeft >= maxScroll - 15) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: 360, behavior: 'smooth' });
+        }
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [userStories.length, isStoryHovered, showStoryModal]);
+
+  const handleSubmitUserStory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!storyForm.authorName.trim() || !storyForm.story.trim()) return;
+
+    setIsSubmittingStory(true);
+    try {
+      await adminStorage.saveUserStory({
+        authorName: storyForm.authorName.trim(),
+        authorRole: storyForm.authorRole.trim() || (isHindi ? 'नागरिक' : 'Citizen'),
+        city: storyForm.city.trim() || '',
+        story: storyForm.story.trim(),
+        rating: storyForm.rating
+      });
+      setStorySubmittedMsg(true);
+      setStoryForm({
+        authorName: '',
+        authorRole: '',
+        city: '',
+        rating: 5,
+        story: ''
+      });
+    } catch (err) {
+      console.error('User story submission error:', err);
+    } finally {
+      setIsSubmittingStory(false);
+    }
+  };
 
   // Real-Time Articles Feed State
   const [articles, setArticles] = useState<ArticleSummary[]>([]);
@@ -545,120 +616,299 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </ScrollReveal>
       </section>
 
-      {/* 5. FOUNDER SPOTLIGHT: ADVOCATE ANURAG GURAULI */}
-      <section id="founder-preview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal direction="up">
-          <div className="border border-stone-200 dark:border-white/10 rounded-3xl p-6 sm:p-10 bg-white dark:bg-[#151720] shadow-2xs">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              
-              {/* Image */}
-              <div className="lg:col-span-5 flex justify-center">
-                <div className="w-full max-w-[280px] sm:max-w-[320px] rounded-2xl overflow-hidden border border-stone-200 dark:border-white/10 bg-stone-100 dark:bg-stone-900 shadow-sm aspect-[4/5] relative">
-                  {!founderImgErr ? (
-                    <img 
-                      src="/Founder1.jpg" 
-                      alt="Anurag Gurauli — Founder of Less Creation & Advocate"
-                      onError={() => setFounderImgErr(true)}
-                      className="w-full h-full object-cover object-top"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
-                      <Scale className="w-10 h-10 text-[#16A34A] dark:text-[#22C55E] mb-2" />
-                      <div className="text-base font-bold text-[#111016] dark:text-white">Anurag Gurauli</div>
-                      <div className="text-xs text-stone-500 mt-1">Founder, Less Creation</div>
-                    </div>
-                  )}
 
-                  <div className="absolute bottom-2 inset-x-2 p-2 rounded-xl bg-[#111016]/85 backdrop-blur-sm text-center text-white">
-                    <div className="text-xs font-bold uppercase">Anurag Gurauli</div>
-                    <div className="text-[10px] text-stone-300">Founder & Advocate, High Court</div>
+ 
+      {/* 7. USER STORIES & COMMUNITY EXPERIENCES (SWIPEABLE CARDS WITH ADMIN APPROVAL) */}
+      <section id="user-stories-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-6">
+        <ScrollReveal direction="up">
+          <div className="bg-stone-50 dark:bg-[#12141F] border border-stone-200/80 dark:border-white/10 rounded-3xl p-6 sm:p-10 space-y-6 shadow-xs relative overflow-hidden">
+            
+            {/* Header & Write Story CTA */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-stone-200/70 dark:border-white/10 pb-6">
+              <div className="space-y-2 max-w-2xl">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>{isHindi ? "उपयोगकर्ता अनुभव व कहानियाँ" : "Community Stories & Feedback"}</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-black text-[#111016] dark:text-white tracking-tight">
+                  {isHindi ? "नागरिकों एवं अधिवक्ताओं के अनुभव" : "User Stories & Community Voices"}
+                </h2>
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300">
+                  {isHindi 
+                    ? "पढ़ें हमारे समुदाय के सदस्यों, अधिवक्ताओं और जागरूक नागरिकों के वास्तविक अनुभव। आप भी अपनी प्रतिक्रिया या कहानी लिख सकते हैं।"
+                    : "Read real stories and feedback shared by citizens and legal professionals. Share your experience to help educate others."}
+                </p>
+              </div>
+
+              {/* Share Experience Button & Scroll Controls */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => {
+                    setShowStoryModal(true);
+                    setStorySubmittedMsg(false);
+                  }}
+                  className="px-5 py-3 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap active:scale-95"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>{isHindi ? "अपनी कहानी / अनुभव लिखें" : "Share Your Story"}</span>
+                </button>
+
+                {/* Manual Scroll Controls */}
+                <div className="hidden sm:flex items-center gap-1.5">
+                  <button
+                    onClick={() => {
+                      const container = document.getElementById('user-stories-scroll-container');
+                      if (container) container.scrollBy({ left: -360, behavior: 'smooth' });
+                    }}
+                    className="p-2.5 rounded-xl bg-white dark:bg-white/10 border border-stone-200 dark:border-white/10 text-stone-700 dark:text-white hover:bg-stone-100 dark:hover:bg-white/15 transition-colors cursor-pointer"
+                    title="Previous Stories"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      const container = document.getElementById('user-stories-scroll-container');
+                      if (container) container.scrollBy({ left: 360, behavior: 'smooth' });
+                    }}
+                    className="p-2.5 rounded-xl bg-white dark:bg-white/10 border border-stone-200 dark:border-white/10 text-stone-700 dark:text-white hover:bg-stone-100 dark:hover:bg-white/15 transition-colors cursor-pointer"
+                    title="Next Stories"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Horizontal Right-to-Left / Left-to-Right Screen Card Swipe Slider */}
+            <div 
+              id="user-stories-scroll-container"
+              onMouseEnter={() => setIsStoryHovered(true)}
+              onMouseLeave={() => setIsStoryHovered(false)}
+              onTouchStart={() => setIsStoryHovered(true)}
+              onTouchEnd={() => setIsStoryHovered(false)}
+              className="flex overflow-x-auto gap-5 pb-4 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar"
+            >
+              {userStories.map((story) => (
+                <div
+                  key={story.id}
+                  className="w-[300px] sm:w-[360px] shrink-0 snap-start bg-white dark:bg-[#151720] border border-stone-200/90 dark:border-white/10 rounded-2xl p-6 shadow-2xs space-y-4 flex flex-col justify-between hover:border-emerald-500/30 transition-all duration-200"
+                >
+                  <div className="space-y-3">
+                    {/* Stars & Quote */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            className={`w-3.5 h-3.5 ${
+                              star <= (story.rating || 5)
+                                ? 'text-amber-400 fill-amber-400'
+                                : 'text-stone-200 dark:text-stone-700'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <Quote className="w-5 h-5 text-stone-300 dark:text-stone-700 rotate-180" />
+                    </div>
+
+                    {/* Non-editable Comment Story Text */}
+                    <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed italic line-clamp-5">
+                      “{story.story}”
+                    </p>
+                  </div>
+
+                  {/* Author Meta */}
+                  <div className="pt-3 border-t border-stone-100 dark:border-white/5 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 font-extrabold flex items-center justify-center text-xs">
+                        {story.authorName.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-[#111016] dark:text-white leading-tight flex items-center gap-1">
+                          <span>{story.authorName}</span>
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        </div>
+                        <div className="text-[11px] text-stone-500 dark:text-stone-400">
+                          {story.authorRole}{story.city ? ` • ${story.city}` : ''}
+                        </div>
+                      </div>
+                    </div>
+
+                    <span className="text-[10px] px-2 py-0.5 rounded-md bg-stone-100 dark:bg-white/5 text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">
+                      Verified
+                    </span>
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
 
-              {/* Story */}
-              <div className="lg:col-span-7 space-y-4 text-left">
-                <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
-                  {isHindi ? "संस्थापक परिचय • साइबर कानून विशेषज्ञ" : "FOUNDER PROFILE • CYBER LAW EXPERT"}
+            {/* Bottom Swipe Hint */}
+            <div className="text-center text-[11px] text-stone-400 flex items-center justify-center gap-1.5 pt-1">
+              <span>← Swipe cards to read more stories →</span>
+            </div>
+
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* USER STORY SUBMISSION MODAL */}
+      <AnimatePresence>
+        {showStoryModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 shadow-2xl relative"
+            >
+              <button
+                onClick={() => setShowStoryModal(false)}
+                className="absolute top-5 right-5 p-2 rounded-full hover:bg-stone-100 dark:hover:bg-white/10 text-stone-400 hover:text-stone-800 dark:hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase">
+                  <Send className="w-3.5 h-3.5" />
+                  <span>{isHindi ? "कहानी साझा करें" : "Share Experience"}</span>
                 </div>
-
-                <h3 className="text-2xl sm:text-3xl font-bold text-[#111016] dark:text-white leading-tight">
-                  {isHindi 
-                    ? "अधिवक्ता अनुराग गुरौली: आम नागरिकों की डिजिटल सुरक्षा के सजग प्रहरी" 
-                    : "Advocate Anurag Gurauli: Safeguarding Citizen Rights in the Digital Age"}
+                <h3 className="text-xl font-black text-[#111016] dark:text-white">
+                  {isHindi ? "अपनी टिप्पणी या अनुभव साझा करें" : "Share Your Story or Feedback"}
                 </h3>
-
-                <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+                <p className="text-xs text-stone-500 dark:text-stone-400">
                   {isHindi 
-                    ? "अधिवक्ता अनुराग गुरौली (इलाहाबाद उच्च न्यायालय) साइबर कानून और डिजिटल सुरक्षा के प्रतिष्ठित जानकार हैं। वे एक निष्ठावान, कर्मठ और संवेदनशील विधिक व्यक्तित्व हैं, जो आम लोगों को ऑनलाइन धोखाधड़ी, फर्जीवाड़े और साइबर खतरों से बचाने के लिए निरंतर प्रयासरत हैं। उनका संकल्प है कि हर नागरिक विधिक रूप से जागरूक और डिजिटल रूप से सुरक्षित रहे।"
-                    : "Advocate Anurag Gurauli (High Court) is an accomplished authority in cybersecurity and cyber law. Known for his unwavering diligence and deep concern for citizen safety, he is dedicated to educating individuals on digital self-defense, IT regulations, and fraud prevention."}
+                    ? "आपकी टिप्पणी सबमिट होने के बाद नॉन-एडिटेबल (Non-Editable) रहेगी और एडमिन द्वारा अप्रूवल मिलने के बाद होमपेज पर दिखाई देगी।"
+                    : "Submitted comments are non-editable and will be reviewed by the admin panel before appearing live."}
                 </p>
-
-                <div className="p-4 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 text-xs sm:text-sm text-stone-700 dark:text-stone-300 italic">
-                  “{isHindi 
-                    ? "जब नागरिक अपने कानूनी अधिकारों और डिजिटल सुरक्षा तकनीकों से अवगत होते हैं, तभी वे ऑनलाइन शोषण और वित्तीय धोखाधड़ी से सुरक्षित रह सकते हैं।"
-                    : "When citizens understand their legal rights and digital defense techniques, they become resilient against fraud and cyber deception."}”
-                </div>
-
-                <div className="pt-2 flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={() => onNavigate('founder')}
-                    className="px-5 py-2.5 bg-[#111016] hover:bg-black text-white dark:bg-white dark:hover:bg-stone-100 dark:text-[#111016] text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
-                  >
-                    <User className="w-3.5 h-3.5" />
-                    <span>{isHindi ? "संस्थापक प्रोफाइल पढ़ें" : "Read Founder's Story"}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    onClick={() => onNavigate('about')}
-                    className="px-5 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
-                  >
-                    <span>{isHindi ? "हमारे बारे में" : "About Less Creation"}</span>
-                  </button>
-                </div>
               </div>
 
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
- 
-      {/* 7. FINAL CTA: MODERN PRODUCT DARK CALLOUT */}
-      <section id="final-cta" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <ScrollReveal direction="up">
-          <div className="rounded-3xl bg-[#0B1120] text-white border border-white/10 p-8 sm:p-14 text-center space-y-6 relative overflow-hidden shadow-xl">
-            <div className="space-y-2 max-w-2xl mx-auto">
-              <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
-                {isHindi ? "विधिक रूप से जागरूक, डिजिटल रूप से सुरक्षित" : "Legally Aware, Digitally Secure."}
-              </h2>
-              <p className="text-sm sm:text-base text-stone-300 font-normal">
-                {isHindi 
-                  ? "साइबर सुरक्षा नियमों, आईटी कानून और ऑनलाइन फ्रॉड से बचाव के लिए प्रामाणिक गाइड्स और टूल्स का लाभ उठाएं।"
-                  : "Explore verified cybersecurity insights, statutory rights under cyber laws, and practical digital safeguards."}
-              </p>
-            </div>
+              {storySubmittedMsg ? (
+                <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-3">
+                  <CheckCircle2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400 mx-auto" />
+                  <div className="text-sm font-bold text-emerald-900 dark:text-emerald-200">
+                    {isHindi ? "आपकी कहानी सफलतापूर्वक जमा कर दी गई है!" : "Story Submitted Successfully!"}
+                  </div>
+                  <p className="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed">
+                    {isHindi 
+                      ? "धन्यवाद! आपकी टिप्पणी अब समीक्षा में है। एडमिन डैशबोर्ड से अप्रूवल (Trust Approval) मिलते ही यह होमपेज कार्ड में लाइव हो जाएगी।"
+                      : "Thank you! Your story is submitted for approval. Once reviewed by our admin, it will appear on the homepage slider."}
+                  </p>
+                  <button
+                    onClick={() => setShowStoryModal(false)}
+                    className="mt-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs cursor-pointer hover:bg-emerald-700 transition-colors"
+                  >
+                    {isHindi ? "बंद करें" : "Close"}
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmitUserStory} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+                        {isHindi ? "आपका नाम *" : "Your Name *"}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={storyForm.authorName}
+                        onChange={(e) => setStoryForm({ ...storyForm, authorName: e.target.value })}
+                        placeholder={isHindi ? "जैसे: राजेश शर्मा" : "e.g. Rajesh Sharma"}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs text-stone-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500"
+                      />
+                    </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <button
-                onClick={() => onNavigate('articles')}
-                className="px-6 py-3.5 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold shadow-sm transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap"
-              >
-                <BookOpen className="w-4 h-4" />
-                <span>{isHindi ? "साइबर सुरक्षा गाइड पढ़ें" : "Read Cyber Safety Guides"}</span>
-              </button>
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+                        {isHindi ? "व्यवसाय / पद" : "Profession / Role"}
+                      </label>
+                      <input
+                        type="text"
+                        value={storyForm.authorRole}
+                        onChange={(e) => setStoryForm({ ...storyForm, authorRole: e.target.value })}
+                        placeholder={isHindi ? "जैसे: अधिवक्ता / छात्र" : "e.g. Advocate / Student"}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs text-stone-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500"
+                      />
+                    </div>
+                  </div>
 
-              <button
-                onClick={() => onNavigate('tools')}
-                className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-sm font-bold transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap"
-              >
-                <span>{isHindi ? "टूल्स डायरेक्टरी देखें" : "Explore All Tools"}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+                        {isHindi ? "शहर / स्थान" : "City / Location"}
+                      </label>
+                      <input
+                        type="text"
+                        value={storyForm.city}
+                        onChange={(e) => setStoryForm({ ...storyForm, city: e.target.value })}
+                        placeholder={isHindi ? "जैसे: लखनऊ" : "e.g. Lucknow"}
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs text-stone-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+                        {isHindi ? "रेटिंग (Rating)" : "Rating (1-5 Stars)"}
+                      </label>
+                      <div className="flex items-center gap-1 pt-1.5">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setStoryForm({ ...storyForm, rating: star })}
+                            className="p-1 cursor-pointer hover:scale-110 transition-transform"
+                          >
+                            <Star
+                              className={`w-5 h-5 ${
+                                star <= storyForm.rating
+                                  ? 'text-amber-400 fill-amber-400'
+                                  : 'text-stone-300 dark:text-stone-700'
+                              }`}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+                      {isHindi ? "आपकी कहानी / अनुभव टिप्पणी *" : "Your Experience Comment *"}
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      value={storyForm.story}
+                      onChange={(e) => setStoryForm({ ...storyForm, story: e.target.value })}
+                      placeholder={isHindi ? "Less Creation टूल्स और लीगल अवेयरनेस के अपने अनुभव साझा करें..." : "Share your experience with Less Creation tools or legal defense awareness..."}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs text-stone-900 dark:text-white outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
+                    />
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowStoryModal(false)}
+                      className="px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-white/10 text-stone-700 dark:text-stone-300 font-bold text-xs cursor-pointer hover:bg-stone-200 dark:hover:bg-white/15 transition-colors"
+                    >
+                      {isHindi ? "रद्द करें" : "Cancel"}
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmittingStory}
+                      className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-md transition-all active:scale-95 disabled:opacity-50"
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      <span>{isSubmittingStory ? (isHindi ? "भेज रहे हैं..." : "Submitting...") : (isHindi ? "टिप्पणी सबमिट करें" : "Submit Experience")}</span>
+                    </button>
+                  </div>
+                </form>
+              )}
+
+            </motion.div>
           </div>
-        </ScrollReveal>
-      </section>
+        )}
+      </AnimatePresence>
 
       {/* 8. FREQUENTLY ASKED QUESTIONS */}
       <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">

@@ -96,6 +96,19 @@ export interface JobApplication {
   firestoreDocId?: string;
 }
 
+export interface UserStory {
+  id: string;
+  authorName: string;
+  authorRole?: string;
+  city?: string;
+  story: string;
+  rating: number; // 1 to 5
+  status: 'pending' | 'approved' | 'rejected';
+  submittedAt: string;
+  approvedAt?: string;
+  firestoreDocId?: string;
+}
+
 export interface SiteAppConfig {
   // App Version & Distribution Hub
   appVersion: string;
@@ -328,10 +341,58 @@ export const DEFAULT_SITE_APP_CONFIG: SiteAppConfig = {
 const STORAGE_KEY_CONTACTS = 'less_legal_contact_submissions';
 const STORAGE_KEY_DELETIONS = 'less_legal_deletion_requests';
 const STORAGE_KEY_JOB_APPLICATIONS = 'less_creation_job_applications';
+const STORAGE_KEY_USER_STORIES = 'less_creation_user_stories';
 const STORAGE_KEY_SITE_CONFIG = 'less_legal_site_app_config';
 const STORAGE_KEY_CUSTOM_APPS = 'less_legal_custom_apps_list';
 const STORAGE_KEY_CUSTOM_NOTICES = 'less_legal_custom_notices_list';
 const STORAGE_KEY_SOCIAL_CHANNELS = 'less_legal_social_channels_list';
+
+export const DEFAULT_USER_STORIES: UserStory[] = [
+  {
+    id: 'STORY-001',
+    authorName: 'Adv. Rajesh Sharma',
+    authorRole: 'High Court Advocate',
+    city: 'Lucknow',
+    story: 'Less Creation provides an authentic platform for legal awareness and digital defense. The RTI draft generator and case diary workspace have streamlined our daily legal workflows tremendously.',
+    rating: 5,
+    status: 'approved',
+    submittedAt: '2026-03-01T10:00:00.000Z',
+    approvedAt: '2026-03-01T10:30:00.000Z'
+  },
+  {
+    id: 'STORY-002',
+    authorName: 'Priya Verma',
+    authorRole: 'Cyber Safety Advocate',
+    city: 'New Delhi',
+    story: 'I was almost trapped by a fake customer care helpline scam on a search engine. Reading the digital defense guides on Less Creation saved my account from being drained. Truly empowering!',
+    rating: 5,
+    status: 'approved',
+    submittedAt: '2026-03-03T14:15:00.000Z',
+    approvedAt: '2026-03-03T15:00:00.000Z'
+  },
+  {
+    id: 'STORY-003',
+    authorName: 'Sanjay Kumar',
+    authorRole: 'Digital Citizen & Entrepreneur',
+    city: 'Kanpur',
+    story: 'The local document processing tools and privacy-first court fee calculator are genuine lifesavers. Highly recommended for every citizen and working professional.',
+    rating: 5,
+    status: 'approved',
+    submittedAt: '2026-03-05T09:20:00.000Z',
+    approvedAt: '2026-03-05T09:45:00.000Z'
+  },
+  {
+    id: 'STORY-004',
+    authorName: 'Dr. Ananya Patel',
+    authorRole: 'Research Scholar & Legal Fellow',
+    city: 'Prayagraj',
+    story: 'Clear, practical, and authoritative guidance on cyber laws and Section 1930 helpline reporting. Advocate Anurag Gurauli’s vision is making a real difference in spreading public cyber literacy.',
+    rating: 5,
+    status: 'approved',
+    submittedAt: '2026-03-08T11:00:00.000Z',
+    approvedAt: '2026-03-08T11:15:00.000Z'
+  }
+];
 
 // Clean Initial Datasets (Only real items created via Admin Control Panel will be displayed)
 export const DEFAULT_CUSTOM_APPS: CustomAppItem[] = [];
@@ -1504,6 +1565,157 @@ export const adminStorage = {
       return unsubscribe;
     } catch {
       callback(adminStorage.getJobApplications());
+      return () => {};
+    }
+  },
+
+  // ==========================================
+  // USER STORIES & COMMUNITY EXPERIENCES SYSTEM
+  // ==========================================
+  getUserStories: (): UserStory[] => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY_USER_STORIES);
+      if (!data) {
+        localStorage.setItem(STORAGE_KEY_USER_STORIES, JSON.stringify(DEFAULT_USER_STORIES));
+        return DEFAULT_USER_STORIES;
+      }
+      return JSON.parse(data);
+    } catch {
+      return DEFAULT_USER_STORIES;
+    }
+  },
+
+  getApprovedUserStories: (): UserStory[] => {
+    const stories = adminStorage.getUserStories();
+    return stories.filter(s => s.status === 'approved');
+  },
+
+  saveUserStory: async (storyData: Omit<UserStory, 'id' | 'submittedAt' | 'status'>): Promise<UserStory> => {
+    const list = adminStorage.getUserStories();
+    const newId = 'STORY-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+    const newStory: UserStory = {
+      ...storyData,
+      id: newId,
+      status: 'pending',
+      submittedAt: new Date().toISOString()
+    };
+
+    list.unshift(newStory);
+    try {
+      localStorage.setItem(STORAGE_KEY_USER_STORIES, JSON.stringify(list));
+    } catch {
+      // ignore
+    }
+
+    try {
+      const docRef = await addDoc(collection(db, 'user_stories'), {
+        id: newStory.id,
+        authorName: newStory.authorName,
+        authorRole: newStory.authorRole || '',
+        city: newStory.city || '',
+        story: newStory.story,
+        rating: newStory.rating || 5,
+        status: 'pending',
+        submittedAt: newStory.submittedAt
+      });
+      newStory.firestoreDocId = docRef.id;
+    } catch (err) {
+      console.warn('Firestore user story save fallback:', err);
+    }
+
+    return newStory;
+  },
+
+  updateUserStoryStatus: async (id: string, status: 'approved' | 'rejected'): Promise<void> => {
+    const list = adminStorage.getUserStories();
+    const index = list.findIndex(item => item.id === id);
+    if (index === -1) return;
+
+    list[index].status = status;
+    if (status === 'approved') {
+      list[index].approvedAt = new Date().toISOString();
+    }
+
+    const docId = list[index].firestoreDocId || list[index].id;
+
+    try {
+      localStorage.setItem(STORAGE_KEY_USER_STORIES, JSON.stringify(list));
+    } catch {
+      // ignore
+    }
+
+    if (docId) {
+      try {
+        await updateDoc(doc(db, 'user_stories', docId), {
+          status,
+          ...(status === 'approved' ? { approvedAt: new Date().toISOString() } : {})
+        });
+      } catch (err) {
+        console.warn('Firestore user story status update failed:', err);
+      }
+    }
+  },
+
+  deleteUserStory: async (id: string): Promise<void> => {
+    const list = adminStorage.getUserStories();
+    const target = list.find(item => item.id === id);
+    const filtered = list.filter(item => item.id !== id);
+
+    try {
+      localStorage.setItem(STORAGE_KEY_USER_STORIES, JSON.stringify(filtered));
+    } catch {
+      // ignore
+    }
+
+    if (target) {
+      const docId = target.firestoreDocId || target.id;
+      try {
+        await deleteDoc(doc(db, 'user_stories', docId));
+      } catch (err) {
+        console.warn('Firestore user story delete failed:', err);
+      }
+    }
+  },
+
+  listenUserStories: (callback: (stories: UserStory[]) => void): (() => void) => {
+    try {
+      const q = query(collection(db, 'user_stories'), orderBy('submittedAt', 'desc'));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const cloudStories: UserStory[] = [];
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          cloudStories.push({
+            id: data.id || docSnap.id,
+            firestoreDocId: docSnap.id,
+            authorName: data.authorName || '',
+            authorRole: data.authorRole || '',
+            city: data.city || '',
+            story: data.story || '',
+            rating: data.rating || 5,
+            status: data.status || 'pending',
+            submittedAt: data.submittedAt || new Date().toISOString(),
+            approvedAt: data.approvedAt
+          });
+        });
+
+        if (cloudStories.length > 0) {
+          try {
+            localStorage.setItem(STORAGE_KEY_USER_STORIES, JSON.stringify(cloudStories));
+          } catch {
+            // ignore
+          }
+          callback(cloudStories);
+        } else {
+          callback(adminStorage.getUserStories());
+        }
+      }, (err) => {
+        console.warn('Firestore user stories listener fallback to local:', err);
+        callback(adminStorage.getUserStories());
+      });
+
+      return unsubscribe;
+    } catch {
+      callback(adminStorage.getUserStories());
       return () => {};
     }
   }

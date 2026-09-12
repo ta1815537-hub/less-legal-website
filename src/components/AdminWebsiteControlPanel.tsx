@@ -18,6 +18,8 @@ import {
   DEFAULT_CUSTOM_NOTICES,
   SocialChannelLink,
   DEFAULT_SOCIAL_CHANNELS,
+  UserStory,
+  DEFAULT_USER_STORIES,
   convertCloudStorageUrl, 
   ConvertedCloudMedia 
 } from '../utils/adminStorage';
@@ -39,14 +41,16 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // Master Section State (8 Control Sections)
-  const [activeSection, setActiveSection] = useState<'articles' | 'custom_apps' | 'app' | 'notices' | 'announcement' | 'social' | 'media' | 'pricing'>('articles');
+  // Master Section State (9 Control Sections)
+  const [activeSection, setActiveSection] = useState<'articles' | 'custom_apps' | 'app' | 'notices' | 'announcement' | 'social' | 'media' | 'pricing' | 'user_stories'>('articles');
 
   // Config States
   const [config, setConfig] = useState<SiteAppConfig>(adminStorage.getSiteAppConfig());
   const [customApps, setCustomApps] = useState<CustomAppItem[]>([]);
   const [customNotices, setCustomNotices] = useState<CustomNoticeItem[]>([]);
   const [socialChannels, setSocialChannels] = useState<SocialChannelLink[]>([]);
+  const [userStories, setUserStories] = useState<UserStory[]>([]);
+  const [userStoryFilter, setUserStoryFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -130,12 +134,17 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
       if (isMounted) setSocialChannels(updatedSocial);
     });
 
+    const unsubStories = adminStorage.listenUserStories((updatedStories) => {
+      if (isMounted) setUserStories(updatedStories);
+    });
+
     return () => {
       isMounted = false;
       unsubConfig();
       unsubApps();
       unsubNotices();
       unsubSocial();
+      unsubStories();
     };
   }, []);
 
@@ -411,8 +420,8 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
         </div>
       </div>
 
-      {/* 8 Section Navigation Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+      {/* 9 Section Navigation Tabs */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5">
         
         {/* TAB 0: Editorial Articles & Insights Manager */}
         <button
@@ -583,6 +592,31 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
           <div className="font-bold text-xs truncate">{isHindi ? "💰 पास मूल्य व सपोर्ट" : "💰 Pricing & Help"}</div>
           <div className={`text-[10px] truncate ${activeSection === 'pricing' ? 'text-blue-100' : 'text-slate-500'}`}>
             {isHindi ? "₹99 व हेल्पलाइन" : "Pricing & Contacts"}
+          </div>
+        </button>
+
+        {/* TAB 8: User Stories & Community Feedback Manager */}
+        <button
+          onClick={() => setActiveSection('user_stories')}
+          className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer space-y-1 ${
+            activeSection === 'user_stories'
+              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-600/20'
+              : 'bg-white/95 dark:bg-[#121622]/90 text-slate-700 dark:text-slate-300 border-white/80 dark:border-white/10 hover:border-blue-500/40'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <MessageSquare className="w-4 h-4" />
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold ${
+              userStories.filter(s => s.status === 'pending').length > 0
+                ? (activeSection === 'user_stories' ? 'bg-amber-400 text-slate-950 font-black' : 'bg-amber-500/20 text-amber-600 font-extrabold')
+                : (activeSection === 'user_stories' ? 'bg-white/20 text-white' : 'bg-emerald-500/10 text-emerald-600')
+            }`}>
+              {userStories.filter(s => s.status === 'pending').length} Pending
+            </span>
+          </div>
+          <div className="font-bold text-xs truncate">{isHindi ? "💬 उपयोगकर्ता कहानियाँ" : "💬 User Stories"}</div>
+          <div className={`text-[10px] truncate ${activeSection === 'user_stories' ? 'text-blue-100' : 'text-slate-500'}`}>
+            {isHindi ? "अनुमोदन एवं रिव्यू" : "Trust Approvals"}
           </div>
         </button>
 
@@ -1891,6 +1925,187 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
               <span>{isHindi ? "मूल्य एवं सपोर्ट सहेजें" : "Save Pricing & Support"}</span>
             </button>
           </div>
+
+        </div>
+      )}
+
+      {/* SECTION 8: USER STORIES & COMMUNITY FEEDBACK MANAGER */}
+      {activeSection === 'user_stories' && (
+        <div className="bg-white/90 dark:bg-[#121622]/90 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-white/10 pb-5">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>{isHindi ? "उपयोगकर्ता अनुभव व कहानियाँ प्रबंधन" : "User Stories & Community Approvals"}</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                {isHindi ? "सामुदायिक कहानियों का अनुमोदन (Trust Approval)" : "Review & Approve Community Stories"}
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                {isHindi 
+                  ? "उपयोगकर्ताओं द्वारा साझा की गई टिप्पणियां व कहानियां यहां समीक्षा के लिए आती हैं। एडमिन अनुमोदन के बाद ही ये होमपेज कार्ड में लाइव दिखेंगी।"
+                  : "User comments and stories submitted on the homepage appear here for review. Approved items appear instantly on the homepage slider."}
+              </p>
+            </div>
+
+            {/* Filter Pills */}
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-white/5 p-1 rounded-xl border border-slate-200 dark:border-white/10 self-start sm:self-auto">
+              {[
+                { key: 'pending', label: isHindi ? 'लंबित (Pending)' : 'Pending', count: userStories.filter(s => s.status === 'pending').length },
+                { key: 'approved', label: isHindi ? 'स्वीकृत (Approved)' : 'Approved', count: userStories.filter(s => s.status === 'approved').length },
+                { key: 'rejected', label: isHindi ? 'अस्वीकृत (Rejected)' : 'Rejected', count: userStories.filter(s => s.status === 'rejected').length },
+                { key: 'all', label: isHindi ? 'सभी (All)' : 'All', count: userStories.length },
+              ].map(f => (
+                <button
+                  key={f.key}
+                  onClick={() => setUserStoryFilter(f.key as any)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    userStoryFilter === f.key
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span>{f.label}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-extrabold ${
+                    userStoryFilter === f.key ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300'
+                  }`}>
+                    {f.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Stories List */}
+          {(() => {
+            const filteredStories = userStories.filter(s => {
+              if (userStoryFilter === 'all') return true;
+              return s.status === userStoryFilter;
+            });
+
+            if (filteredStories.length === 0) {
+              return (
+                <div className="p-12 text-center border-2 border-dashed border-slate-200 dark:border-white/10 rounded-2xl space-y-2">
+                  <MessageSquare className="w-10 h-10 text-slate-400 mx-auto" />
+                  <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                    {isHindi ? "कोई कहानी / टिप्पणी नहीं मिली" : "No user stories found in this filter"}
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    {isHindi ? "होमपेज से उपयोगकर्ता जब अपनी कहानी साझा करेंगे तो वे यहां दिखाई देंगी।" : "When citizens submit their story on the homepage, they will appear here."}
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {filteredStories.map((item) => (
+                  <div 
+                    key={item.id}
+                    className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 space-y-4 flex flex-col justify-between shadow-2xs"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm">
+                            {item.authorName.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
+                              {item.authorName}
+                            </div>
+                            <div className="text-[11px] text-slate-500 flex items-center gap-1">
+                              {item.authorRole && <span>{item.authorRole}</span>}
+                              {item.city && <span>• {item.city}</span>}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Status Badge */}
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                          item.status === 'approved'
+                            ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                            : item.status === 'rejected'
+                            ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                            : 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20 animate-pulse'
+                        }`}>
+                          {item.status === 'approved' ? '✓ Approved' : item.status === 'rejected' ? '✕ Rejected' : '⏳ Pending Approval'}
+                        </span>
+                      </div>
+
+                      {/* Rating Stars */}
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            className={`w-3.5 h-3.5 ${
+                              star <= (item.rating || 5)
+                                ? 'text-amber-400 fill-amber-400'
+                                : 'text-slate-300 dark:text-slate-600'
+                            }`}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Story Text */}
+                      <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed italic bg-white dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200/60 dark:border-white/5">
+                        “{item.story}”
+                      </p>
+
+                      <div className="text-[10px] text-slate-400">
+                        Submitted: {new Date(item.submittedAt).toLocaleString()}
+                      </div>
+                    </div>
+
+                    {/* Action Controls */}
+                    <div className="pt-3 border-t border-slate-200/60 dark:border-white/5 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        {item.status !== 'approved' && (
+                          <button
+                            onClick={async () => {
+                              await adminStorage.updateUserStoryStatus(item.id, 'approved');
+                              onShowToast(isHindi ? 'कहानी स्वीकृत की गई! अब यह होमपेज पर लाइव है।' : 'User story approved and published to homepage!', 'success');
+                            }}
+                            className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>{isHindi ? "अनुमोदित करें (Approve)" : "Approve & Publish"}</span>
+                          </button>
+                        )}
+
+                        {item.status !== 'rejected' && (
+                          <button
+                            onClick={async () => {
+                              await adminStorage.updateUserStoryStatus(item.id, 'rejected');
+                              onShowToast(isHindi ? 'कहानी अस्वीकृत की गई।' : 'User story rejected.', 'success');
+                            }}
+                            className="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold text-xs cursor-pointer transition-colors"
+                          >
+                            <span>{isHindi ? "अस्वीकार करें" : "Reject"}</span>
+                          </button>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={async () => {
+                          if (window.confirm(isHindi ? 'क्या आप इस कहानी को पूरी तरह हटाना चाहते हैं?' : 'Are you sure you want to delete this story permanently?')) {
+                            await adminStorage.deleteUserStory(item.id);
+                            onShowToast(isHindi ? 'कहानी हटा दी गई।' : 'Story deleted.', 'success');
+                          }
+                        }}
+                        className="p-1.5 rounded-lg hover:bg-rose-500/10 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer"
+                        title="Delete Story"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
 
         </div>
       )}

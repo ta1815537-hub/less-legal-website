@@ -30,7 +30,7 @@ export const WebsitePrivacyPage: React.FC<WebsitePrivacyPageProps> = ({ onNaviga
             {isHindi ? "ब्रांड: लेस क्रिएशन" : "Brand: Less Creation"}
           </span>
           <span>•</span>
-          <span>{isHindi ? "प्रभावी तिथि: 1 मार्च 2025" : "Effective Date: March 1, 2025"}</span>
+          <span>{isHindi ? "अंतिम अपडेट: 02 / 08 / 2026" : "Updated On: 02 / 08 / 2026"}</span>
           <span>•</span>
           <span>{isHindi ? "दायरा: केवल वेबसाइट (lesscreation.com)" : "Scope: Website (lesscreation.com)"}</span>
         </div>

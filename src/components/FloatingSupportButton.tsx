@@ -57,9 +57,9 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
         layout: { type: "spring", stiffness: 380, damping: 28 },
         scale: { type: "spring", stiffness: 400, damping: 25 }
       }}
-      className={`fixed z-40 bottom-[calc(1.5rem+env(safe-area-inset-bottom))] sm:bottom-[calc(2rem+env(safe-area-inset-bottom))] right-4 sm:right-6 md:right-8 bg-[#111016]/95 dark:bg-[#151720]/95 text-white border border-stone-200/20 dark:border-white/10 shadow-xl shadow-black/20 backdrop-blur-md cursor-pointer transition-colors duration-200 flex items-center justify-center overflow-hidden group hover:border-[#EA580C]/60 select-none ${
+      className={`fixed z-40 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] sm:bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 sm:right-6 md:right-8 bg-[#0B1120]/95 text-white border border-emerald-500/40 dark:border-emerald-500/30 shadow-xl shadow-emerald-950/50 hover:shadow-emerald-500/25 backdrop-blur-xl cursor-pointer transition-all duration-200 flex items-center justify-center overflow-hidden group hover:border-emerald-400 select-none ${
         shouldShowFull 
-          ? 'h-11 sm:h-12 px-3.5 sm:px-4 rounded-full gap-2' 
+          ? 'h-11 sm:h-12 px-3.5 sm:px-4 rounded-full gap-2.5' 
           : 'w-11 h-11 sm:w-12 sm:h-12 rounded-full p-0'
       }`}
       aria-label="Less Support / सहायता संपर्क"
@@ -67,12 +67,12 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
     >
       {/* Icon with pulsating online indicator */}
       <div className="relative flex items-center justify-center shrink-0">
-        <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#EA580C]/20 transition-colors">
-          <Headphones className="w-3.5 h-3.5 text-stone-200 group-hover:text-[#EA580C] transition-colors shrink-0" />
+        <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500/30 transition-colors">
+          <Headphones className="w-3.5 h-3.5 text-emerald-400 group-hover:text-emerald-300 transition-colors shrink-0" />
         </div>
-        <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+        <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-slate-900"></span>
         </span>
       </div>
 
@@ -87,9 +87,9 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
             className="flex items-center gap-1.5 whitespace-nowrap overflow-hidden"
           >
             <span className="text-xs sm:text-[13px] font-black tracking-wide text-white">
-              {isHindi ? 'सहायता' : 'Support'}
+              {isHindi ? 'सहायता 24/7' : 'Support 24/7'}
             </span>
-            <ArrowUpRight className="w-3 h-3 text-[#EA580C] shrink-0" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </motion.div>
         )}
       </AnimatePresence>

@@ -626,18 +626,17 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
 
       </div>
 
-      {/* In-App Instant Deletion Box */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
+      {/* In-App Instant Deletion Box (Clean Background Shift) */}
+      <div className="space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
         <div className="font-bold text-sm sm:text-base text-[#111016] dark:text-white flex items-center gap-2">
-          <Smartphone className="w-4 h-4 text-[#EA580C] shrink-0" />
-          <span>{isHindi ? "ऐप में तुरंत खाता हटाएं (In-App Deletion Flow)" : "In-App Instant Account Deletion Flow"}</span>
+          <span>{isHindi ? "ऐप में तुरंत खाता हटाएं" : "In-App Instant Account Deletion Flow"}</span>
         </div>
         <p className="leading-relaxed">
           {isHindi
             ? "यदि Less Legal ऐप आपके फोन में इंस्टॉल है, तो आप बिना इंतजार किए सीधे ऐप की सेटिंग्स से तुरंत अपना खाता डिलीट कर सकते हैं:"
             : "If you currently have the Less Legal app installed on your phone, you can instantly purge your account directly in the app:"}
         </p>
-        <div className="bg-stone-50 dark:bg-white/5 p-4 rounded-xl font-mono text-xs text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-white/10 font-bold flex items-center gap-2 overflow-x-auto">
+        <div className="bg-stone-100 dark:bg-white/5 p-4 rounded-xl font-mono text-xs text-stone-800 dark:text-stone-200 font-bold flex items-center gap-2 overflow-x-auto border-l-4 border-[#EA580C]">
           <span className="text-[#EA580C]">▶</span>
           <span className="whitespace-nowrap">
             {isHindi 
@@ -647,40 +646,38 @@ export const AppDeleteAccountPage: React.FC<AppDeleteAccountPageProps> = ({ onNa
         </div>
       </div>
 
-      {/* Explanatory Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs sm:text-sm">
+      {/* Explanatory Sections (Background Shift, Bullet Points) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 text-xs sm:text-sm">
         
-        {/* Card 1 */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 space-y-3">
-          <h3 className="text-base font-bold text-[#111016] dark:text-white flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+        {/* Section 1 */}
+        <div className="space-y-3">
+          <h3 className="text-base font-bold text-[#111016] dark:text-white">
             <span>{isHindi ? "कौन सा क्लाउड डेटा डिलीट होगा" : "Data That Will Be Permanently Deleted"}</span>
           </h3>
-          <ul className="space-y-2 text-stone-600 dark:text-stone-300 list-disc pl-4 leading-relaxed">
+          <ul className="space-y-2.5 text-stone-600 dark:text-stone-300 list-disc pl-5 leading-relaxed">
             <li><strong>{isHindi ? "खाता प्रोफ़ाइल:" : "Account Profile:"}</strong> {isHindi ? "आपका खाता क्रैडेंशियल, नाम, ईमेल और गूगल यूज़र आईडी।" : "User account credentials, email, profile name, and Google UID."}</li>
             <li><strong>{isHindi ? "क्लाउड सर्वर रिकॉर्ड्स:" : "Cloud Server Records:"}</strong> {isHindi ? "क्लाउड-सिंक किए गए केस डायरी रिकॉर्ड्स और सहेजे गए नोट्स।" : "Cloud-synced Case Diary schedules and synced notes."}</li>
             <li><strong>{isHindi ? "प्रीमियम पास स्थिति:" : "Premium Pass Mapping:"}</strong> {isHindi ? "आपके खाते से जुड़ी विज्ञापन-मुक्त पास स्थिति।" : "Active ad-free pass status mapped to your User ID."}</li>
           </ul>
         </div>
 
-        {/* Card 2 */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 space-y-3">
-          <h3 className="text-base font-bold text-[#111016] dark:text-white flex items-center gap-2">
-            <HardDrive className="w-4 h-4 text-[#EA580C] shrink-0" />
+        {/* Section 2 */}
+        <div className="space-y-3">
+          <h3 className="text-base font-bold text-[#111016] dark:text-white">
             <span>{isHindi ? "गूगल ड्राइव बैकअप एवं लोकल स्टोरेज" : "Google Drive Backups & Local Storage"}</span>
           </h3>
-          <div className="space-y-2 text-stone-600 dark:text-stone-300 leading-relaxed">
-            <p>
+          <ul className="space-y-2.5 text-stone-600 dark:text-stone-300 list-disc pl-5 leading-relaxed">
+            <li>
               <strong>Google Drive:</strong> {isHindi 
                 ? "गूगल ड्राइव बैकअप आपके व्यक्तिगत ड्राइव स्टोरेज में होते हैं। इन्हें हटाने के लिए: ड्राइव → सेटिंग्स → ऐप्स प्रबंधित करें → Less Legal → छिपा हुआ ऐप डेटा हटाएं।"
                 : "Backups reside in your personal Google Drive storage. To remove: Google Drive → Settings → Manage Apps → Less Legal → Delete hidden app data."}
-            </p>
-            <p>
+            </li>
+            <li>
               <strong>Local Storage:</strong> {isHindi
                 ? "स्थानीय फाइलें ऐप अनइंस्टॉल करने पर या सेटिंग्स से ऐप स्टोरेज साफ़ करने पर स्वतः हट जाती हैं।"
                 : "Local files are deleted by clearing app storage in Android Settings or uninstalling the app."}
-            </p>
-          </div>
+            </li>
+          </ul>
         </div>
 
       </div>

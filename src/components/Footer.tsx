@@ -46,11 +46,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-[#0B1120] text-stone-400 border-t border-white/10 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-0 transition-colors w-full mt-auto shrink-0 select-none">
+    <footer className="bg-[#0B1120] text-stone-400 border-t border-white/10 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-0 transition-colors w-full mt-auto shrink-0 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Editorial Grid */}
-        <div className="py-10 sm:py-12">
+        <div className="py-8 sm:py-10">
           {/* Links Columns: 4 Columns (Full Width) */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 w-full">
             
@@ -184,6 +184,45 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </h3>
               
               <div className="flex flex-wrap gap-2 pt-1">
+                {/* Facebook */}
+                <a
+                  href="https://facebook.com/lesscreation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white flex items-center justify-center transition-colors"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
+                  </svg>
+                </a>
+
+                {/* X / Twitter */}
+                <a
+                  href="https://x.com/lesscreation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X (Twitter)"
+                  className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white flex items-center justify-center transition-colors"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+
+                {/* YouTube */}
+                <a
+                  href="https://www.youtube.com/@LessLegalOfficial"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                  className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white flex items-center justify-center transition-colors"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
+
                 {/* LinkedIn */}
                 <a
                   href="https://www.linkedin.com/in/anurag-gurauli"
@@ -234,7 +273,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Bottom Bar with Admin Lock and Copyright */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div className="pt-4 sm:pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2">
             <span className="text-stone-400 font-medium">
               © 2026 Less Creation. All rights reserved.

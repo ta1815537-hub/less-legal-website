@@ -74,7 +74,7 @@ export const AppPrivacyPolicyPage: React.FC<AppPrivacyPolicyPageProps> = ({ onNa
         </h1>
         
         <div className="flex flex-wrap items-center gap-3 text-xs text-stone-500 dark:text-stone-400 pb-4 border-b border-stone-200 dark:border-white/10 font-medium">
-          <span>{isHindi ? "प्रभावी तिथि: 1 मार्च 2025" : "Effective Date: March 1, 2025"}</span>
+          <span>{isHindi ? "अंतिम अपडेट: 12 अगस्त 2026" : "Updated On: 12 Aug 2026"}</span>
           <span>•</span>
           <span>{isHindi ? "प्लेटफॉर्म: गूगल प्ले स्टोर" : "Platform: Google Play Store Compliant"}</span>
         </div>

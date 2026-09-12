@@ -65,7 +65,7 @@ export const INITIAL_PROFESSIONALS: ProfessionalListing[] = [
     title: 'Deed Drafter & Registry Facilitator',
     serviceArea: 'Lucknow & Uttar Pradesh',
     experienceYears: 12,
-    description: 'Expert assistance with rent agreements, sale deeds, affidavits, succession certificates, and revenue record verifications.',
+    description: 'Professional assistance with rent agreements, sale deeds, affidavits, succession certificates, and revenue record verifications.',
     isVerified: true,
     isFeatured: false,
     rating: 4.7,

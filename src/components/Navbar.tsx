@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { 
-  Layers, Sparkles, Moon, Sun, Globe, Search,
+  Layers, Sparkles, Moon, Sun, Search,
   Home, BookOpen, Info, User, 
   ChevronRight, ArrowRight, Briefcase, Phone
 } from 'lucide-react';
@@ -168,16 +168,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             {/* RIGHT: Quick CTAs, Language & Theme Toggles */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               
-              {/* Language Switcher */}
-              <button
-                onClick={toggleLanguage}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-bold text-stone-700 dark:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-white/10 border border-stone-200/80 dark:border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs shrink-0"
-                title="Change Language / भाषा बदलें"
-              >
-                <Globe className="w-3.5 h-3.5 text-stone-500" />
-                <span>{language === 'hi' ? 'EN' : 'HI'}</span>
-              </button>
-
               {/* Theme Switcher */}
               <button
                 onClick={toggleTheme}
