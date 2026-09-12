@@ -174,120 +174,62 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="py-6 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-12 text-[#111016] dark:text-[#F5F2EE]">
+    <div className="py-8 pb-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-12 text-[#111016] dark:text-[#F5F2EE]">
       
       {/* Top Breadcrumb */}
       <div className="flex items-center justify-start">
         <button
           onClick={() => onNavigate('home')}
-          className="inline-flex items-center gap-2 text-xs font-bold text-stone-700 dark:text-stone-300 hover:text-[#111016] dark:hover:text-white transition-colors cursor-pointer px-4 py-2 rounded-full bg-white dark:bg-white/5 border border-stone-200 dark:border-white/10 shadow-xs"
+          className="inline-flex items-center gap-2 text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-[#111016] dark:hover:text-white transition-colors cursor-pointer px-4.5 py-2.5 rounded-xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 shadow-2xs"
         >
-          <ArrowLeft className="w-4 h-4 text-[#EA580C]" />
-          <span>{isHindi ? 'होम पर वापस जाएं' : 'Back to Home'}</span>
+          <ArrowLeft className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          <span>{isHindi ? 'मुख्य पृष्ठ' : 'Home'}</span>
         </button>
       </div>
 
-      {/* Hero Header Section */}
-      <ScrollReveal>
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-[#EA580C]">
-            <span>{isHindi ? "करियर और अवसर" : "Careers & Opportunities"}</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-black text-[#111016] dark:text-white tracking-tight leading-tight">
-            {isHindi ? (
-              <>भविष्य के डिजिटल प्रोडक्ट्स बनाने में <span className="text-[#EA580C]">हमारे साथ जुड़ें</span></>
-            ) : (
-              <>Build high-impact software with <span className="text-[#EA580C]">Less Creation Studio</span></>
-            )}
-          </h1>
-          <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-xl mx-auto leading-relaxed">
-            {isHindi
-              ? "हम सरल, उपयोगी और नागरिक-केंद्रित सॉफ्टवेयर उत्पाद बना रहे हैं। यदि आप गुणवत्ता और नवाचार में विश्वास रखते हैं, तो आपका स्वागत है।"
-              : "We build intuitive, citizen-centric software tools designed to reduce legal and digital friction for millions across India."}
-          </p>
-        </div>
-      </ScrollReveal>
-
-      {/* Open Roles Listing */}
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-stone-200 dark:border-white/10">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#111016] dark:text-white">
-              {isHindi ? 'खुली भूमिकाएं एवं अवसर' : 'Open Positions & Roles'}
-            </h2>
-            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300">
-              {isHindi ? 'अपनी रुचि के अनुसार पद चुनें और नीचे फॉर्म भरें' : 'Select a role to learn more and submit your application below'}
-            </p>
-          </div>
-
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs font-semibold text-stone-700 dark:text-stone-300">
-            <Clock className="w-3.5 h-3.5 text-[#EA580C]" />
-            <span>{JOB_OPENINGS.length} {isHindi ? 'भूमिकाएं सूचीबद्ध' : 'Positions Listed'}</span>
-          </div>
+      {/* Redesigned Editorial Positions Listing */}
+      <div className="space-y-8">
+        <div className="border-b border-stone-200 dark:border-white/10 pb-4 flex items-center justify-between">
+          <h2 className="text-xl sm:text-2xl font-black text-[#111016] dark:text-white uppercase tracking-tight">
+            {isHindi ? 'खुली भूमिकाएं' : 'Open Positions'}
+          </h2>
+          <span className="text-xs font-semibold text-stone-500">
+            {JOB_OPENINGS.length} {isHindi ? 'पद उपलब्ध' : 'Opportunities'}
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="divide-y divide-stone-200 dark:divide-white/10">
           {JOB_OPENINGS.map((job) => {
-            const Icon = job.icon;
             const isSelected = selectedRole === job.id;
             return (
               <div
                 key={job.id}
                 onClick={() => handleRoleSelect(job.id)}
-                className={`p-5 sm:p-6 rounded-2xl cursor-pointer transition-all border ${
-                  isSelected
-                    ? 'bg-white dark:bg-[#151720] border-[#EA580C] ring-2 ring-[#EA580C]/20 shadow-md'
-                    : 'bg-white dark:bg-[#151720] border-stone-200 dark:border-white/10 hover:border-stone-400 shadow-sm'
+                className={`py-6 flex flex-col md:flex-row md:items-start justify-between gap-4 cursor-pointer group transition-colors ${
+                  isSelected ? 'bg-black/5 dark:bg-white/5 -mx-4 px-4 rounded-xl' : 'hover:bg-black/2 dark:hover:bg-white/2'
                 }`}
               >
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-white/5 flex items-center justify-center text-[#EA580C]">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm sm:text-base font-bold text-[#111016] dark:text-white leading-snug">
-                        {isHindi ? job.titleHi : job.titleEn}
-                      </h3>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[11px] text-stone-500 dark:text-stone-400 flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-[#EA580C]" />
-                          {job.location}
-                        </span>
-                        <span className="text-stone-300 dark:text-stone-700">•</span>
-                        <span className="text-[11px] text-stone-500 dark:text-stone-400">
-                          {job.type}
-                        </span>
-                      </div>
-                    </div>
+                <div className="space-y-1.5 max-w-2xl">
+                  <h3 className="text-base sm:text-lg font-bold text-[#111016] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    {isHindi ? job.titleHi : job.titleEn}
+                  </h3>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">
+                    {job.location} • {job.type}
+                  </p>
+                  <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+                    {isHindi ? job.descriptionHi : job.descriptionEn}
+                  </p>
+                  <div className="text-[11px] text-stone-500 font-medium">
+                    <span className="text-stone-400">{isHindi ? "कौशल: " : "Skills: "}</span>
+                    {job.skills.join(', ')}
                   </div>
-
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border shrink-0 bg-stone-100 dark:bg-white/10 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10">
-                    Upcoming
-                  </span>
                 </div>
 
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-4">
-                  {isHindi ? job.descriptionHi : job.descriptionEn}
-                </p>
-
-                {/* Skills Chips */}
-                <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-stone-100 dark:border-white/5">
-                  {job.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="text-[10px] font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300 border border-stone-200/60 dark:border-white/5"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-4 pt-2 flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#EA580C] flex items-center gap-1">
-                    {isSelected ? (isHindi ? 'चयनित भूमिका ✓' : 'Role Selected ✓') : (isHindi ? 'आवेदन के लिए क्लिक करें →' : 'Click to apply →')}
+                <div className="flex items-center gap-1 shrink-0 self-start md:self-center mt-2 md:mt-0">
+                  <span className="text-xs font-bold text-[#111016] dark:text-white uppercase tracking-wider">
+                    {isSelected ? (isHindi ? 'चयनित' : 'Selected') : (isHindi ? 'आवेदन करें' : 'Apply')}
                   </span>
-                  <ChevronRight className={`w-4 h-4 text-[#EA580C] transition-transform ${isSelected ? 'translate-x-1' : ''}`} />
+                  <ChevronRight className={`w-4 h-4 text-stone-400 group-hover:text-[#111016] dark:group-hover:text-white transition-transform ${isSelected ? 'translate-x-1 text-emerald-600' : ''}`} />
                 </div>
               </div>
             );
@@ -295,279 +237,227 @@ export const CareersPage: React.FC<CareersPageProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Application Form Section */}
-      <div id="career-application-form" className="scroll-mt-24 max-w-3xl mx-auto">
-        <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 shadow-sm relative overflow-hidden">
-          
-          {isSuccess ? (
-            <div className="py-10 text-center space-y-4">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-[#111016] dark:text-white">
-                {isHindi ? 'आवेदन सफलतापूर्वक प्राप्त हुआ!' : 'Application Submitted Successfully!'}
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-md mx-auto leading-relaxed">
-                {isHindi
-                  ? 'लेस क्रिएशन टीम में आपकी रुचि के लिए धन्यवाद। हम आपके प्रोफाइल और अनुभव की समीक्षा करेंगे और जल्द ही आपसे संपर्क करेंगे।'
-                  : 'Thank you for your interest in Less Creation. Our team will review your profile and reach out to you directly via email or phone.'}
-              </p>
-
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button
-                  onClick={() => setIsSuccess(false)}
-                  className="px-5 py-2.5 rounded-full text-xs font-semibold text-stone-700 dark:text-stone-200 bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10 hover:bg-stone-200 cursor-pointer"
-                >
-                  {isHindi ? 'अन्य आवेदन भरें' : 'Submit Another Application'}
-                </button>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="px-5 py-2.5 rounded-full text-xs font-bold text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-sm cursor-pointer"
-                >
-                  {isHindi ? 'होम पेज पर जाएं' : 'Return to Home'}
-                </button>
-              </div>
+      {/* Redesigned Seamless Application Form */}
+      <div id="career-application-form" className="scroll-mt-24 pt-8 border-t border-stone-200 dark:border-white/10">
+        {isSuccess ? (
+          <div className="py-12 text-center space-y-4 max-w-md mx-auto">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+              <Check className="w-6 h-6" />
             </div>
-          ) : (
-            <div>
-              <div className="mb-6">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#111016] dark:text-white">
-                    {isHindi ? 'लेस क्रिएशन टीम से जुड़ने हेतु आवेदन' : 'Apply to Join Less Creation'}
-                  </h3>
-
-                  {isMaintenanceMode ? (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
-                      <Lock className="w-3.5 h-3.5" />
-                      <span>{isHindi ? 'आवेदन पोर्टल लॉक है' : 'Portal Locked'}</span>
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>{isHindi ? 'आवेदन स्वीकार्य' : 'Open for Applications'}</span>
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 mt-1">
-                  {isHindi 
-                    ? 'संस्थापक अनुराग गुरौली प्रत्येक आवेदन की व्यक्तिगत समीक्षा करते हैं।'
-                    : 'Each application is personally reviewed by Founder Anurag Gurauli.'}
-                </p>
-              </div>
-
-              {/* Maintenance Notice Card */}
-              {isMaintenanceMode && (
-                <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-amber-50 dark:bg-white/5 border border-amber-500/30 space-y-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                      <Server className="w-5 h-5 animate-pulse" />
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <h4 className="text-sm font-bold text-[#111016] dark:text-white">
-                          {isHindi ? 'सर्वर मेंटेनेंस पर है (Server Under Maintenance)' : 'Hiring Server Under Maintenance'}
-                        </h4>
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-700 dark:text-amber-300">
-                          {isHindi ? 'अस्थाई रोक' : 'Paused'}
-                        </span>
-                      </div>
-                      <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                        {isHindi 
-                          ? (siteConfig.hiringMaintenanceMessageHi || 'हायरिंग व आवेदन सर्वर वर्तमान में मेंटेनेंस पर है। नए आवेदन कुछ समय के लिए रोके गए हैं। सीधे संपर्क हेतु support@lesscreation.com पर ईमेल करें।')
-                          : (siteConfig.hiringMaintenanceMessageEn || 'Hiring application server is currently under maintenance. Submissions are temporarily paused. For direct inquiries, email support@lesscreation.com.')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 border-t border-amber-500/20 flex flex-wrap items-center justify-between gap-3 text-xs">
-                    <span className="text-stone-600 dark:text-stone-400 font-medium">
-                      {isHindi ? 'सीधे संस्थापक से जुड़ें:' : 'Direct founder contact:'} <strong className="text-[#111016] dark:text-white">support@lesscreation.com</strong>
-                    </span>
-                    <button
-                      type="button"
-                      onClick={handleCopyHiringEmail}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-stone-100 dark:bg-white/10 hover:bg-stone-200 text-stone-800 dark:text-stone-200 font-bold cursor-pointer transition-colors"
-                    >
-                      {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedEmail ? (isHindi ? 'कॉपी हो गया' : 'Copied!') : (isHindi ? 'ईमेल कॉपी करें' : 'Copy Email')}</span>
-                    </button>
-                  </div>
-                </div>
+            <h3 className="text-xl font-bold text-[#111016] dark:text-white">
+              {isHindi ? 'आवेदन प्राप्त हुआ!' : 'Application Received'}
+            </h3>
+            <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+              {isHindi
+                ? 'आपके विवरण प्राप्त हो गए हैं। हमारी टीम समीक्षा करने के पश्चात आपसे संपर्क करेगी।'
+                : 'Thank you for applying. We will review your credentials and contact you directly.'}
+            </p>
+            <div className="pt-2 flex items-center justify-center gap-3">
+              <button
+                onClick={() => setIsSuccess(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-[#111016] dark:hover:text-white cursor-pointer"
+              >
+                {isHindi ? 'दूसरा सबमिट करें' : 'Submit Another'}
+              </button>
+              <button
+                onClick={() => onNavigate('home')}
+                className="px-4 py-2 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
+              >
+                {isHindi ? 'मुख्य पृष्ठ' : 'Go Home'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between gap-4 border-b border-stone-100 dark:border-white/5 pb-3">
+              <h3 className="text-lg font-bold text-[#111016] dark:text-white uppercase tracking-tight">
+                {isHindi ? 'आवेदन फॉर्म' : 'Application Profile'}
+              </h3>
+              {isMaintenanceMode ? (
+                <span className="text-xs font-bold text-stone-400">
+                  {isHindi ? '🔒 सर्वर मेंटेनेंस' : '🔒 Paused'}
+                </span>
+              ) : (
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                  {isHindi ? '✓ फॉर्म खुला है' : '✓ Open'}
+                </span>
               )}
+            </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Full Name */}
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
-                      {isHindi ? 'पूरा नाम *' : 'Full Name *'}
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      disabled={isMaintenanceMode}
-                      placeholder={isHindi ? 'उदा. राहुल शर्मा' : 'e.g. Rahul Sharma'}
-                      value={formData.fullName}
-                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#EA580C]/40 focus:border-[#EA580C] disabled:opacity-60 disabled:cursor-not-allowed"
-                    />
-                  </div>
+            {isMaintenanceMode && (
+              <p className="text-xs text-amber-600 dark:text-amber-400 leading-relaxed font-semibold">
+                {isHindi 
+                  ? 'हार्डवेयर मेंटेनेंस के कारण वर्तमान में ऑनलाइन सबमिशन अनुपलब्ध है। कृपया अपना सीवी सीधे support@lesscreation.com पर भेजें।'
+                  : 'Submissions are temporarily paused for routine server maintenance. Please email your credentials to support@lesscreation.com.'}
+              </p>
+            )}
 
-                  {/* Email */}
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
-                      {isHindi ? 'ईमेल आईडी *' : 'Email Address *'}
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      disabled={isMaintenanceMode}
-                      placeholder="your.email@example.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#EA580C]/40 focus:border-[#EA580C] disabled:opacity-60 disabled:cursor-not-allowed"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Phone / WhatsApp */}
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
-                      {isHindi ? 'फोन / व्हाट्सएप नंबर *' : 'Phone / WhatsApp *'}
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      disabled={isMaintenanceMode}
-                      placeholder="+91 98765 43210"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#EA580C]/40 focus:border-[#EA580C] disabled:opacity-60 disabled:cursor-not-allowed"
-                    />
-                  </div>
-
-                  {/* Role Selection */}
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
-                      {isHindi ? 'इच्छित भूमिका *' : 'Role of Interest *'}
-                    </label>
-                    <select
-                      disabled={isMaintenanceMode}
-                      value={formData.roleId}
-                      onChange={(e) => {
-                        setFormData({ ...formData, roleId: e.target.value });
-                        setSelectedRole(e.target.value);
-                      }}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#EA580C]/40 focus:border-[#EA580C] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-                    >
-                      {JOB_OPENINGS.map((j) => (
-                        <option key={j.id} value={j.id}>
-                          {isHindi ? j.titleHi : j.titleEn}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Portfolio / GitHub / Resume Link */}
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
-                      {isHindi ? 'पोर्टफोलियो / गिटहब / ड्राइव लिंक' : 'Portfolio / GitHub / Resume URL'}
-                    </label>
-                    <input
-                      type="url"
-                      disabled={isMaintenanceMode}
-                      placeholder="https://github.com/... or Google Drive"
-                      value={formData.portfolioUrl}
-                      onChange={(e) => setFormData({ ...formData, portfolioUrl: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#EA580C]/40 focus:border-[#EA580C] disabled:opacity-60 disabled:cursor-not-allowed"
-                    />
-                  </div>
-
-                  {/* Experience */}
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
-                      {isHindi ? 'कुल अनुभव' : 'Total Experience'}
-                    </label>
-                    <select
-                      disabled={isMaintenanceMode}
-                      value={formData.experience}
-                      onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#EA580C]/40 focus:border-[#EA580C] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-                    >
-                      <option value="Fresher / Student">{isHindi ? 'फ्रेशर / विद्यार्थी' : 'Fresher / Student'}</option>
-                      <option value="1-3 years">{isHindi ? '1 से 3 वर्ष' : '1 - 3 Years'}</option>
-                      <option value="3-5 years">{isHindi ? '3 से 5 वर्ष' : '3 - 5 Years'}</option>
-                      <option value="5+ years">{isHindi ? '5+ वर्ष' : '5+ Years'}</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Brief Message */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-stone-700 dark:text-stone-300">
-                    {isHindi ? 'अपने बारे में या अपने प्रोजेक्ट्स के बारे में बताएं' : 'Tell us about your work, projects, or why you want to join'}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Full Name */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                    {isHindi ? 'आपका नाम *' : 'Full Name *'}
                   </label>
-                  <textarea
-                    rows={3}
+                  <input
+                    type="text"
+                    required
                     disabled={isMaintenanceMode}
-                    placeholder={isHindi ? 'आप किन तकनीकों या प्रोजेक्ट्स पर काम कर चुके हैं...' : 'Briefly describe your notable projects or key strengths...'}
-                    value={formData.aboutYou}
-                    onChange={(e) => setFormData({ ...formData, aboutYou: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#EA580C]/40 focus:border-[#EA580C] resize-none disabled:opacity-60 disabled:cursor-not-allowed"
+                    placeholder={isHindi ? 'उदा. अमित कुमार' : 'e.g. Amit Kumar'}
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:border-emerald-500 disabled:opacity-50"
                   />
                 </div>
 
-                {/* Submit Button */}
-                {isMaintenanceMode ? (
-                  <div className="w-full py-3.5 px-6 rounded-xl font-bold text-xs sm:text-sm text-amber-800 dark:text-amber-300 bg-amber-500/15 border border-amber-500/30 flex items-center justify-center gap-2.5 cursor-not-allowed select-none">
-                    <Lock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                    <span>
-                      {isHindi 
-                        ? '🔒 सर्वर मेंटेनेंस पर है • आवेदन वर्तमान में रोके गए हैं (Locked)' 
-                        : '🔒 Server Under Maintenance • Applications Temporarily Paused (Locked)'}
-                    </span>
-                  </div>
-                ) : (
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full py-3.5 px-6 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#EA580C] hover:bg-[#C2410C] shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
-                  >
-                    {isSubmitting ? (
-                      <span>{isHindi ? 'आवेदन जमा हो रहा है...' : 'Submitting Application...'}</span>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        <span>{isHindi ? 'आवेदन जमा करें (Submit Application)' : 'Submit Application'}</span>
-                      </>
-                    )}
-                  </button>
-                )}
-              </form>
-
-              {/* Direct Email Note */}
-              <div className="mt-6 pt-4 border-t border-stone-100 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500 dark:text-stone-400">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#EA580C] shrink-0" />
-                  <span>{isHindi ? 'सीधा ईमेल भेजें:' : 'Or email your CV directly to:'}</span>
-                  <span className="font-bold text-[#111016] dark:text-stone-200">support@lesscreation.com</span>
+                {/* Email */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                    {isHindi ? 'ईमेल आईडी *' : 'Email *'}
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    disabled={isMaintenanceMode}
+                    placeholder="email@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:border-emerald-500 disabled:opacity-50"
+                  />
                 </div>
-                <button
-                  type="button"
-                  onClick={handleCopyHiringEmail}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300 font-semibold hover:bg-stone-200 dark:hover:bg-white/10 cursor-pointer transition-colors"
-                >
-                  {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedEmail ? (isHindi ? 'कॉपी हो गया' : 'Copied') : (isHindi ? 'ईमेल कॉपी करें' : 'Copy Email')}</span>
-                </button>
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Phone */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                    {isHindi ? 'संपर्क नंबर *' : 'Phone / WhatsApp *'}
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    disabled={isMaintenanceMode}
+                    placeholder="+91 9876543210"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:border-emerald-500 disabled:opacity-50"
+                  />
+                </div>
+
+                {/* Selected Role Selector */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                    {isHindi ? 'इच्छित भूमिका *' : 'Role *'}
+                  </label>
+                  <select
+                    disabled={isMaintenanceMode}
+                    value={formData.roleId}
+                    onChange={(e) => {
+                      setFormData({ ...formData, roleId: e.target.value });
+                      setSelectedRole(e.target.value);
+                    }}
+                    className="w-full px-4 py-2.5 rounded-lg bg-stone-50 dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:border-emerald-500 cursor-pointer disabled:opacity-50"
+                  >
+                    {JOB_OPENINGS.map((j) => (
+                      <option key={j.id} value={j.id}>
+                        {isHindi ? j.titleHi : j.titleEn}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Portfolio URL */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                    {isHindi ? 'पोर्टफोलियो / बायोडाटा लिंक' : 'Portfolio / CV Link'}
+                  </label>
+                  <input
+                    type="url"
+                    disabled={isMaintenanceMode}
+                    placeholder="https://drive.google.com/... or GitHub"
+                    value={formData.portfolioUrl}
+                    onChange={(e) => setFormData({ ...formData, portfolioUrl: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:border-emerald-500 disabled:opacity-50"
+                  />
+                </div>
+
+                {/* Experience */}
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                    {isHindi ? 'कार्य अनुभव' : 'Experience'}
+                  </label>
+                  <select
+                    disabled={isMaintenanceMode}
+                    value={formData.experience}
+                    onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-lg bg-stone-50 dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:border-emerald-500 cursor-pointer disabled:opacity-50"
+                  >
+                    <option value="Fresher / Student">{isHindi ? 'फ्रेशर / विद्यार्थी' : 'Fresher / Student'}</option>
+                    <option value="1-3 years">{isHindi ? '1 से 3 वर्ष' : '1 - 3 Years'}</option>
+                    <option value="3-5 years">{isHindi ? '3 से 5 वर्ष' : '3 - 5 Years'}</option>
+                    <option value="5+ years">{isHindi ? '5+ वर्ष' : '5+ Years'}</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Message */}
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                  {isHindi ? 'अपने विषय में संक्षेप में लिखें' : 'Tell us about your work or key strengths'}
+                </label>
+                <textarea
+                  rows={3}
+                  disabled={isMaintenanceMode}
+                  placeholder={isHindi ? 'अपनी प्रमुख कुशलताओं या प्रोजेक्ट्स का वर्णन करें...' : 'Briefly write about your projects or strengths...'}
+                  value={formData.aboutYou}
+                  onChange={(e) => setFormData({ ...formData, aboutYou: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg bg-stone-50 dark:bg-black/30 border border-stone-200 dark:border-white/10 text-xs sm:text-sm text-[#111016] dark:text-white focus:outline-none focus:border-emerald-500 resize-none disabled:opacity-50"
+                />
+              </div>
+
+              {/* Submit Buttons */}
+              {isMaintenanceMode ? (
+                <div className="w-full py-3.5 text-center text-xs font-bold text-stone-400 border border-stone-200 dark:border-white/10 rounded-lg bg-stone-100/30">
+                  {isHindi ? '🔒 सर्वर मेंटेनेंस पर है • ईमेल द्वारा संपर्क करें' : '🔒 Under Maintenance • Contact via direct email'}
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-3 px-6 rounded-lg font-bold text-xs sm:text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
+                >
+                  {isSubmitting ? (
+                    <span>{isHindi ? 'प्रक्रियाधीन...' : 'Submitting...'}</span>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>{isHindi ? 'आवेदन सबमिट करें' : 'Submit Application'}</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </form>
+
+            {/* Direct Email Contact */}
+            <div className="pt-4 border-t border-stone-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500">
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span>{isHindi ? 'सीधा संपर्क:' : 'Or contact:'}</span>
+                <span className="font-bold text-[#111016] dark:text-stone-300">support@lesscreation.com</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyHiringEmail}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-stone-100 dark:bg-white/5 text-stone-600 dark:text-stone-400 hover:bg-stone-200 transition-colors cursor-pointer text-[10px] font-bold"
+              >
+                {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedEmail ? (isHindi ? 'कॉपी हो गया' : 'Copied') : (isHindi ? 'ईमेल कॉपी करें' : 'Copy Email')}</span>
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 {
-  "name": "Less Creation — Where Law Meets Technology.",
-  "description": "Less Creation is a technology and digital awareness brand founded by Anurag Gurauli, building useful products, publishing practical knowledge, and helping people navigate technology and cyber safety with confidence. Discover Less Legal, our flagship Android app.",
+  "name": "Less Creation — Where Law Meets Technology",
+  "description": "Less Creation is an independent technology, cyber safety, and digital-awareness brand founded by Anurag Gurauli. We make technology easier to understand, safer to navigate, and more useful for everyone through practical insights and safety guides.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

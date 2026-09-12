@@ -351,9 +351,32 @@
   color: #22C55E !important;
 }
 
-/* Active Click Scale */
-.active-click-scale:active {
-  transform: scale(0.96) !important;
+/* Active Click Scale & Smooth Transition globally for any button, card, link, or option */
+button, 
+a, 
+.glass-card, 
+.glass-panel, 
+.interactive-option,
+.clickable-card,
+[role="button"],
+.cursor-pointer {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.3s ease, 
+              background-color 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:active, 
+a:active, 
+.glass-card:active, 
+.glass-panel:active, 
+.interactive-option:active,
+.clickable-card:active,
+[role="button"]:active,
+.cursor-pointer:active {
+  transform: scale(0.96) translateY(0.5px) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 /* Google Translate Isolation */

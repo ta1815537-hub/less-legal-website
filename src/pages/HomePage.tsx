@@ -5,7 +5,8 @@ import {
   Calendar, Clock, BookOpen, ChevronRight,
   ChevronDown, User, Scale, Search, X,
   FileText, Calculator, Image as ImageIcon, QrCode, Briefcase,
-  Star, ChevronLeft, Quote, Send, CheckCircle2, MessageSquare
+  Star, ChevronLeft, Quote, Send, CheckCircle2, MessageSquare,
+  Smartphone
 } from 'lucide-react';
 import { AppLogo } from '../components/AppLogo';
 import { ThreeDDeviceShowcase } from '../components/ThreeDDeviceShowcase';
@@ -26,6 +27,37 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   // User Stories & Community Experiences State
   const [userStories, setUserStories] = useState<UserStory[]>([]);
+  
+  // Lifetime Pass Special Offer Countdown Timer (116+ days)
+  const [passTimeLeft, setPassTimeLeft] = useState({ days: 120, hours: 14, minutes: 28, seconds: 45 });
+
+  useEffect(() => {
+    const STORAGE_KEY = 'less_legal_promo_target_120d_v1';
+    let targetTime = localStorage.getItem(STORAGE_KEY);
+    const ONE_HUNDRED_TWENTY_DAYS_MS = (120 * 24 * 3600 + 14 * 3600 + 28 * 60 + 45) * 1000;
+    
+    if (!targetTime) {
+      const newTarget = Date.now() + ONE_HUNDRED_TWENTY_DAYS_MS;
+      localStorage.setItem(STORAGE_KEY, newTarget.toString());
+      targetTime = newTarget.toString();
+    }
+    
+    const interval = setInterval(() => {
+      const difference = parseInt(targetTime!) - Date.now();
+      if (difference <= 0) {
+        const newTarget = Date.now() + ONE_HUNDRED_TWENTY_DAYS_MS;
+        localStorage.setItem(STORAGE_KEY, newTarget.toString());
+        targetTime = newTarget.toString();
+      } else {
+        const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((difference % (1000 * 60)) / 1000);
+        setPassTimeLeft({ days: d, hours: h, minutes: m, seconds: s });
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [storySubmittedMsg, setStorySubmittedMsg] = useState(false);
   const [isSubmittingStory, setIsSubmittingStory] = useState(false);
@@ -618,6 +650,117 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
 
  
+      {/* LESS LEGAL PREMIUM LIFETIME PASS COUNTDOWN CARD */}
+      <section id="less-legal-download-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <ScrollReveal direction="up">
+          <div className="rounded-3xl p-6 sm:p-10 border border-stone-200 dark:border-white/10 bg-white dark:bg-[#151720] shadow-sm relative overflow-hidden">
+            {/* Ambient background decoration */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#16A34A]/5 dark:bg-[#22C55E]/5 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+              {/* Left Column: Premium Pass Details */}
+              <div className="lg:col-span-7 space-y-4 text-left">
+                <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+                  {isHindi ? (
+                    <>आजीवन प्रीमियम पास <span className="text-[#16A34A] dark:text-[#22C55E]">• केवल ₹99 विशेष ऑफर</span></>
+                  ) : (
+                    <>Lifetime Premium Pass <span className="text-[#16A34A] dark:text-[#22C55E]">• Just ₹99 Special Offer</span></>
+                  )}
+                </h2>
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+                  {isHindi 
+                    ? "बिना किसी मासिक या वार्षिक शुल्क के विज्ञापन-मुक्त अनुभव और संपूर्ण डिजिटल कानूनी टूल्स (BNS, केस डायरी, पीडीएफ कंप्रेस, मर्ज और एन्क्रिप्ट) का आजीवन उपयोग प्राप्त करें। यह सीमित समय का विशेष प्रस्ताव आपके पंजीकृत ईमेल से स्थायी रूप से जुड़ जाएगा।"
+                    : "Unlock complete ad-free access to all premium legal tools, offline BNS Bare Acts, secure Case Diary, and PDF utilities (Compress, Merge, Split, and 256-bit Document Encryption) for a lifetime. No subscription fees, ever."}
+                </p>
+                
+                {/* Clean inline feature indicators */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold text-stone-500 dark:text-stone-400">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+                    {isHindi ? "विज्ञापन-मुक्त अनुभव" : "100% Ad-Free"}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+                    {isHindi ? "आजीवन वैधता" : "Lifetime Access"}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+                    {isHindi ? "ईमेल आईडी बाइंडिंग" : "Secure Email Binding"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column: CountDown Timer & Single-Line Action Button */}
+              <div className="lg:col-span-5 p-6 rounded-2xl bg-stone-50 dark:bg-[#0B1120]/60 border border-stone-200 dark:border-white/5 space-y-6 text-center flex flex-col items-center justify-center">
+                <div className="space-y-2 w-full">
+                  <div className="text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                    {isHindi ? "विशेष ऑफर की समय सीमा समाप्त हो रही है:" : "Special Offer Countdown:"}
+                  </div>
+                  
+                  {/* Timer Display with beautiful typography */}
+                  <div className="grid grid-cols-4 gap-2 w-full max-w-xs mx-auto">
+                    <div className="bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 p-2 rounded-xl">
+                      <span className="block text-xl sm:text-2xl font-black text-[#16A34A] dark:text-[#22C55E] font-mono">
+                        {passTimeLeft.days.toString().padStart(2, '0')}
+                      </span>
+                      <span className="block text-[9px] font-bold text-stone-400 dark:text-stone-500 uppercase">
+                        {isHindi ? "दिन" : "Days"}
+                      </span>
+                    </div>
+                    <div className="bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 p-2 rounded-xl">
+                      <span className="block text-xl sm:text-2xl font-black text-[#16A34A] dark:text-[#22C55E] font-mono">
+                        {passTimeLeft.hours.toString().padStart(2, '0')}
+                      </span>
+                      <span className="block text-[9px] font-bold text-stone-400 dark:text-stone-500 uppercase">
+                        {isHindi ? "घंटे" : "Hrs"}
+                      </span>
+                    </div>
+                    <div className="bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 p-2 rounded-xl">
+                      <span className="block text-xl sm:text-2xl font-black text-[#16A34A] dark:text-[#22C55E] font-mono">
+                        {passTimeLeft.minutes.toString().padStart(2, '0')}
+                      </span>
+                      <span className="block text-[9px] font-bold text-stone-400 dark:text-stone-500 uppercase">
+                        {isHindi ? "मिनट" : "Mins"}
+                      </span>
+                    </div>
+                    <div className="bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 p-2 rounded-xl">
+                      <span className="block text-xl sm:text-2xl font-black text-[#16A34A] dark:text-[#22C55E] font-mono">
+                        {passTimeLeft.seconds.toString().padStart(2, '0')}
+                      </span>
+                      <span className="block text-[9px] font-bold text-stone-400 dark:text-stone-500 uppercase">
+                        {isHindi ? "सेकंड" : "Secs"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Primary CTA and secondary option */}
+                <div className="w-full space-y-3">
+                  <button
+                    onClick={() => onNavigate('premium')}
+                    className="w-full py-3 px-5 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2 group whitespace-nowrap"
+                  >
+                    <span>
+                      {isHindi ? "अभी लाइफटाइम पास प्राप्त करें" : "Get Lifetime Pass Now"}
+                    </span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+
+                  <button
+                    onClick={() => onNavigate('download')}
+                    className="w-full text-xs font-semibold text-stone-500 dark:text-stone-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    {isHindi ? "या सीधे मोबाइल ऐप डाउनलोड करें" : "Or Download Mobile App Directly"}
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </ScrollReveal>
+      </section>
+
       {/* 7. USER STORIES & COMMUNITY EXPERIENCES (SWIPEABLE CARDS WITH ADMIN APPROVAL) */}
       <section id="user-stories-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-6">
         <ScrollReveal direction="up">

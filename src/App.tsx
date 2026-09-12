@@ -280,6 +280,27 @@ export default function App() {
     let ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute('content', description);
 
+    // Dynamic Image Preview for Google Search & Social Previews
+    let ogImage = document.querySelector('meta[property="og:image"]');
+    if (!ogImage) {
+      ogImage = document.createElement('meta');
+      ogImage.setAttribute('property', 'og:image');
+      document.head.appendChild(ogImage);
+    }
+    let twitterImage = document.querySelector('meta[name="twitter:image"]');
+    if (!twitterImage) {
+      twitterImage = document.createElement('meta');
+      twitterImage.setAttribute('name', 'twitter:image');
+      document.head.appendChild(twitterImage);
+    }
+
+    const previewImg = currentRoute === 'founder' 
+      ? 'https://lesscreation.com/Founder1.jpg' 
+      : 'https://lesscreation.com/Picsart_logo.png';
+
+    ogImage.setAttribute('content', previewImg);
+    twitterImage.setAttribute('content', previewImg);
+
     // Update canonical link
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -390,7 +411,7 @@ export default function App() {
         {/* Main Page Route Content with Smooth Transitions */}
         <main className="flex-1 flex flex-col bg-[#F5F1EC] dark:bg-[#0B1120] pt-16 sm:pt-20">
           <AnimatePresence mode="wait">
-            <PageTransition routeKey={currentRoute}>
+            <PageTransition routeKey={currentRoute} isArticle={currentRoute === 'article-detail' || currentRoute === 'articles'}>
               {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}
               {currentRoute === 'articles' && <ArticlesPage onNavigate={navigateTo} />}
               {currentRoute === 'article-detail' && <ArticleDetailPage slug={activeArticleSlug} onNavigate={navigateTo} />}

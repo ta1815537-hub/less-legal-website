@@ -46,7 +46,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-[#0B1120] text-stone-400 border-t border-white/10 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-0 transition-colors w-full mt-auto shrink-0 select-none">
+    <footer className="bg-[#0B1120] text-stone-400 border-t border-white/10 pb-0 pt-0 transition-colors w-full mt-auto shrink-0 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Editorial Grid */}
@@ -273,23 +273,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Bottom Bar with Admin Lock and Copyright */}
-        <div className="pt-4 sm:pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-stone-400 font-medium">
-              © 2026 Less Creation. All rights reserved.
-            </span>
-            <button
-              onClick={handleSecretLockClick}
-              className="opacity-15 hover:opacity-70 transition-opacity p-1 text-stone-500 focus:outline-none cursor-pointer"
-              aria-label="Admin Security"
-            >
-              <Lock className="w-2.5 h-2.5" />
-            </button>
-          </div>
-
-          <p className="text-stone-500 text-[11px] tracking-wide uppercase font-semibold">
-            BUILDING A SIMPLER, SMARTER & MORE INFORMED INDIA
-          </p>
+        <div className="pt-3 pb-2 sm:pb-3 border-t border-white/10 flex items-center justify-center gap-2 text-xs">
+          <span className="text-stone-400 font-medium text-center">
+            © 2026 Less Creation. All rights reserved.
+          </span>
+          <button
+            onClick={handleSecretLockClick}
+            className="opacity-15 hover:opacity-70 transition-opacity p-1 text-stone-500 focus:outline-none cursor-pointer"
+            aria-label="Admin Security"
+          >
+            <Lock className="w-2.5 h-2.5" />
+          </button>
         </div>
 
       </div>

@@ -521,104 +521,44 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 3. 3-COLUMN FEATURE CARDS GRID (EXACT LAYOUT FROM REFERENCE IMAGE) */}
+      {/* 3. CLEAN EDITORIAL BULLETIN LIST (WITHOUT CARDS OR STICKERS) */}
       <section className="relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div className="space-y-4 max-w-4xl mx-auto">
           <AnimatePresence>
             {filtered.map((item) => {
-              const styles = getColorStyles(item.themeColor);
-              const ItemIcon = item.icon;
-              const isLifted = !!toggledFeatures[item.id];
-
               return (
                 <motion.div
                   key={item.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ 
-                    opacity: 1, 
-                    y: isLifted ? -16 : 0,
-                    scale: isLifted ? 1.02 : 1,
-                  }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.25 }}
-                  whileHover={{ y: isLifted ? -20 : -4 }}
-                  onClick={() => {
-                    setToggledFeatures(prev => ({
-                      ...prev,
-                      [item.id]: !prev[item.id]
-                    }));
-                  }}
-                  className={`animated-card rounded-[24px] p-5 sm:p-6 flex flex-col justify-between transition-all group backdrop-blur-xl cursor-pointer ${
-                    isLifted 
-                      ? 'border-emerald-500/70 dark:border-emerald-400/70 shadow-[0_24px_50px_rgba(16,185,129,0.2)] bg-gradient-to-br from-emerald-50/90 via-green-50/40 to-white dark:from-[#132219] dark:via-[#0F1B15] dark:to-[#121622]'
-                      : `bg-white/95 dark:bg-[#121622] border border-white/80 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_35px_-8px_rgba(0,0,0,0.08)] ${styles.hoverBorder}`
-                  }`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                  whileHover={{ x: 6 }}
+                  onClick={() => setActiveModalFeature(item)}
+                  className="py-4 border-b border-stone-200 dark:border-white/10 flex items-start gap-4 cursor-pointer group transition-colors hover:text-[#16A34A] dark:hover:text-[#22C55E]"
                 >
-                  {/* Top Area: Icon + Badges */}
-                  <div>
-                    <div className="flex items-start justify-between gap-2 mb-4">
-                      {/* Squircle Pastel Icon */}
-                      <div className={`w-13 h-13 rounded-2xl ${styles.iconBg} flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}>
-                        <ItemIcon className="w-6 h-6" />
-                      </div>
+                  {/* Elegant Green Bullet Point */}
+                  <span className="mt-1.5 w-2 h-2 rounded-full bg-[#16A34A] dark:bg-[#22C55E] shrink-0" />
 
-                      {/* Right Tag + Popular/New Pill */}
-                      <div className="flex items-center gap-1.5 flex-wrap justify-end">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${styles.catBg} leading-tight whitespace-nowrap`}>
-                          {item.category}
-                        </span>
-                        {item.badge && (
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold ${styles.badgeBg} shadow-2xs leading-tight whitespace-nowrap flex items-center gap-1`}>
-                            {item.badge === 'Popular' ? '★ Popular' : '✦ New'}
-                          </span>
-                        )}
-                      </div>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors leading-snug">
+                        {item.title}
+                      </h3>
+                      {/* Clean Category Label - simple text, no badge box */}
+                      <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider shrink-0">
+                        {item.category}
+                      </span>
                     </div>
 
-                    {/* Title */}
-                    <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white mb-2 leading-snug">
-                      {item.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-2">
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
                       {item.description}
                     </p>
                   </div>
 
-                  {/* Bottom Area: Highlight Tags + Open Tool Action */}
-                  <div className="space-y-4 pt-2">
-                    
-                    {/* Mini Highlight Pills */}
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      {item.tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2.5 py-1 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[10px] sm:text-[11px] font-semibold text-slate-600 dark:text-slate-300 leading-tight"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Card Footer: Open Tool Link & Round Arrow Button */}
-                    <div 
-                      onClick={() => setActiveModalFeature(item)}
-                      className="pt-3 border-t border-slate-100 dark:border-white/10 flex items-center justify-between cursor-pointer"
-                    >
-                      <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-[#2563EB] dark:group-hover:text-[#60A5FA] transition-colors flex items-center gap-1.5">
-                        <span>Open Tool</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                      </span>
-
-                      {/* Circle Arrow Action Button */}
-                      <div className={`w-8 h-8 rounded-full ${styles.btnBg} flex items-center justify-center transition-all shadow-xs`}>
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    </div>
-
+                  <div className="shrink-0 self-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ArrowRight className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
                   </div>
-
                 </motion.div>
               );
             })}

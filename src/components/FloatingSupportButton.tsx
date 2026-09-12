@@ -50,14 +50,27 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
       onMouseLeave={() => setIsHovered(false)}
       layout
       initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      animate={{ 
+        scale: 1, 
+        opacity: 1,
+        boxShadow: [
+          "0 0 12px rgba(16, 185, 129, 0.2)",
+          "0 0 24px rgba(16, 185, 129, 0.5)",
+          "0 0 12px rgba(16, 185, 129, 0.2)"
+        ]
+      }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.94 }}
       transition={{ 
-        layout: { type: "spring", stiffness: 380, damping: 28 },
-        scale: { type: "spring", stiffness: 400, damping: 25 }
+        boxShadow: {
+          repeat: Infinity,
+          duration: 2.5,
+          ease: "easeInOut"
+        },
+        layout: { type: "tween", duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+        scale: { type: "tween", duration: 0.5, ease: [0.16, 1, 0.3, 1] }
       }}
-      className={`fixed z-40 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] sm:bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 sm:right-6 md:right-8 bg-[#0B1120]/95 text-white border border-emerald-500/40 dark:border-emerald-500/30 shadow-xl shadow-emerald-950/50 hover:shadow-emerald-500/25 backdrop-blur-xl cursor-pointer transition-all duration-200 flex items-center justify-center overflow-hidden group hover:border-emerald-400 select-none ${
+      className={`fixed z-40 bottom-[calc(6.5rem+env(safe-area-inset-bottom))] sm:bottom-[calc(7.5rem+env(safe-area-inset-bottom))] right-4 sm:right-6 md:right-8 bg-[#0B1120]/95 text-white border border-emerald-500/50 dark:border-emerald-400/40 shadow-xl backdrop-blur-xl cursor-pointer transition-all duration-300 flex items-center justify-center overflow-hidden group hover:border-emerald-400 select-none ${
         shouldShowFull 
           ? 'h-11 sm:h-12 px-3.5 sm:px-4 rounded-full gap-2.5' 
           : 'w-11 h-11 sm:w-12 sm:h-12 rounded-full p-0'
@@ -83,7 +96,7 @@ export const FloatingSupportButton: React.FC<FloatingSupportButtonProps> = ({ on
             initial={{ opacity: 0, width: 0, x: 6 }}
             animate={{ opacity: 1, width: 'auto', x: 0 }}
             exit={{ opacity: 0, width: 0, x: 6 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-1.5 whitespace-nowrap overflow-hidden"
           >
             <span className="text-xs sm:text-[13px] font-black tracking-wide text-white">

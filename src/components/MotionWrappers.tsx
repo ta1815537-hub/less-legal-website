@@ -9,16 +9,25 @@ export const EASING_SMOOTH = [0.16, 1, 0.3, 1] as const;
 interface PageTransitionProps {
   children: ReactNode;
   routeKey: string;
+  isArticle?: boolean;
 }
 
-export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeKey }) => {
+export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeKey, isArticle = false }) => {
   return (
     <motion.div
       key={routeKey}
-      initial={{ opacity: 0, y: 16, scale: 0.985 }}
+      initial={
+        isArticle 
+          ? { opacity: 0, y: 24, scale: 0.985 } 
+          : { opacity: 0, y: 0, scale: 0.995 }
+      }
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -10, scale: 0.985 }}
-      transition={{ duration: 0.75, ease: EASING_SMOOTH }}
+      exit={
+        isArticle 
+          ? { opacity: 0, y: -16, scale: 0.985 } 
+          : { opacity: 0, y: 0, scale: 0.995 }
+      }
+      transition={{ duration: 0.85, ease: EASING_SMOOTH }}
       className="w-full flex-1"
       style={{ willChange: "opacity, transform" }}
     >
@@ -227,9 +236,9 @@ export const GlowingButton: React.FC<GlowingButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      whileHover={{ scale: 1.03, y: -2 }}
-      whileTap={{ scale: 0.95, y: 1 }}
-      transition={{ duration: 0.2, ease: EASING_SPRING }}
+      whileHover={{ scale: 1.025, y: -1.5 }}
+      whileTap={{ scale: 0.96, y: 0.5 }}
+      transition={{ duration: 0.4, ease: EASING_SMOOTH }}
       className={`relative group overflow-hidden transition-all rounded-xl sm:rounded-2xl font-bold px-5 py-3 text-sm flex items-center justify-center gap-2 ${getVariantStyles()} ${className}`}
     >
       {/* Liquid 3D Specular Refraction Effect */}
