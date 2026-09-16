@@ -104,7 +104,7 @@ export const HomepageBannerCarousel: React.FC<HomepageBannerCarouselProps> = ({ 
       {/* 1. Carousel Slide Track Container: Long & Wide Aspect Ratio (1200x380 px ratio) */}
       <div className="relative w-full h-[230px] sm:h-[280px] md:h-[340px] lg:h-[360px] overflow-hidden">
         <motion.div
-          animate={{ x: `-${currentIndex * 100}%` }}
+          animate={{ x: `-${currentIndex * (100 / activeCount)}%` }}
           transition={{ type: 'spring', stiffness: 220, damping: 26 }}
           className="absolute inset-y-0 left-0 flex h-full"
           style={{ width: `${activeCount * 100}%` }}
