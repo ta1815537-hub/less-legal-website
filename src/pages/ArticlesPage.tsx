@@ -229,7 +229,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
           {/* Featured Article */}
           {featuredArticle && selectedCategory === 'ALL' && !debouncedSearch && selectedTag === 'ALL' && (
             <article 
-              onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug })}
+              onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug || featuredArticle.id })}
               className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] p-6 sm:p-8 hover:border-[#16A34A]/60 transition-colors cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-2xs"
             >
               <div className="md:col-span-7 space-y-3">
@@ -292,7 +292,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
               {regularArticles.map((article) => (
                 <article
                   key={article.id}
-                  onClick={() => onNavigate('article-detail', { slug: article.slug })}
+                  onClick={() => onNavigate('article-detail', { slug: article.slug || article.id })}
                   className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] p-5 hover:border-[#16A34A]/60 transition-colors cursor-pointer flex flex-col justify-between shadow-2xs space-y-4"
                 >
                   <div className="space-y-3">

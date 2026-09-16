@@ -439,10 +439,13 @@ export default function App() {
         {/* Main Page Route Content with Smooth Transitions */}
         <main className="flex-1 flex flex-col bg-[#F5F1EC] dark:bg-[#0B1120] pt-16 sm:pt-20">
           <AnimatePresence mode="wait">
-            <PageTransition routeKey={currentRoute} isArticle={currentRoute === 'article-detail' || currentRoute === 'articles'}>
+            <PageTransition 
+              routeKey={currentRoute === 'article-detail' ? `article-${activeArticleSlug}` : (currentRoute === 'author-detail' ? `author-${activeAuthorSlug}` : currentRoute)} 
+              isArticle={currentRoute === 'article-detail' || currentRoute === 'articles'}
+            >
               {currentRoute === 'home' && <HomePage onNavigate={navigateTo} />}
               {currentRoute === 'articles' && <ArticlesPage onNavigate={navigateTo} />}
-              {currentRoute === 'article-detail' && <ArticleDetailPage slug={activeArticleSlug} onNavigate={navigateTo} />}
+              {currentRoute === 'article-detail' && <ArticleDetailPage key={activeArticleSlug} slug={activeArticleSlug} onNavigate={navigateTo} />}
               {currentRoute === 'author-detail' && <AuthorDetailPage authorSlug={activeAuthorSlug} onNavigate={navigateTo} />}
               {currentRoute === 'tools' && <ToolsDirectoryPage onNavigate={navigateTo} />}
               {(currentRoute === 'less-legal-features' || currentRoute === 'features') && <FeaturesPage onNavigate={navigateTo} />}

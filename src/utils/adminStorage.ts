@@ -80,6 +80,60 @@ export interface SocialChannelLink {
   order: number;
 }
 
+export interface HomepageBannerItem {
+  id: string;
+  title: string;
+  subtitle?: string;
+  imageUrl: string;
+  targetUrl?: string; // route e.g. 'articles', 'founder', 'about', 'tools' or external https://
+  buttonText?: string;
+  badgeText?: string;
+  isActive: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt?: string;
+  firestoreDocId?: string;
+}
+
+export const DEFAULT_HOMEPAGE_BANNERS: HomepageBannerItem[] = [
+  {
+    id: 'banner_default_1',
+    title: 'कानूनी जागरूकता और डिजिटल अधिकार',
+    subtitle: 'आम नागरिकों, शोधकर्ताओं और रचनाकारों के लिए प्रामाणिक व स्पष्ट कानूनी मार्गदर्शन।',
+    imageUrl: '/Web3.png',
+    targetUrl: 'articles',
+    buttonText: 'सभी लेख देखें',
+    badgeText: 'Less Creation Special',
+    isActive: true,
+    order: 1,
+    createdAt: '2026-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'banner_default_2',
+    title: 'अनुराग गुरौली — संस्थापक का दृष्टिकोण',
+    subtitle: 'कानून और तकनीक के समन्वय से समाज में नई सोच और डिजिटल न्याय की स्थापना।',
+    imageUrl: '/Founder1.jpg',
+    targetUrl: 'founder',
+    buttonText: 'फाउंडर का विज़न',
+    badgeText: 'Founder Profile',
+    isActive: true,
+    order: 2,
+    createdAt: '2026-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'banner_default_3',
+    title: 'साइबर सुरक्षा और डेटा सुरक्षा नियम',
+    subtitle: 'डिजिटल सुरक्षा, साइबर फ्रॉड से बचाव और निजता सुरक्षा के व्यावहारिक उपाय।',
+    imageUrl: '/Web4.png',
+    targetUrl: 'articles',
+    buttonText: 'सुरक्षा मार्गदर्शिका',
+    badgeText: 'Cyber Safety',
+    isActive: true,
+    order: 3,
+    createdAt: '2026-01-01T00:00:00.000Z'
+  }
+];
+
 export interface JobApplication {
   id: string;
   fullName: string;
@@ -1717,6 +1771,159 @@ export const adminStorage = {
     } catch {
       callback(adminStorage.getUserStories());
       return () => {};
+    }
+  },
+
+  // Homepage Auto-Swiping Hero Banners Management
+  getHomepageBanners: (): HomepageBannerItem[] => {
+    const STORAGE_KEY_HOMEPAGE_BANNERS = 'less_homepage_banners_v1';
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_HOMEPAGE_BANNERS);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        }
+      }
+    } catch {}
+    return DEFAULT_HOMEPAGE_BANNERS;
+  },
+
+  saveHomepageBanner: async (banner: Partial<HomepageBannerItem>): Promise<HomepageBannerItem> => {
+    const STORAGE_KEY_HOMEPAGE_BANNERS = 'less_homepage_banners_v1';
+    const list = adminStorage.getHomepageBanners();
+    const now = new Date().toISOString();
+    let savedItem: HomepageBannerItem;
+
+    if (banner.id && list.some(b => b.id === banner.id)) {
+      const idx = list.findIndex(b => b.id === banner.id);
+      savedItem = {
+        ...list[idx],
+        ...banner,
+        updatedAt: now
+      } as HomepageBannerItem;
+      list[idx] = savedItem;
+    } else {
+      const id = banner.id || `banner_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+      savedItem = {
+        id,
+        title: banner.title || 'Less Creation Banner',
+        subtitle: banner.subtitle || '',
+        imageUrl: banner.imageUrl || '/Web3.png',
+        targetUrl: banner.targetUrl || 'articles',
+        buttonText: banner.buttonText || 'अधिक जानें',
+        badgeText: banner.badgeText || '',
+        isActive: banner.isActive !== false,
+        order: banner.order ?? (list.length + 1),
+        createdAt: now,
+        updatedAt: now
+      };
+      list.push(savedItem);
+    }
+
+    list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    try {
+      localStorage.setItem(STORAGE_KEY_HOMEPAGE_BANNERS, JSON.stringify(list));
+    } catch {}
+
+    // Cloud Firestore synchronization
+    try {
+      const docId = savedItem.firestoreDocId || savedItem.id;
+      await setDoc(doc(db, 'homepage_banners', docId), savedItem);
+    } catch (err) {
+      console.warn('Firestore homepage banner save warning:', err);
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('less_homepage_banners_updated'));
+    }
+
+    return savedItem;
+  },
+
+  deleteHomepageBanner: async (id: string): Promise<void> => {
+    const STORAGE_KEY_HOMEPAGE_BANNERS = 'less_homepage_banners_v1';
+    const list = adminStorage.getHomepageBanners();
+    const target = list.find(b => b.id === id);
+    const filtered = list.filter(b => b.id !== id);
+
+    try {
+      localStorage.setItem(STORAGE_KEY_HOMEPAGE_BANNERS, JSON.stringify(filtered));
+    } catch {}
+
+    if (target) {
+      const docId = target.firestoreDocId || target.id;
+      try {
+        await deleteDoc(doc(db, 'homepage_banners', docId));
+      } catch (err) {
+        console.warn('Firestore homepage banner delete failed:', err);
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('less_homepage_banners_updated'));
+    }
+  },
+
+  reorderHomepageBanners: async (banners: HomepageBannerItem[]): Promise<void> => {
+    const STORAGE_KEY_HOMEPAGE_BANNERS = 'less_homepage_banners_v1';
+    const updated = banners.map((b, idx) => ({ ...b, order: idx + 1 }));
+    try {
+      localStorage.setItem(STORAGE_KEY_HOMEPAGE_BANNERS, JSON.stringify(updated));
+    } catch {}
+
+    for (const b of updated) {
+      try {
+        const docId = b.firestoreDocId || b.id;
+        await setDoc(doc(db, 'homepage_banners', docId), b);
+      } catch {}
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('less_homepage_banners_updated'));
+    }
+  },
+
+  listenHomepageBanners: (callback: (banners: HomepageBannerItem[]) => void): (() => void) => {
+    const STORAGE_KEY_HOMEPAGE_BANNERS = 'less_homepage_banners_v1';
+    // Return local immediately
+    callback(adminStorage.getHomepageBanners());
+
+    const localListener = () => {
+      callback(adminStorage.getHomepageBanners());
+    };
+    window.addEventListener('less_homepage_banners_updated', localListener);
+
+    try {
+      const q = query(collection(db, 'homepage_banners'), orderBy('order', 'asc'));
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        if (!snapshot.empty) {
+          const cloudBanners: HomepageBannerItem[] = [];
+          snapshot.forEach((docSnap) => {
+            const data = docSnap.data() as HomepageBannerItem;
+            cloudBanners.push({ ...data, id: data.id || docSnap.id, firestoreDocId: docSnap.id });
+          });
+          cloudBanners.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+          try {
+            localStorage.setItem(STORAGE_KEY_HOMEPAGE_BANNERS, JSON.stringify(cloudBanners));
+          } catch {}
+          callback(cloudBanners);
+        } else {
+          callback(adminStorage.getHomepageBanners());
+        }
+      }, (err) => {
+        console.warn('Firestore homepage banners listener fallback to local:', err);
+        callback(adminStorage.getHomepageBanners());
+      });
+
+      return () => {
+        unsubscribe();
+        window.removeEventListener('less_homepage_banners_updated', localListener);
+      };
+    } catch {
+      return () => {
+        window.removeEventListener('less_homepage_banners_updated', localListener);
+      };
     }
   }
 };

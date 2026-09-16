@@ -124,17 +124,22 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
 
   // Title & Slug Auto-sync
   const handleTitleChange = (newTitle: string) => {
-    const slugified = newTitle
+    let slugified = newTitle
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9 -]/g, '')
       .replace(/\s+/g, '-')
-      .replace(/-+/g, '-');
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, ''); // strip leading/trailing hyphens
+
+    if (!slugified || slugified === '-') {
+      slugified = '';
+    }
 
     setFormArticle(prev => ({
       ...prev,
       title: newTitle,
-      slug: prev.id ? prev.slug : slugified,
+      slug: prev.id ? (prev.slug && prev.slug !== '-' ? prev.slug : slugified) : slugified,
       seoTitle: prev.seoTitle ? prev.seoTitle : `${newTitle} | Less Creation`
     }));
   };

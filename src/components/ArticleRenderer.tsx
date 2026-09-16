@@ -12,7 +12,8 @@ import {
   TocItem, 
   cleanHeadingText, 
   generateUniqueAnchorId, 
-  computeHierarchicalNumbering 
+  computeHierarchicalNumbering,
+  extractTocFromContent 
 } from '../utils/tocHelper';
 
 export { type TocItem };
@@ -34,7 +35,15 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
   if (!content) return [];
   
   const normalized = content.replace(/\r\n/g, '\n');
-  const rawBlocks = normalized.split(/\n\s*\n+/);
+  
+  // Ensure every heading line, image tag, and horizontal rule is separated into its own block
+  // Even if author only used single newlines (\n) instead of double (\n\n)
+  const preprocessed = normalized
+    .replace(/(^|\n)(#{1,4}(?:\s*|\s+)[^\n]+)/g, '\n\n$2\n\n')
+    .replace(/(^|\n)(<h[1-4][^>]*>.*?<\/h[1-4]>)/gi, '\n\n$2\n\n')
+    .replace(/(^|\n)(!\[.*?\]\(.*?\))/g, '\n\n$2\n\n');
+
+  const rawBlocks = preprocessed.split(/\n\s*\n+/);
   
   const blocks: ContentBlock[] = [];
   const headingIndices: number[] = [];
@@ -44,11 +53,86 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
     const trimmed = block.trim();
     if (!trimmed) return;
     
-    // 1. Heading 1 (# ... or <h1>...</h1>)
-    if (trimmed.startsWith('# ') && !trimmed.startsWith('## ')) {
+    // 1. Heading 4 (#### ... or <h4>...</h4>)
+    if (/^####(?:\s+.*|[^#].*)$/.test(trimmed)) {
+      const text = cleanHeadingText(trimmed.replace(/^####\s*/, ''));
+      if (text) {
+        headingIndices.push(blocks.length);
+        rawHeadingsForNumbering.push({ level: 4 });
+        blocks.push({ type: 'h4', text });
+        return;
+      }
+    }
+    const htmlH4Match = trimmed.match(/^<h4(?:\s+[^>]*)?>(.*?)<\/h4>$/i);
+    if (htmlH4Match) {
+      const text = cleanHeadingText(htmlH4Match[1]);
+      if (text) {
+        headingIndices.push(blocks.length);
+        rawHeadingsForNumbering.push({ level: 4 });
+        blocks.push({ type: 'h4', text });
+        return;
+      }
+    }
+
+    // 2. Heading 3 (### ... or <h3>...</h3>)
+    if (/^###(?:\s+.*|[^#].*)$/.test(trimmed)) {
+      const text = cleanHeadingText(trimmed.replace(/^###\s*/, ''));
+      if (text) {
+        headingIndices.push(blocks.length);
+        rawHeadingsForNumbering.push({ level: 3 });
+        blocks.push({ type: 'h3', text });
+        return;
+      }
+    }
+    const htmlH3Match = trimmed.match(/^<h3(?:\s+[^>]*)?>(.*?)<\/h3>$/i);
+    if (htmlH3Match) {
+      const text = cleanHeadingText(htmlH3Match[1]);
+      if (text) {
+        headingIndices.push(blocks.length);
+        rawHeadingsForNumbering.push({ level: 3 });
+        blocks.push({ type: 'h3', text });
+        return;
+      }
+    }
+
+    // 3. Heading 2 (## ... or <h2>...</h2>)
+    if (/^##(?:\s+.*|[^#].*)$/.test(trimmed)) {
+      const text = cleanHeadingText(trimmed.replace(/^##\s*/, ''));
+      if (text) {
+        headingIndices.push(blocks.length);
+        rawHeadingsForNumbering.push({ level: 2 });
+        blocks.push({ type: 'h2', text });
+        return;
+      }
+    }
+    const htmlH2Match = trimmed.match(/^<h2(?:\s+[^>]*)?>(.*?)<\/h2>$/i);
+    if (htmlH2Match) {
+      const text = cleanHeadingText(htmlH2Match[1]);
+      if (text) {
+        headingIndices.push(blocks.length);
+        rawHeadingsForNumbering.push({ level: 2 });
+        blocks.push({ type: 'h2', text });
+        return;
+      }
+    }
+
+    // 4. Standalone bold numbered heading: **1. Title** or **Step 1: Description**
+    const boldHeadingMatch = trimmed.match(/^\*\*(\d+(?:\.\d+)*\.?\s+[^*]+)\*\*$/);
+    if (boldHeadingMatch) {
+      const text = cleanHeadingText(boldHeadingMatch[1]);
+      if (text && text.length < 90) {
+        headingIndices.push(blocks.length);
+        rawHeadingsForNumbering.push({ level: 2 });
+        blocks.push({ type: 'h2', text });
+        return;
+      }
+    }
+
+    // 5. Heading 1 (# ... or <h1>...</h1>)
+    if (/^#(?:\s+.*|[^#].*)$/.test(trimmed)) {
       blocks.push({
         type: 'h1',
-        text: trimmed.replace(/^#\s+/, '').trim()
+        text: cleanHeadingText(trimmed.replace(/^#\s*/, ''))
       });
       return;
     }
@@ -57,75 +141,6 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
       blocks.push({
         type: 'h1',
         text: cleanHeadingText(htmlH1Match[1])
-      });
-      return;
-    }
-    
-    // 2. Heading 2 (## ... or <h2>...</h2>)
-    if (trimmed.startsWith('## ') && !trimmed.startsWith('### ') && !trimmed.startsWith('#### ')) {
-      const text = trimmed.replace(/^##\s+/, '').trim();
-      headingIndices.push(blocks.length);
-      rawHeadingsForNumbering.push({ level: 2 });
-      blocks.push({
-        type: 'h2',
-        text
-      });
-      return;
-    }
-    const htmlH2Match = trimmed.match(/^<h2(?:\s+[^>]*)?>(.*?)<\/h2>$/i);
-    if (htmlH2Match) {
-      const text = cleanHeadingText(htmlH2Match[1]);
-      headingIndices.push(blocks.length);
-      rawHeadingsForNumbering.push({ level: 2 });
-      blocks.push({
-        type: 'h2',
-        text
-      });
-      return;
-    }
-    
-    // 3. Heading 3 (### ... or <h3>...</h3>)
-    if (trimmed.startsWith('### ') && !trimmed.startsWith('#### ')) {
-      const text = trimmed.replace(/^###\s+/, '').trim();
-      headingIndices.push(blocks.length);
-      rawHeadingsForNumbering.push({ level: 3 });
-      blocks.push({
-        type: 'h3',
-        text
-      });
-      return;
-    }
-    const htmlH3Match = trimmed.match(/^<h3(?:\s+[^>]*)?>(.*?)<\/h3>$/i);
-    if (htmlH3Match) {
-      const text = cleanHeadingText(htmlH3Match[1]);
-      headingIndices.push(blocks.length);
-      rawHeadingsForNumbering.push({ level: 3 });
-      blocks.push({
-        type: 'h3',
-        text
-      });
-      return;
-    }
-
-    // 4. Heading 4 (#### ... or <h4>...</h4>)
-    if (trimmed.startsWith('#### ')) {
-      const text = trimmed.replace(/^####\s+/, '').trim();
-      headingIndices.push(blocks.length);
-      rawHeadingsForNumbering.push({ level: 4 });
-      blocks.push({
-        type: 'h4',
-        text
-      });
-      return;
-    }
-    const htmlH4Match = trimmed.match(/^<h4(?:\s+[^>]*)?>(.*?)<\/h4>$/i);
-    if (htmlH4Match) {
-      const text = cleanHeadingText(htmlH4Match[1]);
-      headingIndices.push(blocks.length);
-      rawHeadingsForNumbering.push({ level: 4 });
-      blocks.push({
-        type: 'h4',
-        text
       });
       return;
     }
@@ -299,7 +314,11 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
   const isHindi = language === 'hi';
   
   const blocks = React.useMemo(() => parseMarkdown(content), [content]);
-  const toc = React.useMemo(() => generateToc(blocks), [blocks]);
+  const toc = React.useMemo(() => {
+    const fromBlocks = generateToc(blocks);
+    if (fromBlocks.length > 0) return fromBlocks;
+    return extractTocFromContent(content);
+  }, [blocks, content]);
   
   const [activeSection, setActiveSection] = useState<string>('');
   const [mobileTocOpen, setMobileTocOpen] = useState<boolean>(false);

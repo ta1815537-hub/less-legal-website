@@ -75,13 +75,40 @@ class ArticleService {
     this.initLocalStore();
   }
 
+  private sanitizeAndHealArticle(a: Article): Article {
+    let slug = (a.slug || '').trim();
+    if (!slug || slug === '-' || slug === 'untitled-article') {
+      if (a.id === 'art_1788885311236_e9cls') {
+        slug = 'self-defence-guide-india';
+      } else if (a.id === 'art_1788962701358_0jhox') {
+        slug = 'how-to-reply-cyber-fraudster';
+      } else if (a.id === 'art_1788965523397_1iiwp') {
+        slug = 'where-hacker-looks';
+      } else {
+        slug = `article-${(a.id || Date.now().toString(36)).replace(/^art_/, '')}`;
+      }
+    }
+    return { ...a, slug };
+  }
+
   private initLocalStore() {
     try {
       const storedArticles = localStorage.getItem(LOCAL_ARTICLES_KEY);
       if (storedArticles) {
         const parsed: Article[] = JSON.parse(storedArticles);
-        // Filter out all demo / seed articles
-        this.localArticlesCache = parsed.filter(a => !isDemoArticle(a));
+        // Filter out all demo / seed articles & fix duplicate/empty slugs
+        const seenSlugs = new Set<string>();
+        this.localArticlesCache = parsed
+          .filter(a => !isDemoArticle(a))
+          .map(a => {
+            let healed = this.sanitizeAndHealArticle(a);
+            let s = healed.slug;
+            if (seenSlugs.has(s)) {
+              s = `${s}-${Math.random().toString(36).substring(2, 5)}`;
+            }
+            seenSlugs.add(s);
+            return { ...healed, slug: s };
+          });
         localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
       } else {
         this.localArticlesCache = [];
@@ -118,6 +145,7 @@ class ArticleService {
       const q = collection(db, 'articles');
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const list: Article[] = [];
+        const seenSlugs = new Set<string>();
         snapshot.forEach((d) => {
           const data = d.data() as Article;
           if (isDemoArticle(data) || DEMO_ARTICLE_IDS.includes(d.id)) {
@@ -125,7 +153,13 @@ class ArticleService {
             deleteDoc(doc(db, 'articles', d.id)).catch(() => {});
             return;
           }
-          list.push({ ...data, firestoreDocId: d.id });
+          let healed = this.sanitizeAndHealArticle({ ...data, firestoreDocId: d.id });
+          let s = healed.slug;
+          if (seenSlugs.has(s)) {
+            s = `${s}-${Math.random().toString(36).substring(2, 5)}`;
+          }
+          seenSlugs.add(s);
+          list.push({ ...healed, slug: s });
         });
 
         list.sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime());
@@ -425,12 +459,19 @@ class ArticleService {
   async saveArticle(article: Partial<Article>): Promise<Article> {
     const nowIso = new Date().toISOString();
     const id = article.id || `art_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-    const slug = (article.slug || article.title || 'untitled-article')
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9 -]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-');
+    
+    // Generate clean, collision-free, Unicode-friendly slug
+    let rawSlug = (article.slug || article.title || '').trim().toLowerCase();
+    let generatedSlug = rawSlug
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .replace(/[\s_]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    if (!generatedSlug || generatedSlug === '-' || generatedSlug === 'untitled-article') {
+      generatedSlug = `article-${id.replace(/^art_/, '')}`;
+    }
+    const slug = generatedSlug;
 
     const readingTimeMinutes = Math.max(1, Math.ceil((article.content || '').split(/\s+/).length / 200));
     const readingTimeFormatted = `${readingTimeMinutes} min read`;
@@ -569,24 +610,29 @@ class ArticleService {
   // Real-time subscription to a single article by its slug or ID
   public subscribeToArticle(slugOrId: string, callback: (article: Article | null) => void): (() => void) {
     try {
+      const cleanSlugOrId = decodeURIComponent(slugOrId || '').trim();
+
       // 1. Return local cached article immediately
       const local = this.localArticlesCache.find(
-        a => a.slug === slugOrId || a.id === slugOrId || (a.slug && a.slug.toLowerCase() === slugOrId.toLowerCase())
+        a => a.slug === cleanSlugOrId || 
+             a.id === cleanSlugOrId || 
+             (a.slug && a.slug.toLowerCase() === cleanSlugOrId.toLowerCase()) ||
+             (a.id && a.id.toLowerCase() === cleanSlugOrId.toLowerCase())
       );
       if (local) {
         callback(local);
       }
 
       // 2. Set up Firestore query snapshot subscription (we query by slug or direct ID)
-      const q = query(collection(db, 'articles'), where('slug', '==', slugOrId));
+      const q = query(collection(db, 'articles'), where('slug', '==', cleanSlugOrId));
       const unsubscribe = onSnapshot(q, (snapshot) => {
         if (!snapshot.empty) {
           const d = snapshot.docs[0];
           const data = d.data() as Article;
-          const fullArticle = { ...data, firestoreDocId: d.id };
+          const fullArticle = this.sanitizeAndHealArticle({ ...data, firestoreDocId: d.id });
           
           // Update local cache & full article cache
-          this.inMemoryFullArticles.set(slugOrId, fullArticle);
+          this.inMemoryFullArticles.set(cleanSlugOrId, fullArticle);
           const idx = this.localArticlesCache.findIndex(a => a.id === fullArticle.id);
           if (idx >= 0) {
             this.localArticlesCache[idx] = fullArticle;
@@ -600,13 +646,13 @@ class ArticleService {
           callback(fullArticle);
         } else {
           // Try fetching directly by ID
-          const directRef = doc(db, 'articles', slugOrId);
+          const directRef = doc(db, 'articles', cleanSlugOrId);
           const unsubDoc = onSnapshot(directRef, (docSnap) => {
             if (docSnap.exists()) {
               const data = docSnap.data() as Article;
-              const fullArticle = { ...data, firestoreDocId: docSnap.id };
+              const fullArticle = this.sanitizeAndHealArticle({ ...data, firestoreDocId: docSnap.id });
               
-              this.inMemoryFullArticles.set(slugOrId, fullArticle);
+              this.inMemoryFullArticles.set(cleanSlugOrId, fullArticle);
               const idx = this.localArticlesCache.findIndex(a => a.id === fullArticle.id);
               if (idx >= 0) {
                 this.localArticlesCache[idx] = fullArticle;
@@ -619,7 +665,17 @@ class ArticleService {
 
               callback(fullArticle);
             } else {
-              callback(null);
+              // If not found in Firestore doc ID, return local if available
+              if (local) {
+                callback(local);
+              } else {
+                // Check if any article in localArticlesCache matches loosely
+                const looseLocal = this.localArticlesCache.find(
+                  a => a.slug?.toLowerCase().includes(cleanSlugOrId.toLowerCase()) ||
+                       a.title?.toLowerCase().includes(cleanSlugOrId.toLowerCase())
+                );
+                callback(looseLocal || null);
+              }
             }
           }, () => {
             callback(local || null);

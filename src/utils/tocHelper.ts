@@ -97,36 +97,43 @@ export function computeHierarchicalNumbering(items: Array<{ level: 2 | 3 | 4 }>)
 /**
  * Fast parser to extract Table of Contents directly from article body.
  * Works seamlessly on both Markdown and HTML headings (H2, H3, H4).
+ * Handles:
+ * - Markdown: "## Heading", "##Heading", "### Heading", "#### Heading"
+ * - HTML: <h2>...</h2>, <h3>...</h3>, <h4>...</h4>
+ * - Bold numbered section leads: "**1. Heading**" or "**1.1 Heading**"
  * H1 is treated as the article title and excluded from the TOC.
  */
 export function extractTocFromContent(content: string): TocItem[] {
   if (!content || typeof content !== 'string') return [];
 
-  const lines = content.replace(/\r\n/g, '\n').split('\n');
+  // Normalize all line breaks
+  const normalized = content.replace(/\r\n/g, '\n');
+  const lines = normalized.split('\n');
   const rawHeadings: Array<{ text: string; level: 2 | 3 | 4 }> = [];
 
   for (let i = 0; i < lines.length; i++) {
-    const trimmed = lines[i].trim();
+    const rawLine = lines[i];
+    const trimmed = rawLine.trim();
     if (!trimmed) continue;
 
-    // 1. Markdown H2 (## ...)
-    if (trimmed.startsWith('## ') && !trimmed.startsWith('### ') && !trimmed.startsWith('#### ')) {
-      const text = trimmed.replace(/^##\s+/, '').trim();
-      if (text) rawHeadings.push({ text, level: 2 });
+    // 1. Markdown H4 (#### ...)
+    if (/^####(?:\s+.*|[^#].*)$/.test(trimmed)) {
+      const text = cleanHeadingText(trimmed.replace(/^####\s*/, ''));
+      if (text) rawHeadings.push({ text, level: 4 });
       continue;
     }
 
     // 2. Markdown H3 (### ...)
-    if (trimmed.startsWith('### ') && !trimmed.startsWith('#### ')) {
-      const text = trimmed.replace(/^###\s+/, '').trim();
+    if (/^###(?:\s+.*|[^#].*)$/.test(trimmed)) {
+      const text = cleanHeadingText(trimmed.replace(/^###\s*/, ''));
       if (text) rawHeadings.push({ text, level: 3 });
       continue;
     }
 
-    // 3. Markdown H4 (#### ...)
-    if (trimmed.startsWith('#### ')) {
-      const text = trimmed.replace(/^####\s+/, '').trim();
-      if (text) rawHeadings.push({ text, level: 4 });
+    // 3. Markdown H2 (## ...)
+    if (/^##(?:\s+.*|[^#].*)$/.test(trimmed)) {
+      const text = cleanHeadingText(trimmed.replace(/^##\s*/, ''));
+      if (text) rawHeadings.push({ text, level: 2 });
       continue;
     }
 
@@ -150,6 +157,27 @@ export function extractTocFromContent(content: string): TocItem[] {
       const text = cleanHeadingText(htmlH4Match[1]);
       if (text) rawHeadings.push({ text, level: 4 });
       continue;
+    }
+
+    // 5. Bold standalone numbered section lead, e.g. **1. What is RTI?** or **Step 1: File Online**
+    const boldSectionMatch = trimmed.match(/^\*\*(\d+(?:\.\d+)*\.?\s+[^*]+)\*\*$/);
+    if (boldSectionMatch) {
+      const text = cleanHeadingText(boldSectionMatch[1]);
+      if (text && text.length < 90) {
+        rawHeadings.push({ text, level: 2 });
+        continue;
+      }
+    }
+  }
+
+  // Fallback: If no H2/H3/H4 headings found, but there are multiple "# Heading" (H1) lines
+  if (rawHeadings.length === 0) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (/^#(?:\s+.*|[^#].*)$/.test(trimmed) && !trimmed.startsWith('##')) {
+        const text = cleanHeadingText(trimmed.replace(/^#\s*/, ''));
+        if (text) rawHeadings.push({ text, level: 2 });
+      }
     }
   }
 

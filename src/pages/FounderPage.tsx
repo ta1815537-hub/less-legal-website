@@ -20,6 +20,26 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
   const [imgError, setImgError] = useState(false);
   const [isHoveredLessLegal, setIsHoveredLessLegal] = useState(false);
 
+  // Synchronize SEO Title and OG Image for Founder Page
+  React.useEffect(() => {
+    const prevTitle = document.title;
+    document.title = "Anurag Gurauli — Founder of Less Creation";
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    const prevOgImage = ogImage?.getAttribute('content');
+    if (ogImage) ogImage.setAttribute('content', 'https://www.lesscreation.com/Founder1.jpg');
+
+    const twImage = document.querySelector('meta[name="twitter:image"]');
+    const prevTwImage = twImage?.getAttribute('content');
+    if (twImage) twImage.setAttribute('content', 'https://www.lesscreation.com/Founder1.jpg');
+
+    return () => {
+      document.title = prevTitle;
+      if (ogImage && prevOgImage) ogImage.setAttribute('content', prevOgImage);
+      if (twImage && prevTwImage) twImage.setAttribute('content', prevTwImage);
+    };
+  }, []);
+
   return (
     <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-20 space-y-8 text-[#111016] dark:text-[#F5F2EE]">
       

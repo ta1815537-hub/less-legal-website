@@ -67,6 +67,11 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Scroll to top whenever effectiveSlug changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [effectiveSlug]);
+
   // Real-time subscription to article data
   useEffect(() => {
     let isMounted = true;
@@ -76,6 +81,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       return;
     }
 
+    setArticle(null);
     setLoading(true);
 
     const unsubscribe = articleService.subscribeToArticle(effectiveSlug, async (fetched) => {
@@ -364,7 +370,7 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
               {relatedArticles.map((rel) => (
                 <div
                   key={rel.id}
-                  onClick={() => onNavigate('article-detail', { slug: rel.slug })}
+                  onClick={() => onNavigate('article-detail', { slug: rel.slug || rel.id })}
                   className="p-4 rounded-xl border border-stone-200/80 dark:border-white/10 hover:border-[#16A34A]/40 bg-white dark:bg-[#151720] cursor-pointer group transition-all duration-200"
                 >
                   <span className="text-[10px] font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-widest">

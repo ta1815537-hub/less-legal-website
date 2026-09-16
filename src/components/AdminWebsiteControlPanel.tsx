@@ -20,12 +20,14 @@ import {
   DEFAULT_SOCIAL_CHANNELS,
   UserStory,
   DEFAULT_USER_STORIES,
+  HomepageBannerItem,
   convertCloudStorageUrl, 
   ConvertedCloudMedia 
 } from '../utils/adminStorage';
 import { useLanguage } from '../context/LanguageContext';
 import { PageRoute } from '../types';
 import { AdminArticlesControlPanel } from './AdminArticlesControlPanel';
+import { AdminHomepageBannersControlPanel } from './AdminHomepageBannersControlPanel';
 
 interface AdminWebsiteControlPanelProps {
   adminEmail?: string;
@@ -41,13 +43,14 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // Master Section State (9 Control Sections)
-  const [activeSection, setActiveSection] = useState<'articles' | 'custom_apps' | 'app' | 'notices' | 'announcement' | 'social' | 'media' | 'pricing' | 'user_stories'>('articles');
+  // Master Section State (10 Control Sections)
+  const [activeSection, setActiveSection] = useState<'articles' | 'homepage_banners' | 'custom_apps' | 'app' | 'notices' | 'announcement' | 'social' | 'media' | 'pricing' | 'user_stories'>('articles');
 
   // Config States
   const [config, setConfig] = useState<SiteAppConfig>(adminStorage.getSiteAppConfig());
   const [customApps, setCustomApps] = useState<CustomAppItem[]>([]);
   const [customNotices, setCustomNotices] = useState<CustomNoticeItem[]>([]);
+  const [homepageBanners, setHomepageBanners] = useState<HomepageBannerItem[]>([]);
   const [socialChannels, setSocialChannels] = useState<SocialChannelLink[]>([]);
   const [userStories, setUserStories] = useState<UserStory[]>([]);
   const [userStoryFilter, setUserStoryFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
@@ -138,6 +141,10 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
       if (isMounted) setUserStories(updatedStories);
     });
 
+    const unsubBanners = adminStorage.listenHomepageBanners((updatedBanners) => {
+      if (isMounted) setHomepageBanners(updatedBanners);
+    });
+
     return () => {
       isMounted = false;
       unsubConfig();
@@ -145,6 +152,7 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
       unsubNotices();
       unsubSocial();
       unsubStories();
+      unsubBanners();
     };
   }, []);
 
@@ -444,6 +452,27 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
           </div>
         </button>
 
+        {/* TAB: Homepage Banners (1-Sec Swipe & Dimension Controller) */}
+        <button
+          onClick={() => setActiveSection('homepage_banners')}
+          className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer space-y-1 ${
+            activeSection === 'homepage_banners'
+              ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20'
+              : 'bg-white/95 dark:bg-[#121622]/90 text-slate-700 dark:text-slate-300 border-white/80 dark:border-white/10 hover:border-emerald-500/40'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <Image className="w-4 h-4" />
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-extrabold ${activeSection === 'homepage_banners' ? 'bg-white/20 text-white' : 'bg-emerald-500/10 text-emerald-600'}`}>
+              {homepageBanners.length} Banners
+            </span>
+          </div>
+          <div className="font-black text-xs truncate">{isHindi ? "🖼️ मुख्य बैनर" : "🖼️ Home Banners"}</div>
+          <div className={`text-[10px] truncate ${activeSection === 'homepage_banners' ? 'text-emerald-100' : 'text-slate-500'}`}>
+            {isHindi ? "1-सेकंड स्वाइप व साइज़" : "1-Sec Swipe & Sizing"}
+          </div>
+        </button>
+
         {/* TAB 1: Dynamic Custom Apps Manager */}
         <button
           onClick={() => setActiveSection('custom_apps')}
@@ -630,6 +659,15 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
           adminEmail={adminEmail} 
           onNavigate={onNavigate}
           onShowToast={onShowToast} 
+        />
+      )}
+
+      {/* =========================================================================
+          SECTION: HOMEPAGE AUTO-SWIPING HERO BANNERS & SIZE CONTROL (1-SEC SWIPE)
+          ========================================================================= */}
+      {activeSection === 'homepage_banners' && (
+        <AdminHomepageBannersControlPanel 
+          onShowToast={onShowToast}
         />
       )}
 

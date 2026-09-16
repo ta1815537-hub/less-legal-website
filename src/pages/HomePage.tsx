@@ -14,6 +14,7 @@ import { ScrollReveal } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { DynamicAppsShowcase } from '../components/DynamicAppsShowcase';
+import { HomepageBannerCarousel } from '../components/HomepageBannerCarousel';
 import { articleService } from '../services/articleService';
 import { adminStorage, UserStory, getDirectCloudImageUrl } from '../utils/adminStorage';
 
@@ -359,6 +360,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
+      {/* HOMEPAGE AUTO-SWIPING HERO BANNER (1-SECOND SWIPE WITH ADMIN CONTROL) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full -mb-2 sm:-mb-3">
+        <HomepageBannerCarousel onNavigate={onNavigate} />
+      </div>
+
       {/* 2. ARTICLES & EDITORIAL KNOWLEDGE SECTION */}
       <section id="homepage-articles" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 w-full">
         <ScrollReveal direction="up" className="w-full flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 dark:border-white/10 pb-4">
@@ -431,7 +437,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Featured Article Spotlight Card */}
             {featuredArticle && articleCategory === 'ALL' && !articleSearch.trim() && (
               <article 
-                onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug })}
+                onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug || featuredArticle.id })}
                 className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] p-6 hover:border-[#16A34A]/60 transition-colors cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-2xs"
               >
                 <div className="md:col-span-7 space-y-3">
@@ -500,7 +506,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 {recentArticles.map((article) => (
                   <article
                     key={article.id}
-                    onClick={() => onNavigate('article-detail', { slug: article.slug })}
+                    onClick={() => onNavigate('article-detail', { slug: article.slug || article.id })}
                     className="group border border-stone-200 dark:border-white/10 rounded-2xl bg-white dark:bg-[#151720] overflow-hidden hover:border-[#16A34A]/60 transition-colors cursor-pointer flex flex-col justify-between shadow-2xs"
                   >
                     <div className="aspect-video bg-stone-100 dark:bg-white/5 border-b border-stone-100 dark:border-white/5 overflow-hidden flex items-center justify-center relative">
