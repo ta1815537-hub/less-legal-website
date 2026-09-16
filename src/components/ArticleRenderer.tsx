@@ -7,24 +7,28 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getDirectCloudImageUrl } from '../utils/adminStorage';
+import { TableOfContents } from './TableOfContents';
+import { 
+  TocItem, 
+  cleanHeadingText, 
+  generateUniqueAnchorId, 
+  computeHierarchicalNumbering 
+} from '../utils/tocHelper';
+
+export { type TocItem };
 
 export interface ContentBlock {
-  type: 'h1' | 'h2' | 'h3' | 'paragraph' | 'quote' | 'bullet-list' | 'numbered-list' | 'image' | 'divider' | 'callout';
+  type: 'h1' | 'h2' | 'h3' | 'h4' | 'paragraph' | 'quote' | 'bullet-list' | 'numbered-list' | 'image' | 'divider' | 'callout';
   text: string;
   id?: string;
+  numbering?: string;
   listItems?: string[];
   imageUrl?: string;
   imageCaption?: string;
 }
 
-export interface TocItem {
-  id: string;
-  text: string;
-  level: 2 | 3;
-}
-
 // -------------------------------------------------------------
-// Reliable Markdown and Structured Content Parser
+// Reliable Markdown and Semantic HTML Content Parser
 // -------------------------------------------------------------
 export const parseMarkdown = (content: string): ContentBlock[] => {
   if (!content) return [];
@@ -33,51 +37,101 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
   const rawBlocks = normalized.split(/\n\s*\n+/);
   
   const blocks: ContentBlock[] = [];
-  let h2Count = 0;
-  let h3Count = 0;
-  
+  const headingIndices: number[] = [];
+  const rawHeadingsForNumbering: Array<{ level: 2 | 3 | 4 }> = [];
+
   rawBlocks.forEach((block) => {
     const trimmed = block.trim();
     if (!trimmed) return;
     
-    // 1. Heading 1
-    if (trimmed.startsWith('# ')) {
+    // 1. Heading 1 (# ... or <h1>...</h1>)
+    if (trimmed.startsWith('# ') && !trimmed.startsWith('## ')) {
       blocks.push({
         type: 'h1',
-        text: trimmed.replace(/^#\s+/, '')
+        text: trimmed.replace(/^#\s+/, '').trim()
+      });
+      return;
+    }
+    const htmlH1Match = trimmed.match(/^<h1(?:\s+[^>]*)?>(.*?)<\/h1>$/i);
+    if (htmlH1Match) {
+      blocks.push({
+        type: 'h1',
+        text: cleanHeadingText(htmlH1Match[1])
       });
       return;
     }
     
-    // 2. Heading 2
-    if (trimmed.startsWith('## ')) {
-      h2Count++;
-      h3Count = 0;
-      const text = trimmed.replace(/^##\s+/, '');
-      const id = `sec-${h2Count}`;
+    // 2. Heading 2 (## ... or <h2>...</h2>)
+    if (trimmed.startsWith('## ') && !trimmed.startsWith('### ') && !trimmed.startsWith('#### ')) {
+      const text = trimmed.replace(/^##\s+/, '').trim();
+      headingIndices.push(blocks.length);
+      rawHeadingsForNumbering.push({ level: 2 });
       blocks.push({
         type: 'h2',
-        text,
-        id
+        text
+      });
+      return;
+    }
+    const htmlH2Match = trimmed.match(/^<h2(?:\s+[^>]*)?>(.*?)<\/h2>$/i);
+    if (htmlH2Match) {
+      const text = cleanHeadingText(htmlH2Match[1]);
+      headingIndices.push(blocks.length);
+      rawHeadingsForNumbering.push({ level: 2 });
+      blocks.push({
+        type: 'h2',
+        text
       });
       return;
     }
     
-    // 3. Heading 3
-    if (trimmed.startsWith('### ')) {
-      h3Count++;
-      const text = trimmed.replace(/^###\s+/, '');
-      const id = `sec-${h2Count}-${h3Count}`;
+    // 3. Heading 3 (### ... or <h3>...</h3>)
+    if (trimmed.startsWith('### ') && !trimmed.startsWith('#### ')) {
+      const text = trimmed.replace(/^###\s+/, '').trim();
+      headingIndices.push(blocks.length);
+      rawHeadingsForNumbering.push({ level: 3 });
       blocks.push({
         type: 'h3',
-        text,
-        id
+        text
+      });
+      return;
+    }
+    const htmlH3Match = trimmed.match(/^<h3(?:\s+[^>]*)?>(.*?)<\/h3>$/i);
+    if (htmlH3Match) {
+      const text = cleanHeadingText(htmlH3Match[1]);
+      headingIndices.push(blocks.length);
+      rawHeadingsForNumbering.push({ level: 3 });
+      blocks.push({
+        type: 'h3',
+        text
+      });
+      return;
+    }
+
+    // 4. Heading 4 (#### ... or <h4>...</h4>)
+    if (trimmed.startsWith('#### ')) {
+      const text = trimmed.replace(/^####\s+/, '').trim();
+      headingIndices.push(blocks.length);
+      rawHeadingsForNumbering.push({ level: 4 });
+      blocks.push({
+        type: 'h4',
+        text
+      });
+      return;
+    }
+    const htmlH4Match = trimmed.match(/^<h4(?:\s+[^>]*)?>(.*?)<\/h4>$/i);
+    if (htmlH4Match) {
+      const text = cleanHeadingText(htmlH4Match[1]);
+      headingIndices.push(blocks.length);
+      rawHeadingsForNumbering.push({ level: 4 });
+      blocks.push({
+        type: 'h4',
+        text
       });
       return;
     }
     
-    // 4. Divider
-    if (trimmed === '---') {
+    // 5. Divider
+    if (trimmed === '---' || trimmed === '***') {
       blocks.push({
         type: 'divider',
         text: ''
@@ -85,7 +139,7 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
       return;
     }
     
-    // 5. Image Markdown: ![caption](url)
+    // 6. Image Markdown: ![caption](url)
     const imageMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
     if (imageMatch) {
       blocks.push({
@@ -97,12 +151,11 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
       return;
     }
     
-    // 6. Blockquote or Callout
+    // 7. Blockquote or Callout
     if (trimmed.startsWith('> ')) {
       const quoteLines = trimmed.split('\n').map(l => l.trim().replace(/^>\s*/, ''));
       const quoteText = quoteLines.join('\n');
       
-      // Determine if callout / alert block
       const lower = quoteText.toLowerCase();
       const isCallout = quoteText.startsWith('**') || quoteText.startsWith('Note:') || quoteText.startsWith('महत्वपूर्ण:') || quoteText.startsWith('⚠️') || lower.includes('alert') || lower.includes('warning') || lower.includes('info:');
       
@@ -113,7 +166,7 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
       return;
     }
     
-    // 7. Bullet List
+    // 8. Bullet List
     if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
       const lines = trimmed.split('\n').map(l => l.trim());
       const listItems = lines.map(line => line.replace(/^[-*]\s+/, ''));
@@ -125,7 +178,7 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
       return;
     }
     
-    // 8. Numbered List
+    // 9. Numbered List
     if (/^\d+\.\s+/.test(trimmed)) {
       const lines = trimmed.split('\n').map(l => l.trim());
       const listItems = lines.map(line => line.replace(/^\d+\.\s+/, ''));
@@ -137,11 +190,21 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
       return;
     }
     
-    // 9. Standard Paragraph
+    // 10. Standard Paragraph
     blocks.push({
       type: 'paragraph',
       text: trimmed
     });
+  });
+
+  // Calculate unique IDs and hierarchical numbering for all eligible headings
+  const numberings = computeHierarchicalNumbering(rawHeadingsForNumbering);
+  const usedSlugs = new Map<string, number>();
+
+  headingIndices.forEach((blockIndex, hIdx) => {
+    const b = blocks[blockIndex];
+    b.id = generateUniqueAnchorId(b.text, usedSlugs);
+    b.numbering = numberings[hIdx];
   });
   
   return blocks;
@@ -153,17 +216,12 @@ export const parseMarkdown = (content: string): ContentBlock[] => {
 export const generateToc = (blocks: ContentBlock[]): TocItem[] => {
   const toc: TocItem[] = [];
   blocks.forEach((block) => {
-    if (block.type === 'h2' && block.id) {
+    if ((block.type === 'h2' || block.type === 'h3' || block.type === 'h4') && block.id) {
       toc.push({
         id: block.id,
-        text: block.text,
-        level: 2
-      });
-    } else if (block.type === 'h3' && block.id) {
-      toc.push({
-        id: block.id,
-        text: block.text,
-        level: 3
+        text: cleanHeadingText(block.text),
+        level: block.type === 'h2' ? 2 : block.type === 'h3' ? 3 : 4,
+        numbering: block.numbering || ''
       });
     }
   });
@@ -270,7 +328,7 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
     if (observerRef.current) observerRef.current.disconnect();
 
     const headingElements = blocks
-      .filter(b => (b.type === 'h2' || b.type === 'h3') && b.id)
+      .filter(b => (b.type === 'h2' || b.type === 'h3' || b.type === 'h4') && b.id)
       .map(b => document.getElementById(b.id!))
       .filter(Boolean) as HTMLElement[];
 
@@ -301,19 +359,34 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
     setMobileTocOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      const navbarOffset = 90; // offset for sticky header
+      const navbarOffset = 96; // comfortable offset for sticky header
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - navbarOffset;
 
       window.scrollTo({
-        top: offsetPosition,
+        top: Math.max(0, offsetPosition),
         behavior: 'smooth'
       });
       
-      // Fallback update active TOC status in case observer delay
       setActiveSection(id);
+
+      try {
+        window.history.replaceState(null, '', `#${id}`);
+      } catch {}
     }
   };
+
+  // Support direct URL hash navigation (e.g. /articles/slug#what-is-rti)
+  useEffect(() => {
+    const rawHash = window.location.hash.replace(/^#\/?/, '');
+    if (!rawHash) return;
+
+    const timer = setTimeout(() => {
+      handleScrollToSection(rawHash);
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [blocks]);
 
   const handleScrollTop = () => {
     window.scrollTo({
@@ -444,54 +517,16 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
           </div>
         )}
 
-        {/* 4. MOBILE / COMPACT TABLE OF CONTENTS (Near the top of article content) */}
+        {/* 4. IN-ARTICLE TABLE OF CONTENTS (Near the top of article content) */}
         {toc.length > 0 && (
-          <div className="block lg:hidden my-6">
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 shadow-inner">
-              <button
-                onClick={() => setMobileTocOpen(!mobileTocOpen)}
-                className="w-full flex items-center justify-between font-black text-xs sm:text-sm text-slate-900 dark:text-white tracking-wide uppercase cursor-pointer"
-              >
-                <span className="flex items-center gap-2">
-                  <List className="w-4 h-4 text-blue-500" />
-                  <span>{isHindi ? "विषय सूची" : "Table of Contents"}</span>
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-[11px] text-slate-600 dark:text-slate-300 font-mono font-black">
-                  {toc.filter(t => t.level === 2).length} {isHindi ? "मुख्य खंड" : "Sections"}
-                </span>
-              </button>
-
-              <AnimatePresence>
-                {mobileTocOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.25, ease: 'easeInOut' }}
-                    className="overflow-hidden mt-3 pt-3 border-t border-slate-200 dark:border-white/10"
-                  >
-                    <nav className="space-y-1 max-h-[350px] overflow-y-auto pr-1">
-                      {toc.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => handleScrollToSection(item.id)}
-                          className={`w-full text-left py-2 px-2.5 rounded-lg text-xs transition-colors flex items-start gap-2 cursor-pointer ${
-                            item.level === 3 ? 'pl-6 border-l border-slate-200 dark:border-slate-800' : 'font-semibold'
-                          } ${
-                            activeSection === item.id
-                              ? 'bg-blue-600/10 text-blue-700 dark:text-blue-300 font-bold border-l-2 border-blue-600'
-                              : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/40'
-                          }`}
-                        >
-                          <ChevronRight className={`w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5 ${item.level === 3 ? 'hidden' : ''}`} />
-                          <span className="leading-tight">{item.text}</span>
-                        </button>
-                      ))}
-                    </nav>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+          <div className="my-6">
+            <TableOfContents
+              items={toc}
+              activeId={activeSection}
+              onItemClick={handleScrollToSection}
+              variant="card"
+              defaultExpanded={true}
+            />
           </div>
         )}
 
@@ -518,10 +553,14 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                       <h2 
                         id={block.id} 
                         key={idx} 
-                        className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white pt-8 pb-2 tracking-tight border-b border-slate-100 dark:border-white/5 scroll-mt-24 flex items-center gap-2 group"
+                        className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white pt-8 pb-2 tracking-tight border-b border-slate-100 dark:border-white/5 scroll-mt-28 flex items-baseline gap-2.5 group"
                       >
-                        <span className="text-blue-600 dark:text-blue-400 font-bold mr-1 font-mono text-lg select-none">#</span>
-                        <span>{formattedText}</span>
+                        {block.numbering && (
+                          <span className="font-mono text-[#16A34A] dark:text-[#22C55E] font-bold text-base sm:text-lg select-none shrink-0">
+                            {block.numbering}.
+                          </span>
+                        )}
+                        <span className="leading-snug">{formattedText}</span>
                       </h2>
                     );
 
@@ -530,11 +569,31 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                       <h3 
                         id={block.id} 
                         key={idx} 
-                        className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-[#F3EFEA] pt-6 pb-1 tracking-tight scroll-mt-24 flex items-center gap-1.5"
+                        className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-[#F3EFEA] pt-6 pb-1 tracking-tight scroll-mt-28 flex items-baseline gap-2 group"
                       >
-                        <span className="text-slate-400 dark:text-slate-600 font-bold font-mono text-sm select-none">##</span>
-                        <span>{formattedText}</span>
+                        {block.numbering && (
+                          <span className="font-mono text-[#16A34A]/90 dark:text-[#22C55E]/90 font-bold text-sm sm:text-base select-none shrink-0">
+                            {block.numbering}.
+                          </span>
+                        )}
+                        <span className="leading-snug">{formattedText}</span>
                       </h3>
+                    );
+
+                  case 'h4':
+                    return (
+                      <h4 
+                        id={block.id} 
+                        key={idx} 
+                        className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-200 pt-5 pb-1 tracking-tight scroll-mt-28 flex items-baseline gap-2 group"
+                      >
+                        {block.numbering && (
+                          <span className="font-mono text-[#16A34A]/80 dark:text-[#22C55E]/80 font-bold text-xs sm:text-sm select-none shrink-0">
+                            {block.numbering}.
+                          </span>
+                        )}
+                        <span className="leading-snug">{formattedText}</span>
+                      </h4>
                     );
 
                   case 'quote':
@@ -729,36 +788,13 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
 
           {/* Sticky Table of Contents Sidebar (span 4 of 12) */}
           {toc.length > 0 && (
-            <aside className="hidden lg:block lg:col-span-4 sticky top-28 self-start max-h-[75vh] overflow-y-auto pl-6 border-l border-slate-100 dark:border-white/5 pr-1 scrollbar-thin">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 text-[11px] font-black uppercase tracking-widest">
-                  <List className="w-4 h-4 text-blue-500" />
-                  <span>{isHindi ? "लेख की अनुक्रमणिका" : "Table of Contents"}</span>
-                </div>
-
-                <nav className="space-y-1.5">
-                  {toc.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => handleScrollToSection(item.id)}
-                      className={`w-full text-left py-1.5 px-2 rounded-lg text-xs leading-normal transition-all flex items-start gap-1.5 cursor-pointer ${
-                        item.level === 3 
-                          ? 'pl-5 text-[11px] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' 
-                          : 'font-bold'
-                      } ${
-                        activeSection === item.id
-                          ? 'bg-blue-600/10 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 font-extrabold border-l-2 border-blue-600 pl-3'
-                          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/40'
-                      }`}
-                    >
-                      {item.level === 2 && (
-                        <ChevronRight className={`w-3.5 h-3.5 text-slate-300 dark:text-slate-600 shrink-0 mt-0.5 ${activeSection === item.id ? 'text-blue-500' : ''}`} />
-                      )}
-                      <span className="line-clamp-2">{item.text}</span>
-                    </button>
-                  ))}
-                </nav>
-              </div>
+            <aside className="hidden lg:block lg:col-span-4 sticky top-28 self-start max-h-[calc(100vh-140px)] overflow-y-auto pl-6 border-l border-slate-200/70 dark:border-white/5 pr-1 scrollbar-thin">
+              <TableOfContents
+                items={toc}
+                activeId={activeSection}
+                onItemClick={handleScrollToSection}
+                variant="sidebar"
+              />
             </aside>
           )}
 

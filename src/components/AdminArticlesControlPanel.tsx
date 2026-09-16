@@ -7,7 +7,7 @@ import {
   Sparkles, CheckCircle2, Clock, AlertTriangle, RefreshCw, Save, 
   X, Tag, Calendar, User, Globe, Share2, Layers, PenTool,
   Check, ArrowLeft, ExternalLink, Type, List, ListOrdered, Quote, Code, Heading,
-  Image as ImageIcon, Link as LinkIcon
+  Image as ImageIcon, Link as LinkIcon, ListTree
 } from 'lucide-react';
 import { 
   articleService, DEFAULT_AUTHOR, DEFAULT_CATEGORIES 
@@ -15,6 +15,8 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import { getDirectCloudImageUrl, convertCloudStorageUrl } from '../utils/adminStorage';
 import { ArticleRenderer } from './ArticleRenderer';
+import { TableOfContents } from './TableOfContents';
+import { extractTocFromContent, convertPastedHtmlToMarkdown } from '../utils/tocHelper';
 
 interface AdminArticlesControlPanelProps {
   adminEmail?: string;
@@ -173,6 +175,35 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
       textarea.focus();
       textarea.setSelectionRange(start + prefix.length, start + prefix.length + selectedText.length);
     }, 50);
+  };
+
+  // Live Table of Contents computed automatically from content
+  const editorToc = React.useMemo(() => {
+    return extractTocFromContent(formArticle.content || '');
+  }, [formArticle.content]);
+
+  // Paste Event Handler: Automatically converts Google Docs / Word / Web HTML into clean TOC-ready Markdown
+  const handleContentPaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const html = e.clipboardData?.getData('text/html');
+    if (!html) return;
+
+    if (/<h[1-6]/i.test(html) || /<p/i.test(html) || /<blockquote/i.test(html) || /<ul|<ol/i.test(html)) {
+      const converted = convertPastedHtmlToMarkdown(html);
+      if (converted && converted.trim().length > 0) {
+        e.preventDefault();
+        const textarea = e.currentTarget;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        const newContent = text.substring(0, start) + converted + text.substring(end);
+        setFormArticle(prev => ({ ...prev, content: newContent }));
+
+        setTimeout(() => {
+          textarea.focus();
+          textarea.setSelectionRange(start + converted.length, start + converted.length);
+        }, 50);
+      }
+    }
   };
 
   // Create New Article Trigger
@@ -758,8 +789,8 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                   <button
                     type="button"
                     onClick={() => handleInsertFormatting('## ')}
-                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
-                    title="Heading 2 / Main Section"
+                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-emerald-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Heading 2 (Auto TOC Section - ## )"
                   >
                     <Heading className="w-3 h-3 text-slate-400" />
                     <span>H2</span>
@@ -767,11 +798,20 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                   <button
                     type="button"
                     onClick={() => handleInsertFormatting('### ')}
-                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
-                    title="Heading 3 / Sub-section"
+                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-emerald-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Heading 3 (Auto TOC Sub-section - ### )"
                   >
                     <Heading className="w-3 h-3 text-slate-400" />
                     <span>H3</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleInsertFormatting('#### ')}
+                    className="h-7 px-2 text-[10px] font-extrabold rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-white/10 hover:bg-slate-100 hover:text-emerald-600 dark:hover:bg-slate-900 transition-all flex items-center gap-1 cursor-pointer"
+                    title="Heading 4 (Auto TOC Deep Sub-section - #### )"
+                  >
+                    <Heading className="w-3 h-3 text-slate-400" />
+                    <span>H4</span>
                   </button>
                   
                   <div className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1 shrink-0" />
@@ -874,9 +914,36 @@ export const AdminArticlesControlPanel: React.FC<AdminArticlesControlPanelProps>
                   rows={14}
                   value={formArticle.content || ''}
                   onChange={(e) => setFormArticle(prev => ({ ...prev, content: e.target.value }))}
-                  placeholder="Write beautiful editorial article here... Use headings (## Section), callouts (> **Note:** text), bullets, and inline formatting tools above."
+                  onPaste={handleContentPaste}
+                  placeholder="Write beautiful editorial article here... Use headings (## Section), callouts (> **Note:** text), bullets, and inline formatting tools above. Headings automatically build the Table of Contents."
                   className="w-full px-3.5 py-2.5 rounded-b-lg bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-mono leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none resize-y"
                 />
+              </div>
+
+              {/* LIVE TABLE OF CONTENTS (TOC) PREVIEW FOR ADMIN */}
+              <div className="p-3.5 rounded-xl bg-white dark:bg-[#0E131F] border border-slate-200 dark:border-white/10 space-y-2.5 shadow-2xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                    <ListTree className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
+                    <span>{isHindi ? "स्वचालित अनुक्रमणिका (Table of Contents Live Preview)" : "Automatic Table of Contents (Live Preview)"}</span>
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 font-bold">
+                    {editorToc.length} {isHindi ? "हेडिंग्स पहचानी गईं" : "Headings detected"}
+                  </span>
+                </div>
+
+                {editorToc.length > 0 ? (
+                  <TableOfContents items={editorToc} variant="preview" />
+                ) : (
+                  <div className="p-3 rounded-lg border border-dashed border-stone-200 dark:border-white/10 bg-stone-50/70 dark:bg-white/[0.02] flex items-center gap-2.5 text-xs text-stone-500 dark:text-stone-400">
+                    <Sparkles className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+                    <span>
+                      {isHindi 
+                        ? "सुझाव: लेख में H2 (##) या H3 (###) हेडिंग्स लिखें — पाठकों के लिए स्वचालित विषय सूची अपने आप तैयार हो जाएगी।" 
+                        : "Editorial Tip: Add H2 (##) and H3 (###) headings to your article — the dynamic Table of Contents will generate automatically."}
+                    </span>
+                  </div>
+                )}
               </div>
 
             </div>

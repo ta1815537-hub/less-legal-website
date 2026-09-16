@@ -37,7 +37,19 @@ function getRouteFromLocation(): PageRoute {
   }
   const pageParam = searchParams.get('page') || searchParams.get('route') || (searchParams.has('admin') ? 'admin' : '');
 
-  const target = pageParam || hash || pathname;
+  // Priority order: explicit query page param -> pathname -> hash route -> default home
+  let target = pageParam;
+  if (!target) {
+    if (pathname.toLowerCase().startsWith('articles/') || pathname.toLowerCase().startsWith('article/') || pathname.toLowerCase().startsWith('author/')) {
+      target = pathname;
+    } else if (hash.toLowerCase().startsWith('articles/') || hash.toLowerCase().startsWith('article/') || hash.toLowerCase().startsWith('author/')) {
+      target = hash;
+    } else if (pathname) {
+      target = pathname;
+    } else {
+      target = hash;
+    }
+  }
 
   if (target.toLowerCase().startsWith('tools') || target.toLowerCase().startsWith('tool/')) {
     return 'tools';
@@ -107,11 +119,11 @@ function getRouteFromLocation(): PageRoute {
 
 function getSlugFromLocation(): string | undefined {
   const pathname = window.location.pathname;
-  const match = pathname.match(/^\/articles\/([^\/]+)$/i) || pathname.match(/^\/article\/([^\/]+)$/i);
+  const match = pathname.match(/^\/articles\/([^\/#?]+)/i) || pathname.match(/^\/article\/([^\/#?]+)/i);
   if (match) return decodeURIComponent(match[1]);
 
   const hash = window.location.hash;
-  const hashMatch = hash.match(/^#\/?articles\/([^\/]+)$/i) || hash.match(/^#\/?article\/([^\/]+)$/i);
+  const hashMatch = hash.match(/^#\/?articles\/([^\/#?]+)/i) || hash.match(/^#\/?article\/([^\/#?]+)/i);
   if (hashMatch) return decodeURIComponent(hashMatch[1]);
 
   const searchParams = new URLSearchParams(window.location.search);
@@ -295,8 +307,8 @@ export default function App() {
     }
 
     const previewImg = currentRoute === 'founder' 
-      ? 'https://lesscreation.com/Founder1.jpg' 
-      : 'https://lesscreation.com/Picsart_logo.png';
+      ? 'https://www.lesscreation.com/Founder1.jpg' 
+      : 'https://www.lesscreation.com/Picsart_logo.png';
 
     ogImage.setAttribute('content', previewImg);
     twitterImage.setAttribute('content', previewImg);
@@ -308,13 +320,26 @@ export default function App() {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', path ? `https://lesscreation.com/${path}` : 'https://lesscreation.com/');
+    canonical.setAttribute('href', path ? `https://www.lesscreation.com/${path}` : 'https://www.lesscreation.com/');
   }, [currentRoute]);
 
   // Sync route on popstate and hashchange
   useEffect(() => {
     const handleLocationChange = () => {
       const nextRoute = getRouteFromLocation();
+      const currentHash = window.location.hash.replace(/^#\/?/, '');
+
+      // If staying on the same route and hash corresponds to an in-page heading anchor, smoothly scroll to it
+      if (nextRoute === currentRoute && currentHash) {
+        const anchorEl = document.getElementById(currentHash);
+        if (anchorEl) {
+          const navOffset = 96;
+          const pos = anchorEl.getBoundingClientRect().top + window.scrollY - navOffset;
+          window.scrollTo({ top: Math.max(0, pos), behavior: 'smooth' });
+          return;
+        }
+      }
+
       setCurrentRoute(nextRoute);
       if (nextRoute === 'article-detail') {
         const slug = getSlugFromLocation();
@@ -323,10 +348,13 @@ export default function App() {
         const author = getAuthorSlugFromLocation();
         if (author) setActiveAuthorSlug(author);
       }
-      try {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch {
-        window.scrollTo(0, 0);
+      
+      if (!currentHash) {
+        try {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch {
+          window.scrollTo(0, 0);
+        }
       }
     };
 
@@ -337,7 +365,7 @@ export default function App() {
       window.removeEventListener('popstate', handleLocationChange);
       window.removeEventListener('hashchange', handleLocationChange);
     };
-  }, []);
+  }, [currentRoute]);
 
   const navigateTo = (route: PageRoute, param?: any) => {
     let slugParam = '';
