@@ -360,28 +360,48 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, onNa
       }}
       relatedArticlesComponent={
         relatedArticles.length > 0 ? (
-          <section className="space-y-3 pt-6 border-t border-stone-200/80 dark:border-white/10">
-            <h3 className="text-xs font-black uppercase tracking-widest text-stone-500 flex items-center gap-1.5">
+          <section className="space-y-4 pt-6 border-t border-slate-200/80 dark:border-white/10">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
               <BookOpen className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E]" />
               <span>{isHindi ? "संबंधित लेख (Continue Reading)" : "Continue Reading"}</span>
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
               {relatedArticles.map((rel) => (
                 <div
                   key={rel.id}
                   onClick={() => onNavigate('article-detail', { slug: rel.slug || rel.id })}
-                  className="p-4 rounded-xl border border-stone-200/80 dark:border-white/10 hover:border-[#16A34A]/40 bg-white dark:bg-[#151720] cursor-pointer group transition-all duration-200"
+                  className="group flex items-center gap-4 p-3 rounded-2xl border border-slate-200/70 dark:border-white/10 hover:border-[#16A34A]/50 bg-white dark:bg-[#151720] cursor-pointer transition-all duration-300 hover:shadow-sm"
                 >
-                  <span className="text-[10px] font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-widest">
-                    {rel.category}
-                  </span>
-                  <h4 className="text-sm font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors line-clamp-2 mt-1">
-                    {rel.title}
-                  </h4>
-                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400 mt-2">
-                    <Clock className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E]" />
-                    <span>{rel.readingTime || '4 min read'}</span>
+                  {/* Small Thumbnail Preview */}
+                  <div className="w-24 h-24 sm:w-28 sm:h-24 rounded-xl bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0 relative">
+                    {rel.featuredImage ? (
+                      <img 
+                        src={getDirectCloudImageUrl(rel.featuredImage)} 
+                        alt={rel.title}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <BookOpen className="w-6 h-6 text-slate-300 dark:text-slate-700" />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Article Listing Content */}
+                  <div className="flex flex-col flex-1 py-1">
+                    <span className="text-[10px] font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-widest mb-1.5 line-clamp-1">
+                      {rel.category}
+                    </span>
+                    <h4 className="text-[14px] sm:text-[15px] font-bold text-[#111016] dark:text-white group-hover:text-[#16A34A] dark:group-hover:text-[#22C55E] transition-colors line-clamp-2 leading-snug">
+                      {rel.title}
+                    </h4>
+                    <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>{rel.readingTime || '4 min read'}</span>
+                    </div>
                   </div>
                 </div>
               ))}

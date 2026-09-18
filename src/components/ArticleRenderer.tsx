@@ -484,7 +484,7 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
         </div>
 
         {/* 3. PREMIUM EDITORIAL TITLE BLOCK */}
-        <header className="py-8 space-y-4 max-w-4xl">
+        <header className={`${toc.length > 0 ? 'max-w-4xl' : 'max-w-4xl mx-auto'} py-8 space-y-4`}>
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <span className="px-3 py-1 rounded bg-blue-600/10 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 font-extrabold tracking-wider uppercase text-[10.5px]">
               {category}
@@ -504,19 +504,18 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
             {excerpt}
           </p>
 
-          {/* Premium attribution bar */}
-          <div className="flex items-center justify-between pt-4 pb-2 border-b border-slate-100 dark:border-white/5 max-w-3xl">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 text-white flex items-center justify-center overflow-hidden shrink-0 pointer-events-none select-none">
-                <BookOpen className="w-4 h-4" />
+          {/* Clean attribution bar */}
+          <div className="flex items-center justify-between pt-5 pb-3 max-w-3xl">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center shrink-0">
+                <PenTool className="w-3.5 h-3.5 text-slate-500" />
               </div>
               <div>
-                <span className="block font-black text-slate-950 dark:text-white text-sm flex items-center gap-1.5">
-                  <span>By Less Team</span>
-                  <PenTool className="w-3.5 h-3.5 text-blue-500" />
+                <span className="block font-semibold text-slate-800 dark:text-slate-200 text-[13px]">
+                  Less Creation Editorial
                 </span>
-                <span className="text-[11px] text-slate-400 dark:text-slate-500 block">
-                  Editorial & Research Staff • Less Creation
+                <span className="text-[11px] font-medium text-slate-500 block">
+                  {formatArticleDate(publishedAt || createdAt)} • {readingTime || '4 min read'}
                 </span>
               </div>
             </div>
@@ -525,7 +524,7 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
 
         {/* Hero image styled professionally */}
         {featuredImage && (
-          <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 aspect-video w-full max-w-5xl bg-slate-50 dark:bg-slate-900/50 flex items-center justify-center shadow-md mb-8">
+          <div className={`rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 aspect-video w-full max-w-5xl bg-slate-50 dark:bg-slate-900/50 flex items-center justify-center shadow-md mb-8 ${toc.length === 0 ? 'mx-auto' : ''}`}>
             <img 
               src={getDirectCloudImageUrl(featuredImage)} 
               alt={title} 
@@ -550,10 +549,10 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
         )}
 
         {/* 5. SPLIT LAYOUT (Desktop Sticky Sidebar TOC + Left Reading Column) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mt-4 items-start relative">
+        <div className={`grid grid-cols-1 ${toc.length > 0 ? 'lg:grid-cols-12 gap-8 lg:gap-12' : ''} mt-4 items-start relative`}>
           
-          {/* Main Reading Column (span 8 of 12) */}
-          <main className="lg:col-span-8 space-y-6 max-w-3xl leading-relaxed">
+          {/* Main Reading Column */}
+          <main className={`${toc.length > 0 ? 'lg:col-span-8 lg:pr-8' : 'max-w-4xl mx-auto'} w-full space-y-6 leading-relaxed`}>
             
             <article className="space-y-6 text-slate-800 dark:text-[#E2DDD9] prose prose-slate dark:prose-invert max-w-none">
               {blocks.map((block, idx) => {
@@ -572,13 +571,8 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                       <h2 
                         id={block.id} 
                         key={idx} 
-                        className="text-xl sm:text-2xl font-black text-slate-950 dark:text-white pt-8 pb-2 tracking-tight border-b border-slate-100 dark:border-white/5 scroll-mt-28 flex items-baseline gap-2.5 group"
+                        className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white pt-8 pb-2 tracking-tight border-b border-slate-100 dark:border-white/5 scroll-mt-28 flex items-baseline gap-2 group"
                       >
-                        {block.numbering && (
-                          <span className="font-mono text-[#16A34A] dark:text-[#22C55E] font-bold text-base sm:text-lg select-none shrink-0">
-                            {block.numbering}.
-                          </span>
-                        )}
                         <span className="leading-snug">{formattedText}</span>
                       </h2>
                     );
@@ -588,13 +582,8 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                       <h3 
                         id={block.id} 
                         key={idx} 
-                        className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-[#F3EFEA] pt-6 pb-1 tracking-tight scroll-mt-28 flex items-baseline gap-2 group"
+                        className="text-lg sm:text-xl font-bold text-slate-900 dark:text-[#F3EFEA] pt-6 pb-1 tracking-tight scroll-mt-28 flex items-baseline gap-2 group"
                       >
-                        {block.numbering && (
-                          <span className="font-mono text-[#16A34A]/90 dark:text-[#22C55E]/90 font-bold text-sm sm:text-base select-none shrink-0">
-                            {block.numbering}.
-                          </span>
-                        )}
                         <span className="leading-snug">{formattedText}</span>
                       </h3>
                     );
@@ -606,49 +595,44 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                         key={idx} 
                         className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-200 pt-5 pb-1 tracking-tight scroll-mt-28 flex items-baseline gap-2 group"
                       >
-                        {block.numbering && (
-                          <span className="font-mono text-[#16A34A]/80 dark:text-[#22C55E]/80 font-bold text-xs sm:text-sm select-none shrink-0">
-                            {block.numbering}.
-                          </span>
-                        )}
                         <span className="leading-snug">{formattedText}</span>
                       </h4>
                     );
 
                   case 'quote':
                     return (
-                      <blockquote key={idx} className="my-6 p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/30 border-l-4 border-slate-400 dark:border-slate-600 text-slate-700 dark:text-[#D5CFC9] text-base italic leading-relaxed shadow-xs">
+                      <blockquote key={idx} className="my-6 p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/30 border-l-4 border-slate-400 dark:border-slate-600 text-[#374151] dark:text-[#D1D5DB] text-[17px] font-medium italic leading-[1.8] shadow-xs">
                         <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(formattedText) }} />
                       </blockquote>
                     );
 
                   case 'callout':
                     return (
-                      <div key={idx} className="my-6 p-5 rounded-2xl bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/20 dark:border-blue-500/20 text-slate-800 dark:text-[#D1E1FA] leading-relaxed shadow-inner flex items-start gap-3">
+                      <div key={idx} className="my-6 p-5 rounded-2xl bg-blue-50/50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 text-[#374151] dark:text-[#D1E1FA] leading-[1.8] font-medium shadow-inner flex items-start gap-3">
                         <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-                        <div className="text-sm sm:text-base space-y-1">
+                        <div className="text-[17px] space-y-1">
                           <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(formattedText) }} />
                         </div>
                       </div>
                     );
 
                   case 'divider':
-                    return <hr key={idx} className="my-8 border-slate-100 dark:border-white/5" />;
+                    return <hr key={idx} className="my-8 border-slate-200/60 dark:border-white/10" />;
 
                   case 'image':
                     return (
-                      <figure key={idx} className="my-6 space-y-2">
-                        <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900 flex items-center justify-center max-h-[500px]">
+                      <figure key={idx} className="my-8 space-y-3">
+                        <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-center max-h-[500px] shadow-sm">
                           <img 
                             src={getDirectCloudImageUrl(block.imageUrl)} 
                             alt={block.imageCaption || "Article Graphic"} 
                             referrerPolicy="no-referrer"
-                            className="w-full h-full object-contain max-h-[500px] bg-slate-50 dark:bg-slate-950"
+                            className="w-full h-full object-contain max-h-[500px]"
                             loading="lazy"
                           />
                         </div>
                         {block.imageCaption && (
-                          <figcaption className="text-center text-xs text-slate-500 dark:text-slate-400 italic">
+                          <figcaption className="text-center text-[13px] text-slate-500 font-medium">
                             {block.imageCaption}
                           </figcaption>
                         )}
@@ -657,9 +641,9 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
 
                   case 'bullet-list':
                     return (
-                      <ul key={idx} className="my-5 pl-5 list-disc space-y-2 text-slate-800 dark:text-[#DDD9D4] text-base sm:text-[17px] leading-relaxed">
+                      <ul key={idx} className="my-5 pl-5 list-disc space-y-3 text-[#374151] dark:text-[#E5E7EB] text-[17px] sm:text-[19px] font-medium leading-[1.85] marker:text-slate-400">
                         {block.listItems?.map((item, i) => (
-                          <li key={i} className="pl-1 text-slate-800 dark:text-[#D9D3CD]">
+                          <li key={i} className="pl-1.5">
                             <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(item) }} />
                           </li>
                         ))}
@@ -668,9 +652,9 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
 
                   case 'numbered-list':
                     return (
-                      <ol key={idx} className="my-5 pl-5 list-decimal space-y-2 text-slate-800 dark:text-[#DDD9D4] text-base sm:text-[17px] leading-relaxed">
+                      <ol key={idx} className="my-5 pl-5 list-decimal space-y-3 text-[#374151] dark:text-[#E5E7EB] text-[17px] sm:text-[19px] font-medium leading-[1.85] marker:text-slate-400 font-medium">
                         {block.listItems?.map((item, i) => (
-                          <li key={i} className="pl-1 text-slate-800 dark:text-[#D9D3CD]">
+                          <li key={i} className="pl-1.5">
                             <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(item) }} />
                           </li>
                         ))}
@@ -680,7 +664,7 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                   case 'paragraph':
                   default:
                     return (
-                      <p key={idx} className="text-slate-800 dark:text-[#DED9D4] text-base sm:text-[18px] leading-relaxed sm:leading-[1.8] tracking-normal font-normal">
+                      <p key={idx} className="text-[#374151] dark:text-[#E5E7EB] text-[17px] sm:text-[19px] leading-[1.85] font-medium antialiased">
                         <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(formattedText) }} />
                       </p>
                     );
@@ -708,28 +692,28 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
 
             {/* 6. SOCIAL FEEDBACK & SHARING PANEL */}
             {(feedbackSystem || socialShareSystem) && (
-              <div className="py-6 my-8 border-y border-slate-100 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6 overflow-visible relative">
+              <div className="py-4 my-6 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-visible relative">
                 
                 {feedbackSystem && (
                   <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                       {isHindi ? "क्या यह लेख उपयोगी रहा?" : "Was this article useful?"}
                     </span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => feedbackSystem.onVote(true)}
                         disabled={feedbackSystem.feedbackSubmitted}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all border shrink-0 cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer ${
                           feedbackSystem.feedbackSubmitted
                             ? feedbackSystem.userVote === 'yes'
-                              ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/40 shadow-xs'
-                              : 'bg-slate-50 dark:bg-[#111827]/40 text-slate-400 border-slate-200/50 dark:border-slate-800 opacity-60'
-                            : 'bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5 shadow-xs'
+                              ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
+                              : 'bg-slate-50 dark:bg-[#111827]/40 text-slate-400 opacity-60'
+                            : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/5 shadow-sm'
                         }`}
                       >
-                        <ThumbsUp className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                        <ThumbsUp className="w-4 h-4 text-emerald-500 shrink-0" />
                         <span>{isHindi ? "हाँ" : "Yes"}</span>
-                        <span className="px-1.5 py-0.2 text-[10px] rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-black shrink-0">
+                        <span className="px-1.5 py-0.5 text-[10px] rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-bold shrink-0">
                           {feedbackSystem.usefulYesCount || 0}
                         </span>
                       </button>
@@ -737,17 +721,17 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                       <button
                         onClick={() => feedbackSystem.onVote(false)}
                         disabled={feedbackSystem.feedbackSubmitted}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all border shrink-0 cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer ${
                           feedbackSystem.feedbackSubmitted
                             ? feedbackSystem.userVote === 'no'
-                              ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border-rose-500/40 shadow-xs'
-                              : 'bg-slate-50 dark:bg-[#111827]/40 text-slate-400 border-slate-200/50 dark:border-slate-800 opacity-60'
-                            : 'bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-500/30 hover:bg-rose-500/5 shadow-xs'
+                              ? 'bg-rose-500/15 text-rose-700 dark:text-rose-400'
+                              : 'bg-slate-50 dark:bg-[#111827]/40 text-slate-400 opacity-60'
+                            : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-500/5 shadow-sm'
                         }`}
                       >
-                        <ThumbsDown className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                        <ThumbsDown className="w-4 h-4 text-rose-500 shrink-0" />
                         <span>{isHindi ? "नहीं" : "No"}</span>
-                        <span className="px-1.5 py-0.2 text-[10px] rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 font-mono font-black shrink-0">
+                        <span className="px-1.5 py-0.5 text-[10px] rounded bg-rose-500/10 text-rose-600 dark:text-rose-400 font-mono font-bold shrink-0">
                           {feedbackSystem.usefulNoCount || 0}
                         </span>
                       </button>
@@ -757,36 +741,36 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
 
                 {socialShareSystem && (
                   <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                    <span className="text-xs font-bold text-slate-400 mr-1 flex items-center gap-1">
-                      <Share2 className="w-3.5 h-3.5 text-blue-500" />
-                      <span>Share:</span>
+                    <span className="text-sm font-semibold text-slate-400 mr-2 flex items-center gap-1.5">
+                      <Share2 className="w-4 h-4" />
+                      <span>Share</span>
                     </span>
 
                     <button
                       onClick={socialShareSystem.onCopyLink}
                       title="Copy Link"
-                      className="p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-all cursor-pointer"
+                      className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-all cursor-pointer shadow-sm"
                     >
                       {socialShareSystem.copiedShare ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                     </button>
 
                     <button
                       onClick={socialShareSystem.onShareWhatsApp}
-                      className="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold transition-all cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-sm font-semibold transition-all cursor-pointer shadow-sm"
                     >
                       WhatsApp
                     </button>
 
                     <button
                       onClick={socialShareSystem.onShareTelegram}
-                      className="px-3 py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 text-xs font-bold transition-all cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 dark:bg-sky-500/10 dark:hover:bg-sky-500/20 text-sky-700 dark:text-sky-400 text-sm font-semibold transition-all cursor-pointer shadow-sm"
                     >
                       Telegram
                     </button>
 
                     <button
                       onClick={socialShareSystem.onShareX}
-                      className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-xs font-bold transition-all cursor-pointer"
+                      className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-semibold transition-all cursor-pointer shadow-sm"
                     >
                       X
                     </button>
