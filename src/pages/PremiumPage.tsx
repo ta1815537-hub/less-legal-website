@@ -176,7 +176,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
 
           {/* Email Bind Note */}
           <div className="flex items-start gap-2.5 p-3 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-200/80 dark:border-white/5 text-xs text-stone-700 dark:text-stone-300">
-            <Mail className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0 mt-0.5" />
+            <Mail className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
             <div>
               <strong className="font-bold">{isHindi ? 'पंजीकृत ईमेल सुरक्षा: ' : 'Email Pass Binding: '}</strong>
               {isHindi 
@@ -188,15 +188,15 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
           {/* Feature List */}
           <div className="space-y-2 pt-1 text-xs text-stone-700 dark:text-stone-300">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-red-400 shrink-0" />
               <span>{isHindi ? 'पूरी तरह से विज्ञापन-मुक्त अनुभव' : '100% Ad-Free Experience across all tools'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-red-400 shrink-0" />
               <span>{isHindi ? 'सभी कानूनी टूल्स व पीडीएफ यूटिलिटीज का असीमित उपयोग' : 'Unlimited access to all Legal Utilities & PDF Workspace'}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-red-400 shrink-0" />
               <span>{isHindi ? 'आजीवन वैधता — भविष्य के सभी अपडेट मुफ्त' : 'Lifetime validity & free future upgrades'}</span>
             </div>
           </div>
@@ -214,7 +214,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             <button
               id="btn-get-lifetime-pass-main"
               onClick={handleOpenAppOrDownload}
-              className="w-full py-3.5 px-4 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-colors"
+              className="w-full py-3.5 px-4 rounded-xl bg-red-600/85 hover:bg-red-500 backdrop-blur-md border border-red-500/40 text-white text-sm font-bold shadow-lg shadow-red-950/50 flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <Sparkles className="w-4 h-4" />
               <span>{isHindi ? 'लाइफटाइम पास लें — ₹99' : 'Get Lifetime Pass — ₹99'}</span>
@@ -222,7 +222,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onNavigate }) => {
             </button>
 
             <div className="flex items-center justify-center gap-1.5 text-xs text-stone-500">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-red-400 shrink-0" />
               <span>{isHindi ? 'Razorpay द्वारा 100% सुरक्षित भुगतान' : '100% Secure payment by Razorpay'}</span>
             </div>
           </div>

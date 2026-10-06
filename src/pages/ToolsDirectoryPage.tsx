@@ -168,18 +168,12 @@ export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 space-y-6">
       
-      {/* Header Bar */}
+      {/* Header Bar - Clean Direct Title */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 dark:border-white/10 pb-4">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
-            {isHindi ? "डिजिटल उपयोगिताएं" : "DIGITAL SUITE"}
-          </div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-[#111016] dark:text-white tracking-tight mt-1">
-            {isHindi ? 'लेस क्रिएशन टूल्स डायरेक्टरी' : 'Less Creation Tools Directory'}
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-[#111016] dark:text-white tracking-tight">
+            {isHindi ? '29+ ऑन-डिवाइस सुरक्षित विधिक टूल्स' : 'Less Creation Tools Directory'}
           </h1>
-          <p className="text-xs sm:text-sm text-stone-500 mt-1">
-            {isHindi ? `${TOTAL_TOOLS_COUNT} तेज, सुरक्षित व ऑन-डिवाइस टूल्स का संपूर्ण संग्रह` : `Complete suite of ${TOTAL_TOOLS_COUNT} high-speed, local utilities`}
-          </p>
         </div>
 
         {/* Search Modal Trigger */}

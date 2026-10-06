@@ -34,71 +34,132 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    background-color: #0B1120;
-    color-scheme: light dark;
-    overscroll-behavior: none;
-    overscroll-behavior-y: none;
+    background-color: #070B12;
+    color-scheme: dark;
     -webkit-overflow-scrolling: touch;
   }
 
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #0B1120;
-    color: #111016;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #070B12;
+    color: #F1F5F9;
     margin: 0;
     padding: 0;
-    min-height: 100%;
+    min-height: 100vh;
     width: 100%;
-    overscroll-behavior: none;
-    overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
     transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  /* Universal Button Click Animation Feedback Across All Pages */
+  button, a, [role="button"], input[type="button"], input[type="submit"] {
+    transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  button:active, a:active, [role="button"]:active, input[type="button"]:active, input[type="submit"]:active {
+    transform: scale(0.95) !important;
+  }
+
+  /* Universal Glassy Red Button Class */
+  .btn-glass-red {
+    background-color: rgba(220, 38, 38, 0.82);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #ffffff;
+    box-shadow: 0 10px 25px -5px rgba(153, 27, 27, 0.4);
+    transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-glass-red:hover {
+    background-color: rgba(239, 68, 68, 0.95);
+    border-color: rgba(248, 113, 113, 0.6);
+    box-shadow: 0 15px 30px -5px rgba(185, 28, 28, 0.6);
+  }
+  .btn-glass-red:active {
+    transform: scale(0.95) !important;
   }
 
   #root {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #0B1120;
+    background-color: #070B12;
     overflow-x: clip;
-    overscroll-behavior: none;
-    overscroll-behavior-y: none;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
-    letter-spacing: -0.025em;
-    color: #111016;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.015em;
+    color: #F8FAFC;
     font-weight: 700;
   }
 
   p {
-    color: #3F3F46;
-    line-height: 1.6;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #94A3B8;
+    line-height: 1.65;
   }
 
   ::selection {
-    background-color: #16A34A;
+    background-color: #DC2626;
     color: #FFFFFF;
   }
 
-  /* Dark Theme Overrides */
+  /* Dark Cyber Theme Overrides */
   html.dark, html.dark body, html.dark #root {
-    background-color: #0B1120;
-    color: #F5F2EE;
+    background-color: #070B12;
+    color: #F1F5F9;
   }
 
   html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
-    color: #FFFFFF;
+    color: #F8FAFC;
   }
 
   html.dark p {
-    color: #A1A1AA;
+    color: #94A3B8;
   }
 
   section, [id] {
     scroll-margin-top: 100px;
   }
+}
+
+/* Spider-Web Dot Grid Matrix Pattern */
+.spider-web-dots,
+.spider-web-grid {
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 24px 24px, 48px 48px, 48px 48px;
+  background-position: 0 0, 0 0, 0 0;
+}
+
+/* Subtle Indian Jaali / Geometric Filigree Background */
+.indian-jaali-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Devanagari & Classical Legal Typography */
+.font-devanagari {
+  font-family: 'Noto Serif Devanagari', 'Newsreader', serif;
+}
+
+.font-legal-cinzel {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.04em;
+}
+
+/* Antique Gold Accents */
+.border-gold-antique {
+  border-color: rgba(201, 162, 75, 0.35);
+}
+
+.text-gold-antique {
+  color: #C9A24B;
+}
+
+.bg-gold-antique {
+  background-color: #C9A24B;
 }
 
 /* =========================================================
@@ -179,8 +240,8 @@
 
 .glass-input:focus {
   outline: none;
-  border-color: #16A34A;
-  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+  border-color: #DC2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
 }
 
 .dark .glass-input {
@@ -194,25 +255,25 @@
 }
 
 .dark .glass-input:focus {
-  border-color: #16A34A;
-  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
+  border-color: #DC2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
 }
 
 /* =========================================================
    EDITORIAL BUTTONS (Clean, Bold, High Contrast)
    ========================================================= */
 
-/* Primary Action Button (Deep Black in Light, Crisp White in Dark) */
+/* Primary Action Button */
 .btn-editorial-primary,
 .fluid-3d-glass-btn {
-  background-color: #111016;
+  background-color: #DC2626;
   color: #FFFFFF;
-  border: 1px solid transparent;
+  border: 1px solid rgba(239, 68, 68, 0.4);
   border-radius: 0.75rem;
   font-weight: 700;
   padding: 0.625rem 1.25rem;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -221,44 +282,44 @@
 
 .btn-editorial-primary:hover,
 .fluid-3d-glass-btn:hover {
-  background-color: #000000;
+  background-color: #EF4444;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.45);
 }
 
 .dark .btn-editorial-primary,
 .dark .fluid-3d-glass-btn {
-  background-color: #FFFFFF;
-  color: #111016;
+  background-color: #DC2626;
+  color: #FFFFFF;
 }
 
 .dark .btn-editorial-primary:hover,
 .dark .fluid-3d-glass-btn:hover {
-  background-color: #E4E4E7;
-  color: #000000;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+  background-color: #EF4444;
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.45);
 }
 
-/* Cybersecurity Green Brand Accent Button */
+/* Cybersecurity Brand Accent Button */
 .btn-editorial-accent,
 .btn-crimson,
 .red-shimmer-button {
-  background-color: #16A34A !important;
+  background-color: #DC2626 !important;
   color: #FFFFFF !important;
-  border: 1px solid #15803D !important;
+  border: 1px solid #B91C1C !important;
   border-radius: 0.75rem;
   font-weight: 700;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.25) !important;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.25) !important;
   cursor: pointer;
 }
 
 .btn-editorial-accent:hover,
 .btn-crimson:hover,
 .red-shimmer-button:hover {
-  background-color: #15803D !important;
+  background-color: #B91C1C !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35) !important;
 }
 
 /* Secondary Editorial Button (Ivory / White with border) */
@@ -344,11 +405,11 @@
 }
 
 .hero-gradient-title-2 {
-  color: #16A34A !important;
+  color: #DC2626 !important;
 }
 
 .dark .hero-gradient-title-2 {
-  color: #22C55E !important;
+  color: #EF4444 !important;
 }
 
 /* Active Click Scale & Smooth Transition globally for any button, card, link, or option */
@@ -360,11 +421,10 @@ a,
 .clickable-card,
 [role="button"],
 .cursor-pointer {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              opacity 0.3s ease, 
-              background-color 0.3s ease, 
-              border-color 0.3s ease, 
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              opacity 0.2s ease, 
+              background-color 0.2s ease, 
+              box-shadow 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 button:active, 
@@ -375,8 +435,14 @@ a:active,
 .clickable-card:active,
 [role="button"]:active,
 .cursor-pointer:active {
-  transform: scale(0.96) translateY(0.5px) !important;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: scale(0.94) translateY(1px) !important;
+  transition: transform 0.1s ease-out !important;
+}
+
+/* Premium Hover Lift for all interactive elements */
+button:hover, a:hover, .clickable-card:hover, .cursor-pointer:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
 /* Google Translate Isolation */

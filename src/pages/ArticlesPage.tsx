@@ -101,40 +101,35 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 space-y-8">
       
-      {/* Editorial Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 dark:border-white/10 pb-6">
+      {/* Editorial Header - Compact Direct Title & Lens Search */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-200 dark:border-white/10 pb-4">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
-            {isHindi ? "संपादकीय एवं ज्ञानकोष" : "EDITORIAL & ESSAYS"}
-          </div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-[#111016] dark:text-white tracking-tight mt-1">
-            {isHindi ? "तकनीक, सुरक्षा व कानून" : "Technology, Safety & Law"}
+          <h1 className="text-lg sm:text-2xl font-bold text-white tracking-tight">
+            {isHindi ? "संपादकीय लेख एवं मार्गदर्शिका" : "Articles & Safety Guides"}
           </h1>
-          <p className="text-xs sm:text-sm text-stone-500 mt-1">
-            {isHindi 
-              ? "डिजिटल सुरक्षा, साइबर फ्रॉड व कानूनी साक्षरता पर विश्लेषण" 
-              : "Practical insights on technology, digital sovereignty, cyber defense and Indian law"}
-          </p>
         </div>
 
-        {/* Search */}
-        <div className="relative w-full sm:w-72">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={isHindi ? "लेख खोजें..." : "Search articles, topics..."}
-            className="w-full pl-8 pr-7 py-2 rounded-lg bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs text-[#111016] dark:text-white placeholder-stone-400 focus:outline-none focus:border-[#16A34A] dark:focus:border-[#22C55E]"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 p-0.5"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
+        {/* Compact Lens Search Bar */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-60">
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-red-400 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={isHindi ? "लेख खोजें..." : "Search publications..."}
+              className="w-full pl-8 pr-7 py-1.5 rounded-full bg-[#0E1424] border border-white/10 text-xs text-white placeholder-stone-400 focus:outline-none focus:border-red-500 transition-colors"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white p-0.5"
+                title="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -144,8 +139,8 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
           onClick={() => setSelectedCategory('ALL')}
           className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
             selectedCategory === 'ALL'
-              ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
-              : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
+              ? 'bg-red-600 text-white border-red-500'
+              : 'bg-[#0E1424] text-stone-300 border-white/10 hover:border-white/30'
           }`}
         >
           {isHindi ? "सभी लेख" : "All Articles"}
@@ -157,8 +152,8 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
             onClick={() => setSelectedCategory(cat.name)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
               selectedCategory.toLowerCase() === cat.name.toLowerCase()
-                ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
-                : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
+                ? 'bg-red-600 text-white border-red-500'
+                : 'bg-[#0E1424] text-stone-300 border-white/10 hover:border-white/30'
             }`}
           >
             {cat.name}
@@ -172,7 +167,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
               setSelectedTag('ALL');
               setSearchQuery('');
             }}
-            className="ml-auto text-xs font-bold text-[#16A34A] dark:text-[#22C55E] hover:underline flex items-center gap-1 whitespace-nowrap shrink-0 pl-2 cursor-pointer"
+            className="ml-auto text-xs font-bold text-red-400 hover:underline flex items-center gap-1 whitespace-nowrap shrink-0 pl-2 cursor-pointer"
           >
             <RefreshCw className="w-3 h-3" />
             <span>{isHindi ? "रीसेट" : "Reset"}</span>
@@ -184,7 +179,7 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
       {allTags.length > 0 && (
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
           <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider flex items-center gap-1 shrink-0 mr-1">
-            <Tag className="w-3 h-3" />
+            <Tag className="w-3 h-3 text-red-400" />
             <span>{isHindi ? "टैग्स:" : "Tags:"}</span>
           </span>
           {allTags.map((tag) => (
@@ -193,8 +188,8 @@ export const ArticlesPage: React.FC<ArticlesPageProps> = ({
               onClick={() => setSelectedTag(selectedTag === tag ? 'ALL' : tag)}
               className={`px-2 py-0.5 rounded text-[11px] font-medium transition-colors whitespace-nowrap cursor-pointer shrink-0 border ${
                 selectedTag === tag
-                  ? 'bg-[#16A34A] text-white border-[#16A34A]'
-                  : 'bg-white dark:bg-[#151720] border-stone-200 dark:border-white/10 text-stone-600 dark:text-stone-400 hover:border-stone-400'
+                  ? 'bg-red-600 text-white border-red-500'
+                  : 'bg-[#0E1424] border-white/10 text-stone-300 hover:border-white/30'
               }`}
             >
               #{tag}

@@ -49,9 +49,9 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           whileHover={{ x: -2 }}
           whileTap={{ scale: 0.96 }}
           onClick={() => onNavigate('home')}
-          className="text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-[#16A34A] dark:hover:text-[#22C55E] inline-flex items-center gap-2 transition-colors cursor-pointer bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 px-4 py-2 rounded-full shadow-2xs"
+          className="text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-red-500 dark:hover:text-red-400 inline-flex items-center gap-2 transition-colors cursor-pointer bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 px-4 py-2 rounded-full shadow-2xs"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+          <ArrowLeft className="w-3.5 h-3.5 text-red-500 dark:text-red-400 shrink-0" />
           <span>{isHindi ? "होमपेज पर लौटें" : "Back to Home"}</span>
         </motion.button>
       </div>
@@ -79,12 +79,12 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                     </div>
                   ) : (
                     <div className="aspect-[4/5] bg-[#0B1120] flex flex-col items-center justify-center p-6 text-center space-y-3">
-                      <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-[#16A34A] dark:text-[#22C55E]">
+                      <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-red-500 dark:text-red-400">
                         <Scale className="w-8 h-8" />
                       </div>
                       <div>
                         <div className="text-xl font-bold text-white">Anurag Gurauli</div>
-                        <div className="text-xs font-semibold text-[#16A34A] dark:text-[#22C55E] mt-1 uppercase tracking-wider">Founder, Less Creation</div>
+                        <div className="text-xs font-semibold text-red-500 dark:text-red-400 mt-1 uppercase tracking-wider">Founder, Less Creation</div>
                         <div className="text-[11px] text-stone-400 mt-0.5">Advocate, High Court</div>
                       </div>
                     </div>
@@ -110,7 +110,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
               
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-red-500 dark:text-red-400">
                   <span>{isHindi ? "संस्थापक एवं विधिक दृष्टि" : "Founder & Legal Vision"}</span>
                 </div>
 
@@ -125,7 +125,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 </p>
 
                 <div className="inline-flex items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm font-semibold text-stone-700 dark:text-stone-300 pt-1">
-                  <UserCheck className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+                  <UserCheck className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" />
                   <span>
                     {isHindi 
                       ? "अधिवक्ता, इलाहाबाद उच्च न्यायालय • साइबर कानून एवं डिजिटल सुरक्षा सलाहकार" 
@@ -136,7 +136,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
               {/* Mission Highlight Text */}
               <div className="py-2 space-y-2 border-b border-stone-200 dark:border-white/10 pb-4 text-left">
-                <div className="text-[11px] font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-wider flex items-center gap-1.5">
+                <div className="text-[11px] font-bold text-red-500 dark:text-red-400 uppercase tracking-wider flex items-center gap-1.5">
                   <Target className="w-3.5 h-3.5" />
                   <span>{isHindi ? "हमारा संकल्प एवं उद्देश्य" : "OUR COMMITMENT & PURPOSE"}</span>
                 </div>
@@ -156,7 +156,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
                 <button
                   onClick={() => onNavigate('articles')}
-                  className="px-5 py-2.5 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-xs font-bold shadow-sm cursor-pointer transition-all hover:scale-[1.01] active:scale-95 flex items-center gap-2"
+                  className="px-5 py-2.5 rounded-xl bg-red-600/85 hover:bg-red-500 backdrop-blur-md border border-red-500/30 text-white text-xs font-bold shadow-md shadow-red-950/40 cursor-pointer transition-all hover:scale-[1.01] active:scale-95 flex items-center gap-2"
                 >
                   <BookOpen className="w-4 h-4 shrink-0" />
                   <span>{isHindi ? "साइबर सुरक्षा लेख व टिप्स पढ़ें" : "Read Cyber Defense Guides"}</span>
@@ -167,7 +167,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                   className="px-5 py-2.5 rounded-xl bg-white dark:bg-white/5 text-[#111016] dark:text-white border border-stone-200 dark:border-white/10 text-xs font-bold hover:bg-stone-50 dark:hover:bg-white/10 cursor-pointer transition-all shadow-2xs hover:scale-[1.01] active:scale-95 flex items-center gap-2"
                 >
                   <span>{isHindi ? "टूल्स डायरेक्टरी देखें" : "Explore Tools"}</span>
-                  <ArrowRight className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" />
                 </button>
               </div>
 
@@ -182,7 +182,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <div className="py-6 space-y-6 border-b border-stone-200 dark:border-white/10 pb-8">
           <div className="flex items-center gap-3.5 border-b border-stone-200 dark:border-white/10 pb-5">
             <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-white/5 text-[#111016] dark:text-white flex items-center justify-center shrink-0 border border-stone-200 dark:border-white/10">
-              <Lightbulb className="w-5 h-5 text-[#16A34A] dark:text-[#22C55E]" />
+              <Lightbulb className="w-5 h-5 text-red-500 dark:text-red-400" />
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#111016] dark:text-white tracking-tight">
@@ -191,7 +191,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          <div className="py-2 space-y-2 border-l-2 border-[#16A34A] dark:border-[#22C55E] pl-4 text-[#111016] dark:text-white">
+          <div className="py-2 space-y-2 border-l-2 border-red-500 dark:border-red-500 pl-4 text-[#111016] dark:text-white">
             <p className="text-base sm:text-lg font-bold leading-relaxed">
               {isHindi 
                 ? "“जैसे-जैसे तकनीक जीवन के लगभग हर पहलू का हिस्सा बनती जा रही है, इसे सुरक्षित रूप से उपयोग करने का तरीका समझना उतना ही महत्वपूर्ण हो जाता है जितना कि इसका उपयोग करना।”"
@@ -212,7 +212,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             </p>
 
             <div className="py-2 flex items-center gap-3 text-[#111016] dark:text-stone-200">
-              <CheckCircle2 className="w-5 h-5 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-red-500 dark:text-red-400 shrink-0" />
               <p className="text-xs sm:text-sm font-bold">
                 {isHindi 
                   ? "हमारा लक्ष्य डर पैदा करना नहीं है। हमारा लक्ष्य जागरूकता और सही समझ पैदा करना है।" 
@@ -228,7 +228,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <div className="py-6 space-y-6 border-b border-stone-200 dark:border-white/10 pb-8">
           <div className="flex items-center gap-3.5 border-b border-stone-200 dark:border-white/10 pb-5">
             <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-white/5 text-[#111016] dark:text-white flex items-center justify-center shrink-0 border border-stone-200 dark:border-white/10">
-              <ShieldCheck className="w-5 h-5 text-[#16A34A] dark:text-[#22C55E]" />
+              <ShieldCheck className="w-5 h-5 text-red-500 dark:text-red-400" />
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#111016] dark:text-white tracking-tight">
@@ -284,7 +284,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
             ].map((item, idx) => (
               <div key={idx} className="space-y-1">
                 <div className="flex items-center gap-2 text-xs font-bold text-[#111016] dark:text-white">
-                  <Check className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-red-500 dark:text-red-400 shrink-0" />
                   <span>{item.title}</span>
                 </div>
                 <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed font-normal">
@@ -297,7 +297,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           {/* Educational Disclaimer */}
           <div className="py-2 space-y-1 text-xs text-stone-600 dark:text-stone-300">
             <div className="font-bold text-[#111016] dark:text-white text-xs uppercase tracking-wide flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <AlertCircle className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" />
               <span>{isHindi ? "शैक्षणिक उद्देश्य एवं स्वतंत्र घोषणा" : "Educational Scope & Non-Government Declaration"}</span>
             </div>
             <p className="leading-relaxed text-xs font-normal">
@@ -314,7 +314,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <div className="py-6 space-y-5 border-b border-stone-200 dark:border-white/10 pb-8">
           <div className="flex items-center gap-3.5 border-b border-stone-200 dark:border-white/10 pb-5">
             <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-white/5 text-[#111016] dark:text-white flex items-center justify-center shrink-0 border border-stone-200 dark:border-white/10">
-              <Cpu className="w-5 h-5 text-[#16A34A] dark:text-[#22C55E]" />
+              <Cpu className="w-5 h-5 text-red-500 dark:text-red-400" />
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#111016] dark:text-white tracking-tight">
@@ -379,7 +379,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#16A34A] dark:text-[#22C55E]">
+              <div className="text-xs font-bold uppercase tracking-widest text-red-500 dark:text-red-400">
                 {isHindi ? "मूल ब्रांड एवं पहल" : "PARENT TECHNOLOGY BRAND"} — LESS CREATION
               </div>
               <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-normal leading-relaxed">
@@ -397,7 +397,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
                 </h3>
                 <button
                   onClick={() => onNavigate('features')}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-[#16A34A] dark:text-[#22C55E] hover:underline cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-red-500 dark:text-red-400 hover:underline cursor-pointer"
                 >
                   <span>{isHindi ? "फीचर्स देखें" : "View Features"}</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -419,10 +419,10 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
         <div className="py-6 space-y-6 border-b border-stone-200 dark:border-white/10 pb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-white/5 text-[#111016] dark:text-white flex items-center justify-center font-bold border border-stone-200 dark:border-white/10">
-              <Award className="w-5 h-5 text-[#16A34A] dark:text-[#22C55E]" />
+              <Award className="w-5 h-5 text-red-500 dark:text-red-400" />
             </div>
             <div>
-              <span className="text-[11px] font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-wide">
+              <span className="text-[11px] font-bold text-red-500 dark:text-red-400 uppercase tracking-wide">
                 {isHindi ? 'सत्य व प्रामाणिक जानकारी' : 'Authoritative Facts'}
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-[#111016] dark:text-white tracking-tight">
@@ -434,7 +434,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {/* English Statement */}
             <div className="space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-              <h3 className="font-bold text-[#16A34A] dark:text-[#22C55E] text-xs uppercase tracking-wider pb-1 border-b border-stone-200 dark:border-white/10">
+              <h3 className="font-bold text-red-500 dark:text-red-400 text-xs uppercase tracking-wider pb-1 border-b border-stone-200 dark:border-white/10">
                 English Statement (Official)
               </h3>
               
@@ -460,7 +460,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
 
             {/* Hindi Statement */}
             <div className="space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-              <h3 className="font-bold text-[#16A34A] dark:text-[#22C55E] text-xs uppercase tracking-wider pb-1 border-b border-stone-200 dark:border-white/10">
+              <h3 className="font-bold text-red-500 dark:text-red-400 text-xs uppercase tracking-wider pb-1 border-b border-stone-200 dark:border-white/10">
                 हिन्दी विवरण (आधिकारिक)
               </h3>
               
@@ -486,7 +486,7 @@ export const FounderPage: React.FC<FounderPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="py-2 text-xs text-stone-600 dark:text-stone-300 leading-relaxed flex items-start gap-2">
-            <Shield className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0 mt-0.5" />
+            <Shield className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
             <p className="font-normal">
               {isHindi 
                 ? "लेस क्रिएशन और लेस लीगल स्वतंत्र डिजिटल पहल हैं। यह भारत सरकार, किसी न्यायालय या किसी सरकारी एजेंसी से संबद्ध, अधिकृत या समर्थित नहीं है।"

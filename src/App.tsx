@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from './types';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { PageTransition, SmokeBackground } from './components/MotionWrappers';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -24,7 +24,6 @@ import { ArticlesPage } from './pages/ArticlesPage';
 import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { AuthorDetailPage } from './pages/AuthorDetailPage';
 import { LanguageProvider } from './context/LanguageContext';
-import { FloatingSupportButton } from './components/FloatingSupportButton';
 import { adminStorage } from './utils/adminStorage';
 
 // Helper to determine route from current window path, query param, or hash
@@ -151,6 +150,19 @@ export default function App() {
   const [activeArticleSlug, setActiveArticleSlug] = useState<string | undefined>(getSlugFromLocation);
   const [activeAuthorSlug, setActiveAuthorSlug] = useState<string | undefined>(getAuthorSlugFromLocation);
   const [siteConfig, setSiteConfig] = useState(adminStorage.getSiteAppConfig());
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 250);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const unsubscribe = adminStorage.subscribeToSiteAppConfig((updated) => {
@@ -428,7 +440,7 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      <div className="min-h-screen flex flex-col relative bg-[#0B1120] text-[#111016] dark:text-[#F5F2EE] font-sans selection:bg-[#16A34A] selection:text-white transition-colors duration-300 overflow-x-hidden">
+      <div className="min-h-screen flex flex-col relative bg-[#070B12] text-white font-sans selection:bg-[#DC2626] selection:text-white transition-colors duration-300 overflow-x-hidden">
         
         {/* Animated Smoke Background */}
         <SmokeBackground />
@@ -437,7 +449,7 @@ export default function App() {
         <Navbar currentRoute={currentRoute} onNavigate={navigateTo} />
 
         {/* Main Page Route Content with Smooth Transitions */}
-        <main className="flex-1 flex flex-col bg-[#F5F1EC] dark:bg-[#0B1120] pt-16 sm:pt-20">
+        <main className="flex-1 flex flex-col bg-[#070B12] pt-16 sm:pt-20">
           <AnimatePresence mode="wait">
             <PageTransition 
               routeKey={currentRoute === 'article-detail' ? `article-${activeArticleSlug}` : (currentRoute === 'author-detail' ? `author-${activeAuthorSlug}` : currentRoute)} 
@@ -466,13 +478,23 @@ export default function App() {
           </AnimatePresence>
         </main>
 
-        {/* Footer with Mandatory Direct Policy Links (Hidden on Admin Dashboard for a clean dedicated console experience) */}
+        {/* Footer with Mandatory Direct Policy Links */}
         {currentRoute !== 'admin' && <Footer onNavigate={navigateTo} />}
 
-        {/* Floating Less Support Button (Elevated bottom-right, automatically hidden on Contact, Account Delete, Admin Dashboard, and Article Read pages) */}
-        {currentRoute !== 'contact' && currentRoute !== 'app-delete-account' && currentRoute !== 'admin' && currentRoute !== 'article-detail' && (
-          <FloatingSupportButton onNavigate={navigateTo} />
-        )}
+        {/* Animated Right-Side Floating Go-To-Top Button - Permanently Visible */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          onClick={scrollToTop}
+          className="fixed bottom-24 right-6 z-[60] p-3.5 rounded-full bg-red-600/90 hover:bg-red-500 text-white backdrop-blur-md border border-red-500/40 shadow-xl shadow-red-950/60 transition-all cursor-pointer active:scale-95 flex items-center justify-center"
+          aria-label="Scroll to Top"
+          title="Go to Top"
+        >
+          <svg className="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </motion.button>
 
       </div>
     </LanguageProvider>

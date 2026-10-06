@@ -220,27 +220,27 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
     switch (color) {
       case 'red':
         return {
-          iconBg: 'bg-emerald-100 dark:bg-emerald-950/40 text-[#16A34A] dark:text-[#22C55E]',
-          badgeBg: 'bg-[#16A34A] text-white',
-          catBg: 'bg-emerald-50 dark:bg-emerald-950/30 text-[#16A34A] dark:text-[#22C55E] border-emerald-200/70',
-          btnBg: 'bg-emerald-100 dark:bg-emerald-900/40 text-[#16A34A] dark:text-[#22C55E] group-hover:bg-[#16A34A] group-hover:text-white',
-          hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-800/40',
+          iconBg: 'bg-red-500/10 text-red-500 dark:text-red-400',
+          badgeBg: 'bg-red-600 text-white',
+          catBg: 'bg-red-500/10 text-red-500 dark:text-red-400 border-red-500/20',
+          btnBg: 'bg-red-500/10 text-red-500 dark:text-red-400 group-hover:bg-red-600 group-hover:text-white',
+          hoverBorder: 'hover:border-red-500/40',
         };
       case 'blue':
         return {
           iconBg: 'bg-stone-100 dark:bg-white/10 text-[#111016] dark:text-white',
           badgeBg: 'bg-[#111016] text-white',
           catBg: 'bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-300 border-stone-200/70',
-          btnBg: 'bg-stone-100 dark:bg-white/10 text-stone-800 dark:text-stone-200 group-hover:bg-[#16A34A] group-hover:text-white',
+          btnBg: 'bg-stone-100 dark:bg-white/10 text-stone-800 dark:text-stone-200 group-hover:bg-red-600 group-hover:text-white',
           hoverBorder: 'hover:border-stone-300 dark:hover:border-stone-700',
         };
       case 'emerald':
         return {
-          iconBg: 'bg-emerald-100 dark:bg-emerald-950/40 text-[#059669]',
-          badgeBg: 'bg-emerald-600 text-white',
-          catBg: 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border-emerald-200/70',
-          btnBg: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-300 group-hover:bg-[#059669] group-hover:text-white',
-          hoverBorder: 'hover:border-emerald-200 dark:hover:border-emerald-800/40',
+          iconBg: 'bg-red-500/10 text-red-500 dark:text-red-400',
+          badgeBg: 'bg-red-600 text-white',
+          catBg: 'bg-red-500/10 text-red-500 dark:text-red-400 border-red-500/20',
+          btnBg: 'bg-red-500/10 text-red-500 dark:text-red-400 group-hover:bg-red-600 group-hover:text-white',
+          hoverBorder: 'hover:border-red-500/40',
         };
       case 'purple':
         return {

@@ -9,7 +9,7 @@ import {
   Compass, QrCode, Scan, Key, Code, 
   Binary, Link, Palette, CheckSquare, Edit3, 
   Shuffle, FileCheck, CheckCircle, Scale, Hourglass, 
-  BookMarked, HelpCircle, Heart
+  BookMarked, HelpCircle, Heart, ShieldCheck
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -53,55 +53,52 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   return (
     <div
       onClick={() => onSelect(tool)}
-      className="group relative flex items-center justify-between p-3 rounded-xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 hover:border-[#EA580C]/60 dark:hover:border-[#EA580C]/60 shadow-2xs hover:shadow-xs transition-colors cursor-pointer overflow-hidden"
+      className="group relative flex items-center justify-between p-3.5 sm:p-4 rounded-xl bg-[#0E1424] border border-white/10 hover:border-red-500/60 shadow-xs hover:shadow-red-950/20 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer overflow-hidden text-white"
     >
-      {/* Left: Icon + Title + Category */}
-      <div className="flex items-center gap-3 min-w-0 pr-1">
-        <div className="w-10 h-10 rounded-lg bg-stone-100 dark:bg-white/5 border border-stone-200/80 dark:border-white/10 text-stone-800 dark:text-stone-200 group-hover:bg-[#111016] group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-[#111016] transition-colors shrink-0 flex items-center justify-center">
+      {/* Left: Refined Icon + Title + Metadata */}
+      <div className="flex items-center gap-3.5 min-w-0 pr-1">
+        <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 text-stone-200 group-hover:bg-red-600 group-hover:text-white transition-colors shrink-0 flex items-center justify-center">
           <IconComponent className="w-4 h-4 transition-transform group-hover:scale-105" />
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <h3 className="font-bold text-xs sm:text-sm text-[#111016] dark:text-white group-hover:text-[#EA580C] transition-colors truncate tracking-tight">
+          <div className="flex items-center gap-2 min-w-0">
+            <h3 className="font-bold text-xs sm:text-sm text-white group-hover:text-red-400 transition-colors truncate tracking-tight">
               {toolName}
             </h3>
             {tool.isPopular && (
-              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#EA580C]" title={isHindi ? 'लोकप्रिय' : 'Popular'} />
-            )}
-            {tool.isNew && (
-              <span className="shrink-0 text-[8px] font-bold px-1 py-0.2 rounded bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
-                NEW
+              <span className="shrink-0 text-[8px] font-bold px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-400">
+                Popular
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 text-[10px] text-stone-500 dark:text-stone-400 font-medium truncate mt-0.5">
+          <div className="flex items-center gap-1.5 text-[11px] text-stone-400 font-medium truncate mt-0.5">
             <span className="truncate">{toolCatLabel}</span>
-            <span className="text-stone-300 dark:text-stone-700">•</span>
-            <span className="text-[9px] font-bold text-stone-600 dark:text-stone-400 shrink-0">
-              {tool.privacyMode === 'server-side' ? (isHindi ? 'क्लाउड' : 'Cloud') : (isHindi ? 'डिवाइस' : 'Local')}
+            <span aria-hidden="true">·</span>
+            <span className="text-[10px] text-red-400 font-bold shrink-0">
+              {tool.privacyMode === 'server-side' ? (isHindi ? 'क्लाउड' : 'Cloud') : (isHindi ? 'लोकल' : '100% Local')}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Right Side: Favorite + Arrow */}
-      <div className="flex items-center gap-1 shrink-0">
+      {/* Right Side: Favorite Heart + Minimal Arrow */}
+      <div className="flex items-center gap-1.5 shrink-0">
         {onToggleFavorite && (
           <button
             onClick={handleFavoriteClick}
-            className={`p-1.5 rounded-md transition-colors cursor-pointer ${
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
               isFavorite 
-                ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30' 
-                : 'text-stone-300 dark:text-stone-600 hover:text-red-500 hover:bg-stone-100 dark:hover:bg-white/5'
+                ? 'text-rose-500' 
+                : 'text-stone-300 dark:text-stone-600 hover:text-rose-500'
             }`}
             title={isFavorite ? 'Remove Favorite' : 'Add Favorite'}
           >
-            <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
+            <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-rose-500' : ''}`} />
           </button>
         )}
-        <div className="w-6 h-6 rounded text-stone-400 group-hover:text-[#EA580C] group-hover:translate-x-0.5 transition-all flex items-center justify-center">
+        <div className="w-6 h-6 text-stone-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all flex items-center justify-center">
           <ArrowRight className="w-3.5 h-3.5" />
         </div>
       </div>

@@ -56,14 +56,14 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       <div className={`rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50/80 dark:bg-slate-900/50 p-3.5 space-y-2.5 ${className}`}>
         <div className="flex items-center justify-between pb-2 border-b border-slate-200/80 dark:border-white/10">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+            <div className="w-6 h-6 rounded-md bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
               <ListOrdered className="w-3.5 h-3.5" />
             </div>
             <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 tracking-tight">
               {isHindi ? "विषय-सूची पूर्वावलोकन (TOC Preview)" : "Table of Contents Preview"}
             </h4>
           </div>
-          <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono font-bold">
+          <span className="px-2 py-0.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-mono font-bold">
             {items.length} {items.length === 1 ? 'item' : 'items'}
           </span>
         </div>
@@ -84,7 +84,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                     'font-semibold text-slate-800 dark:text-slate-100 bg-white/70 dark:bg-slate-800/40'
                   }`}
                 >
-                  <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 shrink-0 text-[11px] select-none pt-0.5">
+                  <span className="font-mono font-bold text-red-600 dark:text-red-400 shrink-0 text-[11px] select-none pt-0.5">
                     {item.numbering}.
                   </span>
                   <span className="leading-snug break-words">{item.text}</span>
@@ -106,7 +106,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       <aside aria-label="Table of Contents Sidebar" className={`space-y-3 ${className}`}>
         <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-white/5">
           <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-[11px] font-black uppercase tracking-wider">
-            <ListOrdered className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <ListOrdered className="w-3.5 h-3.5 text-red-500 dark:text-red-400" />
             <span>{isHindi ? "अनुक्रमणिका" : "On This Page"}</span>
           </div>
           <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400">
@@ -133,12 +133,12 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                       'font-bold'
                     } ${
                       isActive
-                        ? 'bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-extrabold border-l-2 border-emerald-600 dark:border-emerald-500 pl-3'
+                        ? 'bg-red-500/10 dark:bg-red-500/15 text-red-400 font-extrabold border-l-2 border-red-500 pl-3'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900/40'
                     }`}
                   >
                     <span className={`font-mono text-[10.5px] font-bold shrink-0 pt-0.5 ${
-                      isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-emerald-600'
+                      isActive ? 'text-red-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-red-400'
                     }`}>
                       {item.numbering}.
                     </span>
@@ -162,7 +162,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       {/* Header Bar */}
       <div className="p-4 sm:p-5 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-red-500/10 dark:bg-red-500/20 text-red-500 dark:text-red-400 border border-red-500/20 flex items-center justify-center shrink-0">
             <ListOrdered className="w-4 h-4" />
           </div>
           <div className="min-w-0">
@@ -224,13 +224,13 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                           'font-bold'
                         } ${
                           isActive
-                            ? 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-extrabold shadow-2xs border-emerald-500'
-                            : 'text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-slate-100/80 dark:hover:bg-slate-800/50'
+                            ? 'bg-red-500/10 text-red-400 font-extrabold shadow-2xs border-red-500'
+                            : 'text-slate-700 dark:text-slate-300 hover:text-red-400 hover:bg-slate-100/80 dark:hover:bg-white/5'
                         }`}
                       >
                         {/* Numbering Badge */}
                         <span className={`font-mono text-xs font-bold shrink-0 pt-0.5 tracking-tight ${
-                          isActive ? 'text-emerald-700 dark:text-emerald-400 font-black' : 'text-emerald-600 dark:text-emerald-500 group-hover:text-emerald-700'
+                          isActive ? 'text-red-400 font-black' : 'text-red-500 group-hover:text-red-400'
                         }`}>
                           {item.numbering}.
                         </span>
@@ -241,7 +241,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                         </span>
 
                         <ChevronRight className={`w-3.5 h-3.5 shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity ${
-                          isActive ? 'opacity-100 text-emerald-600 dark:text-emerald-400' : 'text-slate-400'
+                          isActive ? 'opacity-100 text-red-400' : 'text-slate-400'
                         }`} />
                       </a>
                     </li>

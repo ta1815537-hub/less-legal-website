@@ -2,18 +2,14 @@ import { useState, useEffect } from 'react';
 
 export function useTheme() {
   const [isDark, setIsDark] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved) return saved === 'dark';
-      // Explicitly default to Light/White theme
-      return false;
-    }
-    return false;
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved === 'dark';
+    return true; // Default to dark as requested earlier
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    const themeColor = isDark ? '#080808' : '#F8FAFC';
+    const themeColor = isDark ? '#080808' : '#ffffff';
 
     if (isDark) {
       root.classList.add('dark');
@@ -25,7 +21,7 @@ export function useTheme() {
       localStorage.setItem('theme', 'light');
     }
 
-    // Dynamically update browser theme-color meta tags for Android Chrome & mobile viewports
+    // Dynamically update browser theme-color meta tags
     const themeMetaTags = document.querySelectorAll('meta[name="theme-color"]');
     if (themeMetaTags.length > 0) {
       themeMetaTags.forEach((meta) => {
@@ -39,7 +35,7 @@ export function useTheme() {
     }
   }, [isDark]);
 
-  const toggleTheme = () => setIsDark((prev) => !prev);
+  const toggleTheme = () => setIsDark(prev => !prev);
 
   return { isDark, toggleTheme };
 }

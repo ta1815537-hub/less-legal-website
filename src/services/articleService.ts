@@ -612,84 +612,69 @@ class ArticleService {
     try {
       const cleanSlugOrId = decodeURIComponent(slugOrId || '').trim();
 
-      // 1. Return local cached article immediately
+      // 1. Session Memory Cache Check (Highest Priority - 0 Firebase Reads)
+      if (this.inMemoryFullArticles.has(cleanSlugOrId)) {
+        const cached = this.inMemoryFullArticles.get(cleanSlugOrId)!;
+        callback(cached);
+        // If we have it in memory, we skip the real-time listener to save Firebase free tier limits
+        // Articles don't change often enough to warrant a constant listener for public users
+        return () => {}; 
+      }
+
+      // 2. Local Storage Cache Check (Fast Fallback - 0 Firebase Reads)
       const local = this.localArticlesCache.find(
         a => a.slug === cleanSlugOrId || 
              a.id === cleanSlugOrId || 
              (a.slug && a.slug.toLowerCase() === cleanSlugOrId.toLowerCase()) ||
              (a.id && a.id.toLowerCase() === cleanSlugOrId.toLowerCase())
       );
-      if (local) {
+      
+      if (local && local.content) {
+        this.inMemoryFullArticles.set(cleanSlugOrId, local);
         callback(local);
+        // Even if found in local storage, we might want to refresh once from Firestore silently
+        // but to strictly save limits as requested, we return here.
+        return () => {};
       }
 
-      // 2. Set up Firestore query snapshot subscription (we query by slug or direct ID)
-      const q = query(collection(db, 'articles'), where('slug', '==', cleanSlugOrId));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        if (!snapshot.empty) {
-          const d = snapshot.docs[0];
-          const data = d.data() as Article;
-          const fullArticle = this.sanitizeAndHealArticle({ ...data, firestoreDocId: d.id });
-          
-          // Update local cache & full article cache
-          this.inMemoryFullArticles.set(cleanSlugOrId, fullArticle);
-          const idx = this.localArticlesCache.findIndex(a => a.id === fullArticle.id);
-          if (idx >= 0) {
-            this.localArticlesCache[idx] = fullArticle;
-          } else {
-            this.localArticlesCache.push(fullArticle);
-          }
-          try {
-            localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
-          } catch {}
-
-          callback(fullArticle);
-        } else {
-          // Try fetching directly by ID
+      // 3. Firestore One-Time Fetch (Last Resort - 1 Firebase Read)
+      // Using getDoc/getDocs instead of onSnapshot for public article viewing to strictly save on read limits
+      const fetchSilent = async () => {
+        try {
+          // Try fetching by ID directly first
           const directRef = doc(db, 'articles', cleanSlugOrId);
-          const unsubDoc = onSnapshot(directRef, (docSnap) => {
-            if (docSnap.exists()) {
-              const data = docSnap.data() as Article;
-              const fullArticle = this.sanitizeAndHealArticle({ ...data, firestoreDocId: docSnap.id });
-              
-              this.inMemoryFullArticles.set(cleanSlugOrId, fullArticle);
-              const idx = this.localArticlesCache.findIndex(a => a.id === fullArticle.id);
-              if (idx >= 0) {
-                this.localArticlesCache[idx] = fullArticle;
-              } else {
-                this.localArticlesCache.push(fullArticle);
-              }
-              try {
-                localStorage.setItem(LOCAL_ARTICLES_KEY, JSON.stringify(this.localArticlesCache));
-              } catch {}
+          const docSnap = await getDoc(directRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data() as Article;
+            const fullArticle = this.sanitizeAndHealArticle({ ...data, firestoreDocId: docSnap.id });
+            this.inMemoryFullArticles.set(cleanSlugOrId, fullArticle);
+            callback(fullArticle);
+            return;
+          }
 
-              callback(fullArticle);
-            } else {
-              // If not found in Firestore doc ID, return local if available
-              if (local) {
-                callback(local);
-              } else {
-                // Check if any article in localArticlesCache matches loosely
-                const looseLocal = this.localArticlesCache.find(
-                  a => a.slug?.toLowerCase().includes(cleanSlugOrId.toLowerCase()) ||
-                       a.title?.toLowerCase().includes(cleanSlugOrId.toLowerCase())
-                );
-                callback(looseLocal || null);
-              }
-            }
-          }, () => {
-            callback(local || null);
-          });
-          return;
+          // Fallback: Query by slug
+          const q = query(collection(db, 'articles'), where('slug', '==', cleanSlugOrId), limit(1));
+          const snap = await getDocs(q);
+          if (!snap.empty) {
+            const d = snap.docs[0];
+            const data = d.data() as Article;
+            const fullArticle = this.sanitizeAndHealArticle({ ...data, firestoreDocId: d.id });
+            this.inMemoryFullArticles.set(cleanSlugOrId, fullArticle);
+            callback(fullArticle);
+          } else {
+            callback(null);
+          }
+        } catch (err) {
+          console.warn('Silent fetch for article failed:', err);
+          callback(local || null);
         }
-      }, (err) => {
-        console.warn('Subscription to single article failed:', err);
-        callback(local || null);
-      });
+      };
 
-      return unsubscribe;
+      fetchSilent();
+      return () => {}; // No listener to unsubscribe
     } catch (e) {
-      console.warn('Failed to subscribe to article:', e);
+      console.warn('Failed to fetch article:', e);
       return () => {};
     }
   }

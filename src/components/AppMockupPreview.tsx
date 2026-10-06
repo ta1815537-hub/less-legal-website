@@ -110,7 +110,7 @@ export const AppMockupPreview: React.FC = () => {
                       <FileText className="w-3.5 h-3.5 text-indigo-600" />
                       PDF Utilities Hub
                     </span>
-                    <span className="text-[9px] bg-emerald-50 text-emerald-700 font-semibold px-1.5 py-0.5 rounded">
+                    <span className="text-[9px] bg-red-500/10 text-red-400 font-semibold px-1.5 py-0.5 rounded">
                       On-Device
                     </span>
                   </div>
@@ -142,7 +142,7 @@ export const AppMockupPreview: React.FC = () => {
                     <div className="text-[9px] text-slate-400">Fast document viewer</div>
                   </div>
                   <div className="p-2.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 shadow-xs">
-                    <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1.5">
+                    <div className="w-7 h-7 rounded-lg bg-red-500/10 text-red-400 flex items-center justify-center mb-1.5">
                       <Share2 className="w-3.5 h-3.5" />
                     </div>
                     <div className="text-[11px] font-bold text-slate-800 dark:text-slate-200">Less Share</div>

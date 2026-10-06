@@ -483,8 +483,8 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
           </div>
         </div>
 
-        {/* 3. PREMIUM EDITORIAL TITLE BLOCK */}
-        <header className={`${toc.length > 0 ? 'max-w-4xl' : 'max-w-4xl mx-auto'} py-8 space-y-4`}>
+        {/* 3. PREMIUM EDITORIAL TITLE BLOCK - FULL WIDTH ON PC */}
+        <header className="max-w-5xl mx-auto py-8 space-y-4">
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <span className="px-3 py-1 rounded bg-blue-600/10 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 font-extrabold tracking-wider uppercase text-[10.5px]">
               {category}
@@ -500,12 +500,12 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
             {title}
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 dark:text-[#B3AEAA] leading-relaxed max-w-3xl border-l-4 border-blue-600 pl-4 py-1 font-medium italic">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-[#B3AEAA] leading-relaxed max-w-4xl border-l-4 border-blue-600 pl-4 py-1 font-medium italic">
             {excerpt}
           </p>
 
           {/* Clean attribution bar */}
-          <div className="flex items-center justify-between pt-5 pb-3 max-w-3xl">
+          <div className="flex items-center justify-between pt-5 pb-3 max-w-4xl">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center shrink-0">
                 <PenTool className="w-3.5 h-3.5 text-slate-500" />
@@ -522,22 +522,22 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
           </div>
         </header>
 
-        {/* Hero image styled professionally */}
+        {/* Hero image with small, neat preview size */}
         {featuredImage && (
-          <div className={`rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 aspect-video w-full max-w-5xl bg-slate-50 dark:bg-slate-900/50 flex items-center justify-center shadow-md mb-8 ${toc.length === 0 ? 'mx-auto' : ''}`}>
+          <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 max-h-[380px] w-full max-w-4xl mx-auto bg-slate-50 dark:bg-slate-900/50 flex items-center justify-center shadow-md mb-8">
             <img 
               src={getDirectCloudImageUrl(featuredImage)} 
               alt={title} 
               referrerPolicy="no-referrer"
-              className="w-full h-full object-contain bg-slate-50 dark:bg-[#070b13]" 
+              className="w-full h-full max-h-[380px] object-contain bg-slate-50 dark:bg-[#070b13]" 
               loading="eager"
             />
           </div>
         )}
 
-        {/* 4. IN-ARTICLE TABLE OF CONTENTS (Near the top of article content) */}
+        {/* 4. IN-ARTICLE TABLE OF CONTENTS */}
         {toc.length > 0 && (
-          <div className="my-6">
+          <div className="my-6 max-w-5xl mx-auto">
             <TableOfContents
               items={toc}
               activeId={activeSection}
@@ -548,11 +548,11 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
           </div>
         )}
 
-        {/* 5. SPLIT LAYOUT (Desktop Sticky Sidebar TOC + Left Reading Column) */}
-        <div className={`grid grid-cols-1 ${toc.length > 0 ? 'lg:grid-cols-12 gap-8 lg:gap-12' : ''} mt-4 items-start relative`}>
+        {/* 5. FULL WIDTH READING LAYOUT FOR PC */}
+        <div className="w-full max-w-5xl mx-auto mt-4 items-start relative">
           
           {/* Main Reading Column */}
-          <main className={`${toc.length > 0 ? 'lg:col-span-8 lg:pr-8' : 'max-w-4xl mx-auto'} w-full space-y-6 leading-relaxed`}>
+          <main className="w-full space-y-6 leading-relaxed">
             
             <article className="space-y-6 text-slate-800 dark:text-[#E2DDD9] prose prose-slate dark:prose-invert max-w-none">
               {blocks.map((block, idx) => {
@@ -621,18 +621,18 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
 
                   case 'image':
                     return (
-                      <figure key={idx} className="my-8 space-y-3">
-                        <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-center max-h-[500px] shadow-sm">
+                      <figure key={idx} className="my-8 space-y-2">
+                        <div className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-center max-h-[320px] max-w-xl mx-auto shadow-sm">
                           <img 
                             src={getDirectCloudImageUrl(block.imageUrl)} 
                             alt={block.imageCaption || "Article Graphic"} 
                             referrerPolicy="no-referrer"
-                            className="w-full h-full object-contain max-h-[500px]"
+                            className="w-full h-full max-h-[320px] object-contain"
                             loading="lazy"
                           />
                         </div>
                         {block.imageCaption && (
-                          <figcaption className="text-center text-[13px] text-slate-500 font-medium">
+                          <figcaption className="text-center text-[12px] text-slate-500 font-medium">
                             {block.imageCaption}
                           </figcaption>
                         )}
@@ -706,14 +706,14 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                         className={`px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer ${
                           feedbackSystem.feedbackSubmitted
                             ? feedbackSystem.userVote === 'yes'
-                              ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
+                              ? 'bg-red-500/15 text-red-400'
                               : 'bg-slate-50 dark:bg-[#111827]/40 text-slate-400 opacity-60'
-                            : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/5 shadow-sm'
+                            : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:text-red-400 hover:bg-red-500/5 shadow-sm'
                         }`}
                       >
-                        <ThumbsUp className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <ThumbsUp className="w-4 h-4 text-red-400 shrink-0" />
                         <span>{isHindi ? "हाँ" : "Yes"}</span>
-                        <span className="px-1.5 py-0.5 text-[10px] rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-bold shrink-0">
+                        <span className="px-1.5 py-0.5 text-[10px] rounded bg-red-500/10 text-red-400 font-mono font-bold shrink-0">
                           {feedbackSystem.usefulYesCount || 0}
                         </span>
                       </button>
@@ -751,12 +751,12 @@ export const ArticleRenderer: React.FC<ArticleRendererProps> = ({
                       title="Copy Link"
                       className="p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-all cursor-pointer shadow-sm"
                     >
-                      {socialShareSystem.copiedShare ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                      {socialShareSystem.copiedShare ? <Check className="w-4 h-4 text-red-400" /> : <Copy className="w-4 h-4" />}
                     </button>
 
                     <button
                       onClick={socialShareSystem.onShareWhatsApp}
-                      className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-sm font-semibold transition-all cursor-pointer shadow-sm"
+                      className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm font-semibold transition-all cursor-pointer shadow-sm border border-red-500/20"
                     >
                       WhatsApp
                     </button>

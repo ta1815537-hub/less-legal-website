@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { 
-  Layers, Sparkles, Moon, Sun, Search,
-  Home, BookOpen, Info, User, 
-  ChevronRight, ArrowRight, Briefcase, Phone
+  Moon, Sun, ChevronRight, Globe, ShieldCheck, ArrowRight
 } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { motion, AnimatePresence, useScroll } from 'motion/react';
-import { EASING_SPRING } from './MotionWrappers';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 import { adminStorage, SiteAppConfig } from '../utils/adminStorage';
-import { TOTAL_TOOLS_COUNT } from '../tools/toolRegistry';
 
 interface NavbarProps {
   currentRoute: PageRoute;
@@ -23,14 +19,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const [siteConfig, setSiteConfig] = useState<SiteAppConfig>(adminStorage.getSiteAppConfig());
   
-  const { isDark: globalIsDark, toggleTheme } = useTheme();
   const { language, toggleLanguage } = useLanguage();
   const isHindi = language === 'hi';
+
+  const { isDark, toggleTheme } = useTheme();
 
   const { scrollYProgress } = useScroll();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 15);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -42,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
     return () => unsubscribe();
   }, []);
 
-  // Auto-close side panel when tapping anywhere on the screen outside drawer
+  // Auto-close drawer on outside click
   useEffect(() => {
     if (!mobileMenuOpen) return;
     const handleOutsideTap = (e: MouseEvent | TouchEvent) => {
@@ -65,81 +62,76 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
     setMobileMenuOpen(false);
   };
 
-  const desktopNavLinks: { label: string; route: PageRoute; badge?: string }[] = [
+  // Pure, clean navigation links without subtitle clutter or badges
+  const desktopNavLinks: { label: string; route: PageRoute }[] = [
     { label: isHindi ? 'होम' : 'Home', route: 'home' },
-    { label: isHindi ? 'लेख व गाइड' : 'Articles & Guides', route: 'articles', badge: 'New' },
-    { label: isHindi ? 'टूल्स' : 'Tools', route: 'tools', badge: `${TOTAL_TOOLS_COUNT}` },
-    { label: isHindi ? 'लेस क्रिएशन' : 'About', route: 'about' },
+    { label: isHindi ? 'लेख' : 'Articles', route: 'articles' },
+    { label: isHindi ? 'टूल्स' : 'Tools', route: 'tools' },
     { label: isHindi ? 'संस्थापक' : 'Founder', route: 'founder' },
+    { label: isHindi ? 'परिचय' : 'About', route: 'about' },
     { label: isHindi ? 'संपर्क' : 'Contact', route: 'contact' },
   ];
 
   return (
     <>
-      {/* Scroll Progress Bar */}
+      {/* Cyber Red Precision Scroll Progress Indicator */}
       <motion.div
         style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
-        className="fixed left-0 right-0 top-0 h-0.5 z-[60] bg-[#16A34A] dark:bg-[#22C55E] transition-all duration-300"
+        className="fixed left-0 right-0 top-0 h-0.5 z-[70] bg-[#DC2626] transition-all duration-300"
       />
 
-      {/* Editorial Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#F5F1EC]/90 dark:bg-[#0B1120]/90 backdrop-blur-md border-b border-stone-200/80 dark:border-white/10 transition-all duration-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-16 sm:h-20 flex items-center justify-between gap-4">
+      {/* Floating Card Header Bar */}
+      <header className="fixed top-2 sm:top-3.5 left-0 right-0 z-50 px-3 sm:px-6 lg:px-8 transition-all duration-300 pointer-events-none">
+        {/* Subtle Ambient Header Glow */}
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-3/4 max-w-xl h-12 bg-red-600/15 blur-3xl pointer-events-none rounded-full" />
+
+        <div className="max-w-7xl mx-auto rounded-2xl sm:rounded-3xl bg-[#0B111E]/85 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 px-3.5 sm:px-6 py-2.5 sm:py-3 pointer-events-auto transition-all">
+          <div className="flex items-center justify-between gap-3 sm:gap-4">
             
-            {/* LEFT: Brand Logo & Editorial Title */}
-            <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 min-w-0">
-              {/* Mobile Hamburger Menu Trigger */}
+            {/* BRAND ZONE: Wordmark Only */}
+            <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+              {/* Mobile Hamburger Button */}
               <button
                 id="nav-mobile-toggle-btn"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-lg text-[#111016] dark:text-[#F5F2EE] hover:bg-stone-200/60 dark:hover:bg-white/10 transition-colors cursor-pointer shrink-0"
+                className="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
                 aria-label="Toggle navigation menu"
               >
-                <div className="w-5 h-4 relative flex flex-col justify-between items-center">
+                <div className="w-4 h-3.5 relative flex flex-col justify-between items-center">
                   <span
-                    className={`w-5 h-0.5 rounded-full bg-current transition-all duration-200 origin-left ${
+                    className={`w-4 h-0.5 rounded-full bg-current transition-all duration-200 origin-left ${
                       mobileMenuOpen ? 'rotate-45 translate-x-0.5 -translate-y-0.5' : ''
                     }`}
                   />
                   <span
-                    className={`w-5 h-0.5 rounded-full bg-current transition-all duration-150 ${
+                    className={`w-4 h-0.5 rounded-full bg-current transition-all duration-150 ${
                       mobileMenuOpen ? 'opacity-0' : 'opacity-100'
                     }`}
                   />
                   <span
-                    className={`w-5 h-0.5 rounded-full bg-current transition-all duration-200 origin-left ${
+                    className={`w-4 h-0.5 rounded-full bg-current transition-all duration-200 origin-left ${
                       mobileMenuOpen ? '-rotate-45 translate-x-0.5 translate-y-0.5' : ''
                     }`}
                   />
                 </div>
               </button>
 
-              {/* Brand Logo & Editorial Title */}
+              {/* Single Wordmark Element */}
               <a 
                 id="nav-brand-logo"
                 href="/"
                 onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
-                className="flex items-center gap-2.5 text-left group focus:outline-none cursor-pointer shrink-0"
+                className="flex items-center gap-2 text-left group focus:outline-none cursor-pointer shrink-0"
               >
-                <div className="shrink-0 flex items-center justify-center">
-                  <LTLogo className="w-9 h-9 sm:w-11 sm:h-11" />
-                </div>
-                <div className="flex flex-col justify-center min-w-0">
-                  <div className="flex items-center gap-1 leading-none">
-                    <span className="text-base sm:text-xl font-black tracking-tight leading-none text-[#111016] dark:text-white">
-                      Less Creation
-                    </span>
-                  </div>
-                  <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 whitespace-nowrap leading-tight mt-0.5">
-                    WHERE LAW MEETS TECHNOLOGY
-                  </p>
-                </div>
+                <LTLogo className="w-8 h-8 sm:w-8.5 sm:h-8.5 shrink-0" />
+                <span className="text-base sm:text-lg font-bold tracking-tight text-white leading-none">
+                  Less Creation
+                </span>
               </a>
             </div>
 
-            {/* CENTER: Desktop Editorial Nav Links */}
-            <nav className="hidden lg:flex items-center gap-1.5 shrink-0">
+            {/* NAV LINKS ZONE: Clean Single-Line Text Links */}
+            <nav className="hidden lg:flex items-center gap-1 shrink-0">
               {desktopNavLinks.map((item) => {
                 const isActive = currentRoute === item.route;
                 return (
@@ -148,60 +140,54 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                     href={`/${item.route === 'home' ? '' : item.route}`}
                     id={`nav-link-${item.route}`}
                     onClick={(e) => { e.preventDefault(); handleNavClick(item.route); }}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer whitespace-nowrap single-line-fit flex items-center gap-1.5 ${
+                    className={`relative px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors duration-150 cursor-pointer whitespace-nowrap ${
                       isActive
-                        ? 'text-[#111016] dark:text-white bg-black/5 dark:bg-white/10 font-bold'
-                        : 'text-stone-600 dark:text-stone-300 hover:text-[#111016] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                        ? 'text-white font-semibold bg-red-600/25 border border-red-500/40 text-red-300 shadow-sm shadow-red-950/40'
+                        : 'text-stone-300 hover:text-white hover:bg-white/10'
                     }`}
                   >
                     <span>{item.label}</span>
-                    {item.badge && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-stone-200/80 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
-                        {item.badge}
-                      </span>
-                    )}
                   </a>
                 );
               })}
             </nav>
 
-            {/* RIGHT: Quick CTAs, Language & Theme Toggles */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              
-              {/* Theme Switcher */}
+            {/* ACTIONS ZONE: Language Switcher Only */}
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Language Switcher */}
               <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-white/10 border border-stone-200/80 dark:border-white/10 transition-colors flex items-center justify-center cursor-pointer shadow-2xs shrink-0"
-                aria-label="Toggle Theme"
+                onClick={toggleLanguage}
+                className="px-3 py-1.5 rounded-xl text-xs font-semibold text-stone-300 hover:bg-white/10 border border-white/10 transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap bg-white/5"
+                title="Switch Language"
               >
-                {globalIsDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-stone-700" />}
+                <Globe className="w-3.5 h-3.5 text-red-400" />
+                <span>{isHindi ? 'English' : 'हिन्दी'}</span>
               </button>
             </div>
 
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer with Explicit Pointer Events */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <>
-              {/* Overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="fixed inset-0 z-40 bg-black/40 lg:hidden cursor-pointer"
+                className="fixed inset-0 z-40 bg-black/70 backdrop-blur-xs lg:hidden cursor-pointer pointer-events-auto"
                 onClick={() => setMobileMenuOpen(false)}
               />
 
               <motion.div
                 id="mobile-nav-drawer"
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.18 }}
-                className="lg:hidden absolute top-full left-3 right-3 sm:left-6 sm:right-6 mt-2 p-4 rounded-2xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 shadow-xl space-y-3 z-50 overflow-hidden"
+                initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                className="lg:hidden absolute top-full left-3 right-3 sm:left-6 sm:right-6 mt-2 p-4 rounded-2xl bg-[#0D1220] border border-white/15 shadow-2xl space-y-3 z-50 overflow-hidden pointer-events-auto"
               >
                 <div className="flex flex-col space-y-1">
                   {desktopNavLinks.map((link) => {
@@ -210,24 +196,41 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                       <button
                         key={link.route}
                         onClick={() => handleNavClick(link.route)}
-                        className={`w-full py-2.5 px-3 rounded-xl text-left text-sm font-bold flex items-center justify-between transition-colors cursor-pointer ${
+                        className={`w-full py-2.5 px-3.5 rounded-xl text-left text-sm font-semibold flex items-center justify-between transition-colors cursor-pointer ${
                           isActive
-                            ? 'bg-stone-100 dark:bg-white/10 text-[#111016] dark:text-white'
-                            : 'text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-white/5'
+                            ? 'bg-red-600/20 text-red-400 font-bold border border-red-500/30'
+                            : 'text-stone-300 hover:bg-white/10'
                         }`}
                       >
-                        <div className="flex items-center gap-2.5">
-                          <span>{link.label}</span>
-                          {link.badge && (
-                            <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
-                              {link.badge}
-                            </span>
-                          )}
-                        </div>
+                        <span>{link.label}</span>
                         <ChevronRight className="w-4 h-4 text-stone-400" />
                       </button>
                     );
                   })}
+                </div>
+
+                <div className="pt-2 border-t border-white/10 space-y-2">
+                  {/* Language Switcher in Mobile Drawer */}
+                  <button
+                    onClick={toggleLanguage}
+                    className="w-full py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 text-stone-300 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Globe className="w-3.5 h-3.5 text-red-400" />
+                    <span>{isHindi ? 'English' : 'हिन्दी भाषा'}</span>
+                  </button>
+
+                  {/* Theme Switcher in Mobile Drawer */}
+                  <button
+                    onClick={toggleTheme}
+                    className="w-full py-2.5 px-3 rounded-xl bg-white/5 border border-white/10 text-stone-300 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    {isDark ? (
+                      <Sun className="w-3.5 h-3.5 text-yellow-400" />
+                    ) : (
+                      <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                    )}
+                    <span>{isHindi ? (isDark ? 'लाइट मोड' : 'डार्क मोड') : (isDark ? 'Light Mode' : 'Dark Mode')}</span>
+                  </button>
                 </div>
               </motion.div>
             </>

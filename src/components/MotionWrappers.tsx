@@ -36,14 +36,16 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeK
   );
 };
 
-// 2. GLOBAL ANIMATED BACKGROUND COMPONENT (Restrained, subtle ambient light)
+// 2. GLOBAL ANIMATED BACKGROUND COMPONENT (Spider-web dot grid + subtle cyber ambient glow)
 export const SmokeBackground: React.FC = () => {
   return (
     <div 
-      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none opacity-40 dark:opacity-20"
+      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none"
       style={{ contain: 'strict' }}
     >
-      <div className="absolute top-0 right-1/4 w-[40rem] h-[40rem] bg-orange-500/5 rounded-full blur-[120px]" />
+      {/* Spider-Web Dot Matrix Grid Texture */}
+      <div className="absolute inset-0 spider-web-dots opacity-60" />
+      <div className="absolute top-0 right-1/4 w-[40rem] h-[40rem] bg-red-600/5 rounded-full blur-[140px]" />
       <div className="absolute top-1/2 left-1/4 w-[40rem] h-[40rem] bg-stone-500/5 rounded-full blur-[140px]" />
     </div>
   );

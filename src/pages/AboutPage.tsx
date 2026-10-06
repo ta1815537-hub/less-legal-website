@@ -23,9 +23,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       <div className="flex items-center justify-start">
         <button
           onClick={() => onNavigate('home')}
-          className="text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-[#16A34A] dark:hover:text-[#22C55E] inline-flex items-center gap-1.5 transition-colors cursor-pointer hover:underline"
+          className="text-xs font-semibold text-stone-600 dark:text-stone-400 hover:text-red-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer hover:underline"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+          <ArrowLeft className="w-3.5 h-3.5 text-red-400 shrink-0" />
           <span>{isHindi ? 'होम पर वापस जाएं' : 'Back to Home'}</span>
         </button>
       </div>
@@ -46,7 +46,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       {/* 2. OUR CORE VISION STATEMENT (Editorial Background Style) */}
       <ScrollReveal direction="up" delay={0.05}>
         <div className="py-6 space-y-3 text-center border-b border-stone-200 dark:border-white/10 pb-8">
-          <div className="text-xs font-bold uppercase tracking-widest text-[#16A34A] dark:text-[#22C55E]">
+          <div className="text-xs font-bold uppercase tracking-widest text-red-400">
             {isHindi ? "मार्गदर्शक विचार" : "CORE VISION"}
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-[#111016] dark:text-white leading-tight max-w-3xl mx-auto">
@@ -65,9 +65,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       {/* 3. WHY DIGITAL SAFETY MATTERS */}
       <section className="py-4 space-y-3 border-b border-stone-200 dark:border-white/10 pb-8">
         <div className="flex items-center gap-2">
-          <ShieldAlert className="w-5 h-5 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+          <ShieldAlert className="w-5 h-5 text-red-400 shrink-0" />
           <div>
-            <span className="text-[11px] font-bold text-[#16A34A] dark:text-[#22C55E] uppercase tracking-wide">
+            <span className="text-[11px] font-bold text-red-400 uppercase tracking-wide">
               {isHindi ? 'जागरूकता का महत्व' : 'Digital Landscape'}
             </span>
             <h2 className="text-xl font-black text-[#111016] dark:text-white">
@@ -101,7 +101,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           {/* Pillar 1 */}
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-base font-bold text-[#111016] dark:text-white">
-              <ShieldCheck className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-red-400 shrink-0" />
               <h3>{isHindi ? '1. डिजिटल सुरक्षा जागरूकता' : '1. Digital Safety Awareness'}</h3>
             </div>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
@@ -114,7 +114,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           {/* Pillar 2 */}
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-base font-bold text-[#111016] dark:text-white">
-              <ShieldAlert className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
               <h3>{isHindi ? '2. साइबर अपराध जागरूकता' : '2. Cyber Crime Awareness'}</h3>
             </div>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
@@ -127,7 +127,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           {/* Pillar 3 */}
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-base font-bold text-[#111016] dark:text-white">
-              <Laptop className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <Laptop className="w-4 h-4 text-red-400 shrink-0" />
               <h3>{isHindi ? '3. व्यावहारिक तकनीकी ज्ञान' : '3. Practical Technology Knowledge'}</h3>
             </div>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
@@ -140,7 +140,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           {/* Pillar 4 */}
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-base font-bold text-[#111016] dark:text-white">
-              <Scale className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <Scale className="w-4 h-4 text-red-400 shrink-0" />
               <h3>{isHindi ? '4. कानूनी व डिजिटल साक्षरता' : '4. Legal & Digital Literacy'}</h3>
             </div>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
@@ -153,7 +153,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           {/* Pillar 5 */}
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-base font-bold text-[#111016] dark:text-white">
-              <Smartphone className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+              <Smartphone className="w-4 h-4 text-red-400 shrink-0" />
               <h3>{isHindi ? '5. उपयोगी डिजिटल उत्पाद' : '5. Useful Digital Products'}</h3>
             </div>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
@@ -175,7 +175,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="space-y-1">
-            <div className="font-bold text-[#16A34A] dark:text-[#22C55E] text-sm flex items-center gap-1.5">
+            <div className="font-bold text-red-400 text-sm flex items-center gap-1.5">
               <Compass className="w-4 h-4" />
               <span>{isHindi ? 'सरल (Simple)' : 'Simple'}</span>
             </div>
@@ -185,7 +185,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-1">
-            <div className="font-bold text-[#16A34A] dark:text-[#22C55E] text-sm flex items-center gap-1.5">
+            <div className="font-bold text-red-400 text-sm flex items-center gap-1.5">
               <Zap className="w-4 h-4" />
               <span>{isHindi ? 'व्यावहारिक (Practical)' : 'Practical'}</span>
             </div>
@@ -195,7 +195,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-1">
-            <div className="font-bold text-[#16A34A] dark:text-[#22C55E] text-sm flex items-center gap-1.5">
+            <div className="font-bold text-red-400 text-sm flex items-center gap-1.5">
               <HeartHandshake className="w-4 h-4" />
               <span>{isHindi ? 'जिम्मेदार (Responsible)' : 'Responsible'}</span>
             </div>
@@ -205,7 +205,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-1">
-            <div className="font-bold text-[#16A34A] dark:text-[#22C55E] text-sm flex items-center gap-1.5">
+            <div className="font-bold text-red-400 text-sm flex items-center gap-1.5">
               <Users className="w-4 h-4" />
               <span>{isHindi ? 'सुलभ (Accessible)' : 'Accessible'}</span>
             </div>
@@ -219,7 +219,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       {/* 6. NON-GOVERNMENT CLARIFICATION */}
       <section className="py-4 space-y-2 border-b border-stone-200 dark:border-white/10 pb-8">
         <div className="flex items-center gap-2 text-[#111016] dark:text-white font-bold text-sm">
-          <AlertTriangle className="w-4 h-4 text-[#16A34A] dark:text-[#22C55E] shrink-0" />
+          <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
           <span>{isHindi ? 'गैर-सरकारी एवं स्वतंत्र ब्रांड घोषणा' : 'Factual Independent Non-Government Declaration'}</span>
         </div>
         <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
@@ -238,7 +238,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => onNavigate('contact')}
-            className="px-6 py-2.5 rounded-full bg-[#16A34A] hover:bg-[#15803D] text-white text-xs font-bold transition-all cursor-pointer whitespace-nowrap"
+            className="px-6 py-2.5 rounded-full bg-red-600/85 hover:bg-red-500 backdrop-blur-md border border-red-500/40 text-white text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-md shadow-red-950/40"
           >
             <span className="whitespace-nowrap">{isHindi ? 'संपर्क करें' : 'Contact Us'}</span>
           </button>

@@ -79,28 +79,20 @@ export const DownloadPage: React.FC<DownloadPageProps> = ({ onNavigate }) => {
           onClick={() => onNavigate('home')}
           className="text-xs font-bold text-stone-700 dark:text-stone-300 hover:text-[#111016] dark:hover:text-white inline-flex items-center gap-2 transition-colors cursor-pointer whitespace-nowrap bg-white dark:bg-white/5 border border-stone-200 dark:border-white/10 px-4 py-2 rounded-full shadow-xs"
         >
-          <ArrowLeft className="w-3.5 h-3.5 text-[#16A34A] dark:text-[#22C55E]" />
+          <ArrowLeft className="w-3.5 h-3.5 text-red-400" />
           <span className="whitespace-nowrap">{t.common.backToHome}</span>
         </motion.button>
       </div>
 
-      {/* Page Title & Hero Intro */}
-      <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-[#16A34A] dark:text-[#22C55E]">
-          <span>{isHindi ? "मोबाइल एप्लिकेशन" : "Mobile Application"}</span>
-        </div>
-        <h1 className="text-3xl sm:text-5xl font-black text-[#111016] dark:text-white tracking-tight leading-tight">
+      {/* Page Title - Clean Direct Headline */}
+      <ScrollReveal direction="up" className="text-center max-w-3xl mx-auto space-y-2">
+        <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
           {isHindi ? (
-            <>डाउनलोड करें <span className="text-[#16A34A] dark:text-[#22C55E]">Less Legal App</span></>
+            <>डाउनलोड करें <span className="text-red-500">Less Legal App</span></>
           ) : (
-            <>Download <span className="text-[#16A34A] dark:text-[#22C55E]">Less Legal App</span></>
+            <>Download <span className="text-red-500">Less Legal App</span></>
           )}
         </h1>
-        <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-xl mx-auto">
-          {isHindi
-            ? "अधिवक्ताओं, विधि छात्रों और भारतीय नागरिकों के लिए संपूर्ण ऑफलाइन कानूनी वर्कस्पेस।"
-            : "The complete offline legal workspace for advocates, law students, and citizens in India."}
-        </p>
       </ScrollReveal>
 
       {/* Main Download Showcase Card */}
