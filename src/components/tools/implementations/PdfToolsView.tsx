@@ -472,13 +472,13 @@ export const PdfToolsView: React.FC<PdfToolsViewProps> = ({ tool }) => {
                 <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 ${
                   pdfAnalysis.classification === 'scanned'
                     ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300'
-                    : pdfAnalysis.classification === 'image_heavy'
+                    : pdfAnalysis.classification === 'image-heavy'
                     ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300'
-                    : pdfAnalysis.classification === 'text_vector'
+                    : pdfAnalysis.classification === 'text-vector'
                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300'
                     : 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
                 }`}>
-                  {pdfAnalysis.classification.replace('_', ' ')}
+                  {pdfAnalysis.classification.replace(/[-_]/g, ' ')}
                 </span>
               ) : null}
             </div>

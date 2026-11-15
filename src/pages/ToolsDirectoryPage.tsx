@@ -1,326 +1,151 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  TOOLS_REGISTRY, 
-  TOOL_CATEGORIES, 
-  getToolBySlug, 
-  TOTAL_TOOLS_COUNT
-} from '../tools/toolRegistry';
-import { ToolDefinition, ToolCategory } from '../types';
-import { ToolCard } from '../components/tools/ToolCard';
-import { ToolDispatcher } from '../components/tools/ToolDispatcher';
-import { GlobalSearchModal } from '../components/tools/GlobalSearchModal';
-import { 
-  Search, Sparkles, Heart, Clock 
-} from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { PageRoute, ToolDefinition } from '../types';
+import { Search, FileText, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { TOOLS_REGISTRY, TOOL_CATEGORIES } from '../tools/toolRegistry';
+import { ToolDispatcher } from '../components/tools/ToolDispatcher';
 
 interface ToolsDirectoryPageProps {
-  initialToolSlug?: string;
-  onNavigate?: (route: any) => void;
+  onNavigate: (route: PageRoute) => void;
 }
 
-export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = ({
-  initialToolSlug,
-}) => {
+export const ToolsDirectoryPage: React.FC<ToolsDirectoryPageProps> = () => {
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  const getInitialActiveTool = (): ToolDefinition | null => {
-    const params = new URLSearchParams(window.location.search);
-    const slugFromQuery = params.get('tool') || initialToolSlug;
-    if (slugFromQuery) {
-      return getToolBySlug(slugFromQuery) || null;
-    }
-    return null;
-  };
-
-  const [activeTool, setActiveTool] = useState<ToolDefinition | null>(getInitialActiveTool);
-  const [selectedCategory, setSelectedCategory] = useState<ToolCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<'popular' | 'newest' | 'alphabetical'>('popular');
-  const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>(() => {
-    try {
-      const stored = localStorage.getItem('less_creation_favorite_tools');
-      return stored ? JSON.parse(stored) : ['pdf-merge', 'image-compress', 'word-counter', 'qr-generator'];
-    } catch {
-      return ['pdf-merge', 'image-compress', 'word-counter', 'qr-generator'];
-    }
-  });
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [activeTool, setActiveTool] = useState<ToolDefinition | null>(null);
 
-  const [recentSlugs, setRecentSlugs] = useState<string[]>([]);
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('less_creation_recent_tools');
-      if (stored) {
-        setRecentSlugs(JSON.parse(stored));
-      }
-    } catch {}
-  }, []);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        setIsSearchModalOpen(true);
-      } else if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        setIsSearchModalOpen(true);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const handleSelectTool = (tool: ToolDefinition) => {
-    setActiveTool(tool);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    try {
-      const updated = [tool.slug, ...recentSlugs.filter(s => s !== tool.slug)].slice(0, 6);
-      localStorage.setItem('less_creation_recent_tools', JSON.stringify(updated));
-      setRecentSlugs(updated);
-    } catch {}
-
-    try {
-      const url = new URL(window.location.href);
-      url.searchParams.set('tool', tool.slug);
-      window.history.pushState({}, '', url.toString());
-    } catch {}
-  };
-
-  const handleBackToDirectory = () => {
-    setActiveTool(null);
-    try {
-      const url = new URL(window.location.href);
-      url.searchParams.delete('tool');
-      window.history.pushState({}, '', url.toString());
-    } catch {}
-    
-    try {
-      const stored = localStorage.getItem('less_creation_recent_tools');
-      if (stored) {
-        setRecentSlugs(JSON.parse(stored));
-      }
-    } catch {}
-  };
-
-  const toggleFavorite = (slug: string) => {
-    setFavoriteSlugs(prev => {
-      const next = prev.includes(slug) ? prev.filter(s => s !== slug) : [...prev, slug];
-      try {
-        localStorage.setItem('less_creation_favorite_tools', JSON.stringify(next));
-      } catch {}
-      return next;
-    });
-  };
+  const categories = useMemo(() => [
+    { id: 'all', label: isHindi ? `सभी टूल्स (${TOOLS_REGISTRY.length})` : `All Utilities (${TOOLS_REGISTRY.length})` },
+    ...TOOL_CATEGORIES.map(c => ({
+      id: c.id,
+      label: isHindi ? c.labelHi : c.label
+    }))
+  ], [isHindi]);
 
   const filteredTools = useMemo(() => {
-    let result = TOOLS_REGISTRY.filter(tool => {
-      if (selectedCategory !== 'all' && tool.category !== selectedCategory) {
-        return false;
-      }
-      if (favoritesOnly && !favoriteSlugs.includes(tool.slug)) {
-        return false;
-      }
-      if (!searchQuery.trim()) return true;
-
+    return TOOLS_REGISTRY.filter(tool => {
+      const matchCat = selectedCategory === 'all' || tool.category === selectedCategory;
       const q = searchQuery.toLowerCase().trim();
-      return (
+      const matchQuery = !q ||
         tool.name.toLowerCase().includes(q) ||
         (tool.nameHi && tool.nameHi.toLowerCase().includes(q)) ||
         tool.description.toLowerCase().includes(q) ||
-        (tool.descriptionHi && tool.descriptionHi.toLowerCase().includes(q)) ||
-        tool.tags.some(t => t.toLowerCase().includes(q))
-      );
+        tool.tags.some(t => t.toLowerCase().includes(q));
+      return matchCat && matchQuery;
     });
+  }, [selectedCategory, searchQuery]);
 
-    return [...result].sort((a, b) => {
-      if (sortBy === 'popular') {
-        const aPop = a.isPopular ? 1 : 0;
-        const bPop = b.isPopular ? 1 : 0;
-        if (bPop !== aPop) return bPop - aPop;
-      } else if (sortBy === 'newest') {
-        const aNew = a.isNew ? 1 : 0;
-        const bNew = b.isNew ? 1 : 0;
-        if (bNew !== aNew) return bNew - aNew;
-      }
-      const nameA = (isHindi && a.nameHi) ? a.nameHi : a.name;
-      const nameB = (isHindi && b.nameHi) ? b.nameHi : b.name;
-      return nameA.localeCompare(nameB);
-    });
-  }, [selectedCategory, searchQuery, favoritesOnly, favoriteSlugs, sortBy, isHindi]);
-
+  // If user clicked a specific tool, launch its real interactive ToolDispatcher
   if (activeTool) {
     return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="pb-28">
         <ToolDispatcher
           tool={activeTool}
-          onBackToDirectory={handleBackToDirectory}
-          onSelectTool={handleSelectTool}
+          onBackToDirectory={() => {
+            setActiveTool(null);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onSelectTool={(nextTool) => {
+            setActiveTool(nextTool);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         />
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 space-y-6">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 space-y-6 text-white">
       
-      {/* Header Bar - Clean Direct Title */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 dark:border-white/10 pb-4">
+      {/* Header Bar - Compact Headline */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-[#111016] dark:text-white tracking-tight">
-            {isHindi ? '29+ ऑन-डिवाइस सुरक्षित विधिक टूल्स' : 'Less Creation Tools Directory'}
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-red-400 font-bold mb-1">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>{isHindi ? 'जीरो-अपलोड क्लाइंट-साइड प्रोसेसिंग' : 'Zero-Upload Client-Side Processing'}</span>
+          </div>
+          <h1 className="text-lg sm:text-2xl font-bold text-white tracking-tight">
+            {isHindi ? `${TOOLS_REGISTRY.length}+ ऑन-डिवाइस सुरक्षित टूल्स` : `Less Creation ${TOOLS_REGISTRY.length}+ Local Utilities`}
           </h1>
+          <p className="text-xs text-stone-400 mt-0.5">
+            {isHindi ? '100% क्लाइंट-साइड सुरक्षा • आपका डेटा कभी सर्वर पर अपलोड नहीं होता' : '100% browser-based privacy • Confidential documents stay on your device'}
+          </p>
         </div>
 
-        {/* Search Modal Trigger */}
-        <div
-          onClick={() => setIsSearchModalOpen(true)}
-          className="flex items-center justify-between px-3.5 py-2 rounded-xl bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs text-stone-400 hover:border-stone-400 transition-colors cursor-pointer w-full sm:w-72 shadow-2xs"
-        >
-          <div className="flex items-center gap-2">
-            <Search className="w-3.5 h-3.5" />
-            <span>{isHindi ? 'टूल्स खोजें...' : 'Search tools...'}</span>
-          </div>
-          <kbd className="px-1.5 py-0.5 rounded bg-stone-100 dark:bg-white/10 text-[10px] font-mono text-stone-500">
-            ⌘K
-          </kbd>
-        </div>
-      </div>
-
-      {/* Recently Used Tools Ribbon */}
-      {recentSlugs.length > 0 && (
-        <div className="flex items-center gap-2 py-1">
-          <span className="text-[11px] font-bold uppercase text-stone-400 flex items-center gap-1 shrink-0">
-            <Clock className="w-3 h-3 text-[#16A34A] dark:text-[#22C55E]" />
-            <span>{isHindi ? 'हाल ही में:' : 'Recent:'}</span>
-          </span>
-
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-            {recentSlugs
-              .map(slug => TOOLS_REGISTRY.find(t => t.slug === slug))
-              .filter((t): t is ToolDefinition => Boolean(t))
-              .map((tool) => (
-                <button
-                  key={tool.id}
-                  onClick={() => handleSelectTool(tool)}
-                  className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-stone-700 dark:text-stone-300 hover:border-[#16A34A] dark:hover:border-[#22C55E] hover:text-[#16A34A] dark:hover:text-[#22C55E] transition-colors cursor-pointer whitespace-nowrap shrink-0"
-                >
-                  {isHindi && tool.nameHi ? tool.nameHi : tool.name}
-                </button>
-              ))}
-          </div>
-
-          <button
-            onClick={() => {
-              try {
-                localStorage.removeItem('less_creation_recent_tools');
-                setRecentSlugs([]);
-              } catch {}
-            }}
-            className="text-[11px] font-bold text-stone-400 hover:text-red-500 transition-colors cursor-pointer shrink-0 ml-auto whitespace-nowrap"
-          >
-            {isHindi ? 'साफ करें' : 'Clear'}
-          </button>
-        </div>
-      )}
-
-      {/* Category Filter Tabs & Sorting */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full sm:w-auto pb-1">
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
-              selectedCategory === 'all' && !favoritesOnly
-                ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
-                : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
-            }`}
-          >
-            {isHindi ? 'सभी टूल्स' : 'All Tools'} ({TOOLS_REGISTRY.length})
-          </button>
-
-          {TOOL_CATEGORIES.map((cat) => {
-            const count = TOOLS_REGISTRY.filter(t => t.category === cat.id).length;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => { setSelectedCategory(cat.id); setFavoritesOnly(false); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border flex items-center gap-1.5 ${
-                  selectedCategory === cat.id && !favoritesOnly
-                    ? 'bg-[#111016] text-white border-[#111016] dark:bg-white dark:text-[#111016] dark:border-white'
-                    : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
-                }`}
-              >
-                <span>{isHindi ? cat.labelHi : cat.label}</span>
-                <span className="text-[10px] font-bold opacity-60">({count})</span>
-              </button>
-            );
-          })}
-
-          <button
-            onClick={() => setFavoritesOnly(!favoritesOnly)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border flex items-center gap-1.5 ${
-              favoritesOnly
-                ? 'bg-red-500 text-white border-red-500'
-                : 'bg-white dark:bg-[#151720] text-stone-700 dark:text-stone-300 border-stone-200 dark:border-white/10 hover:border-stone-400'
-            }`}
-          >
-            <Heart className={`w-3.5 h-3.5 ${favoritesOnly ? 'fill-white' : 'text-red-500'}`} />
-            <span>{isHindi ? 'पसंदीदा' : 'Favorites'} ({favoriteSlugs.length})</span>
-          </button>
-        </div>
-
-        {/* Sort Select */}
-        <div className="shrink-0 self-end sm:self-auto">
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
-            className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#151720] border border-stone-200 dark:border-white/10 text-xs font-semibold text-stone-700 dark:text-stone-300 focus:outline-none focus:border-[#16A34A] cursor-pointer"
-          >
-            <option value="popular">{isHindi ? 'लोकप्रिय' : 'Popular First'}</option>
-            <option value="newest">{isHindi ? 'नवीनतम' : 'Newest First'}</option>
-            <option value="alphabetical">{isHindi ? 'अक्षरानुसार (A-Z)' : 'Alphabetical (A-Z)'}</option>
-          </select>
+        {/* Search */}
+        <div className="relative w-full sm:w-64 shrink-0">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={isHindi ? "टूल्स खोजें..." : "Search tools..."}
+            className="w-full pl-9 pr-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-stone-400 outline-none focus:border-red-500 transition-colors"
+          />
         </div>
       </div>
 
-      {/* High-Density Grid of Tools */}
-      {filteredTools.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-          {filteredTools.map((tool) => (
-            <ToolCard
-              key={tool.id}
-              tool={tool}
-              isFavorite={favoriteSlugs.includes(tool.slug)}
-              onSelect={handleSelectTool}
-              onToggleFavorite={toggleFavorite}
-            />
-          ))}
+      {/* Category Tabs (Single-line nowrap pills) */}
+      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setSelectedCategory(cat.id)}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+              selectedCategory === cat.id
+                ? 'bg-red-600 text-white font-bold shadow-sm shadow-red-950/40'
+                : 'bg-white/5 text-stone-400 hover:text-white hover:bg-white/10 border border-white/10'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tools Grid */}
+      {filteredTools.length === 0 ? (
+        <div className="p-8 rounded-2xl bg-[#0D1220] border border-white/10 text-center text-xs text-stone-400">
+          {isHindi ? 'कोई मेल खाने वाला टूल नहीं मिला।' : 'No matching tools found for your search.'}
         </div>
       ) : (
-        <div className="py-16 text-center space-y-3 bg-white dark:bg-[#151720] rounded-2xl border border-stone-200 dark:border-white/10">
-          <Search className="w-8 h-8 text-stone-400 mx-auto" />
-          <h3 className="text-sm font-bold text-[#111016] dark:text-white">
-            {isHindi ? 'कोई टूल नहीं मिला' : 'No matching tools found'}
-          </h3>
-          <button
-            onClick={() => { setSelectedCategory('all'); setSearchQuery(''); setFavoritesOnly(false); }}
-            className="px-4 py-2 rounded-xl bg-[#111016] text-white dark:bg-white dark:text-[#111016] text-xs font-bold hover:opacity-90 cursor-pointer"
-          >
-            {isHindi ? 'फ़िल्टर रीसेट करें' : 'Reset Filters'}
-          </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredTools.map((tool) => (
+            <button
+              key={tool.id}
+              type="button"
+              onClick={() => setActiveTool(tool)}
+              className="group text-left p-5 rounded-2xl bg-[#0D1220] border border-white/10 hover:border-red-500/40 shadow-lg space-y-3 flex flex-col justify-between transition-all cursor-pointer hover:translate-y-[-2px]"
+            >
+              <div className="space-y-2 w-full">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-red-600/20 border border-red-500/30 text-red-400 flex items-center justify-center shrink-0">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-stone-400 border border-white/5 text-[10px] font-mono uppercase whitespace-nowrap">
+                    {isHindi && tool.categoryLabelHi ? tool.categoryLabelHi : (tool.categoryLabel || tool.category)}
+                  </span>
+                </div>
+
+                <h3 className="text-sm font-bold text-white group-hover:text-red-400 transition-colors">
+                  {isHindi && tool.nameHi ? tool.nameHi : tool.name}
+                </h3>
+
+                <p className="text-xs text-stone-400 leading-relaxed line-clamp-2">
+                  {isHindi && tool.descriptionHi ? tool.descriptionHi : tool.description}
+                </p>
+              </div>
+
+              <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-bold text-red-400 w-full">
+                <span className="whitespace-nowrap">{isHindi ? "टूल खोलें" : "Open Local Tool"}</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform shrink-0" />
+              </div>
+            </button>
+          ))}
         </div>
       )}
-
-      {/* Global Search Modal */}
-      <GlobalSearchModal
-        isOpen={isSearchModalOpen}
-        onClose={() => setIsSearchModalOpen(false)}
-        onSelectTool={handleSelectTool}
-      />
     </div>
   );
 };

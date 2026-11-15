@@ -1,6 +1,6 @@
 {
-  "name": "Less Creation — Where Law Meets Technology",
-  "description": "Less Creation is an independent technology, cyber safety, and digital-awareness brand founded by Anurag Gurauli. We make technology easier to understand, safer to navigate, and more useful for everyone through practical insights and safety guides.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "name": "Less Creation",
+  "description": "Official legal & cyber safety portal by Advocate Anurag Gurauli (High Court). Practical cyber scam defense and 29+ private browser utilities.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

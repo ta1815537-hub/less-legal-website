@@ -1,63 +1,34 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { PageRoute, ArticleSummary } from '../types';
-import { 
-  ArrowRight, Calendar, Clock, BookOpen, ChevronRight,
-  ChevronDown, Search, X, Star, ChevronLeft, Quote, Send, 
-  CheckCircle2, MessageSquare, ShieldCheck, Lock, 
-  FileText, Cpu, Heart, Layers, ArrowUpRight
+import {
+  ArrowRight, BookOpen, ChevronRight,
+  ChevronDown, Star, Send,
+  CheckCircle2, Sparkles, Smartphone, ShieldCheck, Download
 } from 'lucide-react';
-import { ScrollReveal } from '../components/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { articleService } from '../services/articleService';
 import { adminStorage, UserStory, getDirectCloudImageUrl } from '../utils/adminStorage';
 import { FounderProfileHeroBanner } from '../components/FounderProfileHeroBanner';
+import { DynamicNoticeBoard } from '../components/DynamicNoticeBoard';
+import { HomepageBannerCarousel } from '../components/HomepageBannerCarousel';
+import { VipArticleLoader } from '../components/VipArticleLoader';
 
 interface HomePageProps {
   onNavigate: (route: PageRoute, params?: any) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // User Stories & Community Experiences State
+  // User Stories State (linked to Firestore + Admin Dashboard without wiping other stories)
   const [userStories, setUserStories] = useState<UserStory[]>([]);
-  
-  // Lifetime Pass Special Offer Countdown Timer (120 days)
-  const [passTimeLeft, setPassTimeLeft] = useState({ days: 120, hours: 14, minutes: 28, seconds: 45 });
-
-  useEffect(() => {
-    const STORAGE_KEY = 'less_legal_promo_target_120d_v1';
-    let targetTime = localStorage.getItem(STORAGE_KEY);
-    const ONE_HUNDRED_TWENTY_DAYS_MS = (120 * 24 * 3600 + 14 * 3600 + 28 * 60 + 45) * 1000;
-    
-    if (!targetTime) {
-      const newTarget = Date.now() + ONE_HUNDRED_TWENTY_DAYS_MS;
-      localStorage.setItem(STORAGE_KEY, newTarget.toString());
-      targetTime = newTarget.toString();
-    }
-    
-    const interval = setInterval(() => {
-      const difference = parseInt(targetTime!) - Date.now();
-      if (difference <= 0) {
-        const newTarget = Date.now() + ONE_HUNDRED_TWENTY_DAYS_MS;
-        localStorage.setItem(STORAGE_KEY, newTarget.toString());
-        targetTime = newTarget.toString();
-      } else {
-        const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((difference % (1000 * 60)) / 1000);
-        setPassTimeLeft({ days: d, hours: h, minutes: m, seconds: s });
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const [showStoryModal, setShowStoryModal] = useState(false);
+  const [showInlineStoryForm, setShowInlineStoryForm] = useState(false);
   const [storySubmittedMsg, setStorySubmittedMsg] = useState(false);
   const [isSubmittingStory, setIsSubmittingStory] = useState(false);
+  const storyFormSectionRef = useRef<HTMLDivElement | null>(null);
+
   const [storyForm, setStoryForm] = useState({
     authorName: '',
     authorRole: '',
@@ -66,7 +37,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     story: ''
   });
 
-  // Real-time listener for approved User Stories from Firebase
   useEffect(() => {
     const unsub = adminStorage.listenUserStories((allStories) => {
       const approvedOnly = allStories.filter(s => s.status === 'approved');
@@ -75,11 +45,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return () => unsub();
   }, []);
 
-  // Auto-slide User Stories Cards every 3 seconds when not hovered
+  // Auto-slide User Stories Cards when not hovered
   const [isStoryHovered, setIsStoryHovered] = useState(false);
 
   useEffect(() => {
-    if (userStories.length <= 1 || isStoryHovered || showStoryModal) return;
+    if (userStories.length <= 1 || isStoryHovered || showInlineStoryForm) return;
 
     const interval = setInterval(() => {
       const container = document.getElementById('user-stories-scroll-container');
@@ -88,13 +58,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         if (container.scrollLeft >= maxScroll - 15) {
           container.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
-          container.scrollBy({ left: 360, behavior: 'smooth' });
+          container.scrollBy({ left: 340, behavior: 'smooth' });
         }
       }
-    }, 3000);
+    }, 3500);
 
     return () => clearInterval(interval);
-  }, [userStories.length, isStoryHovered, showStoryModal]);
+  }, [userStories.length, isStoryHovered, showInlineStoryForm]);
 
   const handleSubmitUserStory = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,35 +88,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         story: ''
       });
     } catch {
-      // Handled
+      // Handled gracefully
     } finally {
       setIsSubmittingStory(false);
     }
   };
 
-  // Editorial Articles State
+  const handleOpenStoryForm = () => {
+    setShowInlineStoryForm(prev => !prev);
+    setStorySubmittedMsg(false);
+    if (!showInlineStoryForm) {
+      setTimeout(() => {
+        storyFormSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  };
+
+  // Real Firestore Editorial Articles (Single quota-cached subscription, zero fake articles)
   const [articles, setArticles] = useState<ArticleSummary[]>([]);
-  const [articleCategory, setArticleCategory] = useState<string>('ALL');
-  const [articleSearch, setArticleSearch] = useState<string>('');
+  const [articlesLoading, setArticlesLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
-    const fetchArticles = async () => {
-      try {
-        const list = await articleService.getPublicArticleSummaries();
-        if (isMounted) {
-          setArticles(list);
-        }
-      } catch {
-        // Handled silently
-      }
-    };
-
-    fetchArticles();
-
     const unsubscribe = articleService.subscribeToPublicSummaries((updated) => {
       if (isMounted) {
         setArticles(updated);
+        setArticlesLoading(false);
       }
     });
 
@@ -156,377 +123,436 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     };
   }, []);
 
-  const filteredArticles = useMemo(() => {
-    return articles.filter(a => {
-      const matchCat = articleCategory === 'ALL' || 
-        (a.category && a.category.toLowerCase() === articleCategory.toLowerCase());
-      const query = articleSearch.trim().toLowerCase();
-      const matchQuery = !query || 
-        a.title.toLowerCase().includes(query) ||
-        a.excerpt.toLowerCase().includes(query) ||
-        (a.tags && a.tags.some(t => t.toLowerCase().includes(query)));
-      return matchCat && matchQuery;
-    });
-  }, [articles, articleCategory, articleSearch]);
-
-  const featuredArticle = useMemo(() => {
-    return filteredArticles.find(a => a.isFeatured) || filteredArticles[0];
-  }, [filteredArticles]);
-
-  const recentArticles = useMemo(() => {
-    if (featuredArticle && articleCategory === 'ALL' && !articleSearch.trim()) {
-      return filteredArticles.filter(a => a.id !== featuredArticle.id).slice(0, 6);
-    }
-    return filteredArticles.slice(0, 6);
-  }, [filteredArticles, featuredArticle, articleCategory, articleSearch]);
-
-  const formatArticleDate = (dateStr?: string) => {
-    if (!dateStr) return '';
-    try {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString(isHindi ? 'hi-IN' : 'en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-    } catch {
-      return dateStr;
-    }
-  };
+  const featuredArticle = articles[0];
+  const recentArticles = articles.slice(1, 7);
 
   // Knowledge Accordion State
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const faqs = useMemo(() => [
     {
       q: isHindi ? "लेस क्रिएशन का मुख्य उद्देश्य क्या है?" : "What is the mission of Less Creation?",
-      a: isHindi 
-        ? "लेस क्रिएशन इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली द्वारा स्थापित एक आधिकारिक विधिक व डिजिटल जागरूकता मंच है। इसका मुख्य उद्देश्य आम नागरिकों को ऑनलाइन वित्तीय धोखाधड़ी, डिजिटल अरेस्ट, साइबर अपराधों से कानूनी सुरक्षा प्रदान करना और बिना किसी जटिलता के उपयोगी डिजिटल टूल्स उपलब्ध कराना है।"
-        : "Less Creation is an official legal & cyber safety initiative founded by Advocate Anurag Gurauli, Allahabad High Court. It bridges legal authority with modern technology, empowering citizens with statutory defense against cyber fraud, digital arrest scams, and client-side privacy tools."
+      a: isHindi
+        ? "लेस क्रिएशन इलाहाबाद उच्च न्यायालय के अधिवक्ता अनुराग गुरौली द्वारा स्थापित एक आधिकारिक विधिक व साइबर सुरक्षा जागरूकता मंच है। इसका उद्देश्य नागरिकों को ऑनलाइन वित्तीय धोखाधड़ी और डिजिटल अरेस्ट से कानूनी सुरक्षा प्रदान करना तथा निजी ऑन-डिवाइस टूल्स उपलब्ध कराना है।"
+        : "Less Creation is an official legal awareness and cyber defense platform founded by Advocate Anurag Gurauli, Allahabad High Court, providing statutory defense against online fraud and private on-device utilities."
     },
     {
-      q: isHindi ? "क्या यहाँ उपलब्ध टूल्स में मेरा डेटा निजी व सुरक्षित रहता है?" : "Are the tools completely private and safe to use?",
-      a: isHindi 
-        ? "जी हाँ, हमारे 95% से अधिक टूल्स (PDF टूल्स, कैलकुलेटर, इमेज टूल्स, क्यूआर कोड) क्लाइंट-साइड सीधे आपके ब्राउज़र में काम करते हैं। आपका कोई भी दस्तावेज़ या व्यक्तिगत डेटा हमारे सर्वर पर अपलोड नहीं होता।"
-        : "Absolutely. Over 95% of our utilities operate client-side within your browser. Your confidential files never touch our servers."
+      q: isHindi ? "क्या यहाँ उपलब्ध टूल्स में मेरा डेटा सुरक्षित रहता है?" : "Are the tools private and safe to use?",
+      a: isHindi
+        ? "जी हाँ, हमारे सभी टूल्स (PDF, इमेज, कैलकुलेटर, क्यूआर कोड) सीधे आपके ब्राउज़र में काम करते हैं। आपकी कोई भी फाइल सर्वर पर अपलोड नहीं होती।"
+        : "Yes. Every document and calculation utility runs locally inside your browser so files never leave your device."
     },
     {
-      q: isHindi ? "साइबर अपराध या डिजिटल अरेस्ट की स्थिति में तुरंत क्या कदम उठाएं?" : "What immediate action should be taken in case of cyber fraud?",
-      a: isHindi 
+      q: isHindi ? "साइबर अपराध या डिजिटल अरेस्ट की स्थिति में तुरंत क्या करें?" : "What immediate step should be taken in case of cyber fraud?",
+      a: isHindi
         ? "वित्तीय धोखाधड़ी होने पर तुरंत राष्ट्रीय साइबर हेल्पलाइन 1930 पर कॉल करें या cybercrime.gov.in पर शिकायत दर्ज करें।"
-        : "Dial the National Cyber Crime Helpline 1930 immediately or file an incident on cybercrime.gov.in."
-    },
-    {
-      q: isHindi ? "यह मंच किसके द्वारा संचालित और निर्देशित है?" : "Who manages and directs this platform?",
-      a: isHindi 
-        ? "यह मंच इलाहाबाद उच्च न्यायालय में कार्यरत अधिवक्ता अनुराग गुरौली द्वारा संचालित और निर्देशित एक स्वतंत्र जन-जागरूकता पहल है।"
-        : "This platform is an independent public initiative created and legally directed by Advocate Anurag Gurauli, Allahabad High Court."
+        : "Call the National Cyber Crime Helpline 1930 immediately or report the incident on cybercrime.gov.in."
     }
   ], [isHindi]);
 
   return (
-    <div className="flex flex-col overflow-x-hidden transition-colors pb-32 sm:pb-36 bg-[#070B12] text-white">
-      
-      {/* =========================================================================
-          1. HERO SECTION: KALI LINUX CYBER ENVIRONMENT LAYOUT
-          ========================================================================= */}
-      <section className="relative w-full bg-[#070B12] text-white border-b border-white/10 pt-16 sm:pt-20 pb-12 sm:pb-16 overflow-hidden">
-        {/* Cyber Safety Grid Background Effect */}
+    <div className="flex flex-col overflow-x-hidden transition-colors pb-28 bg-[#070B12] text-white">
+
+      {/* 1. OFFICIAL LESS LEGAL ANDROID APP PROMOTION (TOP OF HOMEPAGE) */}
+      <section id="less-legal-app-promo" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-2 w-full relative z-20">
+        <div className="relative overflow-hidden rounded-2xl bg-[#030509] bg-gradient-to-r from-[#060B18] via-[#040710] to-[#12060B] border border-white/15 hover:border-red-500/40 p-4 sm:p-6 shadow-2xl transition-colors">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+            <div className="flex items-start gap-4 min-w-0">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#070B12] border border-white/15 overflow-hidden flex items-center justify-center shrink-0 shadow-lg">
+                <img
+                  src="/app_logo_512x512-3.png"
+                  alt="Less Legal Android App Icon"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="space-y-1.5 min-w-0">
+                <div className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-[#C9A24B]">
+                  <Smartphone className="w-3.5 h-3.5 shrink-0" />
+                  <span>{isHindi ? 'आधिकारिक एंड्रॉइड ऐप • LESS LEGAL' : 'OFFICIAL ANDROID APP • LESS LEGAL'}</span>
+                </div>
+
+                <h2 className="text-base sm:text-xl font-bold text-white tracking-tight leading-snug">
+                  {isHindi
+                    ? 'Less Legal App — केस डायरी, PDF वर्कस्पेस, लीगल ड्राफ्ट्स व 25+ स्मार्ट टूल्स'
+                    : 'Less Legal App — Case Diary, PDF Workspace, Legal Drafts & 25+ Utilities'}
+                </h2>
+
+                <p className="text-xs text-stone-300 leading-relaxed max-w-2xl">
+                  {isHindi
+                    ? 'अधिवक्ताओं, विधि छात्रों और नागरिकों के लिए तेज़, सुरक्षित ऑन-डिवाइस विधिक व दैनिक उपयोगिता ऐप। (₹99 आजीवन विज्ञापन-मुक्त पास केवल Less Legal Android App के लिए लागू होता है।)'
+                    : 'Fast, privacy-first case diary, document workspace, land converters, and daily citizen utilities. Optional ₹99 ad-free pass applies exclusively inside the Android app.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 shrink-0">
+              <button
+                onClick={() => onNavigate('download')}
+                className="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs inline-flex items-center gap-1.5 cursor-pointer shadow-md whitespace-nowrap transition-colors"
+              >
+                <Download className="w-3.5 h-3.5 shrink-0" />
+                <span>{isHindi ? 'ऐप डाउनलोड करें' : 'Download App'}</span>
+              </button>
+
+              <button
+                onClick={() => onNavigate('features')}
+                className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-stone-200 font-semibold text-xs inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap transition-colors"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-[#C9A24B] shrink-0" />
+                <span>{isHindi ? 'ऐप सुविधाएँ' : 'App Features'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. COMPACT HERO SECTION (Clean Headline + Description, Zero Extra Buttons or Clutter) */}
+      <section className="relative w-full bg-[#070B12] text-white border-b border-white/10 pt-5 sm:pt-7 pb-10 sm:pb-12 overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(220, 38, 38, 0.15) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(220, 38, 38, 0.14) 1px, transparent 0)',
+              backgroundSize: '32px 32px'
+            }}
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#070B12]/80 to-[#070B12]" />
-          
-          {/* Scanning Line Effect */}
-          <motion.div 
+          <motion.div
             animate={{ top: ['-10%', '110%'] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: 'linear' }}
             className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-600/30 to-transparent z-0"
           />
         </div>
-        
+
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 12 }}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-4"
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="space-y-2"
           >
-            {/* Clear Display Headline - Secured & Professional */}
-            {/* Bold Display Headline - Slightly smaller size */}
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-white">
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white [text-wrap:balance]">
               {isHindi ? (
                 <>
-                  <span className="font-devanagari">साइबर सुरक्षा व विधिक अधिकार।</span> <br />
-                  <span className="text-red-500 font-devanagari">
-                    आम नागरिकों के लिए सशक्त मंच।
+                  <span>साइबर सुरक्षा व विधिक अधिकार।</span>{' '}
+                  <span className="text-red-500 block sm:inline">
+                    नागरिकों के लिए सशक्त मंच।
                   </span>
                 </>
               ) : (
                 <>
-                  Cyber Law. Digital Defense. <br />
-                  <span className="text-red-500">
+                  <span>Cyber Law. Digital Defense.</span>{' '}
+                  <span className="text-red-500 block sm:inline">
                     Built for everyday citizens.
                   </span>
                 </>
               )}
             </h1>
 
-            {/* Clear Description Paragraph - Smaller size */}
             <p className="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-xl mx-auto font-normal">
-              {isHindi 
-                ? "अधिवक्ता अनुराग गुरौली (इलाहाबाद उच्च न्यायालय) का आधिकारिक मंच — जहाँ डिजिटल फ्रॉड से बचाव की कानूनी तकनीकें और सीधे आपके डिवाइस पर चलने वाले 29+ सुरक्षित टूल्स उपलब्ध हैं।"
-                : "The official platform by Advocate Anurag Gurauli (High Court). Actionable statutory defense against online fraud, paired with 29+ private, browser-based utilities."}
+              {isHindi
+                ? 'अधिवक्ता अनुराग गुरौली (इलाहाबाद उच्च न्यायालय) द्वारा संचालित आधिकारिक मंच — डिजिटल फ्रॉड से विधिक बचाव और सुरक्षित ऑन-डिवाइस टूल्स।'
+                : 'An official legal awareness and cyber defense platform by Advocate Anurag Gurauli, Allahabad High Court.'}
             </p>
-
-            {/* Action Buttons in Cyber Red */}
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
-              <button
-                onClick={() => onNavigate('tools')}
-                className="px-8 py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-red-950/60 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap"
-              >
-                <span>{isHindi ? "सभी 29+ टूल्स देखें" : "Explore 29+ Tools"}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <button
-                onClick={() => onNavigate('articles')}
-                className="px-6 py-3.5 text-stone-400 hover:text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer flex items-center gap-1.5"
-              >
-                <span>{isHindi ? "सुरक्षा गाइड पढ़ें" : "Read Cyber Guides"}</span>
-              </button>
-            </div>
-
           </motion.div>
         </div>
       </section>
 
-      {/* =========================================================================
-          2. FOUNDER PROFILE EDITORIAL AUTO SLIDE BANNER (SHIFTED UP)
-          ========================================================================= */}
-      <section id="founder-profile" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full -mt-6 sm:-mt-8 relative z-20">
+      {/* 2. TOP FEATURED & SWIPEABLE BANNERS (Directly below Header & Title) */}
+      <section id="founder-profile" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full -mt-5 sm:-mt-7 relative z-20 space-y-4">
+        <HomepageBannerCarousel onNavigate={onNavigate} />
         <FounderProfileHeroBanner onNavigate={onNavigate} />
       </section>
 
-      {/* =========================================================================
-          3. EDITORIAL ARTICLES & CYBER DEFENSE KNOWLEDGE
-          ========================================================================= */}
-      <section id="homepage-articles" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 space-y-8 w-full">
-        
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-4">
-          <div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mt-1">
-              {isHindi ? 'ज्ञान जो आपको धोखाधड़ी से बचाए' : 'Practical Cyber Law & Scam Defense'}
-            </h2>
-          </div>
+      {/* Active Admin Notices (Auto-hidden when none) */}
+      <DynamicNoticeBoard onNavigate={onNavigate} className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 w-full" />
+
+      {/* 3. EDITORIAL PUBLICATIONS FROM FIRESTORE */}
+      <section id="homepage-articles" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-5 w-full">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3 gap-3">
+          <h2 className="text-base sm:text-xl font-bold text-white tracking-tight">
+            {isHindi ? 'संपादकीय लेख एवं साइबर सुरक्षा' : 'Cyber Law & Editorial Guides'}
+          </h2>
 
           <button
             onClick={() => onNavigate('articles')}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-red-400 transition-colors cursor-pointer whitespace-nowrap"
+            className="inline-flex items-center gap-1 text-xs font-bold text-red-400 hover:text-red-300 transition-colors cursor-pointer whitespace-nowrap shrink-0"
           >
-            <span>{isHindi ? 'सभी लेख पढ़ें' : 'View All Publications'}</span>
+            <span>{isHindi ? 'सभी लेख देखें' : 'View All'}</span>
+            <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Featured Story + Secondary Guides */}
-        {featuredArticle && articleCategory === 'ALL' && !articleSearch.trim() && (
-          <article 
-            onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug || featuredArticle.id })}
-            className="group border border-white/10 rounded-2xl bg-[#0E1424] p-6 sm:p-8 hover:border-red-500/50 transition-all duration-200 cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-8 items-center shadow-md"
-          >
-            <div className="md:col-span-7 space-y-3.5">
-              <div className="flex items-center gap-2 text-xs text-stone-500 font-semibold">
-                <span>{formatArticleDate(featuredArticle.publishedAt || featuredArticle.createdAt)}</span>
-              </div>
-
-              <h3 className="text-xl sm:text-3xl font-extrabold text-white group-hover:text-red-400 transition-colors leading-tight">
-                {featuredArticle.title}
-              </h3>
-
-              <p className="text-xs sm:text-sm text-stone-300 line-clamp-3 leading-relaxed">
-                {featuredArticle.excerpt}
-              </p>
-
-              <div className="pt-2 flex items-center justify-between text-xs font-bold text-white">
-                <span className="text-stone-400 font-normal">By Advocate Anurag Gurauli</span>
-                <span className="text-red-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                  <span>Read Essay</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-              </div>
-            </div>
-
-            <div className="md:col-span-5 aspect-[16/10] rounded-xl bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center">
-              {featuredArticle.featuredImage ? (
-                <img 
-                  src={getDirectCloudImageUrl(featuredArticle.featuredImage)} 
-                  alt={featuredArticle.title} 
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" 
-                  loading="lazy"
-                />
-              ) : (
-                <BookOpen className="w-10 h-10 text-stone-400" />
-              )}
-            </div>
-          </article>
-        )}
-
-        {/* Secondary Articles Grid */}
-        {recentArticles.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {recentArticles.map(article => (
+        {/* VIP Loading Animation while Firestore articles load */}
+        {articlesLoading ? (
+          <VipArticleLoader variant="editorial-grid" cardCount={3} />
+        ) : articles.length === 0 ? (
+          <div className="border border-white/10 rounded-2xl bg-[#0D1220] p-8 text-center space-y-2">
+            <BookOpen className="w-7 h-7 text-stone-500 mx-auto" />
+            <p className="text-xs text-stone-400">
+              {isHindi ? 'अभी कोई प्रकाशित लेख उपलब्ध नहीं है।' : 'No published editorial articles available yet.'}
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Lead Featured Story */}
+            {featuredArticle && (
               <article
-                key={article.id}
-                onClick={() => onNavigate('article-detail', { slug: article.slug || article.id })}
-                className="group border border-white/10 rounded-xl bg-[#0E1424] overflow-hidden hover:border-red-500/50 transition-all cursor-pointer flex flex-col justify-between shadow-xs"
+                onClick={() => onNavigate('article-detail', { slug: featuredArticle.slug || featuredArticle.id })}
+                className="group border border-white/10 rounded-2xl bg-[#0D1220] p-5 sm:p-6 hover:border-red-500/45 transition-all cursor-pointer grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-lg"
               >
-                <div className="aspect-[16/9] bg-stone-100 dark:bg-white/5 overflow-hidden flex items-center justify-center">
-                  {article.featuredImage ? (
+                <div className="md:col-span-8 space-y-2.5">
+                  <div className="flex items-center gap-2 text-[11px] font-medium text-stone-400">
+                    <span className="text-red-400 font-semibold">{featuredArticle.category}</span>
+                    {featuredArticle.readingTime && (
+                      <>
+                        <span aria-hidden="true">·</span>
+                        <span>{featuredArticle.readingTime}</span>
+                      </>
+                    )}
+                  </div>
+
+                  <h3 className="text-base sm:text-xl font-bold text-white group-hover:text-red-400 transition-colors leading-snug">
+                    {featuredArticle.title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-stone-400 line-clamp-2 leading-relaxed">
+                    {featuredArticle.excerpt}
+                  </p>
+
+                  <div className="pt-1 flex items-center justify-between text-xs font-semibold">
+                    <span className="text-stone-400 font-normal">
+                      {featuredArticle.authorName || 'Advocate Anurag Gurauli'}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-red-400 font-bold group-hover:translate-x-1 transition-transform whitespace-nowrap">
+                      <span>{isHindi ? 'लेख पढ़ें' : 'Read Guide'}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </div>
+
+                <div className="md:col-span-4 aspect-[16/10] rounded-xl bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center">
+                  {featuredArticle.featuredImage ? (
                     <img
-                      src={getDirectCloudImageUrl(article.featuredImage)}
-                      alt={article.title}
+                      src={getDirectCloudImageUrl(featuredArticle.featuredImage)}
+                      alt={featuredArticle.title}
                       referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
-                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <BookOpen className="w-8 h-8 text-stone-400" />
+                    <BookOpen className="w-8 h-8 text-stone-500" />
                   )}
                 </div>
-
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-1.5 text-[10px] text-stone-500">
-                      <span>{formatArticleDate(article.publishedAt || article.createdAt)}</span>
-                    </div>
-
-                    <h4 className="text-base font-bold text-white group-hover:text-red-400 transition-colors line-clamp-2 leading-snug">
-                      {article.title}
-                    </h4>
-
-                    <p className="text-xs text-stone-300 line-clamp-2 leading-relaxed">
-                      {article.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-bold text-red-400">
-                    <span>Read Publication</span>
-                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
               </article>
-            ))}
-          </div>
-        )}
-      </section>
+            )}
 
-      {/* =========================================================================
-          4. LIFETIME PASS SPECIAL OFFER
-          ========================================================================= */}
-      <section id="vip-pass-offer" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 w-full">
-        <div className="rounded-3xl p-8 sm:p-12 border border-[#C9A24B]/40 bg-[#0B1120] text-white shadow-xl relative overflow-hidden">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-            <div className="lg:col-span-7 space-y-4 text-left">
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
-                Lifetime Premium Pass
-              </h2>
+            {/* Secondary Articles Grid */}
+            {recentArticles.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {recentArticles.map((art) => (
+                  <article
+                    key={art.id}
+                    onClick={() => onNavigate('article-detail', { slug: art.slug || art.id })}
+                    className="group border border-white/10 rounded-2xl bg-[#0D1220] overflow-hidden hover:border-red-500/40 transition-all cursor-pointer flex flex-col justify-between shadow-md"
+                  >
+                    {art.featuredImage && (
+                      <div className="aspect-[16/9] bg-white/5 overflow-hidden">
+                        <img
+                          src={getDirectCloudImageUrl(art.featuredImage)}
+                          alt={art.title}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
 
-              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed max-w-lg">
-                Permanent ad-free utility access, secure case diary, and advanced document tools for a single one-time contribution. Bound securely to your email address without recurring subscription fees.
-              </p>
-            </div>
+                    <div className="p-4 flex-1 flex flex-col justify-between space-y-2.5">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2 text-[11px] text-stone-400">
+                          <span className="text-red-400 font-semibold truncate">{art.category}</span>
+                          <span aria-hidden="true">·</span>
+                          <span className="shrink-0">{art.readingTime || '4 min read'}</span>
+                        </div>
+                        <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-red-400 transition-colors line-clamp-2 leading-snug">
+                          {art.title}
+                        </h3>
+                        <p className="text-[11px] text-stone-400 line-clamp-2 leading-relaxed">
+                          {art.excerpt}
+                        </p>
+                      </div>
 
-            <div className="lg:col-span-5 p-6 rounded-2xl bg-black/30 border border-white/10 space-y-5 text-center flex flex-col items-center justify-center">
-              {/* 4-Field Countdown */}
-              <div className="grid grid-cols-4 gap-2 w-full max-w-xs">
-                <div className="bg-white/5 border border-white/10 p-2 rounded-xl">
-                  <span className="block text-xl sm:text-2xl font-bold text-white font-mono tabular-nums">
-                    {passTimeLeft.days.toString().padStart(2, '0')}
-                  </span>
-                  <span className="block text-[9px] text-stone-400 uppercase">Days</span>
-                </div>
-                <div className="bg-white/5 border border-white/10 p-2 rounded-xl">
-                  <span className="block text-xl sm:text-2xl font-bold text-white font-mono tabular-nums">
-                    {passTimeLeft.hours.toString().padStart(2, '0')}
-                  </span>
-                  <span className="block text-[9px] text-stone-400 uppercase">Hours</span>
-                </div>
-                <div className="bg-white/5 border border-white/10 p-2 rounded-xl">
-                  <span className="block text-xl sm:text-2xl font-bold text-white font-mono tabular-nums">
-                    {passTimeLeft.minutes.toString().padStart(2, '0')}
-                  </span>
-                  <span className="block text-[9px] text-stone-400 uppercase">Mins</span>
-                </div>
-                <div className="bg-white/5 border border-white/10 p-2 rounded-xl">
-                  <span className="block text-xl sm:text-2xl font-bold text-white font-mono tabular-nums">
-                    {passTimeLeft.seconds.toString().padStart(2, '0')}
-                  </span>
-                  <span className="block text-[9px] text-stone-400 uppercase">Secs</span>
-                </div>
+                      <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-bold text-red-400">
+                        <span>{isHindi ? 'पूरा लेख पढ़ें' : 'Read Article'}</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  </article>
+                ))}
               </div>
+            )}
+          </>
+        )}
 
-              <button
-                onClick={() => onNavigate('premium')}
-                className="w-full py-3.5 px-6 rounded-xl bg-red-600/85 hover:bg-red-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-red-950/50 backdrop-blur-md border border-red-500/40 transition-all cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>Claim VIP Pass for ₹99</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-        </div>
       </section>
 
-      {/* =========================================================================
-          7. VERIFIED COMMUNITY TESTIMONIALS
-          ========================================================================= */}
-      <section id="community-voices" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 space-y-6 w-full">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-300/80 dark:border-white/10 pb-4">
-          <div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
-              Community Feedback & Citizen Voices
-            </h2>
-          </div>
+      {/* 4. CITIZEN STORIES */}
+      <section id="community-voices" ref={storyFormSectionRef} className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-4 w-full">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3 gap-3">
+          <h2 className="text-base sm:text-xl font-bold text-white tracking-tight">
+            {isHindi ? 'नागरिक अनुभव एवं प्रतिक्रिया' : 'Citizen Stories'}
+          </h2>
 
           <button
-            onClick={() => {
-              setShowStoryModal(true);
-              setStorySubmittedMsg(false);
-            }}
-            className="text-xs font-bold text-slate-900 dark:text-white hover:text-red-400 transition-colors flex items-center gap-1.5 cursor-pointer"
+            onClick={handleOpenStoryForm}
+            className="text-xs font-bold text-red-400 hover:text-red-300 transition-all inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-600/10 border border-red-500/20 cursor-pointer active:scale-95 whitespace-nowrap shrink-0"
           >
-            <Send className="w-3.5 h-3.5" />
-            <span>Submit Your Experience</span>
+            <Send className="w-3.5 h-3.5 shrink-0" />
+            <span>{showInlineStoryForm ? (isHindi ? 'बंद करें' : 'Close') : (isHindi ? 'अनुभव साझा करें' : 'Share Your Story')}</span>
           </button>
         </div>
 
-        {/* Horizontal Marquee */}
-        <div 
+        {/* Inline Contextual Form */}
+        <AnimatePresence>
+          {showInlineStoryForm && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="p-5 sm:p-6 rounded-2xl bg-[#0D1220] border border-red-500/30 shadow-2xl space-y-4 my-2">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-red-400" />
+                    <h3 className="text-sm font-bold text-white">
+                      {isHindi ? 'अपना अनुभव साझा करें' : 'Share Your Experience'}
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setShowInlineStoryForm(false)}
+                    className="p-1 rounded-lg hover:bg-white/10 text-stone-400 hover:text-white cursor-pointer text-xs font-bold"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {storySubmittedMsg ? (
+                  <div className="p-6 rounded-xl bg-red-600/10 border border-red-500/20 text-center space-y-2">
+                    <CheckCircle2 className="w-8 h-8 text-red-500 mx-auto" />
+                    <div className="text-xs sm:text-sm font-bold text-red-400">
+                      {isHindi ? 'आपका अनुभव सफलतापूर्वक प्राप्त हुआ!' : 'Story Submitted Successfully!'}
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmitUserStory} className="space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                      <input
+                        type="text"
+                        required
+                        value={storyForm.authorName}
+                        onChange={(e) => setStoryForm({ ...storyForm, authorName: e.target.value })}
+                        placeholder={isHindi ? 'आपका नाम *' : 'Your Name *'}
+                        className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white outline-none focus:border-red-500"
+                      />
+                      <input
+                        type="text"
+                        value={storyForm.authorRole}
+                        onChange={(e) => setStoryForm({ ...storyForm, authorRole: e.target.value })}
+                        placeholder={isHindi ? 'पेशा / कार्य' : 'Profession / Role'}
+                        className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white outline-none focus:border-red-500"
+                      />
+                      <input
+                        type="text"
+                        value={storyForm.city}
+                        onChange={(e) => setStoryForm({ ...storyForm, city: e.target.value })}
+                        placeholder={isHindi ? 'शहर / राज्य' : 'City / Location'}
+                        className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white outline-none focus:border-red-500"
+                      />
+                    </div>
+
+                    <textarea
+                      required
+                      rows={3}
+                      value={storyForm.story}
+                      onChange={(e) => setStoryForm({ ...storyForm, story: e.target.value })}
+                      placeholder={isHindi ? 'लेस क्रिएशन पर अपनी प्रतिक्रिया लिखें...' : 'Write your experience or review...'}
+                      className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white outline-none focus:border-red-500 resize-none"
+                    />
+
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[11px] text-stone-400 mr-1">{isHindi ? 'रेटिंग:' : 'Rating:'}</span>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setStoryForm({ ...storyForm, rating: star })}
+                            className="text-[#C9A24B] hover:scale-110 transition-transform cursor-pointer"
+                          >
+                            <Star className={`w-4 h-4 ${star <= storyForm.rating ? 'fill-[#C9A24B]' : 'text-stone-600'}`} />
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setShowInlineStoryForm(false)}
+                          className="px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-400 hover:text-white cursor-pointer whitespace-nowrap"
+                        >
+                          {isHindi ? 'रद्द करें' : 'Cancel'}
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={isSubmittingStory}
+                          className="px-4 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs cursor-pointer shadow-sm disabled:opacity-50 whitespace-nowrap"
+                        >
+                          {isSubmittingStory ? '...' : (isHindi ? 'जमा करें' : 'Submit')}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Clean Story Cards */}
+        <div
           id="user-stories-scroll-container"
           onMouseEnter={() => setIsStoryHovered(true)}
           onMouseLeave={() => setIsStoryHovered(false)}
-          className="flex overflow-x-auto gap-5 pb-4 pt-2 snap-x snap-mandatory scroll-smooth no-scrollbar"
+          className="flex overflow-x-auto gap-4 pb-4 pt-1 snap-x snap-mandatory scroll-smooth no-scrollbar"
         >
-          {userStories.map(story => (
+          {userStories.map((story, idx) => (
             <div
-              key={story.id}
-              className="w-[300px] sm:w-[340px] shrink-0 snap-start bg-white dark:bg-[#101522] border border-stone-300/80 dark:border-white/10 rounded-2xl p-6 shadow-2xs space-y-4 flex flex-col justify-between"
+              key={story.id || idx}
+              className="w-[275px] sm:w-[310px] shrink-0 snap-start bg-[#0D1220] border border-white/10 hover:border-red-500/40 rounded-2xl p-5 shadow-md space-y-3 flex flex-col justify-between transition-all hover:translate-y-[-2px]"
             >
-              <div className="space-y-3">
-                <Quote className="w-5 h-5 text-stone-400 rotate-180" />
-                <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed italic line-clamp-4">
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-0.5">
+                  {Array.from({ length: story.rating || 5 }).map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 text-[#C9A24B] fill-[#C9A24B]" />
+                  ))}
+                </div>
+
+                <p className="text-xs text-stone-300 leading-relaxed italic line-clamp-4">
                   “{story.story}”
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-stone-100 dark:border-white/5 flex items-center justify-between text-xs">
-                <div>
-                  <div className="font-bold text-slate-900 dark:text-white leading-tight">
+              <div className="pt-2.5 border-t border-white/10 flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-bold flex items-center justify-center shrink-0">
+                  {story.authorName.charAt(0)}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-bold text-xs text-white truncate">
                     {story.authorName}
                   </div>
-                  <div className="text-[11px] text-stone-500">
-                    {story.authorRole}{story.city ? ` · ${story.city}` : ''}
+                  <div className="text-[10px] text-stone-400 truncate">
+                    {story.authorRole || 'Citizen'}{story.city ? ` · ${story.city}` : ''}
                   </div>
                 </div>
               </div>
@@ -535,125 +561,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Submission Modal */}
-      <AnimatePresence>
-        {showStoryModal && (
-          <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:pt-12 bg-black/40 backdrop-blur-[2px] overflow-y-auto">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="bg-[#0F1420] border border-white/10 rounded-2xl p-6 sm:p-8 max-w-lg w-full space-y-5 shadow-2xl relative mt-4"
-            >
-              <button
-                onClick={() => setShowStoryModal(false)}
-                className="absolute top-5 right-5 p-2 rounded-full hover:bg-stone-100 dark:hover:bg-white/10 text-stone-400 cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="space-y-1">
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-                  Share Your Experience
-                </h3>
-              </div>
-
-              {storySubmittedMsg ? (
-                <div className="p-6 rounded-2xl bg-red-500/10 border border-red-500/20 text-center space-y-3">
-                  <CheckCircle2 className="w-8 h-8 text-red-500 mx-auto" />
-                  <div className="text-sm font-bold text-red-400">
-                    Story Submitted Successfully!
-                  </div>
-                  <button
-                    onClick={() => setShowStoryModal(false)}
-                    className="mt-2 px-5 py-2.5 rounded-full bg-red-600 text-white font-bold text-xs cursor-pointer"
-                  >
-                    Close
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmitUserStory} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      required
-                      value={storyForm.authorName}
-                      onChange={(e) => setStoryForm({ ...storyForm, authorName: e.target.value })}
-                      placeholder="Your Name *"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-300 dark:border-white/10 text-xs text-slate-900 dark:text-white outline-none focus:border-red-500"
-                    />
-                    <input
-                      type="text"
-                      value={storyForm.authorRole}
-                      onChange={(e) => setStoryForm({ ...storyForm, authorRole: e.target.value })}
-                      placeholder="Profession / Role"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-300 dark:border-white/10 text-xs text-slate-900 dark:text-white outline-none focus:border-red-500"
-                    />
-                  </div>
-
-                  <input
-                    type="text"
-                    value={storyForm.city}
-                    onChange={(e) => setStoryForm({ ...storyForm, city: e.target.value })}
-                    placeholder="City / Location"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-300 dark:border-white/10 text-xs text-slate-900 dark:text-white outline-none focus:border-red-500"
-                  />
-
-                  <textarea
-                    required
-                    rows={4}
-                    value={storyForm.story}
-                    onChange={(e) => setStoryForm({ ...storyForm, story: e.target.value })}
-                    placeholder="Your comments or experience with Less Creation tools..."
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-white/5 border border-stone-300 dark:border-white/10 text-xs text-slate-900 dark:text-white outline-none focus:border-red-500 resize-none"
-                  />
-
-                  <div className="pt-2 flex items-center justify-end gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setShowStoryModal(false)}
-                      className="px-4 py-2 rounded-full text-xs font-semibold text-stone-500 cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isSubmittingStory}
-                      className="px-6 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs cursor-pointer shadow-sm disabled:opacity-50"
-                    >
-                      {isSubmittingStory ? "Submitting..." : "Submit Experience"}
-                    </button>
-                  </div>
-                </form>
-              )}
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* =========================================================================
-          8. KNOWLEDGE FAQ (CLEAN HORIZONTAL HAIRLINE DIVIDERS)
-          ========================================================================= */}
-      <section id="faq-section" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 space-y-6 w-full">
-        <div className="text-center space-y-1">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Frequently Asked Questions
+      {/* 6. KNOWLEDGE FAQ (Consistent max-w-5xl alignment) */}
+      <section id="faq-section" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-4 w-full">
+        <div className="border-b border-white/10 pb-3">
+          <h2 className="text-base sm:text-xl font-bold text-white tracking-tight">
+            {isHindi ? 'अक्सर पूछे जाने वाले प्रश्न' : 'Frequently Asked Questions'}
           </h2>
         </div>
 
-        <div className="border-t border-stone-300/80 dark:border-white/10 divide-y divide-stone-300/80 dark:divide-white/10">
+        <div className="divide-y divide-white/10 border-b border-white/10">
           {faqs.map((faq, idx) => {
             const isOpen = openFaq === idx;
-
             return (
-              <div key={idx} className="py-4">
+              <div key={idx} className="py-3.5">
                 <button
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full py-2 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none cursor-pointer"
+                  className="w-full py-1 text-left flex items-center justify-between gap-4 font-bold text-xs sm:text-sm text-white focus:outline-none cursor-pointer"
                 >
                   <span>{faq.q}</span>
-                  <ChevronDown className={`w-4 h-4 text-stone-500 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-red-500' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 text-red-500' : ''}`} />
                 </button>
 
                 <AnimatePresence initial={false}>
@@ -665,7 +591,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <div className="pt-2 pb-3 text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+                      <div className="pt-2 pb-1 text-xs text-stone-400 leading-relaxed font-normal max-w-3xl">
                         {faq.a}
                       </div>
                     </motion.div>

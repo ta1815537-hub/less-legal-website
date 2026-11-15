@@ -587,7 +587,7 @@ export const translations: Record<Language, TranslationSchema> = {
         { step: "01", title: "Understanding Real-World Legal Needs", desc: "Recognizing the friction advocates and citizens face when locating daily tools and statutory references." },
         { step: "02", title: "Identifying Everyday Digital Challenges", desc: "Mapping out essential file tools, calculators, and notes needed in daily practice." },
         { step: "03", title: "Creating Less Legal", desc: "Developing the flagship Android app uniting legal references, PDF tools, and utilities." },
-        { step: "04", title: "Building Less Creation", desc: "Establishing a dedicated digital product studio centered around simplicity and utility." },
+        { step: "04", title: "Building Less Creation", desc: "Establishing an independent digital legal & utility platform centered around simplicity and privacy." },
         { step: "05", title: "Expanding Into More Useful Digital Products", desc: "Planning future applications in productivity, education, notes, and everyday tools." }
       ],
 
@@ -743,7 +743,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "What is the flagship product 'Less Legal' and who is it built for?",
-          a: "Less Legal is our flagship independent digital workspace. It brings together 30+ utility tools, a fully offline Bare Acts reference library, and legal calculators to empower practicing advocates, law clerks, students, and citizens with simple, accessible resources."
+          a: "Less Legal is our flagship independent digital workspace. It brings together practical utility tools, Case Diary, on-device PDF tools, and legal/land calculators to empower practicing advocates, law clerks, students, and citizens with simple, accessible resources."
         },
         {
           q: "Is Less Legal affiliated with the Government of India or the judiciary?",
@@ -762,7 +762,7 @@ export const translations: Record<Language, TranslationSchema> = {
     about: {
       badge: "ABOUT LESS LEGAL & LESS CREATION",
       title: "Purpose, Utility & Philosophy of our All in One App",
-      subtitle: "Independent legal reference, bare acts, local PDF app tools, Share it app utilities, MS Word capabilities, and court calculators designed for daily utility.",
+      subtitle: "Independent legal reference, Case Diary, local PDF app tools, Share utilities, legal drafts, and court calculators designed for daily utility.",
       declarationTitle: "Official Independence & Non-Government Declaration",
       declarationP1: "Less Legal is an independent software application developed to provide digital utilities, calculators, and educational legal reference materials.",
       declarationP2: "Less Legal is NOT affiliated with, associated with, authorized by, endorsed by, or in any way officially connected to the Government of India, the Supreme Court of India, any High Court, District Court, Bar Council, or any government ministry. All government portal links are public informational shortcuts.",
@@ -823,7 +823,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "Calculator Hub & Land Unit Converter",
         "GST Calculator & Legal Glossary",
         "Less Share local file transfer & Secure Vault",
-        "Bare Acts reference library & Legal Quiz",
+        "Legal Glossary, Learning Hub & Legal Quiz",
         "No automatic renewal — one-time purchase completed in app"
       ]
     },
@@ -867,7 +867,7 @@ export const translations: Record<Language, TranslationSchema> = {
       nonGovP2: "Information and legal reference materials provided through the application are intended for general informational and educational purposes only and should not be treated as legal advice, legal representation or a substitute for consultation with a qualified legal professional.",
       nonGovP3: "Users should independently verify current laws, rules, notifications, judgments and other legal information from authoritative sources before relying upon them.",
       sec2Title: "2. General Informational & Utility Purpose Only",
-      sec2P1: "The content, tools, calculators, Bare Acts, legal glossary definitions, and materials provided on this website and within the Less Legal Android application are made available solely for general educational, reference, and day-to-day utility purposes.",
+      sec2P1: "The content, tools, calculators, legal drafts, legal glossary definitions, and materials provided on this website and within the Less Legal Android application are made available solely for general educational, reference, and day-to-day utility purposes.",
       sec2P2: "While reasonable efforts are made to keep reference information accurate and updated, statutory provisions, tax schedules, and regional procedural rules change over time. Users are strongly advised to independently verify all statutory texts, notifications, and fee calculations with official government gazettes or authoritative registries.",
       sec3Title: "3. No Formal Legal Advice or Advocate-Client Relationship",
       sec3Highlight: "Nothing contained in the Less Legal application or this website constitutes formal legal advice, case assessment, solicitation, or legal representation.",
@@ -887,7 +887,7 @@ export const translations: Record<Language, TranslationSchema> = {
       lastUpdated: "Last Updated: March 2025",
       appScope: "Application: Less Legal (Android)",
       disclaimerBannerTitle: "Informational Utility & No Legal Advice Disclaimer",
-      disclaimerBannerText: "The materials, Bare Acts, calculation tools, tax estimators, and guides provided within Less Legal are for general reference and educational purposes only. Less Legal does not provide legal advice, representation, or formal legal opinions. No advocate-client relationship is formed. Users must independently verify statutory provisions with qualified legal professionals.",
+      disclaimerBannerText: "The materials, legal reference guides, calculation tools, tax estimators, and drafts provided within Less Legal are for general reference and educational purposes only. Less Legal does not provide legal advice, representation, or formal legal opinions. No advocate-client relationship is formed. Users must independently verify statutory provisions with qualified legal professionals.",
       sec1Title: "1. Acceptance of Terms",
       sec1Text: "By downloading, installing, accessing, or using the Less Legal Android application or this website, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must discontinue use of the application immediately.",
       sec2Title: "2. Permitted Use & User Responsibilities",
@@ -908,7 +908,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Title: "4. Payment Gateway & Transaction Processing",
       sec4Text: "Payments are processed through authorized payment intermediaries including Razorpay and/or Google Play Billing. By completing a transaction, you agree to the payment provider's terms of service. Less Legal does not store sensitive cardholder data.",
       sec5Title: "5. Intellectual Property",
-      sec5Text: "All application software code, user interface designs, logos, graphics, and compilation of tools are the intellectual property of Less Legal. Public statutory Bare Acts and official court links referenced within the app belong to their respective governmental and public domain repositories.",
+      sec5Text: "All application software code, user interface designs, logos, graphics, and compilation of tools are the intellectual property of Less Legal. Public statutory references and official court links referenced within the app belong to their respective governmental and public domain repositories.",
       sec6Title: "6. Limitation of Liability",
       sec6Text: "To the maximum extent permitted by applicable law, Less Legal and its developers shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from:",
       sec6Bullets: [
@@ -1284,7 +1284,7 @@ export const translations: Record<Language, TranslationSchema> = {
         },
         {
           q: "फ्लैगशिप प्रोडक्ट 'लेस लीगल' क्या है और यह किसके लिए बनाया गया है?",
-          a: "लेस लीगल हमारा प्रमुख स्वतंत्र डिजिटल वर्कस्पेस है। यह अधिवक्ताओं, कानून के छात्रों और आम नागरिकों को सशक्त बनाने के लिए 30 से अधिक व्यावहारिक टूल्स, एक संपूर्ण ऑफलाइन बेयर एक्ट्स लाइब्रेरी और विधिक कैलकुलेटर को एक सरल, सुलभ और सुरक्षित मंच पर लाता है।"
+          a: "लेस लीगल हमारा प्रमुख स्वतंत्र डिजिटल वर्कस्पेस है। यह अधिवक्ताओं, कानून के छात्रों और आम नागरिकों को सशक्त बनाने के लिए केस डायरी, ऑन-डिवाइस PDF टूल्स, व्यावहारिक उपयोगिता टूल्स और विधिक व भूमि कैलकुलेटर को एक सरल, सुलभ और सुरक्षित मंच पर लाता है।"
         },
         {
           q: "क्या लेस लीगल भारत सरकार या न्यायपालिका से संबद्ध है?",
@@ -1364,7 +1364,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "कैलकुलेटर हब एवं भूमि क्षेत्रफल कनवर्टर",
         "जीएसटी कैलकुलेटर एवं लीगल शब्दावली",
         "क्विक नोट्स एवं लेस-शेयर लोकल फाइल ट्रांसफर",
-        "बेयर एक्ट्स रेफरेंस लाइब्रेरी एवं लीगल क्विज़",
+        "कानूनी अध्ययन हब, लीगल शब्दावली एवं लीगल क्विज़",
         "कोई स्वचालित नवीनीकरण नहीं — एक बार का भुगतान"
       ]
     },
@@ -1408,7 +1408,7 @@ export const translations: Record<Language, TranslationSchema> = {
       nonGovP2: "एप्लिकेशन के माध्यम से प्रदान की जाने वाली जानकारी और कानूनी संदर्भ सामग्री केवल सामान्य सूचनात्मक और शैक्षिक उद्देश्यों के लिए है और इसे कानूनी सलाह, कानूनी प्रतिनिधित्व या किसी योग्य कानूनी पेशेवर के परामर्श के विकल्प के रूप में नहीं माना जाना चाहिए।",
       nonGovP3: "उपयोगकर्ताओं को सलाह दी जाती है कि वे किसी भी वैधानिक प्रावधान, नियम, अधिसूचना या निर्णय पर भरोसा करने से पहले आधिकारिक स्रोतों से स्वतंत्र रूप से पुष्टि अवश्य करें।",
       sec2Title: "2. केवल सामान्य सूचनात्मक एवं उपयोगिता उद्देश्य",
-      sec2P1: "इस वेबसाइट और लेस लीगल एंड्रॉइड ऐप पर उपलब्ध सामग्री, टूल्स, कैलकुलेटर, बेयर एक्ट्स, कानूनी शब्दावली परिभाषाएं केवल सामान्य शैक्षिक, संदर्भ और दैनिक उपयोगिता उद्देश्यों के लिए प्रदान की गई हैं।",
+      sec2P1: "इस वेबसाइट और लेस लीगल एंड्रॉइड ऐप पर उपलब्ध सामग्री, टूल्स, कैलकुलेटर, कानूनी ड्राफ्ट, कानूनी शब्दावली परिभाषाएं केवल सामान्य शैक्षिक, संदर्भ और दैनिक उपयोगिता उद्देश्यों के लिए प्रदान की गई हैं।",
       sec2P2: "यद्यपि संदर्भ जानकारी को सटीक और अद्यतित रखने के उचित प्रयास किए जाते हैं, फिर भी समय के साथ वैधानिक प्रावधानों, टैक्स शेड्यूल और क्षेत्रीय नियमों में परिवर्तन हो सकता है। उपयोगकर्ताओं को सलाह दी जाती है कि वे आधिकारिक गजट या संबंधित अदालत की रजिस्ट्री से सभी सूचनाओं और गणनाओं का स्वतंत्र सत्यापन करें।",
       sec3Title: "3. कोई औपचारिक कानूनी सलाह या अधिवक्ता-क्लाइंट संबंध नहीं",
       sec3Highlight: "लेस लीगल एप्लिकेशन या इस वेबसाइट की कोई भी सामग्री औपचारिक कानूनी सलाह, केस मूल्यांकन या कानूनी प्रतिनिधित्व का गठन नहीं करती है।",
@@ -1428,7 +1428,7 @@ export const translations: Record<Language, TranslationSchema> = {
       lastUpdated: "अंतिम अद्यतन: मार्च 2025",
       appScope: "एप्लिकेशन: लेस लीगल (एंड्रॉइड)",
       disclaimerBannerTitle: "सूचनात्मक उपयोगिता एवं कोई कानूनी सलाह नहीं अस्वीकरण",
-      disclaimerBannerText: "लेस लीगल के भीतर प्रदान की गई सामग्री, बेयर एक्ट्स, गणना उपकरण, टैक्स अनुमानक और गाइड केवल सामान्य संदर्भ और शैक्षिक उद्देश्यों के लिए हैं। लेस लीगल कानूनी सलाह, प्रतिनिधित्व या औपचारिक कानूनी राय प्रदान नहीं करता है। कोई अधिवक्ता-क्लाइंट संबंध नहीं बनता है। उपयोगकर्ताओं को योग्य कानूनी पेशेवरों के साथ वैधानिक प्रावधानों का स्वतंत्र रूप से सत्यापन करना चाहिए।",
+      disclaimerBannerText: "लेस लीगल के भीतर प्रदान की गई सामग्री, कानूनी संदर्भ गाइड, गणना उपकरण, टैक्स अनुमानक और ड्राफ्ट केवल सामान्य संदर्भ और शैक्षिक उद्देश्यों के लिए हैं। लेस लीगल कानूनी सलाह, प्रतिनिधित्व या औपचारिक कानूनी राय प्रदान नहीं करता है। कोई अधिवक्ता-क्लाइंट संबंध नहीं बनता है। उपयोगकर्ताओं को योग्य कानूनी पेशेवरों के साथ वैधानिक प्रावधानों का स्वतंत्र रूप से सत्यापन करना चाहिए।",
       sec1Title: "1. शर्तों की स्वीकृति",
       sec1Text: "लेस लीगल एंड्रॉइड एप्लिकेशन या इस वेबसाइट को डाउनलोड, इंस्टॉल, एक्सेस या उपयोग करके, आप इन नियमों और शर्तों से बंधे होने के लिए सहमत होते हैं। यदि आप इन शर्तों के किसी भी हिस्से से सहमत नहीं हैं, तो आपको तुरंत एप्लिकेशन का उपयोग बंद कर देना चाहिए।",
       sec2Title: "2. अनुमत उपयोग एवं उपयोगकर्ता उत्तरदायित्व",
@@ -1447,9 +1447,9 @@ export const translations: Record<Language, TranslationSchema> = {
         "लाइफटाइम पास का विकल्प: लेस लीगल एक लाइफटाइम प्रीमियम पास (₹99 स्पेशल ऑफर) प्रदान करता है जो बिना किसी समाप्ति के आपकी पंजीकृत ईमेल आईडी पर प्रीमियम स्थिति को स्थायी रूप से लिंक करता है।"
       ],
       sec4Title: "4. पेमेंट गेटवे एवं लेनदेन प्रोसेसिंग",
-      sec4Text: "भुगतान अधिकृत पेमेंट मध्यस्थों जैसे पेयू और/या गूगल प्ले Billing के माध्यम से संसाधित किए जाते हैं। लेनदेन पूरा करके, आप भुगतान प्रदाता की सेवा की शर्तों से सहमत होते हैं। लेस लीगल संवेदनशील कार्डधारक डेटा संग्रहीत नहीं करता है।",
+      sec4Text: "भुगतान अधिकृत पेमेंट मध्यस्थों जैसे Razorpay और/या गूगल प्ले Billing के माध्यम से संसाधित किए जाते हैं। लेनदेन पूरा करके, आप भुगतान प्रदाता की सेवा की शर्तों से सहमत होते हैं। लेस लीगल संवेदनशील कार्डधारक डेटा संग्रहीत नहीं करता है।",
       sec5Title: "5. बौद्धिक संपदा",
-      sec5Text: "सभी एप्लिकेशन सॉफ़्टवेयर कोड, उपयोगकर्ता इंटरफ़ेस डिज़ाइन, लोगो, ग्राफ़िक्स और टूल्स का संकलन लेस लीगल की बौद्धिक संपदा हैं। ऐप के भीतर संदर्भित सार्वजनिक वैधानिक बेयर एक्ट्स और आधिकारिक अदालती लिंक उनके संबंधित सरकारी और सार्वजनिक डोमेन रिपॉजिटरी से संबंधित हैं।",
+      sec5Text: "सभी एप्लिकेशन सॉफ़्टवेयर कोड, उपयोगकर्ता इंटरफ़ेस डिज़ाइन, लोगो, ग्राफ़िक्स और टूल्स का संकलन लेस लीगल की बौद्धिक संपदा हैं। ऐप के भीतर संदर्भित सार्वजनिक वैधानिक संदर्भ और आधिकारिक अदालती लिंक उनके संबंधित सरकारी और सार्वजनिक डोमेन रिपॉजिटरी से संबंधित हैं।",
       sec6Title: "6. दायित्व की सीमा",
       sec6Text: "लागू कानून द्वारा अनुमत अधिकतम सीमा तक, लेस लीगल और इसके डेवलपर्स निम्नलिखित से होने वाले किसी भी प्रत्यक्ष, अप्रत्यक्ष, आकस्मिक या परिणामी नुकसान के लिए उत्तरदायी नहीं होंगे:",
       sec6Bullets: [
@@ -1471,7 +1471,7 @@ export const translations: Record<Language, TranslationSchema> = {
       lastUpdated: "अंतिम अद्यतन: मार्च 2025",
       appScope: "एप्लिकेशन: लेस लीगल (एंड्रॉइड)",
       summaryTitle: "मुख्य गोपनीयता सारांश",
-      summaryText: "लेस लीगल पारदर्शी, न्यूनतम डेटा प्रथाओं के लिए प्रतिबद्ध है। आपकी संवेदनशील फाइलें (पीडीएफ, केस नोट्स, डायरी रिकॉर्ड) आपके एंड्रॉइड डिवाइस पर स्थानीय रूप से प्रोसेस की जाती हैं। हम आपका व्यक्तिगत डेटा नहीं बेचते हैं। विज्ञापन-मुक्त पास के लिए भुगतान लेनदेन प्रमाणित भुगतान प्रोसेसर (पेयू / गूगल प्ले Billing) द्वारा सुरक्षित रूप से संभाला जाता है।",
+      summaryText: "लेस लीगल पारदर्शी, न्यूनतम डेटा प्रथाओं के लिए प्रतिबद्ध है। आपकी संवेदनशील फाइलें (पीडीएफ, केस नोट्स, डायरी रिकॉर्ड) आपके एंड्रॉइड डिवाइस पर स्थानीय रूप से प्रोसेस की जाती हैं। हम आपका व्यक्तिगत डेटा नहीं बेचते हैं। विज्ञापन-मुक्त पास के लिए भुगतान लेनदेन प्रमाणित भुगतान प्रोसेसर (Razorpay / गूगल प्ले Billing) द्वारा सुरक्षित रूप से संभाला जाता है।",
       sec1Title: "1. परिचय एवं दायरा",
       sec1P1: "यह गोपनीयता नीति बताती है कि जब आप एंड्रॉइड ऑपरेटिंग सिस्टम पर हमारे मोबाइल एप्लिकेशन को इंस्टॉल, एक्सेस या उपयोग करते हैं और हमारी आधिकारिक वेबसाइट पर जाते हैं, तो लेस लीगल ('हम', 'हमारा', या 'एप्लिकेशन') जानकारी को कैसे संभालता है।",
       sec1P2: "लेस लीगल को डाउनलोड या उपयोग करके, आप इस नीति के अनुसार जानकारी के संग्रह और उपयोग के लिए सहमत होते हैं। यदि आप इस नीति की किसी भी शर्त से सहमत नहीं हैं, तो कृपया एप्लिकेशन का उपयोग न करें।",
@@ -1488,7 +1488,7 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Title: "4. Less Share लोकल फाइल ट्रांसफर",
       sec4Text: "Less Share सुविधा पेयर किए गए उपकरणों के बीच सीधे फ़ाइलों को स्थानांतरित करने के लिए प्रत्यक्ष स्थानीय कनेक्टिविटी (वाई-फाई हॉटस्पॉट / स्थानीय नेटवर्क प्रोटोकॉल) का उपयोग करती है। Less Share के माध्यम से स्थानांतरित की गई फाइलें दूरस्थ सर्वर से होकर नहीं गुजरती हैं और न ही उन पर लॉग की जाती हैं।",
       sec5Title: "5. भुगतान एवं लेनदेन की जानकारी",
-      sec5Text: "प्रीमियम पास (₹99 में लाइफटाइम पास) खरीदते समय, वित्तीय लेनदेन पेयू Payments Private Limited और/या गूगल प्ले Billing सहित प्रमाणित तृतीय-पक्ष भुगतान गेटवे द्वारा संसाधित किए जाते हैं।",
+      sec5Text: "प्रीमियम पास (₹99 में लाइफटाइम पास) खरीदते समय, वित्तीय लेनदेन Razorpay Payments Private Limited और/या गूगल प्ले Billing सहित प्रमाणित तृतीय-पक्ष भुगतान गेटवे द्वारा संसाधित किए जाते हैं।",
       sec5Bullets: [
         "लेस लीगल द्वारा कोई कार्ड विवरण संग्रहीत नहीं: लेस लीगल आपके क्रेडिट/डेबिट कार्ड नंबर, यूपीआई पिन, सीवीवी कोड या नेट बैंकिंग पासवर्ड कभी एकत्र या संग्रहीत नहीं करता है। सभी भुगतान प्राधिकरण पीसीआई-डीएसएस (PCI-DSS) प्रमाणित गेटवे परिवेश पर होते हैं।",
         "लेनदेन पुष्टि रिकॉर्ड: हम आपके विज्ञापन-मुक्त पास को सक्रिय और सत्यापित करने के लिए केवल गैर-संवेदनशील ऑर्डर पुष्टि विवरण (जैसे लेनदेन आईडी, टाइमस्टैम्प, खरीदा गया प्लान और भुगतान स्थिति) प्राप्त करते हैं।",
@@ -1501,7 +1501,7 @@ export const translations: Record<Language, TranslationSchema> = {
         "गूगल प्ले Services: मुख्य एंड्रॉइड सिस्टम एकीकरण एवं बिलिंग",
         "सुरक्षित क्लाउड इंफ्रास्ट्रक्चर (Secure Cloud Server): प्रमाणीकरण, डेटाबेस सिंक और क्रैश रिपोर्टिंग",
         "गूगल एडमोब: बैनर और इंटरस्टिशियल विज्ञापन वितरण (केवल निःशुल्क संस्करण)",
-        "पेयू Payments: सुरक्षित भुगतान गेटवे प्रोसेसिंग"
+        "Razorpay Payments: सुरक्षित भुगतान गेटवे प्रोसेसिंग"
       ],
       sec8Title: "8. डेटा सुरक्षा एवं भंडारण",
       sec8Text: "हम अनधिकृत पहुंच, हानि या दुरुपयोग से एकत्र किए गए किसी भी डेटा की सुरक्षा के लिए व्यावसायिक रूप से उचित तकनीकी और प्रशासनिक सुरक्षा उपाय लागू करते हैं। प्रमाणीकरण या सत्यापन सर्वर के साथ सभी नेटवर्क संचार सुरक्षित HTTPS / TLS एन्क्रिप्शन का उपयोग करते हैं।",
@@ -1519,7 +1519,7 @@ export const translations: Record<Language, TranslationSchema> = {
       title: "रिफंड एवं रद्दीकरण नीति (Refund Policy)",
       effectiveDate: "प्रभावी तिथि: 1 मार्च 2025",
       lastUpdated: "अंतिम अद्यतन: मार्च 2025",
-      paymentGateways: "भुगतान गेटवे: पेयू / गूगल प्ले",
+      paymentGateways: "भुगतान गेटवे: Razorpay / गूगल प्ले",
       summaryTitle: "प्रीमियम पास के लिए नीति सारांश",
       summaryText: "लेस लीगल एक निर्दिष्ट वैधता अवधि के लिए विज्ञापन-मुक्त पहुंच प्रदान करने वाले डिजिटल पास प्रदान करता है। चूंकि डिजिटल पास सक्रियण तत्काल लाभ प्रदान करता है, रिफंड नीचे वर्णित पारदर्शी तकनीकी पात्रता मानदंडों द्वारा शासित होते हैं।",
       sec1Title: "1. प्रीमियम प्लान्स पर प्रयोज्यता",
@@ -1531,7 +1531,7 @@ export const translations: Record<Language, TranslationSchema> = {
       cond1Title: "डुप्लिकेट / एकाधिक शुल्क:",
       cond1Text: "यदि चेकआउट के दौरान नेटवर्क समस्या के कारण आपके बैंक खाते या यूपीआई से एक ही लेनदेन के लिए एक से अधिक बार कटौती की गई है, तो अतिरिक्त शुल्क वापस कर दिया जाएगा।",
       cond2Title: "भुगतान काटा गया लेकिन पास सक्रिय नहीं हुआ:",
-      cond2Text: "यदि आपका भुगतान पेयू / गूगल प्ले द्वारा सफलतापूर्वक संसाधित किया गया था लेकिन विज्ञापन-मुक्त पास 24 घंटों के भीतर सक्रिय होने में विफल रहा और हमारी तकनीकी टीम इसे मैन्युअल रूप से सक्रिय नहीं कर सकती है, तो पूर्ण रिफंड शुरू किया जाएगा।",
+      cond2Text: "यदि आपका भुगतान Razorpay / गूगल प्ले द्वारा सफलतापूर्वक संसाधित किया गया था लेकिन विज्ञापन-मुक्त पास 24 घंटों के भीतर सक्रिय होने में विफल रहा और हमारी तकनीकी टीम इसे मैन्युअल रूप से सक्रिय नहीं कर सकती है, तो पूर्ण रिफंड शुरू किया जाएगा।",
       sec3Title: "3. रद्दीकरण नियम (कोई ऑटो-डेबिट नहीं)",
       sec3P1: "चूंकि लेस लीगल पास एकमुश्त निश्चित अवधि की खरीदारी हैं और स्वतः नवीनीकृत होने वाले सब्सक्रिप्शन नहीं हैं, इसलिए कोई आवर्ती बिलिंग चक्र नहीं है जिसके लिए भविष्य में रद्दीकरण की आवश्यकता हो।",
       sec3P2: "एक बार जब आपकी वैधता अवधि समाप्त हो जाती है, तो आपका खाता बिना किसी रद्दीकरण कार्रवाई के स्वचालित रूप से मानक पहुंच पर वापस आ जाता है।",
@@ -1539,13 +1539,13 @@ export const translations: Record<Language, TranslationSchema> = {
       sec4Sub: "किसी पात्र लेनदेन के लिए रिफंड अनुरोध शुरू करने के लिए, कृपया लेनदेन की तारीख के 7 दिनों के भीतर निम्नलिखित विवरणों के साथ एक अनुरोध सबमिट करें:",
       sec4Bullets: [
         "लेस लीगल में आपका पंजीकृत खाता ईमेल पता।",
-        "पेमेंट गेटवे ट्रांजैक्शन आईडी / ऑर्डर आईडी (पेयू या प्ले स्टोर रसीद से)।",
+        "पेमेंट गेटवे ट्रांजैक्शन आईडी / ऑर्डर आईडी (Razorpay या प्ले स्टोर रसीद से)।",
         "लेनदेन की तारीख और राशि (₹99)।",
         "सामना की गई तकनीकी समस्या का संक्षिप्त विवरण।"
       ],
       sec4Button: "सहायता डेस्क के माध्यम से रिफंड अनुरोध भेजें",
       sec5Title: "5. रिफंड प्रोसेसिंग समय-सीमा",
-      sec5Text: "स्वीकृत रिफंड मूल भुगतान विधि के माध्यम से पेमेंट गेटवे (पेयू / गूगल प्ले) द्वारा संसाधित किए जाते हैं। आपके जारीकर्ता बैंक या भुगतान प्रदाता के आधार पर, रिफंड की गई राशि आमतौर पर 5 से 7 व्यावसायिक दिनों के भीतर आपके मूल खाते में दिखाई देती है।",
+      sec5Text: "स्वीकृत रिफंड मूल भुगतान विधि के माध्यम से पेमेंट गेटवे (Razorpay / गूगल प्ले) द्वारा संसाधित किए जाते हैं। आपके जारीकर्ता बैंक या भुगतान प्रदाता के आधार पर, रिफंड की गई राशि आमतौर पर 5 से 7 व्यावसायिक दिनों के भीतर आपके मूल खाते में दिखाई देती है।",
       readTerms: "← सेवा की शर्तें पढ़ें",
       contactSupport: "सहायता डेस्क से संपर्क करें →"
     }

@@ -1466,86 +1466,159 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
           SECTION 4: TOP ANNOUNCEMENT TICKER BAR
           ========================================================================= */}
       {activeSection === 'announcement' && (
-        <div className="p-6 sm:p-8 rounded-[28px] bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl border border-white/80 dark:border-white/10 shadow-md space-y-6 animate-in fade-in">
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#0D1220] border border-white/10 shadow-xl space-y-6 animate-in fade-in text-white">
           
-          <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-black">
+              <div className="w-10 h-10 rounded-2xl bg-red-600/20 border border-red-500/30 text-red-400 flex items-center justify-center shrink-0">
                 <Bell className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-                  {isHindi ? "लाइव टॉप घोषणा / प्रोमोशन टिकर बार" : "Live Top Announcement Bar"}
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  {isHindi ? 'हेडर लाइव टिकर घोषणा नियंत्रण' : 'Live Header Announcement Ticker'}
                 </h3>
-                <p className="text-xs text-slate-500">
-                  {isHindi ? "वेबसाइट के शीर्ष पर चलने वाले प्रोमोशन ऑफर और नोटिस को ऑन/ऑफ और एडिट करें।" : "Manage the top persistent announcement banner running across the site."}
+                <p className="text-xs text-stone-400">
+                  {isHindi ? 'हेडर के ठीक नीचे चलने वाले लाइव टिकर को Firebase में सेव और प्रकाशित करें।' : 'Publish and control the live ticker running right below the website header via Firebase.'}
                 </p>
               </div>
             </div>
 
             <button
+              type="button"
               onClick={() => handleFieldChange('announcementActive', !config.announcementActive)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-2 whitespace-nowrap ${
                 config.announcementActive
-                  ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30'
-                  : 'bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/35'
+                  : 'bg-white/10 text-stone-300 border border-white/15'
               }`}
             >
-              {config.announcementActive ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
-              <span>{config.announcementActive ? (isHindi ? "बैनर ऑन (Active)" : "Banner Active") : (isHindi ? "बैनर बंद (Off)" : "Banner Off")}</span>
+              {config.announcementActive ? <ToggleRight className="w-4 h-4 shrink-0" /> : <ToggleLeft className="w-4 h-4 shrink-0" />}
+              <span>{config.announcementActive ? (isHindi ? 'टिकर चालू (LIVE)' : 'Ticker Active') : (isHindi ? 'टिकर बंद (OFF)' : 'Ticker Off')}</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Live Ticker Preview Strip */}
+          <div className="space-y-2">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-stone-400">
+              {isHindi ? 'लाइव प्रीव्यू (हेडर के नीचे पिन किया हुआ)' : 'Live Preview (Pinned Below Header)'}
+            </div>
+            <div className="rounded-xl bg-gradient-to-r from-[#1A0509] via-[#070B12] to-[#1A0509] border border-red-600/35 px-3.5 py-2.5 flex items-center justify-between gap-3">
+              <span className="px-2.5 py-0.5 rounded-md bg-red-600/20 border border-red-500/40 text-red-400 text-[10px] font-bold uppercase whitespace-nowrap shrink-0">
+                {(isHindi ? config.announcementBadgeHi : config.announcementBadgeEn) || (isHindi ? 'सूचना' : 'NOTICE')}
+              </span>
+              <span className="text-xs text-stone-100 truncate flex-1">
+                {(isHindi ? config.announcementTextHi : config.announcementTextEn) || (isHindi ? 'यहाँ घोषणा टेक्स्ट दिखाई देगा...' : 'Ticker announcement text will appear here...')}
+              </span>
+              {(isHindi ? config.announcementButtonTextHi : config.announcementButtonTextEn) && (
+                <span className="px-2.5 py-1 rounded-md bg-red-600 text-white text-[10px] font-bold whitespace-nowrap shrink-0">
+                  {isHindi ? config.announcementButtonTextHi : config.announcementButtonTextEn}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Fixed Red-Black Theme Indicator */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'टिकर थीम व व्यवहार' : 'Ticker Theme & Behavior'}
+              </label>
+              <div className="w-full px-3.5 py-2.5 rounded-xl bg-[#070B12] border border-red-500/30 text-xs font-semibold text-red-300 flex items-center justify-between">
+                <span>{isHindi ? 'Red & Black (स्थायी और स्क्रॉल-पिन्ड)' : 'Red & Black (Always Visible on Scroll)'}</span>
+                <span className="text-[10px] uppercase tracking-wider text-stone-400">Locked</span>
+              </div>
+            </div>
+
+            {/* Target Link / Route */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'क्लिक पर खोलें (Route / URL)' : 'Action Target (Route or URL)'}
+              </label>
+              <input
+                type="text"
+                value={config.announcementLink || ''}
+                onChange={(e) => handleFieldChange('announcementLink', e.target.value)}
+                placeholder="articles, download, premium, tools, or https://..."
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#070B12] border border-white/15 text-xs font-mono text-white outline-none focus:border-red-500"
+              />
+            </div>
+
+            {/* Badge HI & EN */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'बैज लेबल (हिंदी)' : 'Badge Label (Hindi)'}
+              </label>
+              <input
+                type="text"
+                value={config.announcementBadgeHi || ''}
+                onChange={(e) => handleFieldChange('announcementBadgeHi', e.target.value)}
+                placeholder="विशेष घोषणा"
+                className="w-full px-3.5 py-2 rounded-xl bg-[#070B12] border border-white/15 text-xs text-white outline-none focus:border-red-500"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'बैज लेबल (English)' : 'Badge Label (English)'}
+              </label>
+              <input
+                type="text"
+                value={config.announcementBadgeEn || ''}
+                onChange={(e) => handleFieldChange('announcementBadgeEn', e.target.value)}
+                placeholder="OFFICIAL NOTICE"
+                className="w-full px-3.5 py-2 rounded-xl bg-[#070B12] border border-white/15 text-xs text-white outline-none focus:border-red-500"
+              />
+            </div>
+
             <div className="space-y-1.5 md:col-span-2">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                {isHindi ? "घोषणा टेक्स्ट (हिंदी)" : "Announcement Text (Hindi)"}
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'टिकर संदेश (हिंदी)' : 'Ticker Message (Hindi)'}
               </label>
               <input
                 type="text"
                 value={config.announcementTextHi}
                 onChange={(e) => handleFieldChange('announcementTextHi', e.target.value)}
-                placeholder="लेस लीगल लाइफटाइम पास • मात्र ₹99 एकमुश्त • कोई सब्सक्रिप्शन नहीं"
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                placeholder="अधिवक्ता अनुराग गुरौली द्वारा डिजिटल अरेस्ट फ्रॉड से बचाव की विशेष विधिक गाइड जारी।"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#070B12] border border-white/15 text-xs font-medium text-white outline-none focus:border-red-500"
               />
             </div>
 
             <div className="space-y-1.5 md:col-span-2">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                {isHindi ? "घोषणा टेक्स्ट (English)" : "Announcement Text (English)"}
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'टिकर संदेश (English)' : 'Ticker Message (English)'}
               </label>
               <input
                 type="text"
                 value={config.announcementTextEn}
                 onChange={(e) => handleFieldChange('announcementTextEn', e.target.value)}
-                placeholder="Less Legal Lifetime Pass • ₹99 One-Time Access • No Subscriptions"
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                placeholder="Official digital arrest legal defense guidelines & Less Legal Android app updates."
+                className="w-full px-4 py-2.5 rounded-xl bg-[#070B12] border border-white/15 text-xs font-medium text-white outline-none focus:border-red-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                {isHindi ? "बटन का नाम (हिंदी)" : "Button Text (Hindi)"}
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'बटन टेक्स्ट (हिंदी)' : 'Button Text (Hindi)'}
               </label>
               <input
                 type="text"
                 value={config.announcementButtonTextHi}
                 onChange={(e) => handleFieldChange('announcementButtonTextHi', e.target.value)}
-                placeholder="ऑफ़र लें"
-                className="w-full px-4 py-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                placeholder="गाइड पढ़ें"
+                className="w-full px-3.5 py-2 rounded-xl bg-[#070B12] border border-white/15 text-xs text-white outline-none focus:border-red-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                {isHindi ? "बटन का नाम (English)" : "Button Text (English)"}
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-300">
+                {isHindi ? 'बटन टेक्स्ट (English)' : 'Button Text (English)'}
               </label>
               <input
                 type="text"
                 value={config.announcementButtonTextEn}
                 onChange={(e) => handleFieldChange('announcementButtonTextEn', e.target.value)}
-                placeholder="Get Pass"
-                className="w-full px-4 py-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-blue-500"
+                placeholder="Read Guide"
+                className="w-full px-3.5 py-2 rounded-xl bg-[#070B12] border border-white/15 text-xs text-white outline-none focus:border-red-500"
               />
             </div>
           </div>
@@ -1685,14 +1758,14 @@ export const AdminWebsiteControlPanel: React.FC<AdminWebsiteControlPanelProps> =
             )}
           </div>
 
-          <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex justify-end">
+          <div className="pt-4 border-t border-white/10 flex justify-end">
             <button
               onClick={handleSaveSiteConfigToCloud}
               disabled={isSaving}
-              className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-2 cursor-pointer shadow-md"
+              className="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs inline-flex items-center gap-2 whitespace-nowrap cursor-pointer shadow-lg shadow-red-600/20 transition-all active:scale-95"
             >
-              <Save className="w-4 h-4" />
-              <span>{isHindi ? "घोषणा व बैनर सेटिंग्स सहेजें" : "Save Announcement & Banner"}</span>
+              <Save className="w-4 h-4 shrink-0" />
+              <span>{isHindi ? "Firebase पर लाइव सेव करें" : "Publish Ticker to Firebase"}</span>
             </button>
           </div>
 

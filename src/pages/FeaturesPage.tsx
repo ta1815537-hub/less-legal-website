@@ -131,21 +131,11 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
       id: 'f-learning-hub',
       title: 'कानूनी अध्ययन (Learning Hub)',
       category: 'Learning & Reference',
-      description: 'भारतीय संविधान, आईपीसी/बीएनएस, सीआरपीसी/बीएनएसएस और प्रमुख न्यायिक सिद्धांत।',
+      description: 'भारतीय संविधान, प्रमुख न्यायिक सिद्धांत, लीगल शब्दावली एवं विधिक क्विज़।',
       badge: 'Popular',
       themeColor: 'purple',
       icon: BookOpen,
-      tags: ['बेयर एक्ट्स', 'संविधान', 'कानूनी सिद्धांत', '+3']
-    },
-    {
-      id: 'f-bare-acts',
-      title: 'डिजिटल बेयर एक्ट्स (Digital Bare Acts)',
-      category: 'Learning & Reference',
-      description: 'सभी केंद्रीय एवं राज्य स्तरीय अधिनियमों का संपूर्ण ऑफ़लाइन संग्रह।',
-      badge: 'Popular',
-      themeColor: 'indigo',
-      icon: BookMarked,
-      tags: ['धारा-वार खोज', 'ऑफ़लाइन एक्सेस', 'अद्यतन संशोधन', '+2']
+      tags: ['संविधान', 'कानूनी शब्दावली', 'लीगल क्विज़', '+2']
     },
     {
       id: 'f-landmark-judgments',
@@ -349,7 +339,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                 <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="Search features (e.g. Bare Acts, Bigha, PDF, Calculator...)"
+                  placeholder="Search features (e.g. Case Diary, Bigha, PDF, Calculator...)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white dark:bg-white/10 border border-stone-200 dark:border-white/15 text-sm text-[#111016] dark:text-white placeholder-stone-400 shadow-xs focus:ring-2 focus:ring-[#16A34A] outline-none backdrop-blur-md transition-all"
@@ -444,7 +434,7 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
                   <div className="grid grid-cols-3 gap-1.5 pt-1">
                     <div className="rounded-xl bg-emerald-950/50 border border-emerald-500/30 p-2 flex flex-col items-center gap-1">
                       <BookOpen className="w-4 h-4 text-emerald-400" />
-                      <span className="text-[8px] font-bold text-emerald-200">Bare Acts</span>
+                      <span className="text-[8px] font-bold text-emerald-200">Case Diary</span>
                     </div>
                     <div className="rounded-xl bg-green-950/50 border border-green-500/30 p-2 flex flex-col items-center gap-1">
                       <FileText className="w-4 h-4 text-green-400" />

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
-import { Lock, ArrowUp } from 'lucide-react';
+import { Mail, Youtube, Instagram, Facebook, Globe, MessageCircle } from 'lucide-react';
 import { LTLogo } from './LTLogo';
 import { useLanguage } from '../context/LanguageContext';
+import { adminStorage, SocialChannelLink, DEFAULT_SOCIAL_CHANNELS } from '../utils/adminStorage';
 
 interface FooterProps {
   onNavigate: (route: PageRoute) => void;
@@ -12,47 +13,37 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const { language } = useLanguage();
   const isHindi = language === 'hi';
 
-  // Secret 10-tap admin lock state
-  const tapCountRef = React.useRef(0);
-  const resetTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [socialLinks, setSocialLinks] = useState<SocialChannelLink[]>(DEFAULT_SOCIAL_CHANNELS);
 
-  const handleSecretLockClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    tapCountRef.current += 1;
+  useEffect(() => {
+    adminStorage.fetchSocialChannelsFromCloud().catch(() => {});
+    const unsub = adminStorage.subscribeToSocialChannels((channels) => {
+      if (channels && channels.length > 0) {
+        setSocialLinks(channels);
+      }
+    });
+    return () => unsub();
+  }, []);
 
-    if (resetTimerRef.current) {
-      clearTimeout(resetTimerRef.current);
-    }
-
-    if (tapCountRef.current >= 10) {
-      tapCountRef.current = 0;
-      onNavigate('admin');
-      return;
-    }
-
-    resetTimerRef.current = setTimeout(() => {
-      tapCountRef.current = 0;
-    }, 4500);
+  const getChannelUrl = (platform: SocialChannelLink['platform'], fallback: string) => {
+    const found = socialLinks.find(c => c.platform === platform && c.isActive !== false && c.url?.trim());
+    return found ? found.url : fallback;
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const facebookUrl = getChannelUrl('facebook', 'https://facebook.com/lesscreation');
+  const instagramUrl = getChannelUrl('instagram', 'https://instagram.com/lesscreation');
+  const youtubeUrl = getChannelUrl('youtube', 'https://youtube.com/@lesscreation');
+  const twitterUrl = getChannelUrl('twitter', 'https://x.com/lesscreation');
 
   return (
-    <footer className="bg-[#070B12] text-stone-400 border-t border-white/10 pb-8 pt-10 sm:pt-14 transition-colors w-full mt-auto shrink-0 select-none relative overflow-hidden">
-      {/* Soft Ambient Background Accent */}
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-0 left-1/4 w-80 h-80 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
-
+    <footer className="bg-[#070B12] text-stone-400 border-t border-white/10 pb-10 pt-10 sm:pt-14 w-full mt-auto shrink-0 select-none relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Brand Row (No Subtitle Text) */}
+        {/* Brand Row (Logo + Name only, no subtitle text) */}
         <div className="pb-8 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <LTLogo className="w-10 h-10 shrink-0" />
-            <div className="text-xl font-extrabold text-white tracking-tight leading-none">
+            <LTLogo className="w-9 h-9 shrink-0" />
+            <div className="text-lg font-bold text-white tracking-tight leading-none">
               Less Creation
             </div>
           </div>
@@ -61,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Directory Links Grid: 4 Columns */}
         <div className="py-10 grid grid-cols-2 sm:grid-cols-4 gap-8">
           
-          {/* Products */}
+          {/* Utilities */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
@@ -69,34 +60,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h3>
             <ul className="space-y-2 text-xs font-medium">
               <li>
-                <button
-                  onClick={() => onNavigate('tools')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('tools')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'संपूर्ण 29 टूल्स डायरेक्टरी' : 'All 29+ Local Tools'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('premium')}
-                  className="text-stone-400 hover:text-[#C9A24B] transition-colors cursor-pointer text-left font-bold"
-                >
+                <button onClick={() => onNavigate('premium')} className="text-stone-400 hover:text-[#C9A24B] transition-colors cursor-pointer text-left font-bold">
                   {isHindi ? 'लाइफटाइम पास (₹99)' : 'Lifetime Pass (₹99)'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('download')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('download')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'एंड्रॉयड ऐप डाउनलोड' : 'Android App Download'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('about')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('about')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'हमारे बारे में' : 'About Less Creation'}
                 </button>
               </li>
@@ -111,26 +90,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h3>
             <ul className="space-y-2 text-xs font-medium">
               <li>
-                <button
-                  onClick={() => onNavigate('articles')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('articles')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'लेख व साइबर सुरक्षा गाइड' : 'Cyber Safety Guides'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('founder')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('founder')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'संस्थापक विवरण' : 'Founder Dossier'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('contact')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('contact')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'सहायता और संपर्क' : 'Contact & Support'}
                 </button>
               </li>
@@ -144,120 +114,109 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </h3>
             <ul className="space-y-2 text-xs font-medium">
               <li>
-                <button
-                  onClick={() => onNavigate('privacy')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('privacy')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'गोपनीयता नीति' : 'Website Privacy Policy'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('terms')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('terms')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'सेवा की शर्तें' : 'Terms of Service'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('refund')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('refund')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'रिफंड व रद्दीकरण' : 'Refund Policy'}
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate('disclaimer')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
+                <button onClick={() => onNavigate('disclaimer')} className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left">
                   {isHindi ? 'विधिक अस्वीकरण' : 'Legal Disclaimer'}
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('app-privacy')}
-                  className="text-stone-400 hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  {isHindi ? 'मोबाइल ऐप गोपनीयता' : 'App Privacy Policy'}
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Connect & Social Channels */}
+          {/* Connect (Facebook, Instagram, Email, YouTube, X) */}
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-white">
               {isHindi ? 'संपर्क व सोशल' : 'Connect'}
             </h3>
-            
             <div className="flex flex-wrap gap-2 pt-1">
-              <a
-                href="https://facebook.com/lesscreation"
-                target="_blank"
-                rel="noopener noreferrer"
+              <a 
+                href={facebookUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
                 aria-label="Facebook"
-                className="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 border border-white/10 flex items-center justify-center transition-all hover:scale-105"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer"
+                title="Facebook"
               >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
-                </svg>
+                <Facebook className="w-3.5 h-3.5" />
               </a>
 
-              <a
-                href="https://x.com/lesscreation"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="X (Twitter)"
-                className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#C9A24B]/20 text-stone-300 hover:text-[#C9A24B] border border-white/10 flex items-center justify-center transition-all hover:scale-105"
+              <a 
+                href={instagramUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Instagram"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer"
+                title="Instagram"
               >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
+                <Instagram className="w-3.5 h-3.5" />
               </a>
 
-              <a
-                href="https://www.youtube.com/@LessLegalOfficial"
-                target="_blank"
-                rel="noopener noreferrer"
+              <a 
+                href="mailto:support@lesscreation.com" 
+                aria-label="Email"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer"
+                title="Email Support"
+              >
+                <Mail className="w-3.5 h-3.5" />
+              </a>
+
+              <a 
+                href={youtubeUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
                 aria-label="YouTube"
-                className="w-8 h-8 rounded-full bg-white/5 hover:bg-rose-500/20 text-stone-300 hover:text-rose-400 border border-white/10 flex items-center justify-center transition-all hover:scale-105"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer"
+                title="YouTube"
               >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
+                <Youtube className="w-3.5 h-3.5" />
               </a>
 
+              <a 
+                href={twitterUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="X (Twitter)"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 border border-white/10 flex items-center justify-center transition-all cursor-pointer"
+                title="X (Twitter)"
+              >
+                <span className="text-xs font-bold leading-none">𝕏</span>
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar with Admin Lock, Copyright, and Support Email */}
-        <div className="pt-6 pb-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[9px]">
-          <div className="flex items-center gap-3 order-2 sm:order-1">
-            {/* Compact Red Support Email - Moved to far left and shrunk */}
+        {/* Bottom Copyright & Support Bar (Admin Lock moved discreetly inside Top 3-Line Menu) */}
+        <div className="pt-6 pb-2 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px]">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
             <a
               href="mailto:support@lesscreation.com"
-              className="inline-flex items-center px-1.5 py-0.5 rounded bg-red-500/5 hover:bg-red-500/10 border border-red-500/15 text-red-500/60 font-mono text-[8px] font-semibold transition-all cursor-pointer"
+              className="inline-flex items-center px-2.5 py-1 rounded bg-red-500/5 hover:bg-red-500/10 border border-red-500/15 text-red-400 font-mono text-[10px] font-semibold transition-all cursor-pointer whitespace-nowrap"
               title="Support"
             >
-              <span className="truncate uppercase tracking-tighter">support@lesscreation.com</span>
+              <span className="uppercase tracking-tight">support@lesscreation.com</span>
             </a>
 
-            <span className="text-stone-600 font-medium whitespace-nowrap">
-              © 2026 Less Creation.
+            <span className="text-stone-500 font-medium whitespace-nowrap">
+              © 2026 Less Creation. All rights reserved.
             </span>
           </div>
 
-          <button
-            onClick={handleSecretLockClick}
-            className="opacity-15 hover:opacity-75 transition-opacity p-1.5 text-stone-400 focus:outline-none cursor-pointer rounded-full order-1 sm:order-2"
-            aria-label="Admin Security"
-            title="System Security"
-          >
-            <Lock className="w-3 h-3" />
-          </button>
+          <span className="text-stone-500 font-mono text-[10px] whitespace-nowrap">
+            {isHindi ? 'विधिक जागरूकता एवं ऑन-डिवाइस गोपनीयता' : 'Legal Awareness & On-Device Privacy'}
+          </span>
         </div>
 
       </div>

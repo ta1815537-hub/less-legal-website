@@ -1,675 +1,262 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PageRoute } from '../types';
-import { 
-  ShieldCheck, Lock, Unlock, Key, Trash2, Mail, User, 
-  Search, Filter, CheckCircle2, Clock, AlertCircle, RefreshCw, 
-  Download, ArrowLeft, LogOut, FileText, ChevronRight, MessageSquare, 
-  Sparkles, Check, X, Tag, Edit3, ShieldAlert, Phone, AlertTriangle,
-  Globe, Smartphone, Briefcase
+import {
+  ArrowLeft, ShieldCheck, Lock, LogOut, RefreshCw, HelpCircle,
+  Globe, Briefcase, Trash2, AlertCircle, CheckCircle2, Flame,
+  Mail, Clock, UserCheck, ShieldAlert
 } from 'lucide-react';
-import { 
-  GoogleAuthProvider,
-  signInWithPopup, 
-  signOut, 
-  onAuthStateChanged, 
-  User as FirebaseUser,
-  sendPasswordResetEmail
+import {
+  adminStorage,
+  ContactSubmission,
+  DeletionRequest
+} from '../utils/adminStorage';
+import { auth, db, googleProvider } from '../firebase';
+import {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  User as FirebaseUser
 } from 'firebase/auth';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { auth, db } from '../lib/firebase';
-import { HeroAmbientGlow } from '../components/MotionWrappers';
-import { useLanguage } from '../context/LanguageContext';
-import { adminStorage, ContactSubmission, DeletionRequest, JobApplication } from '../utils/adminStorage';
+import { doc, getDoc } from 'firebase/firestore';
 import { AdminWebsiteControlPanel } from '../components/AdminWebsiteControlPanel';
 import { AdminHiringControlPanel } from '../components/AdminHiringControlPanel';
 
 interface AdminDashboardPageProps {
-  onNavigate: (route: PageRoute) => void;
+  onNavigate: (route: PageRoute, params?: any) => void;
 }
 
+const PRIMARY_ADMIN_EMAIL = 'advocatetiwaribaba@gmail.com';
+
 export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNavigate }) => {
-  const { language } = useLanguage();
-  const isHindi = language === 'hi';
-
-  // Firebase Auth State
+  // Real Firebase Auth + Firestore Admin Verification State (No PIN bypass)
+  const [authLoading, setAuthLoading] = useState(true);
   const [adminUser, setAdminUser] = useState<FirebaseUser | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [authLoading, setAuthLoading] = useState<boolean>(true);
+  const [isAuthorizedAdmin, setIsAuthorizedAdmin] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  // Form State
-  const [authMode, setAuthMode] = useState<'login' | 'forgot'>('login');
-  const [emailInput, setEmailInput] = useState('');
-  const [passwordInput, setPasswordInput] = useState('');
-  const [authError, setAuthError] = useState<string | null>(null);
-  const [authSuccessMsg, setAuthSuccessMsg] = useState<string | null>(null);
+  // Top-level Admin Portal Tabs
+  const [activeTab, setActiveTab] = useState<'website' | 'hiring' | 'tickets' | 'deletions'>('website');
 
-  // Tab State - Includes new master website & app control center, hiring and candidates
-  const [activeTab, setActiveTab] = useState<'website_control' | 'hiring' | 'deletions' | 'contacts' | 'settings'>('website_control');
+  // Toast State
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-  // Security & Inactivity Session State (15 Minutes = 900 Seconds)
-  const INACTIVITY_TIMEOUT_SECONDS = 15 * 60;
-  const [remainingSeconds, setRemainingSeconds] = useState<number>(INACTIVITY_TIMEOUT_SECONDS);
-  const [sessionExpiredNotice, setSessionExpiredNotice] = useState<boolean>(false);
-
-  // Data State
-  const [deletions, setDeletions] = useState<DeletionRequest[]>([]);
-  const [contacts, setContacts] = useState<ContactSubmission[]>([]);
-  const [jobApplications, setJobApplications] = useState<JobApplication[]>(adminStorage.getJobApplications());
-
-  // Refresh & Toast State
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [refreshToast, setRefreshToast] = useState<string | null>(null);
-  const [toastType, setToastType] = useState<'success' | 'error'>('success');
-
-  // Search & Filter State
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('ALL');
-
-  // Admin Notes Editing State
-  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
-  const [noteText, setNoteText] = useState('');
-
-  // Prevent search engines from crawling/indexing the admin portal
-  useEffect(() => {
-    let metaTag = document.querySelector('meta[name="robots"]');
-    if (!metaTag) {
-      metaTag = document.createElement('meta');
-      metaTag.setAttribute('name', 'robots');
-      document.head.appendChild(metaTag);
-    }
-    metaTag.setAttribute('content', 'noindex, nofollow, noarchive');
-
-    return () => {
-      metaTag?.setAttribute('content', 'index, follow');
-    };
+  const showToast = useCallback((message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(prev => (prev?.message === message ? null : prev));
+    }, 4000);
   }, []);
 
-  // Monitor Secure Admin Session & enforce strict Firebase Auth boundaries
-  useEffect(() => {
-    // Purge any legacy localStorage credentials or session flags
-    localStorage.removeItem('less_legal_admin_session');
-    localStorage.removeItem('less_legal_admin_creds');
+  // Support Inquiries & Deletion Requests State
+  const [tickets, setTickets] = useState<ContactSubmission[]>([]);
+  const [deletions, setDeletions] = useState<DeletionRequest[]>([]);
+  const [isSyncingQueue, setIsSyncingQueue] = useState(false);
 
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setAuthLoading(true);
-        try {
-          const isAuthorized = await adminStorage.verifyAdminCustomClaim(user);
-          if (isAuthorized) {
-            setAdminUser(user);
-            setIsAuthenticated(true);
-            const now = Date.now();
-            sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: user.email, loggedInAt: now, lastActive: now }));
-            setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
-          } else {
-            await signOut(auth);
-            sessionStorage.removeItem('less_legal_admin_session');
-            setAdminUser(null);
-            setIsAuthenticated(false);
-            setAuthError(
-              isHindi
-                ? "पहुँच अस्वीकृत: आपका खाता अधिकृत एडमिन के रूप में पंजीकृत नहीं है।"
-                : "Access Denied: Your account is not authorized as an administrator."
-            );
-          }
-        } catch (err) {
-          console.error("Error checking admin authorization:", err);
-          await signOut(auth);
-          sessionStorage.removeItem('less_legal_admin_session');
-          setAdminUser(null);
-          setIsAuthenticated(false);
-          setAuthError(
-            isHindi
-              ? "सत्यापन विफल! कृपया पुनः प्रयास करें।"
-              : "Authorization verification failed! Please try again."
-          );
-        }
-      } else {
-        sessionStorage.removeItem('less_legal_admin_session');
+  // Verify user against Firestore rules (`advocatetiwaribaba@gmail.com` or `admins/{uid}`)
+  const verifyAdminPrivilege = useCallback(async (user: FirebaseUser): Promise<boolean> => {
+    if (user.email && user.email.toLowerCase() === PRIMARY_ADMIN_EMAIL) {
+      return true;
+    }
+    try {
+      const adminDoc = await getDoc(doc(db, 'admins', user.uid));
+      return adminDoc.exists();
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // Firebase Auth Listener
+  useEffect(() => {
+    // Clear any stale legacy bypass session keys
+    try {
+      localStorage.removeItem('less_admin_auth_session');
+    } catch {}
+
+    const unsubAuth = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
         setAdminUser(null);
-        setIsAuthenticated(false);
+        setIsAuthorizedAdmin(false);
+        setAuthLoading(false);
+        return;
       }
+
+      setAdminUser(user);
+      const allowed = await verifyAdminPrivilege(user);
+      setIsAuthorizedAdmin(allowed);
       setAuthLoading(false);
     });
 
-    return () => unsubscribe();
-  }, [isHindi]);
+    return () => unsubAuth();
+  }, [verifyAdminPrivilege]);
 
-  // Real-time Inactivity Auto-Logout Timer (15 Minutes) & User Interaction Reset
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const resetInactivityTimer = () => {
-      const now = Date.now();
-      const sessStr = sessionStorage.getItem('less_legal_admin_session');
-      if (sessStr) {
-        try {
-          const parsed = JSON.parse(sessStr);
-          parsed.lastActive = now;
-          sessionStorage.setItem('less_legal_admin_session', JSON.stringify(parsed));
-        } catch {}
-      }
-      setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
-    };
-
-    // User activity listeners (debounced)
-    const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll'];
-    let throttleTimeout: NodeJS.Timeout | null = null;
-    const handleActivity = () => {
-      if (!throttleTimeout) {
-        throttleTimeout = setTimeout(() => {
-          resetInactivityTimer();
-          throttleTimeout = null;
-        }, 1000);
-      }
-    };
-
-    activityEvents.forEach((ev) => window.addEventListener(ev, handleActivity, { passive: true }));
-
-    // 1-second countdown interval
-    const interval = setInterval(() => {
-      setRemainingSeconds((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          handleLogout(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      activityEvents.forEach((ev) => window.removeEventListener(ev, handleActivity));
-      if (throttleTimeout) clearTimeout(throttleTimeout);
-    };
-  }, [isAuthenticated]);
-
-  // Load Data on Mount & Refresh
-  const loadData = async () => {
-    const localDeletions = adminStorage.getDeletionRequests();
-    const localContacts = adminStorage.getContactSubmissions();
-    setDeletions(localDeletions);
-    setContacts(localContacts);
-
-    if (localContacts.length > 0 && localDeletions.length === 0) {
-      setActiveTab('contacts');
-    }
-
-    // Sync cloud records asynchronously
+  // Load Support Inquiries & Deletion Requests once verified
+  const refreshQueues = useCallback(async () => {
+    setIsSyncingQueue(true);
     try {
-      const [cloudDeletions, cloudContacts] = await Promise.all([
-        adminStorage.fetchDeletionRequestsFromCloud(),
-        adminStorage.fetchContactSubmissionsFromCloud()
+      const [loadedTickets, loadedDeletions] = await Promise.all([
+        adminStorage.getContactSubmissions(),
+        adminStorage.getDeletionRequestsForAdmin()
       ]);
-      setDeletions(cloudDeletions);
-      setContacts(cloudContacts);
-
-      if (cloudContacts.length > 0 && cloudDeletions.length === 0) {
-        setActiveTab('contacts');
-      }
-    } catch {
-      // Fallback to local items if offline
-    }
-  };
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    setRefreshToast(null);
-    try {
-      await loadData();
-      await new Promise(res => setTimeout(res, 500));
-      setRefreshToast(isHindi ? 'डेटा सफलतापूर्वक अपडेट हो गया!' : 'Data refreshed successfully!');
-      setTimeout(() => setRefreshToast(null), 3000);
+      setTickets(loadedTickets);
+      setDeletions(loadedDeletions);
     } catch (err) {
-      console.error('Refresh error:', err);
+      console.error('Queue sync failed:', err);
     } finally {
-      setIsRefreshing(false);
+      setIsSyncingQueue(false);
     }
-  };
+  }, []);
 
-  // Real-time Firestore sync listeners
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (isAuthorizedAdmin) {
+      refreshQueues();
+    }
+  }, [isAuthorizedAdmin, refreshQueues]);
 
-    loadData();
-
-    // Listen to contact_submissions real-time
-    const unsubContacts = onSnapshot(collection(db, 'contact_submissions'), (snapshot) => {
-      const cloudItems: ContactSubmission[] = [];
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        cloudItems.push({
-          id: data.id || docSnap.id,
-          firestoreDocId: docSnap.id,
-          name: data.name || '',
-          email: data.email || '',
-          subject: data.subject || '',
-          transactionId: data.transactionId || undefined,
-          message: data.message || '',
-          timestamp: data.timestamp || new Date().toISOString(),
-          status: data.status || 'Pending',
-          adminNotes: data.adminNotes || ''
-        });
-      });
-
-      const localItems = adminStorage.getContactSubmissions();
-      const itemMap = new Map<string, ContactSubmission>();
-      localItems.forEach(item => itemMap.set(item.id, item));
-      cloudItems.forEach(item => itemMap.set(item.id, item));
-
-      const merged = Array.from(itemMap.values()).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-      setContacts(merged);
-      try {
-        localStorage.setItem('less_legal_contact_submissions', JSON.stringify(merged));
-      } catch {}
-
-      if (merged.length > 0) {
-        setActiveTab(prev => (prev === 'deletions' ? 'contacts' : prev));
-      }
-    }, (err) => {
-      console.warn('Realtime contacts listener warning:', err);
-    });
-
-    // Listen to account_deletion_requests real-time
-    const unsubDeletions = onSnapshot(collection(db, 'account_deletion_requests'), (snapshot) => {
-      const cloudItems: DeletionRequest[] = [];
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        cloudItems.push({
-          id: data.id || docSnap.id,
-          firestoreDocId: docSnap.id,
-          ticketId: data.ticketId || '',
-          email: data.email || '',
-          userId: data.userId || undefined,
-          reason: data.reason || undefined,
-          timestamp: data.timestamp || new Date().toISOString(),
-          status: data.status || 'Pending',
-          adminNotes: data.adminNotes || ''
-        });
-      });
-
-      const localItems = adminStorage.getDeletionRequests();
-      const itemMap = new Map<string, DeletionRequest>();
-      localItems.forEach(item => itemMap.set(item.id, item));
-      cloudItems.forEach(item => itemMap.set(item.id, item));
-
-      const merged = Array.from(itemMap.values()).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-      setDeletions(merged);
-      try {
-        localStorage.setItem('less_legal_deletion_requests', JSON.stringify(merged));
-      } catch {}
-    }, (err) => {
-      console.warn('Realtime deletions listener warning:', err);
-    });
-
-    // Listen to job applications real-time
-    const unsubApps = adminStorage.listenJobApplications((apps) => {
-      setJobApplications(apps);
-    });
-
-    return () => {
-      unsubContacts();
-      unsubDeletions();
-      unsubApps();
-    };
-  }, [isAuthenticated]);
-
-  // Auth Handlers
-  const handleGoogleSignIn = async () => {
-    setAuthError(null);
-    setAuthSuccessMsg(null);
-    setSessionExpiredNotice(false);
-    setAuthLoading(true);
-
+  // Google Sign-In Handler
+  const handleGoogleLogin = async () => {
+    setIsAuthenticating(true);
+    setAuthError('');
     try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      const userCred = await signInWithPopup(auth, provider);
-      const user = userCred.user;
-
-      const isAuthorized = await adminStorage.verifyAdminCustomClaim(user);
-      if (isAuthorized) {
-        setAdminUser(user);
-        setIsAuthenticated(true);
-        const now = Date.now();
-        sessionStorage.setItem('less_legal_admin_session', JSON.stringify({ email: user.email, loggedInAt: now, lastActive: now }));
-        setRemainingSeconds(INACTIVITY_TIMEOUT_SECONDS);
-        setAuthError(null);
-      } else {
-        await signOut(auth);
-        sessionStorage.removeItem('less_legal_admin_session');
-        setAdminUser(null);
-        setIsAuthenticated(false);
-        setAuthError(
-          isHindi
-            ? "पहुँच अस्वीकृत: आपके गूगल खाते के पास एडमिन अधिकार (admin: true) नहीं हैं।"
-            : "Access Denied: Your Google account does not have administrator privileges (admin: true)."
-        );
+      const res = await signInWithPopup(auth, googleProvider);
+      if (res.user) {
+        setAdminUser(res.user);
+        const allowed = await verifyAdminPrivilege(res.user);
+        setIsAuthorizedAdmin(allowed);
+        if (!allowed) {
+          setAuthError(`Access denied for ${res.user.email || res.user.uid}. Please sign in with the authorized administrator Google account.`);
+        }
       }
     } catch (err: any) {
-      console.error("Google sign-in error:", err);
-      if (err.code !== 'auth/popup-closed-by-user') {
-        setAuthError(
-          isHindi
-            ? "गूगल प्रमाणीकरण विफल! कृपया पुनः प्रयास करें।"
-            : "Google authentication failed! Please try again."
-        );
-      }
-      setAdminUser(null);
-      setIsAuthenticated(false);
+      console.error('Google Auth error:', err);
+      setAuthError(err?.message || 'Google Sign-In could not be completed. Please allow popups and try again.');
     } finally {
-      setAuthLoading(false);
+      setIsAuthenticating(false);
     }
   };
 
-  const handleLogout = async (dueToInactivity = false) => {
+  const handleLogout = async () => {
     try {
       await signOut(auth);
-    } catch (err) {
-      console.error('Logout error:', err);
-    }
-    sessionStorage.removeItem('less_legal_admin_session');
-    localStorage.removeItem('less_legal_admin_session');
-    localStorage.removeItem('less_legal_admin_creds');
+    } catch {}
     setAdminUser(null);
-    setIsAuthenticated(false);
-    if (dueToInactivity) {
-      setSessionExpiredNotice(true);
-      setAuthError(
-        isHindi
-          ? "सुरक्षा समय सीमा समाप्त (15 मिनट निष्क्रियता)! आपका एडमिन सत्र स्वतः लॉक/लॉगआउट कर दिया गया है।"
-          : "Security timeout (15 mins inactivity)! Your admin session has been automatically locked."
-      );
+    setIsAuthorizedAdmin(false);
+    setAuthError('');
+  };
+
+  // Support Inquiry Handlers
+  const handleUpdateTicketStatus = async (ticketId: string, status: ContactSubmission['status']) => {
+    await adminStorage.updateContactSubmissionStatus(ticketId, status);
+    setTickets(prev => prev.map(t => (t.id === ticketId || t.firestoreDocId === ticketId) ? { ...t, status } : t));
+    showToast(`Ticket status updated to ${status}`, 'success');
+  };
+
+  const handleDeleteTicket = async (ticketId: string) => {
+    await adminStorage.deleteContactSubmission(ticketId);
+    setTickets(prev => prev.filter(t => t.id !== ticketId && t.firestoreDocId !== ticketId));
+    showToast('Inquiry removed from queue', 'success');
+  };
+
+  // Account Deletion Request Handlers
+  const handleUpdateDeletionStatus = async (reqId: string, status: DeletionRequest['status']) => {
+    const ok = await adminStorage.updateDeletionRequestStatus(reqId, status, adminUser?.email || 'Admin');
+    if (ok) {
+      setDeletions(prev => prev.map(r => (r.id === reqId || r.firestoreDocId === reqId) ? { ...r, status } : r));
+      showToast(`Deletion request marked as ${status}`, 'success');
+    } else {
+      showToast('Failed to update deletion request status', 'error');
     }
   };
 
-  const formatRemainingTime = (totalSeconds: number) => {
-    const mins = Math.floor(totalSeconds / 60);
-    const secs = totalSeconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  // Status Handlers
-  const handleUpdateDeletionStatus = async (id: string, status: 'Pending' | 'Processing' | 'Completed') => {
-    try {
-      await adminStorage.updateDeletionStatus(id, status);
-      setToastType('success');
-      setRefreshToast(isHindi ? 'स्थिति सफलतापूर्वक अपडेट हो गई!' : 'Status updated successfully!');
-      setTimeout(() => setRefreshToast(null), 3000);
-      loadData();
-    } catch (err: any) {
-      console.error('Error updating deletion status:', err);
-      setToastType('error');
-      setRefreshToast(
-        isHindi 
-          ? 'स्थिति अपडेट करने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
-          : `Failed to update status: ${err.message || 'Permission Denied'}`
-      );
-      setTimeout(() => setRefreshToast(null), 5000);
-    }
-  };
-
-  const handleUpdateContactStatus = async (id: string, status: 'Pending' | 'In Progress' | 'Resolved') => {
-    try {
-      await adminStorage.updateContactStatus(id, status);
-      setToastType('success');
-      setRefreshToast(isHindi ? 'स्थिति सफलतापूर्वक अपडेट हो गई!' : 'Status updated successfully!');
-      setTimeout(() => setRefreshToast(null), 3000);
-      loadData();
-    } catch (err: any) {
-      console.error('Error updating contact status:', err);
-      setToastType('error');
-      setRefreshToast(
-        isHindi 
-          ? 'स्थिति अपडेट करने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
-          : `Failed to update status: ${err.message || 'Permission Denied'}`
-      );
-      setTimeout(() => setRefreshToast(null), 5000);
-    }
-  };
-
-  const handleDeleteDeletionItem = async (id: string) => {
-    if (confirm(isHindi ? 'क्या आप इस अनुरोध को स्थायी रूप से हटाना चाहते हैं?' : 'Are you sure you want to delete this request permanently?')) {
-      try {
-        await adminStorage.deleteDeletionRequest(id);
-        setToastType('success');
-        setRefreshToast(isHindi ? 'अनुरोध सफलतापूर्वक हटा दिया गया!' : 'Request deleted successfully!');
-        setTimeout(() => setRefreshToast(null), 3000);
-        loadData();
-      } catch (err: any) {
-        console.error('Error deleting request:', err);
-        setToastType('error');
-        setRefreshToast(
-          isHindi 
-            ? 'अनुरोध हटाने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
-            : `Failed to delete request: ${err.message || 'Permission Denied'}`
-        );
-        setTimeout(() => setRefreshToast(null), 5000);
-      }
-    }
-  };
-
-  const handleDeleteContactItem = async (id: string) => {
-    if (confirm(isHindi ? 'क्या आप इस संदेश को स्थायी रूप से हटाना चाहते हैं?' : 'Are you sure you want to delete this submission permanently?')) {
-      try {
-        await adminStorage.deleteContactSubmission(id);
-        setToastType('success');
-        setRefreshToast(isHindi ? 'संदेश सफलतापूर्वक हटा दिया गया!' : 'Submission deleted successfully!');
-        setTimeout(() => setRefreshToast(null), 3000);
-        loadData();
-      } catch (err: any) {
-        console.error('Error deleting submission:', err);
-        setToastType('error');
-        setRefreshToast(
-          isHindi 
-            ? 'संदेश हटाने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
-            : `Failed to delete submission: ${err.message || 'Permission Denied'}`
-        );
-        setTimeout(() => setRefreshToast(null), 5000);
-      }
-    }
-  };
-
-  const handleSaveNote = async (id: string, type: 'deletion' | 'contact') => {
-    try {
-      if (type === 'deletion') {
-        const target = deletions.find(d => d.id === id);
-        if (target) {
-          await adminStorage.updateDeletionStatus(id, target.status, noteText);
-        }
-      } else {
-        const target = contacts.find(c => c.id === id);
-        if (target) {
-          await adminStorage.updateContactStatus(id, target.status, noteText);
-        }
-      }
-      setToastType('success');
-      setRefreshToast(isHindi ? 'नोट सफलतापूर्वक सहेजा गया!' : 'Note saved successfully!');
-      setTimeout(() => setRefreshToast(null), 3000);
-      setEditingNoteId(null);
-      setNoteText('');
-      loadData();
-    } catch (err: any) {
-      console.error('Error saving note:', err);
-      setToastType('error');
-      setRefreshToast(
-        isHindi 
-          ? 'नोट सहेजने में विफल (अनुमति अस्वीकृत या नेटवर्क समस्या)!' 
-          : `Failed to save note: ${err.message || 'Permission Denied'}`
-      );
-      setTimeout(() => setRefreshToast(null), 5000);
-    }
-  };
-
-  // CSV Exporter
-  const exportToCSV = (data: any[], filename: string) => {
-    if (data.length === 0) return;
-    const keys = Object.keys(data[0]);
-    const csvContent = [
-      keys.join(','),
-      ...data.map(row => keys.map(k => `"${(row[k] || '').toString().replace(/"/g, '""')}"`).join(','))
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${filename}_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  // Filtered Lists
-  const filteredDeletions = deletions.filter(d => {
-    const matchesSearch = 
-      d.ticketId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      d.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (d.userId && d.userId.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (d.reason && d.reason.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    let matchesStatus = true;
-    if (statusFilter !== 'ALL') {
-      const sf = statusFilter.toUpperCase();
-      if (sf === 'PENDING') {
-        matchesStatus = d.status.toUpperCase() === 'PENDING';
-      } else if (sf === 'PROCESSING') {
-        matchesStatus = d.status.toUpperCase() === 'PROCESSING' || d.status.toUpperCase() === 'IN PROGRESS';
-      } else if (sf === 'COMPLETED') {
-        matchesStatus = d.status.toUpperCase() === 'COMPLETED' || d.status.toUpperCase() === 'RESOLVED';
-      }
-    }
-    return matchesSearch && matchesStatus;
-  });
-
-  const filteredContacts = contacts.filter(c => {
-    const matchesSearch = 
-      c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (c.transactionId && c.transactionId.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    let matchesStatus = true;
-    if (statusFilter !== 'ALL') {
-      const sf = statusFilter.toUpperCase();
-      if (sf === 'PENDING') {
-        matchesStatus = c.status.toUpperCase() === 'PENDING';
-      } else if (sf === 'PROCESSING') {
-        matchesStatus = c.status.toUpperCase() === 'IN PROGRESS' || c.status.toUpperCase() === 'PROCESSING';
-      } else if (sf === 'COMPLETED') {
-        matchesStatus = c.status.toUpperCase() === 'RESOLVED' || c.status.toUpperCase() === 'COMPLETED';
-      }
-    }
-    return matchesSearch && matchesStatus;
-  });
-
-  // Calculate Metrics
-  const pendingDeletionsCount = deletions.filter(d => d.status === 'Pending').length;
-  const pendingContactsCount = contacts.filter(c => c.status === 'Pending').length;
-
-  // Render Loading Spinner
+  // ==========================================
+  // 1. INITIALIZING AUTH CHECK
+  // ==========================================
   if (authLoading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center space-y-4 relative">
-        <HeroAmbientGlow />
-        <div className="relative z-10 flex flex-col items-center space-y-3 bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl border border-white/80 dark:border-white/10 rounded-[28px] p-8 shadow-sm">
-          <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
-          <p className="text-sm font-semibold text-slate-600 dark:text-[#B8B3AF]">
-            {isHindi ? "सुरक्षित सर्वर प्रमाणीकरण की जाँच की जा रही है..." : "Verifying secure administrator session..."}
-          </p>
+      <div className="min-h-[70vh] flex items-center justify-center px-4 text-white">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-red-600/20 border border-red-500/30 flex items-center justify-center animate-pulse">
+            <ShieldCheck className="w-5 h-5 text-red-400" />
+          </div>
+          <p className="text-xs font-mono text-stone-400">Verifying Firebase Admin Session...</p>
         </div>
       </div>
     );
   }
 
-  // Render Admin Portal Login / Register Lock Screen if unauthenticated
-  if (!isAuthenticated) {
+  // ==========================================
+  // 2. UNAUTHENTICATED / ACCESS DENIED SCREEN
+  // ==========================================
+  if (!adminUser || !isAuthorizedAdmin) {
     return (
-      <div className="relative max-w-md mx-auto px-4 py-12 sm:py-16 space-y-6">
-        <HeroAmbientGlow />
-        
-        <div className="p-6 sm:p-8 rounded-[28px] border border-blue-500/20 dark:border-blue-400/20 space-y-6 relative z-10 shadow-[0_16px_40px_rgba(59,130,246,0.12)] dark:shadow-[0_16px_40px_rgba(59,130,246,0.18)] bg-white/80 dark:bg-[#121622]/80 backdrop-blur-xl text-center">
-          <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/40 flex items-center justify-center mx-auto shadow-sm">
-            <Lock className="w-7 h-7" />
-          </div>
-
-          <div className="space-y-1">
-            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-              {isHindi ? "आंतरिक पोर्टल" : "Portal"}
+      <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 pb-28 text-white">
+        <div className="w-full max-w-md bg-[#0D1220] border border-red-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+          
+          <div className="text-center space-y-2">
+            <div className="w-14 h-14 rounded-2xl bg-red-600/20 text-red-400 border border-red-500/30 flex items-center justify-center mx-auto shadow-lg">
+              {adminUser ? <ShieldAlert className="w-7 h-7" /> : <Lock className="w-7 h-7" />}
+            </div>
+            <h1 className="text-xl font-bold text-white tracking-tight">
+              {adminUser ? 'Unauthorized Account' : 'Admin Control Portal'}
             </h1>
+            <p className="text-xs text-stone-400 leading-relaxed">
+              {adminUser
+                ? 'Signed-in Google account does not have administrator permissions in Firestore.'
+                : 'Authorized administrator Google Sign-In required for Firestore & content control.'}
+            </p>
           </div>
 
-          {/* Session Inactivity Expiry Notice */}
-          {sessionExpiredNotice && (
-            <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs text-left font-semibold flex items-start gap-2.5">
-              <Clock className="w-4 h-4 shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
-              <div>
-                <strong className="block font-bold">{isHindi ? "सत्र समाप्ति (Session Timeout)" : "Session Expired"}</strong>
-                <span>{isHindi ? "15 मिनट की निष्क्रियता या ब्राउज़र बंद होने के कारण सत्र समाप्त कर दिया गया है। कृपया पुनः लॉगिन करें।" : "Your session was locked due to 15 minutes of inactivity or window close. Please sign in again."}</span>
-              </div>
+          {adminUser && (
+            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-xs space-y-1 font-mono">
+              <div className="text-stone-400">Signed in as:</div>
+              <div className="text-white font-bold break-all">{adminUser.email}</div>
+              <div className="text-[10px] text-stone-500 break-all">UID: {adminUser.uid}</div>
             </div>
           )}
 
-          {/* Neutral Access Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 text-[11px] font-bold text-slate-600 dark:text-[#B8B3AF] mx-auto">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span>{isHindi ? "अधिकृत पहुंच केवल" : "Authorized Access Only"}</span>
-          </div>
-
-          {/* Error & Success Banners */}
           {authError && (
-            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs text-left font-semibold flex items-start gap-2">
-              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+            <div className="p-3 rounded-xl bg-red-600/20 border border-red-500/40 text-red-300 text-xs flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{authError}</span>
             </div>
           )}
 
-          {authSuccessMsg && (
-            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs text-left font-semibold flex items-start gap-2">
-              <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{authSuccessMsg}</span>
-            </div>
-          )}
-
-          {/* GOOGLE SIGN IN BUTTON */}
-          <div className="pt-2">
+          <div className="space-y-3">
             <button
-              type="button"
-              onClick={handleGoogleSignIn}
-              disabled={authLoading}
-              className="w-full py-3.5 px-5 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-blue-500/30 dark:border-blue-400/30 text-slate-800 dark:text-white font-bold text-sm shadow-[0_4px_20px_rgba(59,130,246,0.12)] hover:shadow-[0_6px_25px_rgba(59,130,246,0.2)] hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer flex items-center justify-center gap-3 disabled:opacity-50"
+              onClick={handleGoogleLogin}
+              disabled={isAuthenticating}
+              className="w-full py-3.5 px-4 rounded-xl bg-white hover:bg-stone-100 text-stone-900 font-bold text-xs sm:text-sm flex items-center justify-center gap-3 transition-all cursor-pointer shadow-md active:scale-95 disabled:opacity-50"
             >
-              <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                />
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
               </svg>
-              <span>{authLoading ? (isHindi ? "प्रमाणीकरण हो रहा है..." : "Authenticating...") : (isHindi ? "गूगल से जारी रखें" : "Continue with Google")}</span>
+              <span>
+                {isAuthenticating
+                  ? 'Signing in with Google...'
+                  : adminUser
+                    ? 'Switch Authorized Google Account'
+                    : 'Sign In with Google (Admin)'}
+              </span>
             </button>
+
+            {adminUser && (
+              <button
+                onClick={handleLogout}
+                className="w-full py-2.5 px-4 rounded-xl bg-red-600/15 hover:bg-red-600/25 border border-red-500/30 text-red-300 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Sign Out Current Account</span>
+              </button>
+            )}
           </div>
 
-          <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-center text-xs text-slate-500">
-            <button
-              onClick={() => onNavigate('home')}
-              className="text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer transition-colors font-semibold"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>{isHindi ? "मुख्य वेबसाइट पर वापस जाएं" : "Back to Website"}</span>
+          <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-stone-500">
+            <span>Less Creation Admin Security</span>
+            <button onClick={() => onNavigate('home')} className="hover:text-stone-300 transition-colors cursor-pointer">
+              ← Back to Website
             </button>
           </div>
         </div>
@@ -677,626 +264,299 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     );
   }
 
-  // Render Admin Dashboard once authenticated with Firebase
+  // ==========================================
+  // 3. AUTHORIZED FULL ORIGINAL ADMIN DASHBOARD
+  // ==========================================
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6 space-y-8 overflow-hidden">
-      <HeroAmbientGlow />
-
-      {/* Top Header & Actions Bar - Ultra Responsive on Mobile, Tablet & Desktop */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10 pb-5 sm:pb-6 border-b border-white/80 dark:border-white/10">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              onClick={() => onNavigate('home')}
-              className="text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap bg-white/90 dark:bg-[#121622]/80 border border-slate-200/80 dark:border-white/10 px-3 py-1 rounded-full shadow-2xs mr-1"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>{isHindi ? "होम पेज" : "Back Home"}</span>
-            </button>
-            <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-800/40 flex items-center gap-1.5 whitespace-nowrap">
-              <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-              <span>Less Legal Admin Console</span>
-            </span>
-            <span className="text-xs text-slate-600 dark:text-slate-300 font-mono flex items-center gap-1 bg-white/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 px-2.5 py-0.5 rounded-full truncate max-w-[220px] sm:max-w-none">
-              <User className="w-3 h-3 text-emerald-500 shrink-0" />
-              <span className="truncate">{adminUser?.email || 'admin@lesslegal.in'}</span>
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-[#F5F2EE] tracking-tight">
-            {isHindi ? "प्रशासनिक डैशबोर्ड" : "Administrative Management Console"}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-[#B8B3AF]">
-            {isHindi 
-              ? "सबमिट किए गए डेटा हटाने के अनुरोधों, भर्ती आवेदनों और सपोर्ट टिकट्स का प्रबंधन करें।" 
-              : "Review and manage account deletion requests, hiring candidates, and user contact submissions in real-time."}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-          {/* Live Inactivity Auto-Lock Countdown Badge */}
-          <div 
-            title={isHindi ? "15 मिनट की निष्क्रियता के बाद सत्र स्वतः लॉक हो जाएगा" : "Session automatically locks after 15 minutes of inactivity"}
-            className={`flex-1 sm:flex-none justify-center px-3 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 border transition-all whitespace-nowrap ${
-              remainingSeconds < 120 
-                ? 'bg-red-500/15 border-red-500/40 text-red-600 dark:text-red-400 animate-pulse' 
-                : 'bg-white/90 dark:bg-[#121622]/80 border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 backdrop-blur-md shadow-2xs'
-            }`}
-          >
-            <Clock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-            <span>{isHindi ? "ऑटो-लॉक" : "Auto-Lock"}: {formatRemainingTime(remainingSeconds)}</span>
-          </div>
-
-          {/* Quick Lock Now Button */}
-          <button
-            onClick={() => handleLogout(false)}
-            title={isHindi ? "डैशबोर्ड को तुरंत लॉक करें" : "Lock Console Immediately"}
-            className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap"
-          >
-            <Lock className="w-3.5 h-3.5 shrink-0" />
-            <span>{isHindi ? "तत्काल लॉक" : "Lock Now"}</span>
-          </button>
-
-          <button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white border border-slate-200/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50 shadow-2xs whitespace-nowrap"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 shrink-0 ${isRefreshing ? 'animate-spin text-blue-600' : ''}`} />
-            <span>{isRefreshing ? (isHindi ? "अपडेट..." : "Refreshing...") : (isHindi ? "रिफ्रेश" : "Refresh")}</span>
-          </button>
-
-          <button
-            onClick={() => handleLogout(false)}
-            className="flex-1 sm:flex-none justify-center px-3 sm:px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap"
-          >
-            <LogOut className="w-3.5 h-3.5 shrink-0" />
-            <span>{isHindi ? "लॉग आउट" : "Sign Out"}</span>
-          </button>
-        </div>
-      </div>
-
-      {refreshToast && (
-        <div className={`p-3.5 rounded-2xl border text-xs font-bold flex items-center gap-2 animate-in fade-in relative z-10 shadow-sm ${
-          toastType === 'success'
-            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-300'
-            : 'bg-rose-500/10 border-rose-500/30 text-rose-700 dark:text-rose-300'
-        }`}>
-          {toastType === 'success' ? (
-            <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 space-y-6 text-white">
+      
+      {/* Floating Toast Notification */}
+      {toast && (
+        <div
+          className={`fixed bottom-24 right-4 sm:right-6 z-50 px-4 py-3 rounded-xl border shadow-2xl flex items-center gap-2.5 text-xs font-bold backdrop-blur-xl transition-all ${
+            toast.type === 'success'
+              ? 'bg-emerald-950/90 border-emerald-500/40 text-emerald-300'
+              : 'bg-red-950/90 border-red-500/40 text-red-300'
+          }`}
+        >
+          {toast.type === 'success' ? (
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
           ) : (
-            <AlertTriangle className="w-4.5 h-4.5 text-rose-500 shrink-0" />
+            <AlertCircle className="w-4 h-4 shrink-0" />
           )}
-          <span>{refreshToast}</span>
+          <span>{toast.message}</span>
         </div>
       )}
 
-      {/* Metrics Cards Overview */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
-        <div className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-5 rounded-[22px] border border-white/80 dark:border-white/10 shadow-2xs space-y-2 hover:shadow-md transition-all">
-          <div className="flex items-center justify-between text-amber-600 dark:text-amber-400">
-            <Clock className="w-5 h-5" />
-            <span className="text-xs font-bold uppercase tracking-wider">{isHindi ? "लंबित विलोपन" : "Pending Deletions"}</span>
+      {/* Top Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-red-600/20 text-red-400 border border-red-500/30 flex items-center justify-center shadow-lg shrink-0">
+            <ShieldCheck className="w-5 h-5" />
           </div>
-          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-            {pendingDeletionsCount}
-          </p>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-base sm:text-xl font-bold text-white tracking-tight">
+                Admin Control Center
+              </h1>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono font-bold whitespace-nowrap">
+                <Flame className="w-2.5 h-2.5 text-emerald-400" />
+                <span>Firestore Live</span>
+              </span>
+            </div>
+            <p className="text-[11px] text-stone-400 font-mono truncate">
+              {adminUser.email}
+            </p>
+          </div>
         </div>
 
-        <div className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-5 rounded-[22px] border border-white/80 dark:border-white/10 shadow-2xs space-y-2 hover:shadow-md transition-all">
-          <div className="flex items-center justify-between text-blue-600 dark:text-blue-400">
-            <MessageSquare className="w-5 h-5" />
-            <span className="text-xs font-bold uppercase tracking-wider">{isHindi ? "लंबित सहायता" : "Pending Support"}</span>
-          </div>
-          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-            {pendingContactsCount}
-          </p>
-        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={refreshQueues}
+            disabled={isSyncingQueue}
+            className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-stone-300 border border-white/10 inline-flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncingQueue ? 'animate-spin' : ''}`} />
+            <span>Sync Queues</span>
+          </button>
 
-        <div className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-5 rounded-[22px] border border-white/80 dark:border-white/10 shadow-2xs space-y-2 hover:shadow-md transition-all">
-          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
-            <CheckCircle2 className="w-5 h-5" />
-            <span className="text-xs font-bold uppercase tracking-wider">{isHindi ? "कुल संसाधित" : "Total Processed"}</span>
-          </div>
-          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-            {deletions.filter(d => d.status === 'Completed').length}
-          </p>
-        </div>
+          <button
+            onClick={handleLogout}
+            className="px-3 py-2 rounded-xl bg-red-600/10 hover:bg-red-600/20 text-xs font-semibold text-red-400 border border-red-500/20 inline-flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Sign Out</span>
+          </button>
 
-        <div className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-5 rounded-[22px] border border-white/80 dark:border-white/10 shadow-2xs space-y-2 hover:shadow-md transition-all">
-          <div className="flex items-center justify-between text-purple-600 dark:text-purple-400">
-            <Mail className="w-5 h-5" />
-            <span className="text-xs font-bold uppercase tracking-wider">{isHindi ? "कुल संदेश" : "Total Support Tickets"}</span>
-          </div>
-          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-            {contacts.length}
-          </p>
+          <button
+            onClick={() => onNavigate('home')}
+            className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-white border border-white/10 inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Exit to Site</span>
+          </button>
         </div>
       </div>
 
-      {/* Main Tabs Navigation */}
-      <div className="flex items-center justify-between flex-wrap gap-4 border-b border-white/80 dark:border-white/10 pb-4 relative z-10">
-        <div className="flex items-center gap-1.5 rounded-2xl bg-white/90 dark:bg-[#121622]/80 backdrop-blur-xl p-1.5 border border-white/80 dark:border-white/10 text-xs font-bold shadow-2xs overflow-x-auto max-w-full">
-          <button
-            onClick={() => setActiveTab('website_control')}
-            className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'website_control' 
-                ? 'bg-blue-600 text-white shadow-sm' 
-                : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            <Globe className="w-4 h-4 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "🌐 वेबसाइट व ऐप कंट्रोल हब" : "🌐 Live Website & App Hub"}</span>
-          </button>
+      {/* Single-line Horizontal Navigation Tabs */}
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar border-b border-white/10 pb-3">
+        <button
+          onClick={() => setActiveTab('website')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+            activeTab === 'website'
+              ? 'bg-red-600 text-white shadow-md shadow-red-950/40'
+              : 'bg-white/5 text-stone-400 hover:text-white hover:bg-white/10 border border-white/10'
+          }`}
+        >
+          <Globe className="w-3.5 h-3.5 shrink-0" />
+          <span>Website, Articles & Apps Hub</span>
+        </button>
 
-          <button
-            onClick={() => setActiveTab('hiring')}
-            className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'hiring' 
-                ? 'bg-blue-600 text-white shadow-sm' 
-                : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            <Briefcase className="w-4 h-4 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "💼 हायरिंग व उम्मीदवार" : "💼 Hiring & Candidates"} ({jobApplications.length})</span>
-          </button>
+        <button
+          onClick={() => setActiveTab('hiring')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+            activeTab === 'hiring'
+              ? 'bg-red-600 text-white shadow-md shadow-red-950/40'
+              : 'bg-white/5 text-stone-400 hover:text-white hover:bg-white/10 border border-white/10'
+          }`}
+        >
+          <Briefcase className="w-3.5 h-3.5 shrink-0" />
+          <span>Hiring & Careers Portal</span>
+        </button>
 
-          <button
-            onClick={() => setActiveTab('deletions')}
-            className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'deletions' 
-                ? 'bg-white dark:bg-[#1C2230] text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-white/10' 
-                : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            <Trash2 className="w-4 h-4 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "खाता विलोपन अनुरोध" : "Account Deletion Requests"} ({deletions.length})</span>
-          </button>
+        <button
+          onClick={() => setActiveTab('tickets')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+            activeTab === 'tickets'
+              ? 'bg-red-600 text-white shadow-md shadow-red-950/40'
+              : 'bg-white/5 text-stone-400 hover:text-white hover:bg-white/10 border border-white/10'
+          }`}
+        >
+          <HelpCircle className="w-3.5 h-3.5 shrink-0" />
+          <span>Support Inquiries ({tickets.length})</span>
+        </button>
 
-          <button
-            onClick={() => setActiveTab('contacts')}
-            className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'contacts' 
-                ? 'bg-white dark:bg-[#1C2230] text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-white/10' 
-                : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            <Mail className="w-4 h-4 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "सहायता एवं संपर्क फ़ॉर्म" : "Support Submissions"} ({contacts.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('settings')}
-            className={`px-3.5 sm:px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
-              activeTab === 'settings' 
-                ? 'bg-white dark:bg-[#1C2230] text-blue-600 dark:text-blue-400 shadow-sm border border-slate-200/50 dark:border-white/10' 
-                : 'text-slate-600 dark:text-[#B8B3AF] hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            <ShieldAlert className="w-4 h-4 shrink-0" />
-            <span className="whitespace-nowrap">{isHindi ? "एडमिन सुरक्षा खाता" : "Firebase Account Settings"}</span>
-          </button>
-        </div>
-
-        {(activeTab === 'deletions' || activeTab === 'contacts') && (
-          <button
-            onClick={() => exportToCSV(activeTab === 'deletions' ? deletions : contacts, activeTab)}
-            className="px-3.5 py-2 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-700 dark:text-[#B8B3AF] border border-slate-200/80 dark:border-white/10 font-bold text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap"
-          >
-            <Download className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span className="whitespace-nowrap">{isHindi ? "CSV एक्सपोर्ट करें" : "Export Report"}</span>
-          </button>
-        )}
+        <button
+          onClick={() => setActiveTab('deletions')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer shrink-0 ${
+            activeTab === 'deletions'
+              ? 'bg-red-600 text-white shadow-md shadow-red-950/40'
+              : 'bg-white/5 text-stone-400 hover:text-white hover:bg-white/10 border border-white/10'
+          }`}
+        >
+          <Trash2 className="w-3.5 h-3.5 shrink-0" />
+          <span>Deletion Requests ({deletions.length})</span>
+        </button>
       </div>
 
-      {/* MASTER WEBSITE & APP CONTROL TAB */}
-      {activeTab === 'website_control' && (
-        <AdminWebsiteControlPanel 
-          adminEmail={adminUser?.email || ''} 
+      {/* TAB 1: FULL ORIGINAL WEBSITE, ARTICLES, BANNERS, APPS, NOTICES, STORIES CONTROL PANEL */}
+      {activeTab === 'website' && (
+        <AdminWebsiteControlPanel
+          adminEmail={adminUser.email || undefined}
           onNavigate={onNavigate}
-          onShowToast={(msg, type) => {
-            setRefreshToast(msg);
-            setToastType(type);
-            setTimeout(() => setRefreshToast(null), 5000);
-          }}
+          onShowToast={showToast}
         />
       )}
 
-      {/* HIRING & CANDIDATES CONTROL TAB */}
+      {/* TAB 2: FULL ORIGINAL HIRING & CAREERS PORTAL */}
       {activeTab === 'hiring' && (
         <AdminHiringControlPanel
-          adminEmail={adminUser?.email || ''}
-          onShowToast={(msg, type) => {
-            setRefreshToast(msg);
-            setToastType(type);
-            setTimeout(() => setRefreshToast(null), 5000);
-          }}
+          adminEmail={adminUser.email || undefined}
+          onShowToast={showToast}
         />
       )}
 
-      {/* Search & Filter Toolbars */}
-      {(activeTab === 'deletions' || activeTab === 'contacts') && (
-        <div className="flex flex-wrap items-center justify-between gap-4 relative z-10 bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-3.5 sm:p-4 rounded-2xl border border-white/80 dark:border-white/10 shadow-2xs">
-          <div className="relative flex-1 min-w-[240px]">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isHindi ? "ईमेल, टिकट ID या यूज़र ID द्वारा खोजें..." : "Search by Email, Ticket ID, or User ID..."}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
-            />
+      {/* TAB 3: SUPPORT INQUIRIES (FIRESTORE contact_submissions) */}
+      {activeTab === 'tickets' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+              <Mail className="w-4 h-4 text-red-400" />
+              <span>Contact & Legal Support Tickets ({tickets.length})</span>
+            </h2>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-bold text-slate-500 whitespace-nowrap">{isHindi ? "स्थिति:" : "Status:"}</span>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#1C2230] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-800 dark:text-white focus:outline-none cursor-pointer"
-            >
-              <option value="ALL">{isHindi ? "सभी स्थिति" : "All Statuses"}</option>
-              <option value="PENDING">Pending (लंबित)</option>
-              <option value="PROCESSING">Processing / In Progress (प्रक्रियाधीन)</option>
-              <option value="COMPLETED">Completed / Resolved (पूर्ण/हल)</option>
-            </select>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 1: ACCOUNT DELETION REQUESTS */}
-      {activeTab === 'deletions' && (
-        <div className="space-y-4 relative z-10">
-          {filteredDeletions.length === 0 ? (
-            <div className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-12 text-center rounded-[28px] border border-white/80 dark:border-white/10 space-y-3 shadow-2xs">
-              <Trash2 className="w-10 h-10 text-slate-400 mx-auto" />
-              <h3 className="text-base font-bold text-slate-800 dark:text-white">
-                {isHindi ? "कोई खाता विलोपन अनुरोध नहीं मिला" : "No Account Deletion Requests Found"}
-              </h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                {isHindi 
-                  ? "वर्तमान में कोई अनुरोध लंबित नहीं है। मोबाइल ऐप यूज़र्स द्वारा फॉर्म भरने पर यहाँ लिस्ट दिखेगी।" 
-                  : "No submissions match your query. Real-time requests from users will appear here automatically."}
-              </p>
+          {tickets.length === 0 ? (
+            <div className="p-8 rounded-2xl bg-[#0D1220] border border-white/10 text-center text-xs text-stone-400">
+              No support inquiries found in Firestore.
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {filteredDeletions.map((item) => (
-                <div key={item.id} className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-5 sm:p-6 rounded-[24px] border border-white/80 dark:border-white/10 space-y-4 hover:shadow-md transition-all shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-white/10 pb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                        {item.ticketId}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        {new Date(item.timestamp).toLocaleString(isHindi ? 'hi-IN' : 'en-US')}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <select
-                        value={item.status}
-                        onChange={(e) => handleUpdateDeletionStatus(item.id, e.target.value as any)}
-                        className={`px-3 py-1 rounded-full text-xs font-bold border focus:outline-none cursor-pointer ${
-                          item.status === 'Completed'
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
-                            : item.status === 'Processing'
-                            ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
-                            : 'bg-red-500/10 text-red-600 border-red-500/30'
-                        }`}
-                      >
-                        <option value="Pending">Pending (लंबित)</option>
-                        <option value="Processing">Processing (प्रक्रियाधीन)</option>
-                        <option value="Completed">Completed (पूर्ण डेटा साफ़)</option>
-                      </select>
-
-                      <button
-                        onClick={() => handleDeleteDeletionItem(item.id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-500/10 transition-colors cursor-pointer"
-                        title={isHindi ? "हटाएं" : "Delete Record"}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div className="space-y-1">
-                      <span className="text-slate-400 font-semibold">{isHindi ? "यूज़र ईमेल:" : "User Email:"}</span>
-                      <p className="font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                        <Mail className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                        {item.email}
-                      </p>
-                    </div>
-
-                    {item.userId && (
-                      <div className="space-y-1">
-                        <span className="text-slate-400 font-semibold">{isHindi ? "यूज़र / ऐप ID:" : "User / App ID:"}</span>
-                        <p className="font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                          <User className="w-3.5 h-3.5 text-blue-500" />
-                          {item.userId}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {item.reason && (
-                    <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1">
-                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                        {isHindi ? "विलोपन का कारण:" : "Reason for Deletion:"}
-                      </span>
-                      <p className="text-xs text-slate-800 dark:text-[#F5F2EE] leading-relaxed">
-                        {item.reason}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Internal Admin Remarks */}
-                  <div className="pt-2 border-t border-slate-100 dark:border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs">
-                    {editingNoteId === item.id ? (
-                      <div className="flex-1 flex items-center gap-2">
-                        <input
-                          type="text"
-                          value={noteText}
-                          onChange={(e) => setNoteText(e.target.value)}
-                          placeholder={isHindi ? "एडमिन रिमार्क्स / टिप्पणी लिखें..." : "Write internal admin remarks..."}
-                          className="flex-1 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none"
-                        />
-                        <button
-                          onClick={() => handleSaveNote(item.id, 'deletion')}
-                          className="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-xl cursor-pointer text-xs"
-                        >
-                          {isHindi ? "सहेजें" : "Save"}
-                        </button>
-                        <button
-                          onClick={() => setEditingNoteId(null)}
-                          className="px-2 py-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-white text-xs cursor-pointer"
-                        >
-                          {isHindi ? "रद्द करें" : "Cancel"}
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-2">
-                          <Edit3 className="w-3.5 h-3.5 text-slate-400" />
-                          <span className="text-slate-500 font-semibold">{isHindi ? "एडमिन नोट:" : "Admin Note:"}</span>
-                          <span className="text-slate-800 dark:text-[#F5F2EE] font-medium">
-                            {item.adminNotes || (isHindi ? "कोई टिप्पणी नहीं" : "No internal note added")}
+            <div className="grid grid-cols-1 gap-3">
+              {tickets.map((t) => {
+                const docKey = t.firestoreDocId || t.id;
+                return (
+                  <div
+                    key={docKey}
+                    className="p-5 rounded-2xl bg-[#0D1220] border border-white/10 space-y-3 shadow-lg"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-sm text-white">{t.name}</span>
+                          <span className="text-xs font-mono text-stone-400">{t.email}</span>
+                          <span className="px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30 text-[10px] font-bold uppercase">
+                            {t.status}
                           </span>
                         </div>
-                        <button
-                          onClick={() => {
-                            setEditingNoteId(item.id);
-                            setNoteText(item.adminNotes || '');
-                          }}
-                          className="text-blue-600 dark:text-blue-400 hover:underline text-[11px] font-bold cursor-pointer"
-                        >
-                          {item.adminNotes ? (isHindi ? "संपादित करें" : "Edit Note") : (isHindi ? "+ नोट जोड़ें" : "+ Add Note")}
-                        </button>
+                        <div className="text-xs font-semibold text-stone-300 mt-1">
+                          Subject: {t.subject} {t.category ? `(${t.category})` : ''}
+                        </div>
                       </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* TAB 2: SUPPORT & CONTACT SUBMISSIONS */}
-      {activeTab === 'contacts' && (
-        <div className="space-y-4 relative z-10">
-          {filteredContacts.length === 0 ? (
-            <div className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-12 text-center rounded-[28px] border border-white/80 dark:border-white/10 space-y-3 shadow-2xs">
-              <Mail className="w-10 h-10 text-slate-400 mx-auto" />
-              <h3 className="text-base font-bold text-slate-800 dark:text-white">
-                {isHindi ? "कोई सहायता फ़ॉर्म सबमिशन नहीं मिला" : "No Support Submissions Found"}
-              </h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                {isHindi 
-                  ? "वेबसाइट के 'Contact Us' फ़ॉर्म द्वारा भेजे गए नए संदेश यहाँ प्रदर्शित होंगे।" 
-                  : "Inquiries submitted via the Contact form will appear here automatically."}
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {filteredContacts.map((item) => (
-                <div key={item.id} className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-5 sm:p-6 rounded-[24px] border border-white/80 dark:border-white/10 space-y-4 hover:shadow-md transition-all shadow-2xs">
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-white/10 pb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-slate-900 dark:text-white">
-                        {item.name}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        ({new Date(item.timestamp).toLocaleString(isHindi ? 'hi-IN' : 'en-US')})
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <select
-                        value={item.status}
-                        onChange={(e) => handleUpdateContactStatus(item.id, e.target.value as any)}
-                        className={`px-3 py-1 rounded-full text-xs font-bold border focus:outline-none cursor-pointer ${
-                          item.status === 'Resolved'
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
-                            : item.status === 'In Progress'
-                            ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
-                            : 'bg-red-500/10 text-red-600 border-red-500/30'
-                        }`}
-                      >
-                        <option value="Pending">Pending (लंबित)</option>
-                        <option value="In Progress">In Progress (प्रक्रियाधीन)</option>
-                        <option value="Resolved">Resolved (हल हो गया)</option>
-                      </select>
-
-                      <button
-                        onClick={() => handleDeleteContactItem(item.id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-500/10 transition-colors cursor-pointer"
-                        title={isHindi ? "हटाएं" : "Delete Submission"}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div className="space-y-1">
-                      <span className="text-slate-400 font-semibold">{isHindi ? "ईमेल आईडी:" : "Email Address:"}</span>
-                      <p className="font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                        <Mail className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                        <a href={`mailto:${item.email}`} className="hover:underline text-blue-600 dark:text-blue-400">
-                          {item.email}
-                        </a>
-                      </p>
-                    </div>
-
-                    {item.transactionId && (
-                      <div className="space-y-1">
-                        <span className="text-slate-400 font-semibold">{isHindi ? "ट्रांजैक्शन ID:" : "Transaction ID:"}</span>
-                        <p className="font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                          <Tag className="w-3.5 h-3.5 text-purple-500" />
-                          {item.transactionId}
-                        </p>
+                      <div className="flex items-center gap-1.5 text-[10px] font-mono text-stone-500">
+                        <Clock className="w-3 h-3" />
+                        <span>{t.createdAt || t.timestamp}</span>
                       </div>
-                    )}
-                  </div>
+                    </div>
 
-                  <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 space-y-1">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                      विषय: {item.subject}
-                    </span>
-                    <p className="text-xs sm:text-sm text-slate-800 dark:text-[#F5F2EE] whitespace-pre-line leading-relaxed">
-                      {item.message}
+                    <p className="text-xs text-stone-300 leading-relaxed whitespace-pre-line">
+                      {t.message}
                     </p>
-                  </div>
 
-                  {/* Internal Admin Remarks */}
-                  <div className="pt-2 border-t border-slate-100 dark:border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs">
-                    {editingNoteId === item.id ? (
-                      <div className="flex-1 flex items-center gap-2">
-                        <input
-                          type="text"
-                          value={noteText}
-                          onChange={(e) => setNoteText(e.target.value)}
-                          placeholder={isHindi ? "एडमिन रिमार्क्स / नोट्स लिखें..." : "Write internal admin remarks..."}
-                          className="flex-1 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none"
-                        />
-                        <button
-                          onClick={() => handleSaveNote(item.id, 'contact')}
-                          className="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-xl cursor-pointer text-xs"
-                        >
-                          {isHindi ? "सहेजें" : "Save"}
-                        </button>
-                        <button
-                          onClick={() => setEditingNoteId(null)}
-                          className="px-2 py-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-white text-xs cursor-pointer"
-                        >
-                          {isHindi ? "रद्द करें" : "Cancel"}
-                        </button>
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {(['Pending', 'In Review', 'Resolved', 'Closed'] as const).map((st) => (
+                          <button
+                            key={st}
+                            onClick={() => handleUpdateTicketStatus(docKey, st)}
+                            className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase cursor-pointer whitespace-nowrap transition-all ${
+                              t.status === st
+                                ? 'bg-red-600 text-white'
+                                : 'bg-white/5 hover:bg-white/10 text-stone-400 border border-white/10'
+                            }`}
+                          >
+                            {st}
+                          </button>
+                        ))}
                       </div>
-                    ) : (
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-2">
-                          <Edit3 className="w-3.5 h-3.5 text-slate-400" />
-                          <span className="text-slate-500 font-semibold">{isHindi ? "एडमिन नोट:" : "Admin Note:"}</span>
-                          <span className="text-slate-800 dark:text-[#F5F2EE] font-medium">
-                            {item.adminNotes || (isHindi ? "कोई टिप्पणी नहीं" : "No internal note added")}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setEditingNoteId(item.id);
-                            setNoteText(item.adminNotes || '');
-                          }}
-                          className="text-blue-600 dark:text-blue-400 hover:underline text-[11px] font-bold cursor-pointer"
-                        >
-                          {item.adminNotes ? (isHindi ? "संपादित करें" : "Edit Note") : (isHindi ? "+ नोट जोड़ें" : "+ Add Note")}
-                        </button>
-                      </div>
-                    )}
+
+                      <button
+                        onClick={() => handleDeleteTicket(docKey)}
+                        className="px-3 py-1 rounded-lg bg-red-600/10 hover:bg-red-600/20 text-red-400 border border-red-500/20 text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        <span>Delete</span>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
       )}
 
-      {/* TAB 3: FIREBASE AUTH SECURITY SETTINGS */}
-      {activeTab === 'settings' && (
-        <div className="max-w-xl mx-auto space-y-6 relative z-10">
-          <div className="bg-white/95 dark:bg-[#121622]/90 backdrop-blur-xl p-6 sm:p-8 rounded-[28px] border border-white/80 dark:border-white/10 space-y-6 shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                  {isHindi ? "Firebase प्रमाणीकरण विवरण" : "Firebase Auth Credentials"}
-                </h3>
-                <p className="text-xs text-slate-500">
-                  {isHindi 
-                    ? "आपका खाता Firebase Cloud Authentication से पूरी तरह सुरक्षित है।" 
-                    : "Your session is secured via Firebase Authentication."}
-                </p>
-              </div>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-3 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">{isHindi ? "पंजीकृत एडमिन ईमेल:" : "Active Admin Email:"}</span>
-                <span className="font-mono font-bold text-slate-900 dark:text-white">{adminUser?.email}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">Firebase Auth UID:</span>
-                <span className="font-mono text-[11px] text-slate-400">{adminUser?.uid}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500 font-semibold">{isHindi ? "सुरक्षा स्थिति:" : "Security Status:"}</span>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold text-[11px]">
-                  Encrypted & Verified
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-2">
-              <button
-                onClick={async () => {
-                  if (adminUser?.email) {
-                    try {
-                      await sendPasswordResetEmail(auth, adminUser.email);
-                      alert(isHindi ? `पासवर्ड रीसेट लिंक ${adminUser.email} पर भेज दिया गया है!` : `Password reset link sent to ${adminUser.email}!`);
-                    } catch (e) {
-                      alert(isHindi ? "रीसेट लिंक भेजने में समस्या आई।" : "Failed to send reset email.");
-                    }
-                  }
-                }}
-                className="w-full py-3 rounded-xl bg-white/90 dark:bg-[#121622]/80 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-xs border border-slate-200/80 dark:border-white/10 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
-              >
-                <Key className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span>{isHindi ? "पासवर्ड बदलने के लिए ईमेल भेजें" : "Send Password Reset Email"}</span>
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="w-full py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-bold text-xs border border-red-500/30 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-2xs"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>{isHindi ? "डैशबोर्ड से लॉग आउट करें" : "Sign Out from Dashboard"}</span>
-              </button>
-            </div>
-
-            <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-2 text-xs text-slate-500">
-              <span className="font-bold block text-slate-700 dark:text-white">{isHindi ? "सुरक्षा मानक (Zero Hardcoded Secrets):" : "Security Guarantee:"}</span>
-              <p className="leading-relaxed">
-                {isHindi 
-                  ? "कोई भी पासवर्ड या पिन सोर्स कोड में संग्रहीत नहीं है। सभी क्रेडेंशियल्स Google Firebase Authentication द्वारा सुरक्षित सर्वर पर सत्यापित होते हैं।"
-                  : "Zero passwords or PINs exist in frontend code. All authentication credentials are verified directly against Google Firebase Authentication servers."}
-              </p>
-            </div>
+      {/* TAB 4: ACCOUNT DELETION REQUESTS (FIRESTORE account_deletion_requests) */}
+      {activeTab === 'deletions' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+              <UserCheck className="w-4 h-4 text-red-400" />
+              <span>Play Store Account & Data Deletion Requests ({deletions.length})</span>
+            </h2>
           </div>
+
+          {deletions.length === 0 ? (
+            <div className="p-8 rounded-2xl bg-[#0D1220] border border-white/10 text-center text-xs text-stone-400">
+              No account deletion requests found in Firestore.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-3">
+              {deletions.map((req) => {
+                const docKey = req.firestoreDocId || req.id;
+                return (
+                  <div
+                    key={docKey}
+                    className="p-5 rounded-2xl bg-[#0D1220] border border-white/10 space-y-3 shadow-lg"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-sm text-white font-mono">{req.id}</span>
+                          <span className="text-xs text-stone-300">{req.email}</span>
+                          {req.userId && (
+                            <span className="text-[10px] font-mono text-stone-400 bg-white/5 px-2 py-0.5 rounded">
+                              UID: {req.userId}
+                            </span>
+                          )}
+                          <span className="px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30 text-[10px] font-bold uppercase">
+                            {req.status}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-stone-400 mt-1">
+                          Submitted: {req.submittedAt || req.timestamp} {req.processedBy ? `• Processed by: ${req.processedBy}` : ''}
+                        </div>
+                      </div>
+                    </div>
+
+                    {req.reason && (
+                      <p className="text-xs text-stone-300 leading-relaxed">
+                        Reason: {req.reason}
+                      </p>
+                    )}
+
+                    <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                      {(['PENDING', 'IN PROGRESS', 'COMPLETED', 'REJECTED'] as const).map((st) => (
+                        <button
+                          key={st}
+                          onClick={() => handleUpdateDeletionStatus(docKey, st)}
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase cursor-pointer whitespace-nowrap transition-all ${
+                            req.status === st
+                              ? 'bg-red-600 text-white'
+                              : 'bg-white/5 hover:bg-white/10 text-stone-400 border border-white/10'
+                          }`}
+                        >
+                          {st}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
+
     </div>
   );
 };

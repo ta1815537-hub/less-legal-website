@@ -1,254 +1,39 @@
-import React, { ReactNode } from 'react';
-import { motion, Variants } from 'motion/react';
+import React from 'react';
+import { motion } from 'motion/react';
 
-// Common Easing Curve for Apple / Modern Glass Feel
-export const EASING_SPRING = [0.22, 1, 0.36, 1] as const;
-export const EASING_SMOOTH = [0.16, 1, 0.3, 1] as const;
+export const EASING_SPRING = [0.16, 1, 0.3, 1] as const;
 
-// 1. GLOBAL PAGE TRANSITION WRAPPER (Ultra Snappy & Smooth Page Switching)
-interface PageTransitionProps {
-  children: ReactNode;
-  routeKey: string;
-  isArticle?: boolean;
-}
-
-export const PageTransition: React.FC<PageTransitionProps> = ({ children, routeKey, isArticle = false }) => {
-  return (
-    <motion.div
-      key={routeKey}
-      initial={
-        isArticle 
-          ? { opacity: 0, y: 24, scale: 0.985 } 
-          : { opacity: 0, y: 0, scale: 0.995 }
-      }
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={
-        isArticle 
-          ? { opacity: 0, y: -16, scale: 0.985 } 
-          : { opacity: 0, y: 0, scale: 0.995 }
-      }
-      transition={{ duration: 0.85, ease: EASING_SMOOTH }}
-      className="w-full flex-1"
-      style={{ willChange: "opacity, transform" }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// 2. GLOBAL ANIMATED BACKGROUND COMPONENT (Spider-web dot grid + subtle cyber ambient glow)
-export const SmokeBackground: React.FC = () => {
-  return (
-    <div 
-      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none"
-      style={{ contain: 'strict' }}
-    >
-      {/* Spider-Web Dot Matrix Grid Texture */}
-      <div className="absolute inset-0 spider-web-dots opacity-60" />
-      <div className="absolute top-0 right-1/4 w-[40rem] h-[40rem] bg-red-600/5 rounded-full blur-[140px]" />
-      <div className="absolute top-1/2 left-1/4 w-[40rem] h-[40rem] bg-stone-500/5 rounded-full blur-[140px]" />
-    </div>
-  );
-};
-
-// 3. SCROLL REVEAL SECTION
 interface ScrollRevealProps {
-  children: ReactNode;
-  className?: string;
+  children: React.ReactNode;
+  direction?: 'up' | 'down' | 'left' | 'right';
   delay?: number;
-  direction?: 'up' | 'down' | 'left' | 'right' | 'none';
-  distance?: number;
+  className?: string;
 }
 
 export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   children,
-  className = '',
-  delay = 0,
   direction = 'up',
-  distance = 28,
+  delay = 0,
+  className = ''
 }) => {
-  const getInitialPosition = () => {
+  const getInitial = () => {
     switch (direction) {
-      case 'up': return { y: distance, x: 0 };
-      case 'down': return { y: -distance, x: 0 };
-      case 'left': return { x: distance, y: 0 };
-      case 'right': return { x: -distance, y: 0 };
-      case 'none': return { x: 0, y: 0 };
-    }
-  };
-
-  // Graceful flow delay ensuring elements glide into front screen with relaxed regal pacing
-  const flowDelay = delay > 0 ? delay : 0.08;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.98, ...getInitialPosition() }}
-      whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: '-30px 0px -30px 0px' }}
-      transition={{ duration: 1.25, delay: flowDelay, ease: EASING_SMOOTH }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// 4. STAGGERED GRID CONTAINER & ITEMS
-interface StaggerContainerProps {
-  children: ReactNode;
-  className?: string;
-  staggerDelay?: number;
-}
-
-export const StaggerContainer: React.FC<StaggerContainerProps> = ({
-  children,
-  className = '',
-  staggerDelay = 0.18,
-}) => {
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: staggerDelay,
-        delayChildren: 0.15,
-      },
-    },
-  };
-
-  return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-30px 0px -30px 0px' }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-export const StaggerItem: React.FC<{ children: ReactNode; className?: string; interactive?: boolean }> = ({
-  children,
-  className = '',
-  interactive = false,
-}) => {
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 32, scale: 0.975 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 1.15, ease: EASING_SMOOTH },
-    },
-  };
-
-  return (
-    <motion.div 
-      variants={itemVariants} 
-      className={className}
-      whileHover={interactive ? { y: -5, scale: 1.01, transition: { duration: 0.35, ease: EASING_SMOOTH } } : undefined}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// 5. HERO AMBIENT BACKGROUND GLOW (Studio Sky-Blue, Gold & Ambient Stage Floor)
-export const HeroAmbientGlow: React.FC = () => {
-  return (
-    <div 
-      className="absolute inset-0 pointer-events-none overflow-hidden -z-10 select-none"
-      style={{
-        contain: 'paint',
-        maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%)',
-      }}
-    >
-      {/* Soft Sky Blue / Powder Blue Atmospheric Lighting (Center-Left) */}
-      <div 
-        className="vapor-orb-1 absolute -top-24 left-[5%] sm:left-[15%] w-[32rem] sm:w-[46rem] h-[32rem] sm:h-[46rem] bg-gradient-to-tr from-[#BFDBFE]/50 via-[#DBEAFE]/40 to-[#EFF6FF]/20 dark:from-[#2563EB]/35 dark:via-[#4F46E5]/20 dark:to-transparent rounded-full blur-[80px] sm:blur-[130px]"
-      />
-
-      {/* Warm Golden Sunlight Ambient Orb (Top Right) */}
-      <div 
-        className="vapor-orb-2 absolute top-0 right-[2%] sm:right-[8%] w-[26rem] sm:w-[38rem] h-[26rem] sm:h-[38rem] bg-gradient-to-br from-[#FEF3C7]/40 via-[#FDE68A]/25 to-[#DBEAFE]/30 dark:from-[#F43F5E]/20 dark:via-[#EC4899]/15 dark:to-transparent rounded-full blur-[70px] sm:blur-[110px]"
-      />
-
-      {/* Luminous Periwinkle Backlight behind phone (Center Right) */}
-      <div 
-        className="absolute top-1/3 right-[15%] sm:right-[22%] w-[24rem] sm:w-[34rem] h-[24rem] sm:h-[34rem] bg-gradient-to-bl from-[#93C5FD]/45 via-[#C7D2FE]/30 to-transparent dark:from-[#3B82F6]/30 dark:via-[#8B5CF6]/20 dark:to-transparent rounded-full blur-[60px] sm:blur-[100px] opacity-70"
-      />
-
-      {/* Seamless Soft Floor Transition */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-48 sm:h-64 bg-gradient-to-t from-transparent via-transparent to-transparent pointer-events-none"
-      />
-
-      {/* Architectural Studio Grid Overlay */}
-      <div 
-        className="absolute inset-0 opacity-[0.025] dark:opacity-[0.035] pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-          backgroundSize: '36px 36px'
-        }}
-      />
-    </div>
-  );
-};
-
-// 6. INTERACTIVE BUTTON WRAPPER WITH CONTINUOUS SHINE & GLOW
-interface GlowingButtonProps {
-  children: ReactNode;
-  onClick?: () => void;
-  className?: string;
-  variant?: 'primary' | 'secondary' | 'gold' | 'outline' | '3d-glass';
-  id?: string;
-  type?: 'button' | 'submit' | 'reset';
-  disabled?: boolean;
-}
-
-export const GlowingButton: React.FC<GlowingButtonProps> = ({
-  children,
-  onClick,
-  className = '',
-  variant = 'primary',
-  id,
-  type = 'button',
-  disabled = false,
-}) => {
-  const getVariantStyles = () => {
-    switch (variant) {
-      case 'primary':
-        return 'bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white shadow-[0_12px_32px_rgba(37,99,235,0.38)] border-t border-white/40 border-b border-blue-800/40 hover:shadow-[0_16px_40px_rgba(37,99,235,0.48)] shine-sweep-overlay';
-      case '3d-glass':
-      case 'secondary':
-        return 'fluid-3d-glass-btn text-slate-900 dark:text-white font-bold shine-sweep-overlay';
-      case 'gold':
-        return 'btn-gold shine-sweep-overlay';
-      case 'outline':
-        return 'bg-white/90 dark:bg-transparent border border-slate-300 dark:border-white/20 hover:border-slate-400 dark:hover:border-white/40 text-slate-900 dark:text-[#F5F2EE] hover:bg-slate-100 dark:hover:bg-white/5 backdrop-blur-md shine-sweep-overlay shadow-xs dark:shadow-none';
+      case 'up': return { opacity: 0, y: 16 };
+      case 'down': return { opacity: 0, y: -16 };
+      case 'left': return { opacity: 0, x: 16 };
+      case 'right': return { opacity: 0, x: -16 };
     }
   };
 
   return (
-    <motion.button
-      id={id}
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      whileHover={{ scale: 1.025, y: -1.5 }}
-      whileTap={{ scale: 0.96, y: 0.5 }}
-      transition={{ duration: 0.4, ease: EASING_SMOOTH }}
-      className={`relative group overflow-hidden transition-all rounded-xl sm:rounded-2xl font-bold px-5 py-3 text-sm flex items-center justify-center gap-2 ${getVariantStyles()} ${className}`}
+    <motion.div
+      initial={getInitial()}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.45, delay, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
     >
-      {/* Liquid 3D Specular Refraction Effect */}
-      <span className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/50 to-transparent pointer-events-none" />
-      <span className="relative z-10 flex items-center justify-center gap-2">
-        {children}
-      </span>
-    </motion.button>
+      {children}
+    </motion.div>
   );
 };
-

@@ -4,12 +4,12 @@ export function useTheme() {
   const [isDark, setIsDark] = useState<boolean>(() => {
     const saved = localStorage.getItem('theme');
     if (saved) return saved === 'dark';
-    return true; // Default to dark as requested earlier
+    return true; // Default to dark mode
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    const themeColor = isDark ? '#080808' : '#ffffff';
+    const themeColor = isDark ? '#070B12' : '#ffffff';
 
     if (isDark) {
       root.classList.add('dark');
@@ -21,7 +21,6 @@ export function useTheme() {
       localStorage.setItem('theme', 'light');
     }
 
-    // Dynamically update browser theme-color meta tags
     const themeMetaTags = document.querySelectorAll('meta[name="theme-color"]');
     if (themeMetaTags.length > 0) {
       themeMetaTags.forEach((meta) => {
