@@ -3,7 +3,7 @@ export const SITE_CONFIG = {
   companyName: 'Less Creation',
   tagline: 'Legal & Cyber Safety Authority',
   appVersion: 'v2.4.0',
-  playStoreUrl: 'https://play.google.com/store/apps/details?id=com.lesscreation.app',
+  playStoreUrl: 'https://play.google.com/store/apps/details?id=com.lesslegal.app',
   apkDownloadUrl: 'https://github.com/lesscreation/app/releases/latest',
   supportEmail: 'support@lesscreation.com',
   supportPhone: '+91 99999 99999',
